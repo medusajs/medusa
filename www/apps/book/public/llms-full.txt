@@ -9530,7 +9530,7 @@ Instead, you can use the [Plugin Global Variables](#global-variables-in-plugins)
 
 In this chapter, you'll learn about the Medusa Admin dashboard and the possible ways to customize it.
 
-To explore the Medusa Admin's commerce features, check out the [User Guide](https://docs.medusajs.com/user-guide/index.html.md). These user guides are designed for merchants and provide the steps to perform any task within the Medusa Admin.
+To explore the Medusa Admin's commerce features, check out the [Merchant Guide](https://docs.medusajs.com/user-guide/index.html.md). These guides are designed for merchants and provide the steps to perform any task within the Medusa Admin.
 
 ## What is the Medusa Admin?
 
@@ -9914,7 +9914,7 @@ Translations for admin customizations are available from [Medusa v2.11.1](https:
 
 The Medusa Admin dashboard supports [multiple languages](https://docs.medusajs.com/user-guide/tips/languages/index.html.md) for its interface. Medusa uses [react-i18next](https://react.i18next.com/) to manage translations in the admin dashboard.
 
-Medusa Admin translations apply to the interface only. To translate content like product data, check out the [Translations user guide](https://docs.medusajs.com/user-guide/settings/translations/index.html.md).
+Medusa Admin translations apply to the interface only. To translate content like product data, check out the [Translations Merchant Guide](https://docs.medusajs.com/user-guide/settings/translations/index.html.md).
 
 When you create [Widgets](https://docs.medusajs.com/learn/fundamentals/admin/widgets/index.html.md) or [UI Routes](https://docs.medusajs.com/learn/fundamentals/admin/ui-routes/index.html.md) to customize the Medusa Admin, you can provide translations for the text content in your customizations, allowing users to view your customizations in their preferred language.
 
@@ -21897,6 +21897,12 @@ A [plugin](https://docs.medusajs.com/learn/fundamentals/plugins/index.html.md) i
 
 Plugins are available starting from [Medusa v2.3.0](https://github.com/medusajs/medusa/releases/tag/v2.3.0).
 
+Your AI agent can perform the steps in this chapter. Run the following prompt in your agent from the directory where you want to create the plugin:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/learn/fundamentals/plugins/create.md and create a Medusa plugin
+```
+
 ## 1. Create a Plugin Project
 
 Plugins are created in a separate Medusa project. This makes the development and publishing of the plugin easier. Later, you'll install that plugin in your Medusa application to test it out and use it. To test the plugin, use a Medusa application that you [set up locally from your Cloud project](https://docs.medusajs.com/cloud/setup-locally/index.html.md).
@@ -31089,7 +31095,7 @@ Learn more in the [Admin Development Tips](https://docs.medusajs.com/learn/funda
 
 Medusa Admin v2 supports different languages out-of-the-box, and you can contribute with new translations.
 
-Refer to the [User Guide](https://docs.medusajs.com/user-guide/tips/languages/index.html.md) for the list of languages supported in the Medusa Admin.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/tips/languages/index.html.md) for the list of languages supported in the Medusa Admin.
 
 ***
 
@@ -31531,7 +31537,7 @@ The workspace has the following two directories:
   - `resources`: includes the codebase and content for the resources documentation, which powers different sections of the docs such as the [Recipes](https://docs.medusajs.com/resources/recipes/index.html.md) or [How-to & Tutorials](https://docs.medusajs.com/resources/how-to-tutorials/index.html.md) sections.
   - `api-reference`: includes the codebase and content for the [API reference](https://docs.medusajs.com/api/store).
   - `ui`: includes the codebase and content for the [Medusa UI documentation](https://docs.medusajs.com/ui/index.html.md).
-  - `user-guide`: includes the codebase and content for the [user guide documentation](https://docs.medusajs.com/user-guide/index.html.md).
+  - `user-guide`: includes the codebase and content for the [Merchant Guide documentation](https://docs.medusajs.com/user-guide/index.html.md).
   - `cloud`: includes the codebase and content for the [Medusa Cloud documentation](https://docs.medusajs.com/cloud/index.html.md).
 - `packages`: this directory holds the shared packages and components necessary for the development of the projects in the `apps` directory.
   - `docs-ui` includes the shared React components between the different apps.
@@ -31589,7 +31595,7 @@ The UI documentation also shows code examples, which are under the `www/apps/ui/
 
 The UI component props are generated from the source code and placed into the `www/apps/ui/specs/components` directory. To contribute to these props and their comments, check the comments in the source code under the `packages/design-system/ui` directory.
 
-### Medusa User Guide
+### Merchant Guide
 
 The content of all pages under the `/user-guide` path are under the `www/apps/user-guide/app` directory.
 
@@ -31740,7 +31746,7 @@ cd www/vale
 ./run-vale.sh api-reference/markdown error
 # to lint content for the Medusa UI documentation
 ./run-vale.sh ui/app error
-# to lint content for the user guide
+# to lint content for the Merchant Guide
 ./run-vale.sh user-guide/app error
 ```
 
@@ -32269,7 +32275,7 @@ createRemoteLinkStep({
 
 In this section of the documentation, you will find resources to learn more about the API Key Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/developer/index.html.md) to learn how to manage publishable and secret API keys using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/settings/developer/index.html.md) to learn how to manage publishable and secret API keys using the dashboard.
 
 Medusa has API-key related features available out-of-the-box through the API Key Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this API Key Module.
 
@@ -32822,6 +32828,12 @@ In this guide, you’ll learn about the GitHub Auth Module Provider and how to c
 
 The GitHub Auth Module Provider allows you to authenticate users with their GitHub account.
 
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/commerce-modules/auth/auth-providers/github.md and set up the GitHub Auth Module Provider in my Medusa application
+```
+
 ## Register the GitHub Auth Module Provider
 
 ### Prerequisites
@@ -32942,6 +32954,12 @@ The [Authenticate or Login API Route](https://docs.medusajs.com/Users/shahednass
 In this guide, you’ll learn about the Google Auth Module Provider and how to install and use it in the Auth Module.
 
 The Google Auth Module Provider allows you to authenticate users with their Google account.
+
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/commerce-modules/auth/auth-providers/google.md and set up the Google Auth Module Provider in my Medusa application
+```
 
 ## Register the Google Auth Module Provider
 
@@ -35384,7 +35402,7 @@ Medusa provides the following authentication providers out-of-the-box. You can u
 
 In this guide, you'll learn how to handle the `auth.password_reset` event to send a reset password email (or other notification type) to users.
 
-Refer to this [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/reset-password/index.html.md) to learn how to reset your user admin password using the dashboard.
+Refer to this [Merchant Guide](https://docs.medusajs.com/user-guide/reset-password/index.html.md) to learn how to reset your user admin password using the dashboard.
 
 ## Reset Password Flow Overview
 
@@ -37334,7 +37352,7 @@ This stops the cart completion for carts that a customer created before the merc
 To test out the validation:
 
 1. Start the Medusa application.
-2. In the Medusa Admin dashboard, add a product that doesn't belong to a sales channel, or remove a product from a sales channel, as explained in the [user guide](https://docs.medusajs.com/user-guide/settings/sales-channels#manage-products-in-sales-channel/index.html.md).
+2. In the Medusa Admin dashboard, add a product that doesn't belong to a sales channel, or remove a product from a sales channel, as explained in the [Merchant Guide](https://docs.medusajs.com/user-guide/settings/sales-channels#manage-products-in-sales-channel/index.html.md).
 3. Create a cart associated with that sales channel using a publishable API key linked to it.
 4. Send a request to the [Add Line Item Store API route](https://docs.medusajs.com/api/store/carts/add-line-item) with a variant of the product you removed.
 
@@ -37545,7 +37563,7 @@ const { data: stores } = useQueryGraphStep({
 
 In this section of the documentation, you will find resources to learn more about the Currency Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/store/index.html.md) to learn how to manage your store's currencies using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/settings/store/index.html.md) to learn how to manage your store's currencies using the dashboard.
 
 Medusa has currency related features available out-of-the-box through the Currency Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Currency Module.
 
@@ -37693,7 +37711,7 @@ Learn more about workflows in [this documentation](https://docs.medusajs.com/doc
 
 In this document, you’ll learn how registered and unregistered accounts are distinguished in the Medusa application.
 
-Refer to this [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/customers/index.html.md) to learn how to manage customers using the dashboard.
+Refer to this [Merchant Guide](https://docs.medusajs.com/user-guide/customers/index.html.md) to learn how to manage customers using the dashboard.
 
 ## `has_account` Property
 
@@ -38076,7 +38094,7 @@ const { data: orders } = useQueryGraphStep({
 
 In this section of the documentation, you will find resources to learn more about the Customer Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/customers/index.html.md) to learn how to manage customers and groups using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/customers/index.html.md) to learn how to manage customers and groups using the dashboard.
 
 Medusa has customer related features available out-of-the-box through the Customer Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Customer Module.
 
@@ -38265,7 +38283,7 @@ A shipping profile is represented by the [ShippingProfile data model](https://do
 
 In this guide, you’ll learn about the Fulfillment Module Provider and how it's used.
 
-Refer to this [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/locations-and-shipping/locations#manage-fulfillment-providers/index.html.md) to learn how to add a fulfillment provider to a location using the dashboard.
+Refer to this [Merchant Guide](https://docs.medusajs.com/user-guide/settings/locations-and-shipping/locations#manage-fulfillment-providers/index.html.md) to learn how to add a fulfillment provider to a location using the dashboard.
 
 ## What is a Fulfillment Module Provider?
 
@@ -38295,7 +38313,7 @@ The module can have multiple fulfillment provider services, where each are regis
 
 Refer to the [Create Fulfillment Module Provider](https://docs.medusajs.com/references/fulfillment/provider/index.html.md) guide to learn how to create a Fulfillment Module Provider.
 
-After you create a fulfillment provider, you can choose it as the default Fulfillment Module Provider for a stock location in the Medusa Admin dashboard.
+After you create a fulfillment provider, you can choose it as the default Fulfillment Module Provider for a stock location in the Medusa Admin dashboard. Learn how in the [Manage Fulfillment Providers](https://docs.medusajs.com/user-guide/settings/locations-and-shipping/locations#manage-fulfillment-providers/index.html.md) Merchant Guide.
 
 ***
 
@@ -38984,7 +39002,7 @@ The `providers` option is an array of objects that accept the following properti
 
 In this section of the documentation, you will find resources to learn more about the Fulfillment Module and how to use it in your application.
 
-Refer to the Medusa Admin User Guide to learn how to use the dashboard to:
+Refer to the Merchant Guide to learn how to use the dashboard to:
 
 - [Manage order fulfillments](https://docs.medusajs.com/user-guide/orders/fulfillments/index.html.md).
 - [Manage shipping options and profiles](https://docs.medusajs.com/user-guide/settings/locations-and-shipping/index.html.md).
@@ -39418,7 +39436,7 @@ If a returned item is considered damaged or is dismissed, its quantity doesn't i
 
 In this guide, you'll learn how inventory kits can be used in the Medusa application to support use cases like multi-part products, bundled products, and shared inventory across products.
 
-Refer to the following user guides to learn how to use the Medusa Admin dashboard to:
+Refer to the following Merchant Guides to learn how to use the Medusa Admin dashboard to:
 
 - [Create Multi-Part Products](https://docs.medusajs.com/user-guide/products/create/multi-part/index.html.md).
 - [Create Bundled Products](https://docs.medusajs.com/user-guide/products/create/bundle/index.html.md).
@@ -39949,7 +39967,7 @@ const { data: inventoryLevels } = useQueryGraphStep({
 
 In this section of the documentation, you will find resources to learn more about the Inventory Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/inventory/index.html.md) to learn how to manage inventory and related features using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/inventory/index.html.md) to learn how to manage inventory and related features using the dashboard.
 
 Medusa has inventory related features available out-of-the-box through the Inventory Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Inventory Module.
 
@@ -40588,7 +40606,7 @@ In this section of the documentation, you will find resources to learn more abou
 
 The Loyalty Module is part of the Loyalty Plugin. It's compatible with Medusa v2.14.0+.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/loyalty/index.html.md) to learn how to manage gift cards using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/loyalty/index.html.md) to learn how to manage gift cards using the dashboard.
 
 Medusa has loyalty related features available through the Loyalty Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Loyalty Module.
 
@@ -40766,7 +40784,7 @@ Learn more about workflows in [this documentation](https://docs.medusajs.com/doc
 
 In this guide, you'll learn about order claims.
 
-Refer to this [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/orders/claims/index.html.md) to learn how to manage an order's claims using the dashboard.
+Refer to this [Merchant Guide](https://docs.medusajs.com/user-guide/orders/claims/index.html.md) to learn how to manage an order's claims using the dashboard.
 
 ## What is a Claim?
 
@@ -41110,9 +41128,9 @@ If you open the Medusa Admin at `localhost:9000/app` and log in, you'll find an 
 
 ***
 
-## Draft Orders User Guides
+## Draft Orders Merchant Guides
 
-To learn how to use the draft order features in the Medusa Admin, refer to the [Draft Orders](https://docs.medusajs.com/user-guide/orders/draft-orders/index.html.md) user guides.
+To learn how to use the draft order features in the Medusa Admin, refer to the [Draft Orders](https://docs.medusajs.com/user-guide/orders/draft-orders/index.html.md) Merchant Guides.
 
 ***
 
@@ -41188,7 +41206,7 @@ Admin users can then manage the order like any other regular order, including pr
 
 In this guide, you'll learn about order edits.
 
-Refer to this [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/orders/edit/index.html.md) to learn how to edit an order's items using the dashboard.
+Refer to this [Merchant Guide](https://docs.medusajs.com/user-guide/orders/edit/index.html.md) to learn how to edit an order's items using the dashboard.
 
 ## What is an Order Edit?
 
@@ -41291,7 +41309,7 @@ await sdk.admin.orderEdit.request(orderId, {
 
 In this guide, you’ll learn about order exchanges.
 
-Refer to this [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/orders/exchanges/index.html.md) to learn how to manage an order's exchanges using the dashboard.
+Refer to this [Merchant Guide](https://docs.medusajs.com/user-guide/orders/exchanges/index.html.md) to learn how to manage an order's exchanges using the dashboard.
 
 ## What is an Exchange?
 
@@ -42491,7 +42509,7 @@ The `items.unit_price` and `items.metadata` fields already reflect the order's c
 
 In this section of the documentation, you will find resources to learn more about the Order Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/orders/index.html.md) to learn how to manage orders using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/orders/index.html.md) to learn how to manage orders using the dashboard.
 
 Medusa has order related features available out-of-the-box through the Order Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Order Module.
 
@@ -42769,7 +42787,7 @@ await orderModuleService.setOrderShippingMethodAdjustments(
 
 In this document, you’ll learn about order returns.
 
-Refer to this [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/orders/returns/index.html.md) to learn how to manage an order's returns using the dashboard.
+Refer to this [Merchant Guide](https://docs.medusajs.com/user-guide/orders/returns/index.html.md) to learn how to manage an order's returns using the dashboard.
 
 ## What is a Return?
 
@@ -44011,7 +44029,7 @@ Refer to the [Payment Module Providers](https://docs.medusajs.com/Users/shahedna
 
 In this section of the documentation, you will find resources to learn more about the Payment Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/orders/payments/index.html.md) to learn how to manage order payments using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/orders/payments/index.html.md) to learn how to manage order payments using the dashboard.
 
 Medusa has payment related features available out-of-the-box through the Payment Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Payment Module.
 
@@ -44582,7 +44600,13 @@ In this document, you'll learn about the Adyen Module Provider and how to config
 
 The Adyen Module Provider is in beta mode. It has been available since Medusa [v2.22.2](https://github.com/medusajs/medusa/releases/tag/v2.22.2).
 
-Your technical team must register the Adyen Module Provider in your Medusa application first. Then, refer to [this user guide](https://docs.medusajs.com/user-guide/settings/regions#edit-region-details/index.html.md) to learn how to enable the Adyen payment provider in a region using the Medusa Admin dashboard.
+Your technical team must register the Adyen Module Provider in your Medusa application first. Then, refer to [this Merchant Guide](https://docs.medusajs.com/user-guide/settings/regions#edit-region-details/index.html.md) to learn how to enable the Adyen payment provider in a region using the Medusa Admin dashboard.
+
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/commerce-modules/payment/payment-provider/adyen.md and set up the Adyen Module Provider in my Medusa application
+```
 
 ## What is the Adyen Module Provider?
 
@@ -44715,7 +44739,7 @@ module.exports = defineConfig({
 
 Before customers can use Adyen to complete their purchases, you must enable the Adyen payment provider in the region where you want to offer this payment method.
 
-Refer to the [user guide](https://docs.medusajs.com/user-guide/settings/regions#edit-region-details/index.html.md) to learn how to edit a region and enable the Adyen payment provider.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/settings/regions#edit-region-details/index.html.md) to learn how to edit a region and enable the Adyen payment provider.
 
 ***
 
@@ -44850,7 +44874,7 @@ For example, if you set the ID of the Adyen Module Provider to `adyen`, the webh
 
 In this guide, you’ll learn about the Payment Module Provider and how it's used.
 
-Refer to this [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/regions/index.html.md) to learn how to manage the payment providers available in a region using the dashboard.
+Refer to this [Merchant Guide](https://docs.medusajs.com/user-guide/settings/regions/index.html.md) to learn how to manage the payment providers available in a region using the dashboard.
 
 ***
 
@@ -44939,7 +44963,13 @@ Instead, the Medusa application will set the `is_enabled` property of the `Payme
 
 In this document, you’ll learn about the Stripe Module Provider and how to configure it in the Payment Module.
 
-Your technical team must install the Stripe Module Provider in your Medusa application first. Then, refer to [this user guide](https://docs.medusajs.com/user-guide/settings/regions#edit-region-details/index.html.md) to learn how to enable the Stripe payment provider in a region using the Medusa Admin dashboard.
+Your technical team must install the Stripe Module Provider in your Medusa application first. Then, refer to [this Merchant Guide](https://docs.medusajs.com/user-guide/settings/regions#edit-region-details/index.html.md) to learn how to enable the Stripe payment provider in a region using the Medusa Admin dashboard.
+
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/commerce-modules/payment/payment-provider/stripe.md and set up the Stripe Module Provider in my Medusa application
+```
 
 ## Register the Stripe Module Provider
 
@@ -45015,7 +45045,7 @@ Then, [enable the provider in a region](#enable-stripe-providers-in-a-region) an
 
 Before customers can use Stripe to complete their purchases, you must enable the Stripe payment provider(s) in the region where you want to offer this payment method.
 
-Refer to the [user guide](https://docs.medusajs.com/user-guide/settings/regions#edit-region-details/index.html.md) to learn how to edit a region and enable the Stripe payment provider.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/settings/regions#edit-region-details/index.html.md) to learn how to edit a region and enable the Stripe payment provider.
 
 ***
 
@@ -45541,7 +45571,7 @@ createRemoteLinkStep({
 
 In this section of the documentation, you will find resources to learn more about the Pricing Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/price-lists/index.html.md) to learn how to manage price lists using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/price-lists/index.html.md) to learn how to manage price lists using the dashboard.
 
 Medusa has pricing related features available out-of-the-box through the Pricing Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Pricing Module.
 
@@ -47095,7 +47125,7 @@ In this example, only products that belong to either the `cat_123` or `cat_456` 
 
 In this guide, you'll learn how to create and manage products from a client application, such as a script or an external admin, using the [JS SDK](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/js-sdk/index.html.md) and the Admin API routes.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/products/index.html.md) to learn how to manage products using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/products/index.html.md) to learn how to manage products using the dashboard.
 
 ### Prerequisites
 
@@ -47460,7 +47490,7 @@ const { created, updated, deleted } =
 
 Items in `create` accept the same fields as the [create request](#create-a-product). Items in `update` accept the same fields as the [update request](#update-a-product), along with the product's `id`.
 
-To import many products from a CSV file, refer to the [Import Products](https://docs.medusajs.com/user-guide/products/import/index.html.md) user guide instead.
+To import many products from a CSV file, refer to the [Import Products](https://docs.medusajs.com/user-guide/products/import/index.html.md) Merchant Guide instead.
 
 
 # Calculate Product Variant Price with Taxes
@@ -48466,7 +48496,7 @@ const { data: products } = useQueryGraphStep({
 
 In this section of the documentation, you will find resources to learn more about the Product Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/products/index.html.md) to learn how to manage products using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/products/index.html.md) to learn how to manage products using the dashboard.
 
 Medusa has product related features available out-of-the-box through the Product Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Product Module.
 
@@ -48769,7 +48799,7 @@ By combining configurations of shipment requirements and inventory management, y
 
 In this guide, you'll learn about the inventory management features related to product variants.
 
-Refer to this [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/products/variants#manage-product-variant-inventory/index.html.md) to learn how to manage inventory of product variants.
+Refer to this [Merchant Guide](https://docs.medusajs.com/user-guide/products/variants#manage-product-variant-inventory/index.html.md) to learn how to manage inventory of product variants.
 
 ## Configure Inventory Management of Product Variants
 
@@ -49267,7 +49297,7 @@ The promotion is applied to all `3` quantities of the item with the lowest price
 
 In this guide, you'll learn what a campaign is and its related concepts.
 
-Refer to this [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/promotions/campaigns/index.html.md) to learn how to manage campaigns using the dashboard.
+Refer to this [Merchant Guide](https://docs.medusajs.com/user-guide/promotions/campaigns/index.html.md) to learn how to manage campaigns using the dashboard.
 
 ## What is a Campaign?
 
@@ -49346,7 +49376,7 @@ However, once a promotion is applied to a cart, it remains valid until the order
 
 In this guide, you’ll learn about the main promotion and rule concepts in the Promotion Module.
 
-Refer to this [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/promotions/index.html.md) to learn how to manage promotions using the dashboard.
+Refer to this [Merchant Guide](https://docs.medusajs.com/user-guide/promotions/index.html.md) to learn how to manage promotions using the dashboard.
 
 ## What is a Promotion?
 
@@ -49769,7 +49799,7 @@ createRemoteLinkStep({
 
 In this section of the documentation, you will find resources to learn more about the Promotion Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/promotions/index.html.md) to learn how to manage promotions using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/promotions/index.html.md) to learn how to manage promotions using the dashboard.
 
 Medusa has promotion related features available out-of-the-box through the Promotion Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Promotion Module.
 
@@ -50237,7 +50267,7 @@ createRemoteLinkStep({
 
 In this section of the documentation, you will find resources to learn more about the Region Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/regions/index.html.md) to learn how to manage regions using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/settings/regions/index.html.md) to learn how to manage regions using the dashboard.
 
 Medusa has region related features available out-of-the-box through the Region Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Region Module.
 
@@ -50728,7 +50758,7 @@ createRemoteLinkStep({
 
 In this section of the documentation, you will find resources to learn more about the Sales Channel Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/sales-channels/index.html.md) to learn how to manage sales channels using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/settings/sales-channels/index.html.md) to learn how to manage sales channels using the dashboard.
 
 Medusa has sales channel related features available out-of-the-box through the Sales Channel Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Sales Channel Module.
 
@@ -51452,7 +51482,7 @@ The `count` render mode counts the items in the relation set by `metadata.list_f
 
 In this guide, you'll learn about layout configurations in the Settings Module.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/tips/layout-configurations/index.html.md) to learn how to customize layouts in the Medusa Admin dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/tips/layout-configurations/index.html.md) to learn how to customize layouts in the Medusa Admin dashboard.
 
 ## What is a Layout Configuration?
 
@@ -51482,7 +51512,7 @@ The `getActiveLayoutScope` method of the module's service retrieves a user's act
 
 In this section of the documentation, you will find resources to learn more about the Settings Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/tips/table-views/index.html.md) to learn how to customize data tables and manage views in the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/tips/table-views/index.html.md) to learn how to customize data tables and manage views in the dashboard.
 
 Medusa has admin personalization and configuration features available out-of-the-box through the Settings Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features is provided in Commerce Modules, such as the Settings Module.
 
@@ -52186,7 +52216,7 @@ createRemoteLinkStep({
 
 In this section of the documentation, you will find resources to learn more about the Stock Location Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/locations-and-shipping/index.html.md) to learn how to manage stock locations using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/settings/locations-and-shipping/index.html.md) to learn how to manage stock locations using the dashboard.
 
 Medusa has stock location related features available out-of-the-box through the Stock Location Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Stock Location Module.
 
@@ -52566,7 +52596,7 @@ In this section of the documentation, you will find resources to learn more abou
 
 The Store Credit Module is part of the Loyalty Plugin. It's compatible with Medusa v2.14.0+.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/loyalty/store-credits/index.html.md) to learn how to manage store credit using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/loyalty/store-credits/index.html.md) to learn how to manage store credit using the dashboard.
 
 Medusa has store-credit related features available through the Store Credit Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Store Credit Module.
 
@@ -52863,7 +52893,7 @@ For example, if your store supports English (United States) and French (France),
 
 In this section of the documentation, you will find resources to learn more about the Store Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/store/index.html.md) to learn how to manage your store using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/settings/store/index.html.md) to learn how to manage your store using the dashboard.
 
 Medusa has store related features available out-of-the-box through the Store Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Store Module.
 
@@ -53047,7 +53077,7 @@ The objects in the array accept the following properties:
 
 In this section of the documentation, you will find resources to learn more about the Tax Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/tax-regions/index.html.md) to learn how to manage tax regions using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/settings/tax-regions/index.html.md) to learn how to manage tax regions using the dashboard.
 
 Medusa has tax related features available out-of-the-box through the Tax Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this Tax Module.
 
@@ -53268,7 +53298,7 @@ Learn more about tax providers, configuring, and creating them in the [Tax Modul
 
 In this guide, you’ll learn about the Tax Module Provider and how it's used.
 
-Refer to this [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/tax-regions/index.html.md) to learn how to manage tax provider of a tax region using the dashboard.
+Refer to this [Merchant Guide](https://docs.medusajs.com/user-guide/settings/tax-regions/index.html.md) to learn how to manage tax provider of a tax region using the dashboard.
 
 ## What is a Tax Module Provider?
 
@@ -53352,7 +53382,7 @@ Then, the next time the Medusa application starts, it will set the `is_enabled` 
 
 In this guide, you’ll learn about tax rates and rules.
 
-Refer to this [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/tax-regions#manage-tax-rate-overrides/index.html.md) to learn how to manage tax rates using the dashboard.
+Refer to this [Merchant Guide](https://docs.medusajs.com/user-guide/settings/tax-regions#manage-tax-rate-overrides/index.html.md) to learn how to manage tax rates using the dashboard.
 
 ## What are Tax Rates?
 
@@ -53392,7 +53422,7 @@ So, to override the default tax rate for product types “Shirt”, you create a
 
 In this document, you’ll learn about tax regions and how to use them with the Region Module.
 
-Refer to this [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/tax-regions/index.html.md) to learn how to manage tax regions using the dashboard.
+Refer to this [Merchant Guide](https://docs.medusajs.com/user-guide/settings/tax-regions/index.html.md) to learn how to manage tax regions using the dashboard.
 
 ## What is a Tax Region?
 
@@ -53705,7 +53735,7 @@ Then, open the Medusa Admin and go to Settings -> Translations. You should see y
 
 Click the Edit button for your custom data model to manage translations for its resources. You can manage translations for the configured locales and fields.
 
-Learn more in the [Translations User Guide](https://docs.medusajs.com/user-guide/settings/translations/index.html.md).
+Learn more in the [Translations Merchant Guide](https://docs.medusajs.com/user-guide/settings/translations/index.html.md).
 
 ***
 
@@ -54023,7 +54053,7 @@ In this section of the documentation, you will find resources to learn more abou
 - [Medusa v2.12.3 or later](https://github.com/medusajs/medusa/releases/tag/v2.12.3)
 - [Translation Feature Flag Enabled (before Medusa v2.22.7)](#configure-translation-module)
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/translations/index.html.md) to learn how to manage translations in the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/settings/translations/index.html.md) to learn how to manage translations in the dashboard.
 
 Medusa has translation features available out-of-the-box through the Translation Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features is provided in Commerce Modules, such as the Translation Module.
 
@@ -54326,7 +54356,7 @@ This ensures that customers see order details in their preferred language.
 
 In this guide, you'll learn how to handle the `invite.created` and `invite.resent` events to send an invite email (or other notification type) to the user.
 
-Refer to the [Manage Invites](https://docs.medusajs.com/user-guide/settings/users/invites/index.html.md) user guide to learn how to manage invites using the Medusa Admin.
+Refer to the [Manage Invites](https://docs.medusajs.com/user-guide/settings/users/invites/index.html.md) Merchant Guide to learn how to manage invites using the Medusa Admin.
 
 ## User Invite Flow Overview
 
@@ -54478,7 +54508,7 @@ Start the Medusa application with the following command:
 npm run dev
 ```
 
-Then, open the Medusa Admin (locally at `http://localhost:9000/app`) and go to Settings → Users. Create an invite as explained in the [Manage Invites](https://docs.medusajs.com/user-guide/settings/users/invites/index.html.md) user guide.
+Then, open the Medusa Admin (locally at `http://localhost:9000/app`) and go to Settings → Users. Create an invite as explained in the [Manage Invites](https://docs.medusajs.com/user-guide/settings/users/invites/index.html.md) Merchant Guide.
 
 Once you create the invite, you should see that the `invite.created` event is emitted in the server's logs:
 
@@ -54923,7 +54953,7 @@ JWT_ISSUER=medusa
 
 In this section of the documentation, you will find resources to learn more about the User Module and how to use it in your application.
 
-Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/users/index.html.md) to learn how to manage users using the dashboard.
+Refer to the [Merchant Guide](https://docs.medusajs.com/user-guide/settings/users/index.html.md) to learn how to manage users using the dashboard.
 
 Medusa has user related features available out-of-the-box through the User Module. A [module](https://docs.medusajs.com/docs/learn/fundamentals/modules/index.html.md) is a standalone package that provides features for a single domain. Each of Medusa's commerce features are placed in Commerce Modules, such as this User Module.
 
@@ -55070,7 +55100,7 @@ The User Module accepts options for further configurations. Refer to [this docum
 
 In this document, learn the different ways to create a user using the User Module.
 
-Refer to this [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/users/index.html.md) to learn how to manage users using the dashboard.
+Refer to this [Merchant Guide](https://docs.medusajs.com/user-guide/settings/users/index.html.md) to learn how to manage users using the dashboard.
 
 ## Straightforward User Creation
 
@@ -55474,6 +55504,12 @@ PostHog is an open-source product analytics platform that helps you track user i
 By integrating PostHog with Medusa, you can track events such as cart additions, order completions, and user sign-ups, enabling you to gain insights into user behavior and optimize your application accordingly.
 
 The Analytics Module and its providers are available starting [Medusa v2.8.3](https://github.com/medusajs/medusa/releases/tag/v2.8.3).
+
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/infrastructure-modules/analytics/posthog.md and set up the PostHog Analytics Module Provider in my Medusa application
+```
 
 ***
 
@@ -56372,6 +56408,12 @@ Refer to the [Caching Module](https://docs.medusajs.com/Users/shahednasser/medus
 ![Diagram illustrating the Memcached caching module provider in a Medusa application](https://res.cloudinary.com/dza7lstvk/image/upload/v1759925175/Medusa%20Resources/memcached-summary_ztlanl.jpg)
 
 [Full Code](https://github.com/medusajs/examples/tree/main/memcached-caching): Find the complete code on GitHub
+
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/infrastructure-modules/caching/guides/memcached.md and create and register a Memcached Caching Module Provider in my Medusa application
+```
 
 ***
 
@@ -58998,6 +59040,12 @@ The provider uses the existing PostgreSQL database in your application to manage
 
 While this provider is suitable for production environments, it's recommended to use the [Redis Locking Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/locking/redis/index.html.md) if possible.
 
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/infrastructure-modules/locking/postgres.md and set up the PostgreSQL Locking Module Provider in my Medusa application
+```
+
 ***
 
 ## Set Up on Cloud
@@ -59619,6 +59667,12 @@ export const config: SubscriberConfig = {
 The SendGrid Notification Module Provider integrates [SendGrid](https://sendgrid.com) to send emails to users and customers.
 
 Cloud offers [Medusa Emails](https://docs.medusajs.com/cloud/emails/index.html.md), a managed email service that allows you to send transactional emails with zero configuration. It is built on top of the Notification Module and provides an easy way to manage email notifications in your Cloud projects with insights and deliverability features.
+
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/infrastructure-modules/notification/sendgrid.md and set up the SendGrid Notification Module Provider in my Medusa application
+```
 
 ## Register the SendGrid Notification Module
 
@@ -63295,6 +63349,12 @@ On Cloud, Medusa configures [Medusa Search](https://docs.medusajs.com/cloud/sear
 
 Refer to [Medusa Search vs PostgreSQL](https://docs.medusajs.com/cloud/search/postgres/index.html.md) for how this provider's support for index definitions, filters, facets, and search options differs from the other providers.
 
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/infrastructure-modules/search/providers/postgres.md and set up the PostgreSQL Search Module Provider in my Medusa application
+```
+
 ### Prerequisites
 
 - [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
@@ -66361,6 +66421,12 @@ This guide will teach you how to:
 - [Custom Item Price Repository](https://github.com/medusajs/examples/tree/main/custom-item-price): Find the full code for this guide in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1738246728/OpenApi/Custom_Item_Price_gdfnl3.yaml): Import this OpenApi Specs file into tools like Postman.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/examples/guides/custom-item-price.md and implement custom item prices in my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -67209,6 +67275,12 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 - [Quote Management Repository](https://github.com/medusajs/examples/tree/main/quotes-management): Find the full code for this guide in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1741171875/OpenApi/quote-management_tbk552.yml): Import this OpenApi Specs file into tools like Postman.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/examples/guides/quote-management.md and implement quote management in my Medusa project
+```
 
 ***
 
@@ -68092,7 +68164,7 @@ All requests sent to routes starting with `/store` must have a publishable API k
 
 To learn more about publishable API keys, refer to the [Publishable API Key documentation](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel/publishable-api-keys/index.html.md).
 
-To retrieve the publishable API key from the Medusa Admin, refer to [this user guide](https://docs.medusajs.com/user-guide/settings/developer/publishable-api-keys/index.html.md).
+To retrieve the publishable API key from the Medusa Admin, refer to [this Merchant Guide](https://docs.medusajs.com/user-guide/settings/developer/publishable-api-keys/index.html.md).
 
 #### Retrieve Customer Authentication Token
 
@@ -75469,6 +75541,12 @@ By following this tutorial, you will:
 
 [View on Github](https://github.com/medusajs/examples/tree/main/abandoned-cart): Find the full code for this tutorial.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/abandoned-cart.md and implement abandoned cart notifications in my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -76144,6 +76222,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 - [Full Code](https://github.com/medusajs/examples/tree/main/agentic-commerce): Find the full code for this guide in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1759332538/OpenApi/agentic-commerce-openapi_hvsioq.yaml): Import this OpenApi Specs file into tools like Postman.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/agentic-commerce.md and implement the Agentic Commerce specifications in my Medusa project
+```
 
 ***
 
@@ -78767,7 +78851,7 @@ STRIPE_API_KEY=sk_test_...
 
 You'll also add this variable to your Cloud environment when you [publish to Cloud](#step-10-publish-to-cloud).
 
-Finally, you must enable Stripe as a payment provider in the US region. Learn how to do that in the [Regions user guide](https://docs.medusajs.com/user-guide/settings/regions#edit-region-details/index.html.md).
+Finally, you must enable Stripe as a payment provider in the US region. Learn how to do that in the [Regions Merchant Guide](https://docs.medusajs.com/user-guide/settings/regions#edit-region-details/index.html.md).
 
 ### Use the Complete Checkout Session API
 
@@ -79413,6 +79497,12 @@ By following this tutorial, you'll learn how to:
 
 - [Full Code](https://github.com/medusajs/examples/tree/main/category-images): Find the full code for this tutorial in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1760540368/OpenApi/category-images.openapi_azg6xy.yaml): Import this OpenApi Specs file into tools like Postman.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/category-images.md and add images to product categories in my Medusa project
+```
 
 ***
 
@@ -82428,6 +82518,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 - [Customer Tiers Repository](https://github.com/medusajs/examples/tree/main/customer-tiers): Find the full code for this guide in this repository.
 - [OpenAPI Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1764080003/OpenApi/openapi_bzizgg.yaml): Import this OpenAPI Specs file into tools like Postman.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/customer-tiers.md and implement customer tiers in my Medusa project
+```
 
 ***
 
@@ -86228,6 +86324,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 [View on Github](https://github.com/medusajs/examples/tree/main/first-purchase-discount): Find the full code for this tutorial.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/first-purchase-discounts.md and implement first-purchase discounts in my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -86267,7 +86369,7 @@ You can customize the promotion based on your use case. For example, it can be a
 
 Make sure to set the promotion's code to `FIRST_PURCHASE`, as you'll be using this code in your Medusa customization. If you want to use a different code, make sure to update the code in the next steps accordingly.
 
-Refer to the [Create Promotions User Guide](https://docs.medusajs.com/user-guide/promotions/create/index.html.md) to learn how to create promotions in Medusa.
+Refer to the [Create Promotions Merchant Guide](https://docs.medusajs.com/user-guide/promotions/create/index.html.md) to learn how to create promotions in Medusa.
 
 Once you create and publish the promotion, you can proceed to the next steps.
 
@@ -86838,6 +86940,12 @@ By following this tutorial, you will learn how to:
 You can follow this tutorial whether you're new to Medusa or an advanced Medusa developer.
 
 [View on Github](https://github.com/medusajs/examples/tree/main/order-gift-message): Find the full code for this tutorial.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/gift-message.md and add gift messages to line items in my Medusa project
+```
 
 ***
 
@@ -87485,6 +87593,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 - [Full Code](https://github.com/medusajs/examples/tree/main/invoice-generator): Find the full code for this tutorial.
 - [OpenAPI Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1753801608/OpenApi/Invoice-Generator_wtft9v.yaml): Import this OpenAPI Specs file into tools like Postman.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/invoice-generator.md and implement invoice generation for orders in my Medusa project
+```
 
 ***
 
@@ -89860,6 +89974,12 @@ By following this tutorial, you will learn how to:
 - [Loyalty Points Repository](https://github.com/medusajs/examples/tree/main/loyalty-points): Find the full code for this guide in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1744212595/OpenApi/Loyalty-Points_jwi5e9.yaml): Import this OpenApi Specs file into tools like Postman.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/loyalty-points.md and implement a loyalty points system in my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -91701,6 +91821,12 @@ While this tutorial focuses on supporting phone authentication for customers, yo
 
 - [Phone Authentication Repository](https://github.com/medusajs/examples/tree/main/phone-auth): Find the full code for this guide in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1747745832/OpenApi/Phone_Auth_g4xsqv.yaml): Import this OpenApi Specs file into tools like Postman.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/phone-auth.md and implement phone authentication with Twilio SMS in my Medusa project
+```
 
 ***
 
@@ -93803,6 +93929,12 @@ By following this tutorial, you will learn how to:
 
 - [Pre-order Repository](https://github.com/medusajs/examples/tree/main/preorders): Find the full code for this guide in this repository.
 - [OpenAPI Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1752672124/OpenApi/PreOrder_nchc1w.yaml): Import this OpenAPI Specs file into tools like Postman.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/preorder.md and implement pre-orders in my Medusa project
+```
 
 ***
 
@@ -97109,7 +97241,7 @@ To edit the order:
 1. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top right of the order details section.
 2. Choose Edit from the dropdown.
 3. In the order edit form, you can add or remove items from the order.
-   - Learn more about the order edit form in the [user guide](https://docs.medusajs.com/user-guide/orders/edit/index.html.md).
+   - Learn more about the order edit form in the [Merchant Guide](https://docs.medusajs.com/user-guide/orders/edit/index.html.md).
 4. Click the "Confirm Edit" button at the bottom of the form, then click "Continue" in the confirmation modal.
 5. The order edit request will be shown at the top of the page. Click the "Force confirm" button to confirm the order edit.
 
@@ -97190,6 +97322,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 - [Full Code](https://github.com/medusajs/examples/tree/main/product-builder): Find the full code for this tutorial in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1755010179/OpenApi/Product-Builder_wvhqtq.yaml): Import this OpenApi Specs file into tools like Postman.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/product-builder.md and implement a product builder in my Medusa project
+```
 
 ***
 
@@ -103035,6 +103173,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 - [Full Code](https://github.com/medusajs/examples/tree/main/product-feed): Find the full code for this tutorial in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1756719230/OpenApi/Product_Feed_qdma7g.yaml): Import this OpenApi Specs file into tools like Postman.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/product-feed.md and implement a product feed for Meta and Google in my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -103610,6 +103754,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 - [Full Code](https://github.com/medusajs/examples/tree/main/product-rentals): Find the full code for this tutorial in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1761669774/OpenApi/product-rentals_z0csl5.yaml): Import this OpenApi Specs file into tools like Postman.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/product-rentals.md and implement product rentals in my Medusa project
+```
 
 ***
 
@@ -107848,6 +107998,12 @@ By following this tutorial, you'll learn how to:
 - [Product Reviews Repository](https://github.com/medusajs/examples/tree/main/product-reviews): Find the full code for this guide in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1741941475/OpenApi/product-reviews_jh8ohj.yaml): Import this OpenApi Specs file into tools like Postman.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/product-reviews.md and implement product reviews in my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -108363,7 +108519,7 @@ All requests sent to routes starting with `/store` must have a publishable API k
 
 To learn more about publishable API keys, refer to the [Publishable API Key documentation](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/sales-channel/publishable-api-keys/index.html.md).
 
-To retrieve the publishable API key from the Medusa Admin, refer to [this user guide](https://docs.medusajs.com/user-guide/settings/developer/publishable-api-keys/index.html.md).
+To retrieve the publishable API key from the Medusa Admin, refer to [this Merchant Guide](https://docs.medusajs.com/user-guide/settings/developer/publishable-api-keys/index.html.md).
 
 #### Retrieve Customer Authentication Token
 
@@ -109735,6 +109891,12 @@ By following this tutorial, you'll learn how to:
 - [Re-Order Repository](https://github.com/medusajs/examples/tree/main/re-order): Find the full code for this guide in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1741941475/OpenApi/product-reviews_jh8ohj.yaml): Import this OpenApi Specs file into tools like Postman.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/re-order.md and implement quick re-order in my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -110251,6 +110413,12 @@ By following this tutorial, you'll learn how to:
 ![Diagram illustrating the features of this guide](https://res.cloudinary.com/dza7lstvk/image/upload/v1745309355/Medusa%20Resources/saved-payment-methods_orjnix.jpg)
 
 [Saved Payment Methods Repository](https://github.com/medusajs/examples/tree/main/stripe-saved-payment): Find the full code for this guide in this repository.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/saved-payment-methods.md and implement saved payment methods during checkout in my Medusa project
+```
 
 ***
 
@@ -111130,6 +111298,12 @@ By following this tutorial, you'll learn how to:
 
 - [Algolia Integration Repository](https://github.com/medusajs/examples/tree/main/algolia-integration): Find the full code for this guide in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1742829748/OpenApi/Algolia-Search_t1zlkd.yaml): Import this OpenApi Specs file into tools like Postman.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/algolia.md and integrate Algolia with my Medusa project
+```
 
 ***
 
@@ -112447,6 +112621,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 ![Diagram showing Avalara integration with Medusa for tax calculation during checkout](https://res.cloudinary.com/dza7lstvk/image/upload/v1760969087/Medusa%20Resources/avalara-summary_rqrkpf.jpg)
 
 [Example Repository](https://github.com/medusajs/examples/tree/main/avalara-integration): Find the full code of the guide in this repository.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/avalara.md and integrate Avalara with my Medusa project
+```
 
 ***
 
@@ -114017,6 +114197,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 - [Tutorial Repository](https://github.com/medusajs/examples/tree/main/localization-contentful): Find the full code for this guide in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1744790686/OpenApi/Contentful_jysc07.yaml): Import this OpenApi Specs file into tools like Postman.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/contentful.md and integrate Contentful with my Medusa project
+```
 
 ***
 
@@ -117181,6 +117367,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 [Example Repository](https://github.com/medusajs/examples/tree/main/migrate-from-magento): Find the full code of the guide in this repository. The repository also includes additional features, such as triggering migrations from the Medusa Admin dashboard.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/magento.md and build a Magento data migration plugin for my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -118404,6 +118596,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 ![Diagram showcasing the flow of the Mailchimp integration with Medusa](https://res.cloudinary.com/dza7lstvk/image/upload/v1750679344/Medusa%20Resources/mailchimp-overview_itmiul.jpg)
 
 [Example Repository](https://github.com/medusajs/examples/tree/main/mailchimp-integration): Find the full code of the guide in this repository.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/mailchimp.md and integrate Mailchimp with my Medusa project
+```
 
 ***
 
@@ -119724,6 +119922,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 [Example Repository](https://github.com/medusajs/examples/tree/main/meilisearch-integration): Find the full code of the guide in this repository.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/meilisearch.md and integrate Meilisearch with my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -120996,6 +121200,12 @@ So, to support the above flow, you'll create:
 1. An Okta Auth Module Provider that implements the logic to authenticate users with Okta and validate the callback.
 2. An admin user creation flow in the Medusa Admin that creates a new admin user in Medusa after successful authentication with Okta.
 3. An admin widget that adds the "Login with Okta" button to the Medusa Admin login page and handles the authentication flow from the frontend.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/okta.md and integrate Okta with my Medusa project
+```
 
 ***
 
@@ -122275,6 +122485,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 ![Diagram showcasing a flowchart of interactions between customer, admin, Medusa, and Payload](https://res.cloudinary.com/dza7lstvk/image/upload/v1754551568/Medusa%20Resources/payload-summary_ndeiw0.jpg)
 
 [Full Code](https://github.com/medusajs/examples/tree/main/payload-integration): Find the full code of the guide in this repository.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/payload.md and integrate Payload CMS with my Medusa project
+```
 
 ***
 
@@ -126382,6 +126598,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 [Full Code](https://github.com/medusajs/examples/tree/main/paypal-integration): Find the complete code for this integration on GitHub.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/paypal.md and integrate PayPal with my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -128267,6 +128489,12 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 [Example Repository](https://github.com/medusajs/examples/tree/main/resend-integration): Find the full code of the guide in this repository.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/resend.md and integrate Resend with my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -129581,6 +129809,12 @@ This guide will teach you how to:
 You can follow this guide whether you're new to Medusa or an advanced Medusa developer. This guide also assumes you're familiar with Sanity concepts, which you can learn about in [their documentation](https://www.sanity.io/docs).
 
 [Example Repository](https://github.com/medusajs/examples/tree/main/sanity-integration): Find the full code of the guide in this repository.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/sanity.md and integrate Sanity with my Medusa project
+```
 
 ***
 
@@ -131438,6 +131672,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 [Example Repository](https://github.com/medusajs/examples/tree/main/segment-integration): Find the full code of the guide in this repository.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/segment.md and integrate Segment with my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -132141,6 +132381,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 [Example Repository](https://github.com/medusajs/examples/tree/main/sentry-integration): Find the full code of the guide in this repository.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/sentry.md and integrate Sentry with my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -132511,6 +132757,12 @@ This guide will teach you how to:
 You can follow this guide whether you're new to Medusa or an advanced Medusa developer.
 
 [Example Repository](https://github.com/medusajs/examples/tree/main/shipstation-integration): Find the full code of the guide in this repository.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/shipstation.md and integrate ShipStation with my Medusa project
+```
 
 ***
 
@@ -133781,6 +134033,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 [Example Repository](https://github.com/medusajs/examples/tree/main/slack-integration): Find the full code of the guide in this repository.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/slack.md and integrate Slack with my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -134436,6 +134694,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 ![Diagram illustrating the flow of data between Medusa, Strapi, admin, and customer (storefront)](https://res.cloudinary.com/dza7lstvk/image/upload/v1763375209/Medusa%20Resources/strapi-summary_pioikw.jpg)
 
 [Full Code](https://github.com/medusajs/examples/tree/main/strapi-integration): Find the full code of the guide in this repository.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/strapi.md and integrate Strapi with my Medusa project
+```
 
 ***
 
@@ -138519,6 +138783,12 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 - [Wishlist Plugin Example Repository](https://github.com/medusajs/examples/tree/main/wishlist-plugin): Find the full code for this guide in, with the plugin to install.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1737459635/OpenApi/Wishlist_Postman_gjk7mn.yml): Import this OpenApi Specs file into tools like Postman.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/plugins/guides/wishlist.md and build a wishlist plugin for my Medusa project
+```
 
 ***
 
@@ -148704,6 +148974,12 @@ By following this tutorial, you'll learn how to:
 - Customize the Next.js Starter Storefront to use Stripe's Payment Element.
 - Publish the customizations to Cloud.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/nextjs-starter/guides/customize-stripe.md and use Stripe's Payment Element in my Next.js Starter Storefront
+```
+
 ***
 
 ## Step 1: Set Up Medusa Project
@@ -151033,6 +151309,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 ![Request return page in storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1758009041/Medusa%20Resources/CleanShot_2025-09-16_at_10.50.27_2x_g4rwjr.png)
 
 [Example Repository](https://github.com/medusajs/examples/tree/main/returns-storefront): Find the full code of the guide in this repository.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/nextjs-starter/guides/storefront-returns.md and implement order returns in my Next.js Starter Storefront
+```
 
 ***
 
@@ -161352,6 +161634,12 @@ By following this tutorial, you'll learn how to:
 - [Bundled Products Repository](https://github.com/medusajs/examples/tree/main/bundled-products): Find the full code for this guide in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1746024108/OpenApi/Bundled_Products_vloupx.yaml): Import this OpenApi Specs file into tools like Postman.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/recipes/bundled-products/examples/standard.md and implement bundled products in my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -164293,6 +164581,12 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 [Example Repository](https://github.com/medusajs/examples/tree/main/restock-notification): Find the full code of the guide in this repository.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/recipes/commerce-automation/restock-notification.md and implement restock notifications in my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -165565,6 +165859,12 @@ This guide provides an example of an approach to implement digital products. You
 
 - [Digital Products Example Repository](https://github.com/medusajs/examples/tree/main/digital-product): Find the full code for this recipe example in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1721654620/OpenApi/Digital_Products_Postman_vjr3jg.yml): Imported this OpenApi Specs file into tools like Postman.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/recipes/digital-products/examples/standard.md and implement digital products in my Medusa project
+```
 
 ***
 
@@ -168901,6 +169201,12 @@ Odoo is a suite of open-source business apps that covers all your business needs
 
 This guide will teach you how to implement the general integration between Medusa and Odoo. You will learn how to connect to Odoo's APIs and fetch data such as products. You can then expand on this integration to implement your business requirements. You can also refer to [this recipe](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/recipes/erp/index.html.md) to find general examples of ERP integration use cases and how to implement them.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/recipes/erp/odoo.md and integrate Odoo with my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -170491,6 +170797,12 @@ In this guide, you'll customize Medusa to build a restaurant-delivery platform w
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1724757329/OpenApi/Restaurant-Delivery-Marketplace_vxao2l.yml): Imported this OpenApi Specs file into tools like Postman.
 
 This recipe is adapted from [Medusa Eats](https://github.com/medusajs/medusa-eats), which offers more implementation details including a custom storefront to place and track orders.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/recipes/marketplace/examples/restaurant-delivery.md and implement a restaurant-delivery marketplace in my Medusa project
+```
 
 ***
 
@@ -173851,6 +174163,12 @@ This guide provides an example of an approach to implement marketplaces. You're 
 - [Marketplace Example Repository](https://github.com/medusajs/examples/tree/main/marketplace): Find the full code for this recipe in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1720603521/OpenApi/Marketplace_OpenApi_n458oh.yml): Import this OpenApi Specs file into tools like Postman.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/recipes/marketplace/examples/vendors.md and implement a vendors marketplace in my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -176454,6 +176772,12 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 - [Full Code](https://github.com/medusajs/examples/tree/main/personalized-products): Find the full code for this guide in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1753106919/OpenApi/Personalized-Products_ynzrmj.yaml): Import this OpenApi Specs file into tools like Postman.
 
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/recipes/personalized-products/example.md and implement personalized products in my Medusa project
+```
+
 ***
 
 ## Step 1: Create a Cloud Project and Set It Up Locally
@@ -177745,6 +178069,12 @@ This guide provides an example of an approach to implement subscriptions. You're
 
 - [Subscription Example Repository](https://github.com/medusajs/examples/tree/main/subscription): Find the full code for this recipe example in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1721125608/OpenApi/Subscriptions_OpenApi_b371x4.yml): Import this OpenApi Specs file into tools like Postman.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/recipes/subscriptions/examples/standard.md and implement subscriptions in my Medusa project
+```
 
 ***
 
@@ -180448,6 +180778,12 @@ By following this tutorial, you will learn how to:
 
 - [Full Code](https://github.com/medusajs/examples/tree/main/ticket-booking): Find the full code for this tutorial in this repository.
 - [OpenApi Specs for Postman](https://res.cloudinary.com/dza7lstvk/raw/upload/v1757423563/OpenApi/Ticket_Booking_System_iqq1k6.yaml): Import this OpenApi Specs file into tools like Postman.
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/recipes/ticket-booking/example.md and implement a ticket booking system in my Medusa project
+```
 
 ***
 

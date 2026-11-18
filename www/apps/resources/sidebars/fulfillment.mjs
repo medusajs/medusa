@@ -92,7 +92,7 @@ export const fulfillmentSidebar = [
       },
       {
         type: "category",
-        title: "Admin User Guides",
+        title: "Merchant Guides",
         autogenerate_tags: "fulfillment+userGuide",
         autogenerate_as_ref: true,
         sort_sidebar: "alphabetize",

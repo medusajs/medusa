@@ -60,7 +60,7 @@ export const stockLocationSidebar = [
       },
       {
         type: "category",
-        title: "Admin User Guides",
+        title: "Merchant Guides",
         autogenerate_tags: "userGuide+stockLocation",
         autogenerate_as_ref: true,
         sort_sidebar: "alphabetize",
