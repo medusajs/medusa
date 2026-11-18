@@ -32,7 +32,22 @@ export function createLocationTableAdapter({
     },
     useData: (fields, params) => {
       const { stock_locations, count, isError, error, isLoading } =
-        useStockLocations({ fields, ...params })
+        useStockLocations(
+          { fields, ...params },
+          {
+            placeholderData: (previousData, previousQuery: any) => {
+              // Only keep placeholder data if the fields haven't changed
+              const prevFields =
+                previousQuery?.[previousQuery?.length - 1]?.query?.fields
+              if (prevFields && prevFields !== fields) {
+                // Fields changed, don't use placeholder data
+                return undefined
+              }
+              // Fields are the same, keep previous data for smooth transitions
+              return previousData
+            },
+          }
+        )
       return { data: stock_locations, count, isLoading, isError, error }
     },
     getRowHref: (row) => `/settings/locations/${row.id}`,

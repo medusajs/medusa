@@ -27,7 +27,22 @@ export function createReservationTableAdapter({
     },
     useData: (fields, params) => {
       const { reservations, count, isError, error, isLoading } =
-        useReservationItems({ fields, ...params })
+        useReservationItems(
+          { fields, ...params },
+          {
+            placeholderData: (previousData, previousQuery: any) => {
+              // Only keep placeholder data if the fields haven't changed
+              const prevFields =
+                previousQuery?.[previousQuery?.length - 1]?.query?.fields
+              if (prevFields && prevFields !== fields) {
+                // Fields changed, don't use placeholder data
+                return undefined
+              }
+              // Fields are the same, keep previous data for smooth transitions
+              return previousData
+            },
+          }
+        )
       return { data: reservations, count, isLoading, isError, error }
     },
     getRowHref: (row) => `/reservations/${row.id}`,
