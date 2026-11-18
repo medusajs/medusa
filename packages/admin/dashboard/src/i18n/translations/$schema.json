@@ -14002,6 +14002,18 @@
         "subtitle": {
           "type": "string"
         },
+        "editTitle": {
+          "type": "string"
+        },
+        "editDescription": {
+          "type": "string"
+        },
+        "customLabel": {
+          "type": "string"
+        },
+        "updateSuccess": {
+          "type": "string"
+        },
         "fields": {
           "type": "object",
           "properties": {
@@ -14022,7 +14034,16 @@
           "additionalProperties": false
         }
       },
-      "required": ["domain", "title", "subtitle", "fields"],
+      "required": [
+        "domain",
+        "title",
+        "subtitle",
+        "editTitle",
+        "editDescription",
+        "customLabel",
+        "updateSuccess",
+        "fields"
+      ],
       "additionalProperties": false
     },
     "notifications": {
@@ -14170,6 +14191,15 @@
           "type": "string"
         },
         "amount": {
+          "type": "string"
+        },
+        "yes": {
+          "type": "string"
+        },
+        "no": {
+          "type": "string"
+        },
+        "field": {
           "type": "string"
         },
         "reference": {
@@ -14671,6 +14701,9 @@
       "required": [
         "actions",
         "amount",
+        "yes",
+        "no",
+        "field",
         "reference",
         "reference_id",
         "refundAmount",
