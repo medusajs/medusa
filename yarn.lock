@@ -3677,7 +3677,7 @@ __metadata:
     "@medusajs/ui": "npm:4.2.14"
     "@medusajs/ui-preset": "npm:2.22.7"
     "@swc/core": "npm:^1.16.20"
-    "@tanstack/react-query": "npm:5.64.2"
+    "@tanstack/react-query": "npm:5.104.5"
     "@types/node": "npm:^22.20.5"
     cross-env: "npm:^10.1.0"
     dompurify: "npm:3.4.17"
@@ -8853,13 +8853,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.64.2":
-  version: 5.64.2
-  resolution: "@tanstack/query-core@npm:5.64.2"
-  checksum: 10c0/96dfaa334d2e3aeb3bcd55a3b8b3f3b4f7283b435d90681302ca6c08d0a597a5745c3c790d0242908266af6188efe804aac3c82ca8ed3fd7cd73c24220d93acc
-  languageName: node
-  linkType: hard
-
 "@tanstack/react-query@npm:5.104.5":
   version: 5.104.5
   resolution: "@tanstack/react-query@npm:5.104.5"
@@ -8872,17 +8865,6 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/eaff9dd4cec0cc43cf835d780efeaf0a2603b792cc2f5f5800a73b4f62b4562cce54b88885f74be72ea0fa7fc721636884ec4bae152b24aea9ce49544fb4c5d1
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-query@npm:5.64.2":
-  version: 5.64.2
-  resolution: "@tanstack/react-query@npm:5.64.2"
-  dependencies:
-    "@tanstack/query-core": "npm:5.64.2"
-  peerDependencies:
-    react: ^18 || ^19
-  checksum: 10c0/4e81c8e922ced8ef5f2e5975d7784409b532ce007b1771fe8569e380d08666b5323a90fa91de6ef10f9f2f8882d3fdf1be109eeb99a54bd84b1fa2075de9e75b
   languageName: node
   linkType: hard
 
