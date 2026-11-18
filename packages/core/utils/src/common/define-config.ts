@@ -14,6 +14,7 @@ import {
   REVERSED_MODULE_PACKAGE_NAMES,
   TEMPORARY_REDIS_MODULE_PACKAGE_NAMES,
 } from "../modules-sdk"
+import { LicenseFeature, loadLicense } from "../license"
 import { isObject } from "./is-object"
 import { isProduction } from "./is-production"
 import { isString } from "./is-string"
@@ -93,7 +94,8 @@ export function defineConfig(config: InputConfig = {}): ConfigModule {
     config.modules,
     options,
     config.projectConfig,
-    projectDir
+    projectDir,
+    projectConfig?.cloud
   )
   applyCloudOptionsToModules(modules, projectConfig?.cloud, adminConfig)
   const plugins = resolvePlugins(config.plugins)
@@ -282,7 +284,8 @@ function resolveModules(
   configModules: InputConfig["modules"],
   { isCloud }: { isCloud: boolean },
   projectConfig: InputConfig["projectConfig"],
-  projectDir: string = process.cwd()
+  projectDir: string = process.cwd(),
+  cloudOptions?: MedusaCloudOptions
 ): Exclude<ConfigModule["modules"], undefined> {
   const authMfaEncryptionKey = process.env.AUTH_MFA_ENCRYPTION_KEY
   const authModuleOptions = {
@@ -473,6 +476,14 @@ function resolveModules(
     )
   }
 
+  if (isLicensed(LicenseFeature.RBAC)) {
+    cloudModules.push({ resolve: MODULE_PACKAGE_NAMES[Modules.RBAC] })
+  }
+
+  if (shouldAddCloudAuditModule(cloudOptions)) {
+    cloudModules.push({ resolve: MODULE_PACKAGE_NAMES[Modules.AUDIT] })
+  }
+
   if (process.env.CACHE_REDIS_URL) {
     cloudModules.push({
       resolve: MODULE_PACKAGE_NAMES[Modules.CACHING],
@@ -548,6 +559,7 @@ function normalizeProjectConfig(
       .map((handle) => handle.trim())
       .filter(Boolean),
     searchEndpoint: process.env.MEDUSA_CLOUD_SEARCH_ENDPOINT,
+    auditEndpoint: process.env.MEDUSA_CLOUD_AUDIT_ENDPOINT,
     oauthAuthorizeEndpoint: process.env.MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT,
     oauthTokenEndpoint: process.env.MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT,
     oauthCallbackUrl: process.env.MEDUSA_CLOUD_OAUTH_CALLBACK_URL,
@@ -714,6 +726,16 @@ function applyCloudOptionsToModules(
           ...(module.options ?? {}),
         }
         break
+      case Modules.AUDIT:
+        module.options = {
+          cloud: {
+            api_key: config.apiKey,
+            endpoint: config.auditEndpoint,
+            environment_handle: config.environmentHandle,
+          },
+          ...(module.options ?? {}),
+        }
+        break
       case Modules.AUTH:
         let callbackUrl = config.oauthCallbackUrl
         if (!callbackUrl && adminConfig?.backendUrl) {
@@ -738,4 +760,24 @@ function applyCloudOptionsToModules(
         break
     }
   }
+}
+
+/**
+ * Licensed modules refuse to boot without their feature, so on Cloud they're
+ * only a default when the license covers it.
+ */
+function isLicensed(feature: LicenseFeature): boolean {
+  return !!loadLicense()?.features.includes(feature)
+}
+
+/**
+ * The Cloud provider throws without the API key and environment handle, so
+ * those are required on top of the license.
+ */
+function shouldAddCloudAuditModule(cloud?: MedusaCloudOptions): boolean {
+  if (!cloud?.auditEndpoint || !cloud.apiKey || !cloud.environmentHandle) {
+    return false
+  }
+
+  return isLicensed(LicenseFeature.AUDIT)
 }

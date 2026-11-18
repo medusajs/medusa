@@ -13,7 +13,7 @@ export default defineConfig([...medusa.configs.recommended])
 ```
 
 - Presets (`src/configs/`):
-  - `recommended`: path-scoped rules (`src/api/**`, `src/modules/**`, `src/admin/**`, `src/links/**`, `src/subscribers/*`, `src/jobs/*`, workflows everywhere), no type info needed.
+  - `recommended`: path-scoped rules (`src/api/**`, `src/modules/**`, `src/admin/**`, `src/links/**`, `src/subscribers/**`, `src/jobs/**`, workflows everywhere), no type info needed.
   - `strict`: `recommended` + type-aware rules (sets `parserOptions.project: true`, so a tsconfig must include the linted files) + the cross-file `scheduled-job-name-unique`.
   - `modules`: for a standalone module/provider package (services anywhere, `module-name-snake-case` on `src/index.{ts,js}`, model rules on `**/models/**`).
 - Rule ids are `@medusajs/<rule-name>`; override after the preset spread.
@@ -46,7 +46,7 @@ export default defineConfig([...medusa.configs.recommended])
 - Root `eslint.config.mjs` and `www` (`link:../packages/eslint-plugin`) load `dist/`, so run `yarn workspace @medusajs/eslint-plugin build` before linting the repo or www after changing a rule (CI does this explicitly).
 - Keep the plugin registration block free of `files`; scoping it to TS breaks `.js` files with `Could not find plugin "@medusajs"`.
 - Only `strict` may contain rules that need type information; `recommended` and `modules` must stay zero-config.
-- `subscribers/*` and `jobs/*` globs intentionally match direct children only (Medusa only loads those); nested files are utilities.
+- The `subscribers/**` and `jobs/**` blocks mirror the framework's `ResourceLoader` (`packages/core/framework/src/utils/resource-loader.ts`), which loads every file at any depth except `index` files, `_`-prefixed files, `.d.ts`, tests, and `__tests__/`. Shared helpers must use one of those names (e.g. `src/jobs/_utils.ts`) or live outside the directory; a nested helper is loaded as a job or subscriber. Keep `loadedResourceIgnores` in `src/configs/recommended.ts` in sync with the loader.
 - Admin rules are scoped to `src/admin/**` specifically so they don't hit `src/api/admin/**` server routes.
 - Messages that mention `allowFields` quote `ALLOW_FIELDS_MIN_MEDUSA_VERSION` (`2.21.0`) because the plugin and project Medusa versions can differ.
 - `README.md` still says the plugin ships no rules; it is stale.

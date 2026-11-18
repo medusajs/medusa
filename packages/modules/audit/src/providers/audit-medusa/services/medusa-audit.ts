@@ -109,6 +109,10 @@ export class MedusaAuditService extends AbstractAuditProviderService {
       }
     }
 
+    for (const [key, value] of Object.entries(filters.metadata ?? {})) {
+      query.set(`metadata[${key}]`, value)
+    }
+
     if (filters.q) {
       query.set("q", filters.q)
     }

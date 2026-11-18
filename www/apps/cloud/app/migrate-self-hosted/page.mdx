@@ -1,0 +1,497 @@
+import { Note, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Migrate from Self-Hosting to Cloud`,
+  keywords: [
+    "migrate",
+    "migration",
+    "self-hosted",
+    "self-hosting",
+    "move to cloud",
+  ],
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to move a self-hosted Medusa application to Cloud, including its code, database, files, and domains.
+
+The steps apply to any hosting setup, such as a virtual machine, a container platform, or a platform-as-a-service provider.
+
+## Migration Overview
+
+When you self-host, you manage the server, database, Redis, file storage, and deployment pipeline. On Cloud, Medusa provisions and manages all of them for each environment.
+
+So, a migration comes down to moving three things: your code, your data, and your traffic. The following table gives you an idea of what happens to each part of your setup.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Self-Hosted Component
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        On Cloud
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        What Changes for You
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Server and worker instances
+      </Table.Cell>
+      <Table.Cell>
+        Created and scaled automatically.
+      </Table.Cell>
+      <Table.Cell>
+        You no longer need your deployment scripts and pipeline.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        PostgreSQL database
+      </Table.Cell>
+      <Table.Cell>
+
+      A managed [database](../database/page.mdx) per environment.
+
+      </Table.Cell>
+      <Table.Cell>
+        You import a dump of your existing database.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Redis
+      </Table.Cell>
+      <Table.Cell>
+
+      A managed [Redis](../redis/page.mdx) server per environment.
+
+      </Table.Cell>
+      <Table.Cell>
+        You remove the Redis modules from your configurations. There's no Redis data to migrate.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        File storage
+      </Table.Cell>
+      <Table.Cell>
+
+      Managed [S3 storage](../s3/page.mdx) per environment.
+
+      </Table.Cell>
+      <Table.Cell>
+        You choose how to handle your existing files.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Email provider
+      </Table.Cell>
+      <Table.Cell>
+
+      [Medusa Emails](../emails/page.mdx), or your existing provider.
+
+      </Table.Cell>
+      <Table.Cell>
+        You can keep your Notification Module Provider or switch to Medusa Emails.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Storefront
+      </Table.Cell>
+      <Table.Cell>
+
+      Hosted on [Cloud](../storefront/page.mdx) alongside your Medusa application.
+
+      </Table.Cell>
+      <Table.Cell>
+        You deploy the storefront in the same project, then point your domain to it.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+This guide assumes that you deploy your storefront to Cloud along with your Medusa application.
+
+Your Cloud project isn't live to customers until you point your domain to it. So, you can take your time preparing, deploying, and testing everything on Cloud while your self-hosted application keeps serving traffic.
+
+---
+
+## Step 1: Create a Cloud Organization
+
+An organization holds your Cloud projects, team members, and billing details. If you don't have one, [sign up for Cloud](../sign-up/page.mdx) to create it.
+
+---
+
+## Step 2: Prepare Your Medusa Application
+
+Cloud deploys your Medusa application from a GitHub repository. So, if your code is in another Git provider or only on your server, you'll first need to push it to a GitHub repository.
+
+To deploy your storefront with your Medusa application, Cloud needs both in the same repository as a monorepo. If they're in separate repositories, the [Prerequisites](../projects/prerequisites/page.mdx#prerequisites-for-medusa-application-with-storefront) guide explains how to set up the monorepo.
+
+<Note>
+
+Cloud relies on Medusa v2.7.0 or later to configure the managed Redis and S3 resources. If your application uses an earlier version, you can update it first or contact support for assistance.
+
+</Note>
+
+Cloud also configures production infrastructure for your Medusa application automatically. Your self-hosted setup likely has its own infrastructure configurations, and they can conflict with the ones that Cloud sets. This step walks you through the configurations to remove before you deploy.
+
+### Remove Infrastructure Modules
+
+Cloud registers the Redis and S3 modules for you. So, if your `medusa-config.ts` has any of the following modules and providers in the `modules` array, you can remove them:
+
+- [Redis Event Module](!resources!/infrastructure-modules/event/redis)
+- [Redis Caching Module Provider](!resources!/infrastructure-modules/caching/providers/redis), or the deprecated Redis Cache Module
+- [Redis Locking Module Provider](!resources!/infrastructure-modules/locking/redis)
+- [Redis Workflow Engine Module](!resources!/infrastructure-modules/workflow-engine/redis)
+- [S3 File Module Provider](!resources!/infrastructure-modules/file/s3), or any other File Module Provider, unless you plan to [keep your own bucket](#step-6-migrate-files)
+
+It's best to remove these modules entirely instead of registering them conditionally, such as only when a `REDIS_URL` environment variable is set. A conditional registration can still conflict with Cloud's modules and cause the deployment to fail.
+
+### Remove Database and Redis Connection Options
+
+Cloud manages the database connection, SSL configuration, connection pooling, and Redis. So, you can remove the `databaseUrl`, `databaseDriverOptions`, and `redisUrl` options from `projectConfig` in `medusa-config.ts`. Keeping them may cause deployment or migration failures.
+
+For example, your configurations may look like the following afterward:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    // remove databaseUrl, databaseDriverOptions,
+    // and redisUrl
+    http: {
+      storeCors: process.env.STORE_CORS!,
+      adminCors: process.env.ADMIN_CORS!,
+      authCors: process.env.AUTH_CORS!,
+      jwtSecret: process.env.JWT_SECRET,
+      cookieSecret: process.env.COOKIE_SECRET,
+    },
+  },
+  // remove the Redis and S3 modules from `modules`
+})
+```
+
+### Remove Migrations from Your Scripts
+
+Cloud [runs database migrations](../database/page.mdx#running-migrations-on-cloud) on every deployment, so your scripts don't need to run them anymore. In your `package.json`, you can:
+
+- Remove `medusa db:migrate` from your `start` script.
+- Remove the `predeploy` script if it only runs migrations.
+- Keep a `build` script that runs `medusa build`, since Cloud uses it to build your application.
+
+You also no longer need deployment files that are specific to your previous host, such as a Dockerfile or a process manager configuration. Cloud ignores them, so you can remove them whenever you're ready after the migration.
+
+### Check the Remaining Prerequisites
+
+Refer to the [Prerequisites for New Projects](../projects/prerequisites/page.mdx) guide for the supported Node.js versions, required monorepo setup for deployments with storefronts, and more.
+
+Once you're done, commit and push the changes to your GitHub repository.
+
+<Note title="Tip">
+
+After these changes, the branch may no longer run on your self-hosted setup. So, if your self-hosted pipeline deploys from the same repository, consider making the changes in a separate branch. You can [choose the branch](../projects/page.mdx#production-environments-branch) that the Production environment deploys from when you create the project.
+
+</Note>
+
+---
+
+## Step 3: Collect Your Environment Variables
+
+Your Cloud project needs most of the environment variables that your self-hosted application uses. A good starting point is to export them into a `.env` file, then leave out the ones that Cloud manages or reserves. You'll add the remaining variables when you create the project in the next step.
+
+Cloud sets the following variables for you, so you can leave them out:
+
+- `DATABASE_URL` and `REDIS_URL`
+- `NODE_ENV`, `PORT`, and `MEDUSA_WORKER_MODE`
+- The connection variables of the Redis and S3 modules that you removed, such as `S3_BUCKET` or `CACHE_REDIS_URL`
+
+You can find the full list of reserved names in the [Environment Variables](../environments/environment-variables/page.mdx#restricted-environment-variable-names) guide.
+
+The variables you'll want to keep are:
+
+- `JWT_SECRET` and `COOKIE_SECRET`. If you use the same values as your self-hosted application, existing customer and admin sessions remain valid after the switch.
+- The variables of your third-party integrations, such as payment, fulfillment, tax, and ERP credentials.
+- Any variables that your customizations read.
+
+Cloud configures the Cross-Origin Resource Sharing (CORS) settings between your storefront and Medusa application. So, you only need `STORE_CORS`, `ADMIN_CORS`, and `AUTH_CORS` if other clients, such as a mobile app, send requests to your Medusa application.
+
+### Storefront Environment Variables
+
+Your storefront has its own environment variables, so it helps to collect them in a separate `.env` file.
+
+Cloud [injects the backend URL, publishable API key, and storefront URL](../storefront/page.mdx#injected-environment-variables) into your storefront. So, you can leave those out and only keep the remaining variables, such as analytics or payment provider keys.
+
+---
+
+## Step 4: Create the Cloud Project
+
+With your code and variables ready, you can create a Cloud project from your GitHub repository. The [Create Project from an Existing Application](../projects/page.mdx#2-create-project-from-an-existing-application) guide walks you through the steps.
+
+While configuring the project, the following settings are worth extra attention:
+
+- **Region**: Choose the region closest to your customers for better performance. You can't change the region later.
+- **Project root directory** and **Storefront root directory**: Set these to the paths of your Medusa application and storefront in the monorepo.
+- **Environment variables**: You can paste or import the `.env` files that you prepared in the previous step for the backend and storefront.
+
+Medusa then provisions the project's resources and deploys your Medusa application and storefront to the Production environment. Its database starts empty, and you'll fill it in the next step.
+
+If the deployment fails, the [Troubleshooting](../deployments/troubleshooting/page.mdx) guide can help you find the cause. After moving from self-hosting, it's often a leftover Redis or database configuration.
+
+---
+
+## Step 5: Migrate the Database
+
+Your database holds your products, orders, customers, users, API keys, and settings. To move it, you create a dump of the self-hosted database, then import it into the Cloud environment's database.
+
+<Note>
+
+Cloud uses PostgreSQL v16, so the dump must come from a PostgreSQL v16 database with a matching [pg_dump](https://www.postgresql.org/docs/16/app-pgdump.html) version. If your self-hosted database uses an earlier version, you can upgrade it first, or restore it into a local PostgreSQL v16 database and create the dump from there.
+
+</Note>
+
+### Create the Dump
+
+To create the dump, you'll need your self-hosted database's connection string. The machine you run the command on also needs to reach the database. So, if your database only accepts private connections, you can run the command from your server instead.
+
+You can create the dump by running `pg_dump` with the custom format against your self-hosted database:
+
+```bash
+pg_dump -Fc \
+  -d postgres://user:password@host:5432/medusa \
+  -f medusa.dump
+```
+
+Make sure to replace the connection string with your database's connection string.
+
+### Import the Dump
+
+To import the dump into your Cloud environment:
+
+1. Open the Production environment's dashboard, then click **Database** in the sidebar.
+2. In the **Database dump** section, upload the dump file to import it.
+3. After the import completes, [redeploy the environment's live deployment](../deployments/page.mdx#redeploy-a-deployment).
+
+You can learn more about importing dumps in the [Database](../database/page.mdx#importexport-cloud-database-dumps) guide.
+
+<Note type="warning">
+
+The import replaces the environment's database with the dump's data. It also drops and recreates the tables, so requests can fail until you redeploy.
+
+</Note>
+
+The redeployment also runs any pending migrations. So, if your Cloud deployment uses a newer Medusa version than your self-hosted application, Medusa updates the imported schema for you.
+
+### Rehearse, Then Run the Final Import
+
+Your self-hosted application keeps receiving orders after you create a dump, so the first import becomes outdated by the time you go live. For that reason, it helps to import the database twice:
+
+1. **Rehearsal**: Import a dump now and [test the deployment](#step-7-test-the-cloud-deployment). This confirms that the import works and gives you an idea of how long it takes.
+2. **Final import**: During the switch in [Step 9](#step-9-switch-traffic-to-cloud), you stop writes to the self-hosted application, create a new dump, and import it again.
+
+---
+
+## Step 6: Migrate Files
+
+The database stores the URLs of uploaded files, such as product images. After the import, these URLs still point to your previous file storage, while new uploads go to the [S3 storage](../s3/page.mdx) that Cloud manages.
+
+Since Cloud is a managed service, you can't copy files into its bucket directly. Instead, you can choose the approach that fits your setup best from the following options.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Approach
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        When It Fits
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        How It Works
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Move the files with a migration script
+      </Table.Cell>
+      <Table.Cell>
+        Your files are on the server's disk, or you plan to shut down the previous storage.
+      </Table.Cell>
+      <Table.Cell>
+
+      You add a [migration script](#move-files-with-a-migration-script) that uploads the files to Cloud's storage and updates the records that reference them. Your AI agent can write the script for you.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Keep the previous storage for existing files
+      </Table.Cell>
+      <Table.Cell>
+        Your files are in an S3-compatible bucket or another external storage service.
+      </Table.Cell>
+      <Table.Cell>
+        You keep the bucket and its files publicly readable. Existing URLs keep working, and new uploads go to Cloud's storage.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Keep using your own bucket
+      </Table.Cell>
+      <Table.Cell>
+        You prefer to have all files, existing and new, in a bucket that you manage.
+      </Table.Cell>
+      <Table.Cell>
+
+      You keep the S3 File Module Provider in `medusa-config.ts` and add its variables to Cloud. Learn more in the [S3](../s3/page.mdx#override-s3-configurations-on-cloud) guide.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Move Files with a Migration Script
+
+A [data migration script](../database/page.mdx#run-one-off-data-scripts-on-cloud) is a script in your application's `src/migration-scripts` directory. Cloud runs it once per environment during a deployment, so it's a good fit for a one-time task like moving files.
+
+You don't need to write the script yourself. If you use an AI agent, such as Claude Code or Codex, you can ask it to write the script for you.
+
+Before you do, it helps to connect your agent to the [Docs MCP server](!docs!/learn/introduction/build-with-llms-ai/docs-mcp-server). It gives the agent access to the latest Medusa documentation, so the script it writes follows Medusa's conventions.
+
+Then, give your agent a prompt like the following:
+
+```md title="Example Prompt" noLineNumbers
+Write a Medusa data migration script in
+src/migration-scripts that moves this project's files to
+the configured File Module Provider. The script must:
+
+1. Find the records that store file URLs, such as product
+   images and thumbnails, and the custom data models that
+   reference files.
+2. Skip the URLs that it already moved, so it's safe to
+   run again.
+3. Download each file from its current URL, and upload it
+   with the uploadFilesWorkflow.
+4. Update each record with the new file URL.
+5. Process the records in batches, and log its progress.
+```
+
+When you deploy the commit that adds the script, Cloud runs it and uploads the files to the environment's managed storage. Since the script reads the file URLs from the database, deploy it after you [import the database](#step-5-migrate-the-database).
+
+The final import replaces the database, including the updated file URLs and the record that the script ran. So, the script runs again in the deployment that follows the final import, and moves any files that it finds at their previous URLs.
+
+<Note title="Tip">
+
+The script downloads the files from their current URLs, so your previous storage must stay reachable until the script finishes.
+
+</Note>
+
+<Note type="warning">
+
+If you use the Local File Module Provider, your files are on the self-hosted server's disk and their URLs use that server's address. These files become unavailable once you shut the server down, so it's important to move them with a migration script before then.
+
+</Note>
+
+If your storefront restricts which hosts it loads images from, such as with `remotePatterns` in Next.js, you may also need to add the Cloud bucket's host. You can find it in the [environment's S3 details](../s3/page.mdx#access-s3-configurations-on-cloud).
+
+---
+
+## Step 7: Test the Cloud Deployment
+
+Before you switch traffic, it's a good idea to verify that the Cloud deployment works with your imported data. You can test it using the environment's default URLs, which are the `medusajs.app` URL for the backend and the `medusajs.site` URL for the storefront. You can find both in the [environment's dashboard](../deployments/access/page.mdx).
+
+The following checks cover the areas that a migration typically affects:
+
+- Log in to the Medusa Admin with an existing admin user, and confirm that products, orders, and customers appear.
+- Open the storefront, and confirm that it shows your products and their images.
+- Place a test order in the storefront with your payment provider's test mode, if possible.
+- Trigger an email, such as a password reset, and confirm you receive it.
+- Check the [logs](../logs/page.mdx) for errors from subscribers, scheduled jobs, and third-party integrations.
+
+### Update Third-Party Integrations
+
+Some third-party services depend on your backend's address, so they may need an update before you go live. The most common ones are:
+
+- **Webhooks**: If a service sends webhooks to your backend, such as a payment provider, you'll need to update the webhook URL to the Cloud backend's URL. If you keep the same domain with a [backend custom domain](../environments/custom-domains/page.mdx#backend-custom-domains), the URL can stay as it is.
+- **IP allowlists**: If a service or firewall only accepts requests from specific IP addresses, you can add [Cloud's outgoing IP addresses](../ip-addresses/page.mdx) to its allowlist.
+- **Emails**: If you removed your email Notification Module Provider, Cloud sends emails with [Medusa Emails](../emails/page.mdx). To send from your domain, you can [add a sender domain](../emails/page.mdx#add-email-sender-domain-to-cloud). If you keep your provider, your emails continue to go through it.
+
+---
+
+## Step 8 (Optional): Set Up Custom Domains
+
+By default, Cloud serves your storefront from a `medusajs.site` subdomain and your backend from a `medusajs.app` subdomain. If your self-hosted store uses your own domain, such as `shop.acme.com`, you can keep it by adding it as a custom domain on Cloud.
+
+<Note>
+
+Storefront custom domains require the Launch plan or higher, and backend custom domains require the Scale plan or higher. You can learn how to change your plan in the [Manage Plans](../billing/plans/page.mdx#change-plan) guide.
+
+</Note>
+
+To add your storefront's domain:
+
+1. In the Production environment's dashboard, click **Domains** in the sidebar.
+2. Under the **Custom storefront domains** section, click the **Add domain** button.
+3. Enter your domain name and click **Continue**.
+
+Cloud then shows the DNS records to add at your domain provider. These records send your domain's traffic to Cloud. So, if the domain currently serves your self-hosted store, you can wait to add them until the switch in the next step.
+
+You can follow the same steps for your backend's domain under the **Custom backend domains** section. The [Custom Domains](../environments/custom-domains/page.mdx) guide covers both in more detail.
+
+<Note title="Tip">
+
+Consider lowering the TTL of your domain's existing DNS records a day before the switch. DNS changes then take effect faster, which shortens the maintenance window.
+
+</Note>
+
+If you skip this step, your store remains available at its `medusajs.site` and `medusajs.app` URLs, and you can add a custom domain at any point later.
+
+---
+
+## Step 9: Switch Traffic to Cloud
+
+Once you're happy with the Cloud deployment, you can switch your live traffic to it. Since you'll pause writes to the self-hosted application while moving the final data, a low-traffic period is the best time for the switch.
+
+The switch typically goes as follows:
+
+1. **Stop writes to the self-hosted application.** You can put your self-hosted storefront in maintenance mode or stop the self-hosted server. This way, customers don't place orders that the final dump would miss.
+2. **Let background work finish.** Since there's no Redis data to migrate, give in-progress workflows and queued events time to complete before you stop the server.
+3. **Run the final import.** [Create a new dump and import it](#step-5-migrate-the-database), then redeploy the environment.
+4. **Point your domains to Cloud.** If you [set up custom domains](#step-8-optional-set-up-custom-domains), add their DNS records at your domain provider. Otherwise, redirect your previous domain to the storefront's `medusajs.site` URL.
+5. **Verify the live store.** Once the domain's status shows that it's verified, place an order in the storefront and confirm that it appears in the Medusa Admin on Cloud.
+
+Cloud connects the storefront to your Medusa application for you, so you don't need to change the storefront's backend URL. The only exception is a backend custom domain. After its DNS changes take effect, you [update the backend URL in the storefront's environment variables](../environments/custom-domains/page.mdx#update-backend-domain-in-storefront).
+
+---
+
+## Step 10: Clean Up After the Migration
+
+It's a good idea to keep your self-hosted setup available, but stopped, for a few days after the switch. If you run into an issue, you can point your domains back to it. Keep in mind that orders placed on Cloud in the meantime don't exist in the self-hosted database.
+
+Once you're confident in the Cloud deployment, you can wrap up the migration:
+
+- Shut down the self-hosted server, worker, and Redis instances, along with the previous storefront hosting.
+- Keep a final backup of the self-hosted database, then shut the database down.
+- Shut down the previous file storage, as long as no records still reference its URLs.
+- Remove the previous host's deployment pipeline, secrets, and configuration files from your repository.
+- Rotate any credentials that your previous host stored.
+
+---
+
+## Next Steps
+
+Now that your application runs on Cloud, you can explore features that weren't available in your self-hosted setup:
+
+- [Create a Staging environment](../environments/long-lived/page.mdx) to test changes before production.
+- [Use preview environments](../environments/preview/page.mdx) to test pull requests with a copy of your production data.
+- [Enable Medusa Cache](../cache/page.mdx) to improve your application's performance.
+- [Monitor your application's performance](../monitoring/page.mdx) and [logs](../logs/page.mdx).
+- [Review your database backups](../database/page.mdx#cloud-database-backups).

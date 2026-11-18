@@ -1,5 +1,14 @@
 # @medusajs/ui
 
+## 4.2.14
+
+### Patch Changes
+
+- [#17759](https://github.com/medusajs/medusa/pull/17759) [`4380483`](https://github.com/medusajs/medusa/commit/438048300ad25f741789ba06e03883c90233b6c5) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(ui,dashboard): stop DatePicker from calling onChange when its value prop changes and setSearchParams being called twice
+
+- Updated dependencies [[`b89101c`](https://github.com/medusajs/medusa/commit/b89101ca53b1ab106549df31e0c38a50e755aefc)]:
+  - @medusajs/icons@2.22.7
+
 ## 4.2.13
 
 ### Patch Changes

@@ -5709,9 +5709,9 @@ In the previous chapters, you added a brands feature to your Medusa application 
 
 ## How Publishing to Cloud Works
 
-Your Cloud project is connected to a GitHub repository. When you push changes to the branch of an environment, Cloud builds and deploys them to that environment. During the deployment, Cloud also runs your migrations on the environment's database, such as the migrations of the Brand Module.
+Your Cloud project is connected to a GitHub repository, with environments connected to its branches. When you push changes to the branch of an environment, Cloud builds and deploys them to that environment. During the deployment, Cloud also runs your migrations on the environment's database, such as the migrations of the Brand Module.
 
-To avoid breaking your production store, test your changes in a [preview environment](https://docs.medusajs.com/cloud/environments/preview/index.html.md) first. Cloud creates a preview environment when you open a pull request to the production branch. Each preview environment has its own database, so testing in it doesn't affect your production data.
+To avoid breaking a live environment, test your changes in a [preview environment](https://docs.medusajs.com/cloud/environments/preview/index.html.md) first. Cloud creates a preview environment when you open a pull request to the branch of any environment, such as Production or Staging. Each preview environment has its own database, so testing in it doesn't affect the target environment's data.
 
 ***
 
@@ -5722,7 +5722,7 @@ The CMS Module that you created in the [Integrate Systems](https://docs.medusajs
 Add the variable in two places:
 
 1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variable in the environment variables section. Preview environments created afterward inherit it. Learn more in the [Preview Environments](https://docs.medusajs.com/cloud/environments/preview#manage-shared-previews-settings/index.html.md) guide.
-2. **Production environment**: In the Production environment's dashboard, click **Environment variables** in the sidebar, then add the variable and click **Save**.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variable and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
 
 In both places, enable the variable's **Build** toggle, since `medusa-config.ts` reads it during the build. Learn more in the [Environment Variables](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md) Cloud guide.
 
@@ -5739,9 +5739,9 @@ git commit -m "Add brands feature"
 git push origin feat/brands
 ```
 
-Then, open a pull request from the `feat/brands` branch to your production branch on GitHub.
+Then, on GitHub, open a pull request from the `feat/brands` branch to the target environment's branch, such as your production branch.
 
-Cloud creates a preview environment for the pull request and deploys your changes to it. You can follow the deployment's progress in the [Deployments](https://docs.medusajs.com/cloud/deployments/index.html.md) page of your project's dashboard.
+Cloud creates a preview environment for the pull request and deploys your changes to it. Medusa also posts a comment on the pull request with the preview deployment's status and links to the preview environment. You can also follow the deployment's progress in the [Deployments](https://docs.medusajs.com/cloud/deployments/index.html.md) page of your project's dashboard.
 
 Check the deployment's build and runtime logs to find the cause. Learn more in the [Troubleshooting Failed Deployments](https://docs.medusajs.com/cloud/deployments#troubleshooting-failed-deployments/index.html.md) guide.
 
@@ -5751,18 +5751,18 @@ Check the deployment's build and runtime logs to find the cause. Learn more in t
 
 Once the deployment is live, test the brands feature in the preview environment:
 
-1. Open the preview environment's Medusa Admin. Learn how to find its URL in the [Preview Environments](https://docs.medusajs.com/cloud/environments/preview#access-deployed-preview-environment/index.html.md) guide.
+1. Open the preview environment's Medusa Admin from the link in Medusa's comment on the pull request. You can also find its URL as explained in the [Preview Environments](https://docs.medusajs.com/cloud/environments/preview#access-deployed-preview-environment/index.html.md) guide.
 2. Log in with the **Log in with Medusa Cloud** button.
 3. Click **Brands** in the sidebar to open the UI route you created in the [Customize Admin](https://docs.medusajs.com/learn/customization/customize-admin/route/index.html.md) chapter, and check that it lists brands.
 4. Open a product's details page, and check that the brand widget you created in the [Customize Admin](https://docs.medusajs.com/learn/customization/customize-admin/widget/index.html.md) chapter shows the product's brand.
 
 ***
 
-## Step 4: Merge Changes to Production
+## Step 4: Merge Changes to the Target Environment
 
-After you test your changes, merge the pull request into your production branch. Cloud deploys the changes to the Production environment and runs the migrations on its database.
+After you test your changes, merge the pull request into the target environment's branch. Cloud deploys the changes to that environment and runs the migrations on its database.
 
-Your production store now includes the brands feature. Learn more about how Cloud deploys your changes in the [Deployments](https://docs.medusajs.com/cloud/deployments/index.html.md) guide.
+For example, if you merged into your production branch, your production store now includes the brands feature. Learn more about how Cloud deploys your changes in the [Deployments](https://docs.medusajs.com/cloud/deployments/index.html.md) guide.
 
 
 # Re-Use Customizations with Plugins
@@ -29462,13 +29462,13 @@ A step’s timeout error is returned in the `errors` property of the workflow’
 
 # Medusa's Architecture
 
-In this chapter, you'll learn about the architectural layers in the Medusa application.
+In this chapter, you'll learn about the architectural layers in Medusa Commerce.
 
 Find the full architectural diagram at the [end of this chapter](#full-diagram-of-medusas-architecture).
 
 ## HTTP, Workflow, and Module Layers
 
-The Medusa application is a headless commerce platform. So, storefronts, admin dashboards, and other clients consume its functionalities through its API routes.
+Medusa Commerce is a headless commerce platform. So, storefronts, admin dashboards, and other clients consume its functionalities through its API routes.
 
 In a common Medusa application, requests go through four layers in the stack. In order of entry, those are:
 
@@ -30900,17 +30900,17 @@ Medusa also provides [Cloud](https://medusajs.com/cloud/), a managed services of
 Refer to the [Deployment](https://docs.medusajs.com/resources/deployment/index.html.md) documentation to learn about the deployment process for Medusa applications and Next.js Starter Storefront.
 
 
-# Introduction to Medusa Customizations
+# Introduction to Medusa Commerce
 
-This section of the documentation introduces Medusa's open-source application and its Framework in a series of chapters. By the end of the chapters, you will have a solid understanding of how to build and customize commerce features using Medusa.
+This section of the documentation introduces Medusa Commerce and its Framework in a series of chapters. By the end of the chapters, you will have a solid understanding of how to build and customize commerce features using Medusa.
 
 Learn how to [sign up](https://docs.medusajs.com/cloud/sign-up/index.html.md) and [create your first project](https://docs.medusajs.com/cloud/first-project/index.html.md).
 
-## What is the Medusa Application?
+## What is Medusa Commerce?
 
-The Medusa application is an open-source AI-native commerce platform with a Framework to build custom commerce features.
+Medusa Commerce is an open-source AI-native commerce platform with a Framework to build custom commerce features.
 
-The Medusa application ships with three main tools:
+Medusa Commerce ships with three main tools:
 
 1. A suite of [Commerce Modules](https://docs.medusajs.com/resources/commerce-modules/index.html.md) with core commerce functionalities, such as tracking inventory, calculating cart totals, accepting payments, managing orders, and much more.
 2. A [Framework](https://docs.medusajs.com/learn/fundamentals/framework/index.html.md) for building agentic flows and custom functionalities specific to your business, product, or industry. This includes tools for introducing custom API endpoints, business logic, and data models; building workflows and automations; and integrating with third-party services.
@@ -30952,7 +30952,7 @@ While this setup is suitable for development, it is not optimal for production e
 
 If you deploy your Medusa application to [Cloud](https://docs.medusajs.com/cloud/index.html.md), you don't need to configure worker mode. Cloud runs separate [server and worker instances](https://docs.medusajs.com/cloud/environments/long-lived/index.html.md) for each environment, and sets the `MEDUSA_WORKER_MODE` environment variable of each instance for you.
 
-You can monitor these instances in the [Servers](https://docs.medusajs.com/cloud/monitoring/servers/index.html.md) and [Workers](https://docs.medusajs.com/cloud/monitoring/workers/index.html.md) dashboards. The rest of this chapter applies when you self-host your application.
+You can monitor these instances in the [Servers](https://docs.medusajs.com/cloud/monitoring/servers/index.html.md) and [Workers](https://docs.medusajs.com/cloud/monitoring/workers/index.html.md) dashboards.
 
 ### Worker Mode in Production
 
@@ -31623,7 +31623,7 @@ MEDUSA_FF_ANALYTICS=false
 
 In this chapter, you'll learn about updating your Medusa application and packages.
 
-Medusa's current version is v2.22.7. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+Medusa's current version is v2.22.6. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.22.6).
 
 ## Medusa Versioning
 
@@ -31659,30 +31659,31 @@ You can also star the [Medusa repository on GitHub](https://github.com/medusajs/
 
 ***
 
+## Ensure Custom Migrations Have Rollback Methods
+
+When you create custom migrations, include both `up` and `down` methods. The `up` method applies the changes to the database schema, and the `down` method reverses them. This lets you roll back database changes if you need to revert an update.
+
+If you use the [db:generate](https://docs.medusajs.com/resources/medusa-cli/commands/db#dbgenerate/index.html.md) command to generate migrations, it creates both methods for you. If you write migrations manually, learn more in the [Migrations](https://docs.medusajs.com/learn/fundamentals/data-models/write-migration/index.html.md) chapter.
+
+***
+
 ## Update Medusa Application
 
-You update your Medusa application locally, then push the update to your [Cloud](https://docs.medusajs.com/cloud/index.html.md) project's repository. Cloud deploys it and migrates the environment's database.
+Your AI agent can perform the steps in this section. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/learn/update.md and update my Medusa application to the latest version
+```
+
+You update your Medusa application [locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md), then push the update to your [Cloud](https://docs.medusajs.com/cloud/index.html.md) project's repository. Cloud deploys it and migrates the environment's database.
 
 Before updating a Medusa application, make sure to check the [release notes](https://github.com/medusajs/medusa/releases) for any breaking changes that require actions from your side.
 
-### 1. Test the Update Outside Production
+### 1. Update Dependencies Locally
 
-Don't push an update directly to your production branch. While Medusa updates are generally safe and stable, test the update in a separate environment first to make sure your customizations and configurations work with the new version.
+In your [local Medusa application](https://docs.medusajs.com/cloud/setup-locally/index.html.md), create a new branch for the update, or check out the branch of a [long-lived environment](https://docs.medusajs.com/cloud/environments/long-lived/index.html.md) such as Staging. You'll test the update on this branch before it reaches production.
 
-Use one of the following environments to test the update:
-
-- A [long-lived environment](https://docs.medusajs.com/cloud/environments/long-lived/index.html.md), such as Staging. Push the update to its branch, and test it in a production-like environment.
-- A [preview environment](https://docs.medusajs.com/cloud/environments/preview/index.html.md). Push the update to a new branch, then open a pull request to the production branch. Cloud creates a preview environment for the pull request.
-
-Each environment has its own database, so updating and testing in other environments doesn't affect your production data.
-
-![Diagram showcasing process of deploying to staging then production](https://res.cloudinary.com/dza7lstvk/image/upload/v1750334010/Cloud/deploy-to-staging_d4oyys.jpg)
-
-So, before you start, check out the long-lived environment's branch, or create a new branch for the pull request.
-
-### 2. Update Dependencies Locally
-
-In your [local Medusa application](https://docs.medusajs.com/cloud/setup-locally/index.html.md), bump the version of all `@medusajs/*` dependencies in your `package.json`. Then, re-install dependencies:
+Then, bump the version of all `@medusajs/*` dependencies in your `package.json`, and re-install dependencies:
 
 ```bash
 npm install
@@ -31690,7 +31691,7 @@ npm install
 
 This will update all Medusa packages to the latest version.
 
-### 3. Run Migrations Locally
+### 2. Run Migrations Locally
 
 Releases may include changes to the database, such as new tables, updates to existing tables, updates after adding links, or data migration scripts.
 
@@ -31704,14 +31705,34 @@ This will run all pending migrations, sync links, and run data migration scripts
 
 If `medusa db:migrate` shows a "Select tables to act upon" prompt locally, the new version removed or changed links. Cloud deployments don't show this prompt. Cloud applies all link changes automatically, including deleting the tables of removed links. Learn more in the [Database](https://docs.medusajs.com/cloud/database#how-cloud-applies-link-changes/index.html.md) guide.
 
-Then, start your application and test your customizations locally.
+### 3. Test the Update Locally
+
+Start your Medusa application:
+
+```bash
+npm run dev
+```
+
+Then, check that the application and your customizations work with the new version:
+
+- Check the terminal for errors or warnings while the application starts, such as deprecation warnings for APIs your customizations use.
+- Open the Medusa Admin at `http://localhost:9000/app`, and check that your admin widgets and UI routes load.
+- Send requests to your custom API routes, and test the flows that your workflows, subscribers, and scheduled jobs handle.
+- If you have a storefront, run it against the local Medusa application and test the main flows, such as adding to the cart and checking out.
+- If you have [integration tests](https://docs.medusajs.com/learn/debugging-and-testing/testing-tools/index.html.md), run them.
+
+Fix any issues before you push the update.
 
 ### 4. Push and Test the Update in Cloud
 
-Push the changes in `package.json`, the lock file, and any other affected files to the branch:
+Don't push an update directly to your production branch. While Medusa updates are generally safe and stable, test the update in a separate environment first to make sure your customizations and configurations work with the new version. Each environment has its own database, so testing in other environments doesn't affect your production data.
 
-- If you use a long-lived environment, Cloud deploys the changes to that environment.
-- If you use a new branch, open a pull request to the production branch. Cloud creates a preview environment for it.
+Push the changes in `package.json`, the lock file, and any other affected files to your branch:
+
+- If you're on a long-lived environment's branch, such as Staging, Cloud deploys the changes to that environment.
+- If you're on a new branch, open a pull request to the production branch. Cloud creates a [preview environment](https://docs.medusajs.com/cloud/environments/preview/index.html.md) for the pull request, and Medusa posts a comment on it with links to the preview.
+
+![Diagram showcasing process of deploying to staging then production](https://res.cloudinary.com/dza7lstvk/image/upload/v1750334010/Cloud/deploy-to-staging_d4oyys.jpg)
 
 If you deployed a storefront alongside your Medusa application, Cloud redeploys both the backend and storefront. Cloud also runs the migrations on the environment's database during the deployment.
 
@@ -31719,13 +31740,7 @@ Then, [access the environment's deployment](https://docs.medusajs.com/cloud/depl
 
 ### 5. Push the Update to Production
 
-Once you've tested the update, merge the changes into your production branch. Cloud deploys them to the production environment, which updates the production's code and database.
-
-### Ensure Custom Migrations Have Rollback Methods
-
-When you create custom migrations, include both `up` and `down` methods. The `up` method applies the changes to the database schema, and the `down` method reverses them. This lets you roll back database changes if you need to revert an update.
-
-If you use the [db:generate](https://docs.medusajs.com/resources/medusa-cli/commands/db#dbgenerate/index.html.md) command to generate migrations, it creates both methods for you. If you write migrations manually, learn more in the [Migrations](https://docs.medusajs.com/learn/fundamentals/data-models/write-migration/index.html.md) chapter.
+Once you've tested the update in a staging or preview environment, merge the changes into your production branch. Cloud deploys them to the production environment, which updates the production's code and database.
 
 ***
 
@@ -32474,7 +32489,7 @@ By using the Emailpass Auth Module Provider, you allow users to register and log
 
 ## Register the Emailpass Auth Module Provider
 
-The Emailpass Auth Module Provider is registered by default with the Auth Module.
+The Emailpass Auth Module Provider is registered by default with the Auth Module, both on Cloud and locally. You don't need to configure it or set any environment variables.
 
 If you want to pass options to the provider, add the provider to the `providers` option of the Auth Module in your `medusa-config.ts`:
 
@@ -32509,6 +32524,10 @@ module.exports = defineConfig({
 })
 ```
 
+### Deploy to Cloud
+
+If you change the provider's options, commit the changes to `medusa-config.ts` and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that uses the new options.
+
 ### Module Options
 
 The `require_verification` option was removed since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0). Use the [authVerificationsPerActor configuration](https://docs.medusajs.com/docs/learn/configurations/medusa-config#httpauthVerificationsPerActor/index.html.md) instead.
@@ -32539,6 +32558,7 @@ The GitHub Auth Module Provider allows you to authenticate users with their GitH
 
 ### Prerequisites
 
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 - [Register a GitHub App. When setting the Callback URL, set it to a URL in your frontend that later uses Medusa's callback route to validate the authentication.](https://docs.github.com/en/apps/creating-github-apps/setting-up-a-github-app/creating-a-github-app)
 - [Retrieve the client ID and client secret of your GitHub App](https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api?apiVersion=2022-11-28#using-basic-authentication)
 
@@ -32579,13 +32599,24 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the necessary environment variables for the above options in `.env`:
+Set the `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, and `GITHUB_CALLBACK_URL` environment variables:
 
-```plain
+1. In Cloud, add the variables in your environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables#add-environment-variables-on-cloud/index.html.md).
+   - Mark `GITHUB_CLIENT_SECRET` as **Sensitive**, and enable the **Build** toggle for all variables, since `medusa-config.ts` reads them during the build.
+   - Set `GITHUB_CALLBACK_URL` to a page of your deployed frontend, such as your storefront.
+2. For local development, add the variables to your `.env` file, with `GITHUB_CALLBACK_URL` set to a page of your local frontend:
+
+```bash title=".env"
 GITHUB_CLIENT_ID=<YOUR_GITHUB_CLIENT_ID>
 GITHUB_CLIENT_SECRET=<YOUR_GITHUB_CLIENT_SECRET>
 GITHUB_CALLBACK_URL=<YOUR_GITHUB_CALLBACK_URL>
 ```
+
+Make sure to add both callback URLs to your GitHub app's allowed callback URLs.
+
+### Deploy to Cloud
+
+Commit the changes to `medusa-config.ts` and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that registers the GitHub Auth Module Provider. Add the environment variables in Cloud before you push, so the deployment uses them.
 
 ### Module Options
 
@@ -32620,6 +32651,7 @@ The Google Auth Module Provider allows you to authenticate users with their Goog
 
 ### Prerequisites
 
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 - [Create a project in Google Cloud.](https://cloud.google.com/resource-manager/docs/creating-managing-projects)
 - [Create Oauth client ID credentials. When setting the Redirect Uri, set it to a URL in your frontend (for example, storefront) that later uses Medusa's callback route to validate the authentication.](https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred)
 
@@ -32665,13 +32697,24 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the necessary environment variables for the above options in `.env`:
+Set the `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and `GOOGLE_CALLBACK_URL` environment variables:
 
-```plain
+1. In Cloud, add the variables in your environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables#add-environment-variables-on-cloud/index.html.md).
+   - Mark `GOOGLE_CLIENT_SECRET` as **Sensitive**, and enable the **Build** toggle for all variables, since `medusa-config.ts` reads them during the build.
+   - Set `GOOGLE_CALLBACK_URL` to a page of your deployed frontend, such as your storefront.
+2. For local development, add the variables to your `.env` file, with `GOOGLE_CALLBACK_URL` set to a page of your local frontend:
+
+```bash title=".env"
 GOOGLE_CLIENT_ID=<YOUR_GOOGLE_CLIENT_ID>
 GOOGLE_CLIENT_SECRET=<YOUR_GOOGLE_CLIENT_SECRET>
 GOOGLE_CALLBACK_URL=<YOUR_GOOGLE_CALLBACK_URL>
 ```
+
+Make sure to add both callback URLs to the **Authorized redirect URIs** of your Google OAuth client.
+
+### Deploy to Cloud
+
+Commit the changes to `medusa-config.ts` and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that registers the Google Auth Module Provider. Add the environment variables in Cloud before you push, so the deployment uses them.
 
 ### Module Options
 
@@ -32722,6 +32765,18 @@ An Auth Module Provider is a module whose service extends the `AbstractAuthModul
 The module can have multiple auth provider services, where each is registered as a separate auth provider.
 
 Refer to the [Create Auth Module Provider](https://docs.medusajs.com/references/auth/provider/index.html.md) guide to learn how to create an Auth Module Provider.
+
+***
+
+## Use an Auth Module Provider on Cloud
+
+On Cloud, Medusa registers the Emailpass Auth Module Provider by default, the same as locally. To use other auth providers in a deployed environment:
+
+1. Add the provider to the `providers` option of the Auth Module in `medusa-config.ts`.
+2. Add the environment variables that the provider's options use in your Cloud environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables#add-environment-variables-on-cloud/index.html.md). Mark secrets, such as API keys, as **Sensitive**, and enable the **Build** toggle, since `medusa-config.ts` reads them during the build. For local development, add the same variables to your `.env` file.
+3. Commit the changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md), and the Medusa application registers the provider when it starts.
+
+Each provider's guide, such as the [Google Auth Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/google/index.html.md) guide, lists the environment variables it needs.
 
 ***
 
@@ -34374,11 +34429,13 @@ The Auth Module implements MFA around two concepts:
 
 ## Configure MFA Encryption Key
 
-Medusa automatically configures MFA with sensible defaults, including setting the encryption key to the `AUTH_MFA_ENCRYPTION_KEY` environment variable. If you've created your application after v2.15.5 of Medusa, this key is generated for you and stored in the `.env` file.
+Medusa automatically configures MFA with sensible defaults, including setting the encryption key to the `AUTH_MFA_ENCRYPTION_KEY` environment variable.
 
-If you created your application before v2.15.5, generate a random 64-character string and set it as the value of the `AUTH_MFA_ENCRYPTION_KEY` environment variable in your `.env` file:
+On Cloud, Medusa sets the `AUTH_MFA_ENCRYPTION_KEY` environment variable for each environment, so you don't need to add it.
 
-```bash
+For local development, if you created your application after v2.15.5 of Medusa, the key is already generated for you in the `.env` file. Otherwise, generate a random 64-character string and add it to your `.env` file:
+
+```bash title=".env"
 AUTH_MFA_ENCRYPTION_KEY=your_random_64_character_string
 ```
 
@@ -34792,7 +34849,7 @@ The `providers` option is an array of objects that accept the following properti
 
 The Medusa application's authentication API routes are defined under the `/auth` prefix that requires setting the `authCors` property of the `http` configuration.
 
-By default, the Medusa application you created will have an `AUTH_CORS` environment variable, which is used as the value of `authCors`.
+By default, the Medusa application uses the `AUTH_CORS` environment variable as the value of `authCors`. On Cloud, Medusa configures the CORS settings of each environment for its Medusa Admin and storefront. For local development, set `AUTH_CORS` in your `.env` file to the URLs of your local admin and storefront.
 
 Refer to [Medusa's configuration guide](https://docs.medusajs.com/docs/learn/configurations/medusa-config#httpauthCors/index.html.md) to learn more about the `authCors` configuration.
 
@@ -34802,7 +34859,7 @@ Refer to [Medusa's configuration guide](https://docs.medusajs.com/docs/learn/con
 
 The `mfa` option configures multi-factor authentication (MFA) settings for the Auth Module.
 
-When passing any options to the Auth Module, you must set the `mfa.encryption_key` option. This option is set by default to the `AUTH_MFA_ENCRYPTION_KEY` environment variable. If you created your Medusa application after v2.15.5, this environment variable is already set in your `.env` file. If not, make sure to set it to a random string.
+When passing any options to the Auth Module, you must set the `mfa.encryption_key` option. This option is set by default to the `AUTH_MFA_ENCRYPTION_KEY` environment variable. Learn how to set it in Cloud and locally in the [MFA guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/mfa#configure-mfa-encryption-key/index.html.md).
 
 This feature is available in [Medusa v2.15.5](https://docs.medusajs.com/docs/learn/update/index.html.md) and above.
 
@@ -37873,6 +37930,14 @@ Learn more about this option in the [Module Options](https://docs.medusajs.com/U
 When the Medusa application starts, it registers the Fulfillment Module Providers defined in the `providers` option of the Fulfillment Module.
 
 For each Fulfillment Module Provider, the Medusa application finds all fulfillment provider services defined in them to register.
+
+### Register Fulfillment Providers on Cloud
+
+On Cloud, Medusa registers the Manual Fulfillment Provider by default, the same as locally. To use another fulfillment provider in a deployed environment:
+
+1. Add the provider to the `providers` option of the Fulfillment Module in `medusa-config.ts`.
+2. Add the environment variables that the provider's options use in your Cloud environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables#add-environment-variables-on-cloud/index.html.md). Mark secrets, such as API keys, as **Sensitive**, and enable the **Build** toggle, since `medusa-config.ts` reads them during the build. For local development, add the same variables to your `.env` file.
+3. Commit the changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md), and the Medusa application registers the provider when it starts.
 
 ### FulfillmentProvider Data Model
 
@@ -44095,6 +44160,7 @@ The Adyen Module Provider integrates [Adyen](https://www.adyen.com/) into your M
 
 ### Prerequisites
 
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 - [Adyen account](https://www.adyen.com/)
 - [Adyen API key and merchant account](https://docs.adyen.com/development-resources/api-credentials/)
 - [To handle webhooks, the HMAC key of an Adyen standard webhook. Refer to the end of this guide for details on the URL.](https://docs.adyen.com/development-resources/webhooks/)
@@ -44129,14 +44195,25 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the necessary environment variables for the above options in `.env`:
+Set the `ADYEN_API_KEY`, `ADYEN_MERCHANT_ACCOUNT`, `ADYEN_WEBHOOK_HMAC_KEY`, and `ADYEN_RETURN_URL` environment variables:
 
-```bash
+1. In Cloud, add the variables in your environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables#add-environment-variables-on-cloud/index.html.md).
+   - Mark `ADYEN_API_KEY` and `ADYEN_WEBHOOK_HMAC_KEY` as **Sensitive**, and enable the **Build** toggle for all variables, since `medusa-config.ts` reads them during the build.
+   - Set `ADYEN_RETURN_URL` to a page of your deployed storefront.
+2. For local development, add the variables to your `.env` file:
+
+```bash title=".env"
 ADYEN_API_KEY=<YOUR_ADYEN_API_KEY>
 ADYEN_MERCHANT_ACCOUNT=<YOUR_ADYEN_MERCHANT_ACCOUNT>
 ADYEN_WEBHOOK_HMAC_KEY=<YOUR_ADYEN_WEBHOOK_HMAC_KEY>
 ADYEN_RETURN_URL=<YOUR_STOREFRONT_RETURN_URL>
 ```
+
+### Deploy to Cloud
+
+Commit the changes to `medusa-config.ts` and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that registers the Adyen Module Provider. Add the environment variables in Cloud before you push, so the deployment uses them.
+
+Then, [enable the provider in a region](#enable-adyen-provider-in-a-region) and [set up webhooks](#setup-adyen-webhooks) for the deployed environment.
 
 ### Module Options
 
@@ -44310,7 +44387,7 @@ Then, set the webhook's HMAC key in the `hmacKey` option of the Adyen Module Pro
 
 Medusa has a `{server_url}/hooks/payment/{provider_id}` API route that you can use to register webhooks in Adyen, where:
 
-- `{server_url}` is the URL to your deployed Medusa application in server mode.
+- `{server_url}` is the URL to your deployed Medusa application in server mode. On Cloud, it's the environment's Medusa Backend URL, which you can find below the environment's name in its dashboard.
 - `{provider_id}` is the ID of the provider as explained in the [Adyen Payment Provider ID](#adyen-payment-provider-id) section, without the `pp_` prefix.
 
 For example, if you set the ID of the Adyen Module Provider to `adyen`, the webhook URL is `{server_url}/hooks/payment/adyen_adyen`.
@@ -44383,6 +44460,14 @@ When the Medusa application starts, it registers the Payment Module Providers de
 
 For each Payment Module Provider, the Medusa application finds all payment provider services defined in them to register.
 
+### Register Payment Providers on Cloud
+
+On Cloud, Medusa registers the `system` payment provider by default, the same as locally. To use other payment providers in a deployed environment:
+
+1. Add the provider to the `providers` option of the Payment Module in `medusa-config.ts`.
+2. Add the environment variables that the provider's options use in your Cloud environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables#add-environment-variables-on-cloud/index.html.md). Mark secrets, such as API keys, as **Sensitive**, and enable the **Build** toggle, since `medusa-config.ts` reads them during the build. For local development, add the same variables to your `.env` file.
+3. Commit the changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md), and the Medusa application registers the provider when it starts.
+
 ### PaymentProvider Data Model
 
 A registered payment provider is represented by the [PaymentProvider data model](https://docs.medusajs.com/references/payment/models/PaymentProvider/index.html.md) in the Medusa application.
@@ -44415,6 +44500,7 @@ Your technical team must install the Stripe Module Provider in your Medusa appli
 
 ### Prerequisites
 
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 - [Stripe account](https://stripe.com/)
 - [Stripe Secret API Key](https://support.stripe.com/questions/locate-api-keys-in-the-dashboard)
 - [For deployed Medusa applications, a Stripe webhook secret. Refer to the end of this guide for details on the URL and events.](https://docs.stripe.com/webhooks#add-a-webhook-endpoint)
@@ -44434,6 +44520,8 @@ module.exports = defineConfig({
             id: "stripe",
             options: {
               apiKey: process.env.STRIPE_API_KEY,
+              webhookSecret:
+                process.env.STRIPE_WEBHOOK_SECRET,
             },
           },
         ],
@@ -44445,11 +44533,23 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the necessary environment variables for the above options in `.env`:
+Set the `STRIPE_API_KEY` and `STRIPE_WEBHOOK_SECRET` environment variables:
 
-```bash
+1. In Cloud, add the variables in your environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables#add-environment-variables-on-cloud/index.html.md). Mark both variables as **Sensitive**, and enable the **Build** toggle for all variables, since `medusa-config.ts` reads them during the build.
+2. For local development, add the variables to your `.env` file:
+
+```bash title=".env"
 STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
+STRIPE_WEBHOOK_SECRET=<YOUR_STRIPE_WEBHOOK_SECRET>
 ```
+
+You receive the webhook secret after you [set up webhooks](#setup-stripe-webhooks) in Stripe for your deployed environment. You can leave `STRIPE_WEBHOOK_SECRET` empty in `.env`, since Stripe can't send webhooks to your local application.
+
+### Deploy to Cloud
+
+Commit the changes to `medusa-config.ts` and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that registers the Stripe Module Provider. Add the environment variables in Cloud before you push, so the deployment uses them.
+
+Then, [enable the provider in a region](#enable-stripe-providers-in-a-region) and [set up webhooks](#setup-stripe-webhooks) for the deployed environment.
 
 ### Module Options
 
@@ -44506,7 +44606,7 @@ For production applications, you must set up webhooks in Stripe that inform Medu
 
 Medusa has a `{server_url}/hooks/payment/{provider_id}` API route that you can use to register webhooks in Stripe, where:
 
-- `{server_url}` is the URL to your deployed Medusa application in server mode.
+- `{server_url}` is the URL to your deployed Medusa application in server mode. On Cloud, it's the environment's Medusa Backend URL, which you can find below the environment's name in its dashboard.
 - `{provider_id}` is the ID of the provider as explained in the [Stripe Payment Provider IDs](#stripe-payment-provider-ids) section, without the `pp_` prefix.
 
 The Stripe Module Provider supports the following payment types, and the webhook endpoint URL is different for each:
@@ -52766,6 +52866,14 @@ When the Medusa application starts, it registers the Tax Module Providers define
 
 For each Tax Module Provider, the Medusa application finds all tax provider services defined in them to register.
 
+### Register Tax Providers on Cloud
+
+On Cloud, Medusa registers the `system` tax provider by default, the same as locally. To use other tax providers in a deployed environment:
+
+1. Add the provider to the `providers` option of the Tax Module in `medusa-config.ts`.
+2. Add the environment variables that the provider's options use in your Cloud environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables#add-environment-variables-on-cloud/index.html.md). Mark secrets, such as API keys, as **Sensitive**, and enable the **Build** toggle, since `medusa-config.ts` reads them during the build. For local development, add the same variables to your `.env` file.
+3. Commit the changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md), and the Medusa application registers the provider when it starts.
+
 ### TaxProvider Data Model
 
 A registered tax provider is represented by the [TaxProvider data model](https://docs.medusajs.com/references/tax/models/TaxProvider/index.html.md) in the Medusa application.
@@ -54325,9 +54433,12 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the necessary environment variables for the above options to your `.env` file:
+On Cloud, Medusa sets the `JWT_SECRET` environment variable for each environment, so you don't need to add it. To use asymmetric key validation, set the other variables:
 
-```bash
+1. In Cloud, add `JWT_PUBLIC_KEY`, `JWT_ALGORITHM`, and `JWT_ISSUER` in your environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables#add-environment-variables-on-cloud/index.html.md). Enable the **Build** toggle for them, since `medusa-config.ts` reads them during the build. Then, [redeploy the environment](https://docs.medusajs.com/cloud/environments/long-lived#redeploy-environment/index.html.md) to apply them.
+2. For local development, add the variables to your `.env` file:
+
+```bash title=".env"
 JWT_SECRET=supersecret
 # Optional: For asymmetric key validation
 JWT_PUBLIC_KEY=your_public_key_here
@@ -54577,11 +54688,17 @@ if (!count) {
 
 The Local Analytics Module Provider is a simple analytics provider for Medusa that logs analytics events to the console. It's useful for development and debugging purposes.
 
+Use the Local Analytics Module Provider only in local development. Cloud doesn't configure an Analytics Module Provider for you, so configure a production provider like [PostHog](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/analytics/posthog/index.html.md) for your deployed environments.
+
 The Analytics Module and its providers are available starting [Medusa v2.8.3](https://github.com/medusajs/medusa/releases/tag/v2.8.3).
 
 ***
 
 ## Register the Local Analytics Module
+
+### Prerequisites
+
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 
 Add the module into the `provider` object of the Analytics Module:
 
@@ -54902,10 +55019,11 @@ The Analytics Module and its providers are available starting [Medusa v2.8.3](ht
 
 ### Prerequisites
 
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 - [PostHog account](https://app.posthog.com/signup)
 - [PostHog API Key](https://posthog.com/docs/api)
 
-Add the module into the `provider` object of the Analytics Module:
+Add the module into the `provider` object of the Analytics Module in `medusa-config.ts`:
 
 You can use only one provider in your Medusa application.
 
@@ -54934,12 +55052,21 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the following environment variables:
+Set the `POSTHOG_EVENTS_API_KEY` and `POSTHOG_HOST` environment variables:
 
-```bash
+1. In Cloud, add the variables in your environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables#add-environment-variables-on-cloud/index.html.md). Mark `POSTHOG_EVENTS_API_KEY` as **Sensitive**, and enable the **Build** toggle for both variables, since `medusa-config.ts` reads them during the build.
+2. For local development, add the variables to your `.env` file:
+
+```bash title=".env"
 POSTHOG_EVENTS_API_KEY=<YOUR_POSTHOG_EVENTS_API_KEY>
 POSTHOG_HOST=<YOUR_POSTHOG_HOST>
 ```
+
+### Deploy to Cloud
+
+Commit the changes to `medusa-config.ts` and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that uses the PostHog Analytics Module Provider.
+
+Add the environment variables in Cloud before you push, so the deployment uses them.
 
 ### PostHog Analytics Module Options
 
@@ -55047,7 +55174,23 @@ export const config: SubscriberConfig = {
 
 This subscriber listens to the `order.placed` event and executes the `trackOrderPlacedWorkflow` workflow, passing the order ID as input.
 
-You'll now track the order placement event whenever an order is placed in your Medusa application. You can test this out by placing an order and checking your PostHog dashboard for the tracked event.
+You'll now track the order placement event whenever an order is placed in your Medusa application.
+
+### Test Locally
+
+Start the Medusa application:
+
+```bash
+npm run dev
+```
+
+Then, place an order and check your PostHog dashboard for the tracked event.
+
+### Test on Cloud
+
+To test the module in a deployed environment, commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) with your changes.
+
+Once the deployment finishes, place an order in the environment's storefront, then check your PostHog dashboard for the tracked event.
 
 ***
 
@@ -55244,13 +55387,19 @@ The In-Memory Cache Module uses a plain JavaScript Map object to store the cache
 
 This module is helpful for development or when you’re testing out Medusa, but it’s not recommended to be used in production.
 
-For production, it’s recommended to use modules like [Redis Cache Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/cache/redis/index.html.md).
+On Cloud, Medusa configures [Medusa Cache](https://docs.medusajs.com/cloud/cache/index.html.md), a managed caching service backed by Redis, by default, which is more suitable for production.
+
+Use the In-Memory Cache Module only in local development.
 
 The In-Memory Cache Module is deprecated starting from [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0). Use the [Caching Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/caching/index.html.md) instead.
 
 ***
 
 ## Register the In-Memory Cache Module
+
+### Prerequisites
+
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 
 The In-Memory Cache Module is registered by default in your application.
 
@@ -55294,7 +55443,9 @@ The underlying database, third-party service, or caching logic is flexible since
 
 ### Default Cache Module
 
-By default, Medusa uses the [In-Memory Cache Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/cache/in-memory/index.html.md). This module uses a plain JavaScript Map object to store the cache data. While this is suitable for development, it's recommended to use other Cache Modules, such as the [Redis Cache Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/cache/redis/index.html.md), for production. You can also [Create a Cache Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/cache/create/index.html.md).
+On Cloud, Medusa provisions a managed [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) instance for each environment and provides [Medusa Cache](https://docs.medusajs.com/cloud/cache/index.html.md), which uses the [Caching Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/caching/index.html.md) instead of the deprecated Cache Module. So, remove the Cache Module from `medusa-config.ts` before you deploy to Cloud.
+
+Locally, Medusa uses the [In-Memory Cache Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/cache/in-memory/index.html.md) by default. This module uses a plain JavaScript Map object to store the cache data. While this is suitable for development, it's recommended to use other Cache Modules, such as the [Redis Cache Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/cache/redis/index.html.md), in production. You can also [Create a Cache Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/cache/create/index.html.md).
 
 ***
 
@@ -55354,12 +55505,15 @@ The Redis Cache Module is deprecated starting from [Medusa v2.11.0](https://gith
 
 However, if you use OAuth-based authentication providers such as Google or GitHub login, keep the Redis Cache Module registered. The Auth Module uses the Cache Module to store OAuth state between the redirect and callback. Removing it without a Redis provider causes Medusa to use an in-memory fallback, which breaks OAuth flows in multi-instance or restarted deployments.
 
+Cloud doesn't configure the deprecated Cache Module. Instead, it provides [Medusa Cache](https://docs.medusajs.com/cloud/cache/index.html.md), which configures the [Caching Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/caching/index.html.md) with a managed [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) instance. So, remove the Redis Cache Module from `medusa-config.ts` before you deploy to Cloud, and [migrate to the Caching Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/caching/migrate-cache/index.html.md).
+
 ***
 
 ## Register the Redis Cache Module
 
 ### Prerequisites
 
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 - [Redis installed and Redis server running](https://redis.io/docs/getting-started/installation/)
 
 Add the module into the `modules` property of the exported object in `medusa-config.ts`:
@@ -55380,9 +55534,9 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the following environment variables:
+Add the `CACHE_REDIS_URL` environment variable to your `.env` file with your Redis server's URL:
 
-```bash
+```bash title=".env"
 CACHE_REDIS_URL=<YOUR_REDIS_URL>
 ```
 
@@ -56673,11 +56827,18 @@ The last step is to register the Memcached Module Provider in your Medusa applic
 
 ### Enable Caching Feature Flag
 
-First, enable the [Caching Module's feature flag](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/caching#1-enable-caching-feature-flag/index.html.md) by setting the following environment variable:
+First, enable the [Caching Module's feature flag](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/caching#1-enable-caching-feature-flag/index.html.md) in `medusa-config.ts`:
 
-```bash
-MEDUSA_FF_CACHING=true
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  featureFlags: {
+    caching: true,
+  },
+})
 ```
+
+This enables the feature flag both locally and in your Cloud environments once you deploy the change.
 
 ### Register Memcached Module Provider
 
@@ -56719,9 +56880,14 @@ You pass the options to configure the Memcached client and the module's behavior
 
 ### Add Environment Variables
 
-Make sure you set the necessary environment variables in your `.env` file. For example:
+Set the environment variables that the provider's options use:
 
-```bash
+1. In Cloud, add the variables in your environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables#add-environment-variables-on-cloud/index.html.md).
+   - Set `MEMCACHED_SERVERS` to the URLs of a Memcached server that your Cloud environment can reach, since Cloud doesn't host Memcached for you.
+   - Mark credentials like `MEMCACHED_PASSWORD` as **Sensitive**, and enable the **Build** toggle for all variables, since `medusa-config.ts` reads them during the build.
+2. For local development, add the variables to your `.env` file. For example:
+
+```bash title=".env"
 MEMCACHED_SERVERS=127.0.0.1:11211 # Comma-separated list of Memcached server URLs
 # Add other optional variables as needed
 ```
@@ -56810,6 +56976,18 @@ get medusa:test-cache-products
 ```
 
 Notice that you prefix the key with `medusa:`, which is the default prefix unless you set the `keyPrefix` option in the provider registration.
+
+***
+
+## Deploy to Cloud
+
+Cloud configures [Medusa Cache](https://docs.medusajs.com/cloud/cache/index.html.md), which uses the Redis Caching Module Provider, for each environment. When you register the Caching Module with the Memcached Module Provider in `medusa-config.ts`, your configuration is used instead.
+
+To deploy the Memcached Module Provider:
+
+1. Make sure you added the environment variables to your Cloud environment, as explained in the [Add Environment Variables](#add-environment-variables) section.
+2. Commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that uses the Memcached Module Provider.
+3. Once the deployment finishes, check the environment's [runtime logs](https://docs.medusajs.com/cloud/logs#view-runtime-logs-on-cloud/index.html.md) for the `Successfully connected to Memcached` message.
 
 ***
 
@@ -56946,8 +57124,6 @@ Learn more about the Caching Module in the [Caching Module guide](https://docs.m
 
 In this guide, you'll learn about the Caching Module and its providers.
 
-Refer to the [Medusa Cache Cloud](https://docs.medusajs.com/cloud/cache/index.html.md) guide for setting up the Caching Module in Cloud.
-
 The Caching Module is available starting [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0). It replaces the deprecated [Cache Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/cache/index.html.md).
 
 ## What is the Caching Module?
@@ -56957,6 +57133,10 @@ The Caching Module provides functionality to cache data in your Medusa applicati
 For example, Medusa uses the Caching Module to cache product information, and you can cache custom data such as brand information.
 
 The Caching Module stores and retrieves cached data using the caching service you integrate, such as [Redis](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/caching/providers/redis/index.html.md) or [Memcached](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/caching/guides/memcached/index.html.md). This provides flexibility in customizing your Medusa application's infrastructure to meet your performance and scalability requirements.
+
+On Cloud, Medusa provides [Medusa Cache](https://docs.medusajs.com/cloud/cache/index.html.md), which configures the Caching Module with the [Redis Caching Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/caching/providers/redis/index.html.md) and the environment's managed [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) instance. You only enable the caching feature flag, as explained in the [Install the Caching Module](#install-the-caching-module) section.
+
+Locally, you register the Caching Module with a provider, such as Redis, as explained in the same section.
 
 ![Diagram illustrating the Caching Module architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1759846791/Medusa%20Resources/caching-overview_tz91tw.jpg)
 
@@ -56976,17 +57156,26 @@ If you're using the Cache Module in your application, refer to the [migrate to t
 
 The Caching Module is installed by default in your application. To use it, enable the caching feature flag and register the module in your `medusa-config.ts` file.
 
+On Cloud, you only enable the feature flag. Cloud configures the Caching Module with a managed Redis instance, so you don't need Redis or the second step.
+
 ### 1. Enable Caching Feature Flag
 
-The caching feature is currently behind a feature flag. To enable it, set the `MEDUSA_FF_CACHING` environment variable to `true` in your `.env` file:
+The caching feature is currently behind a feature flag. To enable it, set the `caching` feature flag in `medusa-config.ts`:
 
-```bash
-MEDUSA_FF_CACHING=true
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  featureFlags: {
+    caching: true,
+  },
+})
 ```
 
-This enables you to use the Caching Module and activates caching features in Medusa's core.
+This enables you to use the Caching Module and activates caching features in Medusa's core, both locally and in your Cloud environments once you deploy the change.
 
 ### 2. Register the Caching Module
+
+Skip this step on Cloud. If you registered the Caching Module with the Redis Caching Module Provider in `medusa-config.ts`, remove it before you deploy to avoid conflicts with the module that Cloud configures.
 
 Next, add the Caching Module to the `modules` property of the exported object in `medusa-config.ts`:
 
@@ -57276,10 +57465,23 @@ The Caching Module and its providers are available starting [Medusa v2.11.0](htt
 
 ***
 
+## Set Up on Cloud
+
+Cloud provides [Medusa Cache](https://docs.medusajs.com/cloud/cache/index.html.md), which configures the Redis Caching Module Provider with a managed [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) instance for each environment. So, you don't configure the provider or set up Redis yourself.
+
+To deploy your application with the managed Redis Caching Module Provider:
+
+1. Remove the Redis Caching Module Provider from `medusa-config.ts` if you registered it. A registration that runs during the Cloud build conflicts with the provider that Cloud configures and fails the deployment.
+2. Enable the `caching` feature flag in `medusa-config.ts`, as explained in the [Medusa Cache](https://docs.medusajs.com/cloud/cache#enable-medusa-cache/index.html.md) Cloud guide.
+3. Commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that uses Medusa Cache.
+
+***
+
 ## Register the Redis Caching Module
 
 ### Prerequisites
 
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 - [Redis installed and Redis server running](https://redis.io/docs/getting-started/installation/)
 
 To use the Redis Caching Module Provider, you need to register it in the `providers` array of the Caching Module in your `medusa-config.ts`.
@@ -57316,9 +57518,11 @@ Notice that you pass an `id` property to the provider. The provider will be regi
 
 ### Environment Variables
 
-Make sure to add the following environment variable:
+On Cloud, you don't need to set any environment variables, since Cloud manages the Redis instance for you.
 
-```bash
+For local development, add the `CACHE_REDIS_URL` environment variable to your `.env` file with your Redis server's URL:
+
+```bash title=".env"
 CACHE_REDIS_URL=redis://localhost:6379
 ```
 
@@ -57384,7 +57588,9 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 ```
 
-Finally, start your Medusa server with the following command:
+### Test Locally
+
+Start your Medusa server with the following command:
 
 ```bash
 npm run dev
@@ -57397,6 +57603,18 @@ curl http://localhost:9000/cache-product
 ```
 
 You should receive a response with the list of products. The first time you make this request, the products will be fetched from the database and cached in Redis. Subsequent requests will retrieve the products from the cache, resulting in improved performance.
+
+### Test on Cloud
+
+To test the provider in a deployed environment, commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) with your changes.
+
+Once the deployment finishes, send the same request to your environment's URL. For example:
+
+```bash
+curl https://acme.medusajs.app/cache-product
+```
+
+Where `acme.medusajs.app` is your environment's backend URL. Learn how to find it in the [Access Deployed Environment](https://docs.medusajs.com/cloud/environments/long-lived#access-deployed-environment/index.html.md) Cloud guide.
 
 
 # How to Create an Event Module
@@ -57634,11 +57852,17 @@ The Local Event Module uses Node EventEmitter to implement Medusa's pub/sub even
 
 This module is useful for development and testing, but it’s not recommended to be used in production.
 
-For production, it’s recommended to use modules like [Redis Event Bus Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/event/redis/index.html.md).
+On Cloud, Medusa configures the [Redis Event Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/event/redis/index.html.md) with a managed [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) instance by default, which is more suitable for production.
+
+Use the Local Event Module only in local development.
 
 ***
 
 ## Register the Local Event Module
+
+### Prerequisites
+
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 
 The Local Event Module is registered by default in your application.
 
@@ -57690,7 +57914,9 @@ Learn more about Medusa's event systems in the [Events and Subscribers documenta
 
 ### Default Event Module
 
-By default, Medusa uses the [Local Event Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/event/local/index.html.md). This module uses Node’s EventEmitter to implement the publish/subscribe system. While this is suitable for development, it's recommended to use other Event Modules, such as the [Redis Event Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/event/redis/index.html.md), for production. You can also [Create an Event Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/event/create/index.html.md).
+On Cloud, Medusa provisions a managed [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) instance for each environment and configures the [Redis Event Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/event/redis/index.html.md) to use it. So, you don't configure an Event Module for your deployed application.
+
+Locally, Medusa uses the [Local Event Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/event/local/index.html.md) by default. This module uses Node’s EventEmitter to implement the publish/subscribe system. While this is suitable for development, it's recommended to use other Event Modules, such as the [Redis Event Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/event/redis/index.html.md), in production. You can also [Create an Event Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/event/create/index.html.md).
 
 ***
 
@@ -57756,7 +57982,16 @@ It's powered by [BullMQ](https://bullmq.io/) and `io-redis`. BullMQ is responsib
 
 In production, it's recommended to use this module.
 
-Our Cloud offering automatically provisions a Redis instance and configures the Redis Event Module for you. Learn more in the [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) Cloud documentation.
+***
+
+## Set Up on Cloud
+
+Cloud provisions a [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) instance for each environment and configures the Redis Event Module to use it. So, you don't configure the module or set up Redis yourself.
+
+To deploy your application with the managed Redis Event Module:
+
+1. Remove the Redis Event Module from `medusa-config.ts` if you registered it. Remove it entirely instead of registering it only when an environment variable is set. If the registration runs during the Cloud build, it conflicts with the module that Cloud configures and the deployment fails.
+2. Commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that uses the managed Redis Event Module.
 
 ***
 
@@ -57764,6 +57999,7 @@ Our Cloud offering automatically provisions a Redis instance and configures the 
 
 ### Prerequisites
 
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 - [Redis installed and Redis server running](https://redis.io/docs/getting-started/installation/)
 
 Add the module into the `modules` property of the exported object in `medusa-config.ts`:
@@ -57801,9 +58037,11 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the following environment variables:
+On Cloud, you don't need to set any environment variables, since Cloud manages the Redis instance for you.
 
-```bash
+For local development, add the `EVENTS_REDIS_URL` environment variable to your `.env` file with your Redis server's URL:
+
+```bash title=".env"
 EVENTS_REDIS_URL=<YOUR_REDIS_URL>
 ```
 
@@ -57820,6 +58058,8 @@ EVENTS_REDIS_URL=<YOUR_REDIS_URL>
 
 ## Test the Module
 
+### Test Locally
+
 To test the module, start the Medusa application:
 
 ```bash
@@ -57832,17 +58072,27 @@ You'll see the following message in the terminal's logs:
 Connection to Redis in module 'event-redis' established
 ```
 
+### Test on Cloud
+
+To test the module in a deployed environment, commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that uses the Redis Event Module with a managed Redis instance.
+
+Once the deployment finishes, check the environment's [runtime logs](https://docs.medusajs.com/cloud/logs#view-runtime-logs-on-cloud/index.html.md) for the `Connection to Redis` message shown above.
+
 
 # Local File Module Provider
 
 The Local File Module Provider stores files uploaded to your Medusa application in the `/uploads` directory.
 
-- The Local File Module Provider is only for development purposes. Use the [S3 File Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/file/s3/index.html.md) in production instead.
+- The Local File Module Provider is only for development purposes. On Cloud, Medusa configures the [S3 File Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/file/s3/index.html.md) with managed [S3 storage](https://docs.medusajs.com/cloud/s3/index.html.md) by default, which is more suitable for production.
 - The Local File Module Provider will only read files uploaded through Medusa. It will not read files uploaded manually to the `static` (or other configured) directory.
 
 ***
 
 ## Register the Local File Module
+
+### Prerequisites
+
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 
 The Local File Module Provider is registered by default in your application.
 
@@ -57946,9 +58196,9 @@ A File Module Provider implements the underlying logic of handling uploads and d
 
 Only one File Module Provider can be registered at a time. If you register multiple providers, the File Module will throw an error.
 
-By default, Medusa uses the [Local File Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/file/local/index.html.md). This module uploads files to the `uploads` directory of your Medusa application.
+On Cloud, Medusa provisions managed [S3 storage](https://docs.medusajs.com/cloud/s3/index.html.md) for each environment and configures the File Module with the [S3 File Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/file/s3/index.html.md) to use it. So, you don't configure a File Module Provider for your deployed application.
 
-This is useful for development. However, for production, it’s highly recommended to use other File Module Providers, such as the S3 File Module Provider. You can also [Create a File Provider](https://docs.medusajs.com/references/file-provider-module/index.html.md).
+Locally, Medusa uses the [Local File Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/file/local/index.html.md) by default. This module uploads files to the `uploads` directory of your Medusa application. This is useful for development. However, it’s highly recommended to use other File Module Providers in production, such as the S3 File Module Provider. You can also [Create a File Provider](https://docs.medusajs.com/references/file-provider-module/index.html.md).
 
 - [Local](https://docs.medusajs.com/infrastructure-modules/file/local/index.html.md)
 - [AWS S3 (and Compatible APIs)](https://docs.medusajs.com/infrastructure-modules/file/s3/index.html.md)
@@ -57958,9 +58208,22 @@ This is useful for development. However, for production, it’s highly recommend
 
 The S3 File Module Provider integrates Amazon S3 and services following a compatible API (such as MinIO or DigitalOcean Spaces) to store files uploaded to your Medusa application.
 
-Cloud offers a managed file storage solution with AWS S3 for your Medusa application. Refer to the [S3](https://docs.medusajs.com/cloud/s3/index.html.md) Cloud documentation for more details.
+## Set Up on Cloud
+
+Cloud provisions managed [S3 storage](https://docs.medusajs.com/cloud/s3/index.html.md) for each environment and configures the S3 File Module Provider to use it. So, you don't configure the provider or create a bucket yourself.
+
+To deploy your application with the managed S3 File Module Provider:
+
+1. Remove the S3 File Module Provider from `medusa-config.ts` if you registered it, to avoid conflicts with the provider that Cloud configures.
+2. Commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that stores uploaded files in the environment's S3 storage.
+
+***
 
 ## Prerequisites
+
+### Prerequisites
+
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 
 ### AWS S3
 
@@ -58058,6 +58321,21 @@ module.exports = {
     },
   ],
 }
+```
+
+### Environment Variables
+
+On Cloud, you don't need to set any environment variables, since Cloud manages the S3 storage for you.
+
+For local development, add the environment variables that the provider's options use to your `.env` file:
+
+```bash title=".env"
+S3_FILE_URL=<YOUR_S3_FILE_URL>
+S3_ACCESS_KEY_ID=<YOUR_S3_ACCESS_KEY_ID>
+S3_SECRET_ACCESS_KEY=<YOUR_S3_SECRET_ACCESS_KEY>
+S3_REGION=<YOUR_S3_REGION>
+S3_BUCKET=<YOUR_S3_BUCKET>
+S3_ENDPOINT=<YOUR_S3_ENDPOINT>
 ```
 
 ### Additional Configuration for MinIO and Supabase
@@ -58192,7 +58470,9 @@ Medusa provides [multiple Locking Module Providers](#list-of-locking-module-prov
 
 ### Default Locking Module Provider
 
-By default, Medusa uses the In-Memory Locking Module Provider. This provider uses a plain JavaScript map to store the locks. While this is useful for development, it is not recommended for production environments as it is only intended for use in a single-instance environment.
+On Cloud, Medusa provisions a managed [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) instance for each environment and configures the [Redis Locking Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/locking/redis/index.html.md) to use it. So, you don't configure a Locking Module Provider for your deployed application.
+
+Locally, Medusa uses the In-Memory Locking Module Provider by default. This provider uses a plain JavaScript map to store the locks. While this is useful for development, it is not recommended for production environments as it is only intended for use in a single-instance environment.
 
 To add more providers, you can register them in the `medusa-config.ts` file. For example:
 
@@ -58240,7 +58520,20 @@ While this provider is suitable for production environments, it's recommended to
 
 ***
 
+## Set Up on Cloud
+
+Cloud configures the [Redis Locking Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/locking/redis/index.html.md) with a managed [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) instance by default. To use the PostgreSQL Locking Module Provider instead:
+
+1. Register the provider in `medusa-config.ts`, as explained in the [next section](#register-the-postgresql-locking-module-provider). The provider uses your environment's managed [database](https://docs.medusajs.com/cloud/database/index.html.md), so it doesn't need environment variables.
+2. Commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) and [runs the migrations](https://docs.medusajs.com/cloud/database#running-migrations-on-cloud/index.html.md) that create the `locking` table, so you don't run `db:migrate` yourself.
+
+***
+
 ## Register the PostgreSQL Locking Module Provider
+
+### Prerequisites
+
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 
 To register the PostgreSQL Locking Module Provider, add it to the list of providers of the Locking Module in `medusa-config.ts`:
 
@@ -58268,7 +58561,7 @@ module.exports = defineConfig({
 
 ### Run Migrations
 
-The PostgreSQL Locking Module Provider requires a new `locking` table in the database to store the locks. So, you must run the migrations after registering the provider:
+The PostgreSQL Locking Module Provider requires a new `locking` table in the database to store the locks. So, in local development, you must run the migrations after registering the provider:
 
 ```bash
 npx medusa db:migrate
@@ -58331,7 +58624,16 @@ The Redis Locking Module Provider uses Redis to manage locks across multiple ins
 
 This provider is recommended for production environments where Medusa is running in a multi-instance setup.
 
-Our Cloud offering automatically provisions a Redis instance and configures the Redis Locking Module Provider for you. Learn more in the [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) Cloud documentation.
+***
+
+## Set Up on Cloud
+
+Cloud provisions a [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) instance for each environment and configures the Redis Locking Module Provider to use it. So, you don't configure the module or set up Redis yourself.
+
+To deploy your application with the managed Redis Locking Module Provider:
+
+1. Remove the Redis Locking Module Provider from `medusa-config.ts` if you registered it. Remove it entirely instead of registering it only when an environment variable is set. If the registration runs during the Cloud build, it conflicts with the module that Cloud configures and the deployment fails.
+2. Commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that uses the managed Redis Locking Module Provider.
 
 ***
 
@@ -58339,6 +58641,7 @@ Our Cloud offering automatically provisions a Redis instance and configures the 
 
 ### Prerequisites
 
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 - [A redis server set up locally or a database in your deployed application.](https://redis.io/download)
 
 To register the Redis Locking Module Provider, add it to the list of providers of the Locking Module in `medusa-config.ts`:
@@ -58370,9 +58673,11 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the following environment variable:
+On Cloud, you don't need to set any environment variables, since Cloud manages the Redis instance for you.
 
-```bash
+For local development, add the `LOCKING_REDIS_URL` environment variable to your `.env` file with your Redis server's URL:
+
+```bash title=".env"
 LOCKING_REDIS_URL=<YOUR_LOCKING_REDIS_URL>
 ```
 
@@ -58396,6 +58701,8 @@ The default Redis URL in a local environment is `redis://localhost:6379`.
 
 ## Test out the Module
 
+### Test Locally
+
 To test out the Redis Locking Module Provider, start the Medusa application:
 
 ```bash
@@ -58411,6 +58718,12 @@ info:    Connection to Redis in "locking-redis" provider established
 This message indicates that the Redis Locking Module Provider has successfully connected to the Redis server.
 
 If you set the `is_default` flag to `true` in the provider options or you only registered the Redis Locking Module Provider, the Locking Module will use it by default for all locking operations.
+
+### Test on Cloud
+
+To test the module in a deployed environment, commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that uses the Redis Locking Module Provider with a managed Redis instance.
+
+Once the deployment finishes, check the environment's [runtime logs](https://docs.medusajs.com/cloud/logs#view-runtime-logs-on-cloud/index.html.md) for the `Connection to Redis` message shown above.
 
 ***
 
@@ -58468,9 +58781,17 @@ const step1 = createStep(
 
 The Local Notification Module Provider simulates sending a notification, but only logs the notification's details in the terminal. This is useful for development.
 
+On Cloud, Medusa configures [Medusa Emails](https://docs.medusajs.com/cloud/emails/index.html.md), a managed email service, for the `email` channel by default, which is more suitable for production.
+
+Use the Local Notification Module Provider for the `email` channel only in local development, as explained in the [Medusa Emails](https://docs.medusajs.com/cloud/emails#local-development-email-setup/index.html.md) Cloud guide.
+
 ***
 
 ## Register the Local Notification Module
+
+### Prerequisites
+
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 
 The Local Notification Module Provider is registered by default in your application. It's configured to run on the `feed` channel.
 
@@ -58823,6 +59144,7 @@ Cloud offers [Medusa Emails](https://docs.medusajs.com/cloud/emails/index.html.m
 
 ### Prerequisites
 
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 - [SendGrid account](https://signup.sendgrid.com)
 - [Setup SendGrid single sender](https://docs.sendgrid.com/ui/sending-email/sender-verification)
 - [SendGrid API Key](https://docs.sendgrid.com/ui/account-and-settings/api-keys)
@@ -58858,12 +59180,21 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the following environment variables:
+Set the `SENDGRID_API_KEY` and `SENDGRID_FROM` environment variables:
 
-```bash
+1. In Cloud, add the variables in your environment's [Environment variables settings](https://docs.medusajs.com/cloud/environments/environment-variables#add-environment-variables-on-cloud/index.html.md). Mark `SENDGRID_API_KEY` as **Sensitive**, and enable the **Build** toggle for both variables, since `medusa-config.ts` reads them during the build.
+2. For local development, add the variables to your `.env` file:
+
+```bash title=".env"
 SENDGRID_API_KEY=<YOUR_SENDGRID_API_KEY>
 SENDGRID_FROM=<YOUR_SENDGRID_FROM>
 ```
+
+### Deploy to Cloud
+
+On Cloud, Medusa sends `email` notifications with [Medusa Emails](https://docs.medusajs.com/cloud/emails/index.html.md) unless you configure another provider for the `email` channel. Once you register the SendGrid Notification Module Provider for that channel, Cloud uses it instead.
+
+Commit the changes to `medusa-config.ts` and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that sends emails with SendGrid. Add the environment variables in Cloud before you push, so the deployment uses them.
 
 ### SendGrid Notification Module Options
 
@@ -58993,13 +59324,21 @@ In this subscriber, you:
 
 Medusa stores the `data` property of every notification, and the [List Notifications](https://docs.medusajs.com/api/admin/notifications/list-notifications) and [Get Notification](https://docs.medusajs.com/api/admin/notifications/get-a-notification) API routes return it. Any admin user with the `notification:read` [RBAC policy](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/enterprise/rbac/concepts#policy/index.html.md) can view it, so don't pass data that those users shouldn't see.
 
-Then, start the Medusa application:
+### Test Locally
+
+Start the Medusa application:
 
 ```bash
 npm run dev
 ```
 
 And create a product either using the [API route](https://docs.medusajs.com/api/admin/products/create-product) or the [Medusa Admin](https://docs.medusajs.com/user-guide/products/create/index.html.md). This runs the subscriber and sends an email using SendGrid.
+
+### Test on Cloud
+
+To test the module in a deployed environment, commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) with your changes.
+
+Once the deployment finishes, create a product from the environment's Medusa Admin dashboard, then check the recipient's inbox for the email. If the email doesn't arrive, check the environment's [runtime logs](https://docs.medusajs.com/cloud/logs#view-runtime-logs-on-cloud/index.html.md) for errors.
 
 ### Other Events to Handle
 
@@ -59094,11 +59433,15 @@ This subscriber will run every time a product is created, and it will execute th
 
 # Infrastructure Modules
 
-Medusa's architectural functionalities, such as emitting and subscribing to events or caching data, are all implemented in Infrastructure Modules. An Infrastructure Module is a package that can be installed and used in any Medusa application. These modules allow you to choose and integrate custom services for architectural purposes.
+Medusa's architectural functionalities, such as emitting and subscribing to events or caching data, are all implemented in Infrastructure Modules. An Infrastructure Module is a package that can be installed and used in any Medusa application. These modules allow you to choose and integrate custom services for architectural purposes, such as Redis for events or S3 for file storage. Learn more in [the Architecture documentation](https://docs.medusajs.com/docs/learn/introduction/architecture/index.html.md).
 
-For example, you can use our [Redis Event Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/event/redis/index.html.md) to handle event functionalities, or create a custom module that implements these functionalities with Memcached. Learn more in [the Architecture documentation](https://docs.medusajs.com/docs/learn/introduction/architecture/index.html.md).
+On [Cloud](https://docs.medusajs.com/cloud/index.html.md), Medusa already configures most of these modules for you with managed infrastructure in every environment. This includes Redis for events, S3 for file storage, and Medusa Search for search functionality, among others. So, you can focus on building your features instead of setting up and maintaining that infrastructure.
+
+In local development, Medusa uses the in-memory, local, or PostgreSQL alternatives of these modules by default, so you don't need to set up Redis or S3 to run your application locally.
 
 This section of the documentation showcases Medusa's Infrastructure Modules, how they work, and how to use them in your Medusa application.
+
+***
 
 ## Analytics Module
 
@@ -59128,8 +59471,8 @@ An Event Module implements the underlying publish/subscribe system that handles 
 
 The following Event modules are provided by Medusa. You can also create your own event module as explained in [this guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/event/create/index.html.md).
 
-- [Local](https://docs.medusajs.com/infrastructure-modules/event/local/index.html.md)
 - [Redis](https://docs.medusajs.com/infrastructure-modules/event/redis/index.html.md)
+- [Local](https://docs.medusajs.com/infrastructure-modules/event/local/index.html.md)
 
 ***
 
@@ -59139,8 +59482,8 @@ The File Module handles file upload and storage of assets, such as product image
 
 The File Module has module providers that implement the underlying logic of handling uploads and downloads of assets, such as integrating third-party services. The following File Module Providers are provided by Medusa. You can also create a custom provider as explained in the [Create File Module Provider guide](https://docs.medusajs.com/references/file-provider-module/index.html.md).
 
-- [Local](https://docs.medusajs.com/infrastructure-modules/file/local/index.html.md)
 - [AWS S3 (and Compatible APIs)](https://docs.medusajs.com/infrastructure-modules/file/s3/index.html.md)
+- [Local](https://docs.medusajs.com/infrastructure-modules/file/local/index.html.md)
 
 ***
 
@@ -59161,6 +59504,7 @@ The Notification Module handles sending notifications to users or customers, suc
 
 The Notification Module has module providers that implement the underlying logic of sending notifications, typically through integrating a third-party service. The following modules are provided by Medusa. You can also create a custom provider as explained in the [Create Notification Module Provider guide](https://docs.medusajs.com/references/notification-provider-module/index.html.md).
 
+- [Medusa Emails](https://docs.medusajs.com/cloud/emails/index.html.md)
 - [Local](https://docs.medusajs.com/infrastructure-modules/notification/local/index.html.md)
 - [SendGrid](https://docs.medusajs.com/infrastructure-modules/notification/sendgrid/index.html.md)
 
@@ -59180,8 +59524,8 @@ The Search Module provides full-text search functionality in your Medusa applica
 
 The Search Module has module providers that implement the underlying logic of indexing and searching documents in a search engine. The following Search Module Providers are provided by Medusa. You can also create a custom provider as explained in the [Create Search Module Provider guide](https://docs.medusajs.com/references/search/provider/index.html.md).
 
-- [PostgreSQL](https://docs.medusajs.com/infrastructure-modules/search/providers/postgres/index.html.md)
 - [Medusa Search](https://docs.medusajs.com/cloud/search/index.html.md)
+- [PostgreSQL](https://docs.medusajs.com/infrastructure-modules/search/providers/postgres/index.html.md)
 
 ### Search Module Guides
 
@@ -59197,8 +59541,8 @@ A Workflow Engine Module handles tracking and recording the transactions and sta
 
 The following Workflow Engine modules are provided by Medusa.
 
-- [In-Memory](https://docs.medusajs.com/infrastructure-modules/workflow-engine/in-memory/index.html.md)
 - [Redis](https://docs.medusajs.com/infrastructure-modules/workflow-engine/redis/index.html.md)
+- [In-Memory](https://docs.medusajs.com/infrastructure-modules/workflow-engine/in-memory/index.html.md)
 
 
 # Medusa Admin Dashboard Search
@@ -61142,9 +61486,11 @@ It also keeps a version per physical index it builds, so a definition change bui
 
 ## Configure the Search Module
 
-As of v2.21.1, the Search Module is registered by default in your Medusa application with the [PostgreSQL Search Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/providers/postgres/index.html.md), so you only declare the indexes to search. The module itself needs no extra configuration.
+As of v2.21.1, the Search Module is registered by default in your Medusa application, so you only declare the indexes to search. The module itself needs no extra configuration.
 
-On Cloud, [Medusa Search](https://docs.medusajs.com/cloud/search/index.html.md) is registered by default for all plans, unless you explicitly configure a different provider.
+On Cloud, Medusa configures [Medusa Search](https://docs.medusajs.com/cloud/search/index.html.md) as the Search Module's provider by default for all plans, unless you explicitly configure a different provider.
+
+Locally, Medusa configures the Search Module with the [PostgreSQL Search Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search/providers/postgres/index.html.md).
 
 ### Change Default Search Configuration
 
@@ -62465,12 +62811,13 @@ export const brandIndex = defineSearchIndex({
 
 The PostgreSQL Search Module Provider indexes and searches documents in your Medusa application's PostgreSQL database, using PostgreSQL's built-in full-text search. It can be used for development and in production.
 
-Cloud provides pre-configured search infrastructure for your Medusa application. You can use it to set up without configuring and managing your own search engine. Learn more in the [Medusa Search](https://docs.medusajs.com/cloud/search/index.html.md) documentation.
+On Cloud, Medusa configures [Medusa Search](https://docs.medusajs.com/cloud/search/index.html.md), a managed search service, by default. Medusa configures the PostgreSQL Search Module Provider only in local development, unless you [use it on Cloud](#use-the-provider-on-cloud).
 
 Refer to [Medusa Search vs PostgreSQL](https://docs.medusajs.com/cloud/search/postgres/index.html.md) for how this provider's support for index definitions, filters, facets, and search options differs from the other providers.
 
 ### Prerequisites
 
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 - [Medusa v2.21.1+](https://github.com/medusajs/medusa/releases/tag/v2.21.1)
 
 ***
@@ -62520,6 +62867,15 @@ If you're registering the provider for the first time, such as in an existing Me
 npx medusa db:migrate
 ```
 
+### Use the Provider on Cloud
+
+To use the PostgreSQL Search Module Provider in your Cloud environments instead of Medusa Search:
+
+1. Register the Search Module with the provider in `medusa-config.ts`, as shown in the [Change the Provider's Options](#change-the-providers-options) section, but without the `isDev` condition. A registration that runs during the Cloud build replaces Medusa Search. The provider uses your environment's managed [database](https://docs.medusajs.com/cloud/database/index.html.md), so it doesn't need environment variables.
+2. Commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) and [runs the migrations](https://docs.medusajs.com/cloud/database#running-migrations-on-cloud/index.html.md) that create the provider's tables, so you don't run `db:migrate` yourself.
+
+Refer to [Medusa Search vs PostgreSQL](https://docs.medusajs.com/cloud/search/postgres/index.html.md) to compare the two before you switch.
+
 ### PostgreSQL Search Module Provider Options
 
 |Option|Description|Default|
@@ -62530,6 +62886,8 @@ npx medusa db:migrate
 ## Test the PostgreSQL Search Module Provider
 
 To test the provider, make sure your application has a `product` index definition and that the index is allowed on the `/store/search` API route, as explained in the [Search Products guide](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/search#search-products/index.html.md).
+
+### Test Locally
 
 First, start your Medusa application:
 
@@ -62578,6 +62936,12 @@ You'll receive the products whose searchable fields match the query, ordered by 
   ]
 }
 ```
+
+### Test on Cloud
+
+If you [use the provider on Cloud](#use-the-provider-on-cloud), commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) with your changes.
+
+Once the deployment finishes, send the same search request to your environment's backend URL, such as `https://acme.medusajs.app/store/search`, with a publishable API key of that environment. Learn how to find the URL in the [Access Deployed Environment](https://docs.medusajs.com/cloud/environments/long-lived#access-deployed-environment/index.html.md) Cloud guide.
 
 ### Search Custom Data with the PostgreSQL Search Module Provider
 
@@ -63286,11 +63650,17 @@ The In-Memory Workflow Engine Module uses a plain JavaScript Map object to store
 
 This module is helpful for development or when you’re testing out Medusa, but it’s not recommended to be used in production.
 
-For production, it’s recommended to use modules like [Redis Workflow Engine Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/workflow-engine/redis/index.html.md).
+On Cloud, Medusa configures the [Redis Workflow Engine Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/workflow-engine/redis/index.html.md) with a managed [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) instance by default, which is more suitable for production.
+
+Use the In-Memory Workflow Engine Module only in local development.
 
 ***
 
 ## Register the In-Memory Workflow Engine Module
+
+### Prerequisites
+
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 
 The In-Memory Workflow Engine Module is registered by default in your application.
 
@@ -63322,7 +63692,9 @@ A Workflow Engine Module handles tracking and recording the transactions and sta
 
 ### Default Workflow Engine Module
 
-Medusa uses the [In-Memory Workflow Engine Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/workflow-engine/in-memory/index.html.md) by default. For production purposes, it's recommended to use the [Redis Workflow Engine Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/workflow-engine/redis/index.html.md) instead.
+On Cloud, Medusa provisions a managed [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) instance for each environment and configures the [Redis Workflow Engine Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/workflow-engine/redis/index.html.md) to use it. So, you don't configure a Workflow Engine Module for your deployed application.
+
+Locally, Medusa uses the [In-Memory Workflow Engine Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/workflow-engine/in-memory/index.html.md) by default. It's recommended to use the [Redis Workflow Engine Module](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/workflow-engine/redis/index.html.md) in production instead.
 
 ***
 
@@ -63386,7 +63758,16 @@ Medusa provides the following Workflow Engine Modules.
 
 The Redis Workflow Engine Module uses Redis to track workflow executions and handle their subscribers. In production, it's recommended to use this module.
 
-Our Cloud offering automatically provisions a Redis instance and configures the Redis Workflow Engine Module for you. Learn more in the [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) Cloud documentation.
+***
+
+## Set Up on Cloud
+
+Cloud provisions a [Redis](https://docs.medusajs.com/cloud/redis/index.html.md) instance for each environment and configures the Redis Workflow Engine Module to use it. So, you don't configure the module or set up Redis yourself.
+
+To deploy your application with the managed Redis Workflow Engine Module:
+
+1. Remove the Redis Workflow Engine Module from `medusa-config.ts` if you registered it. Remove it entirely instead of registering it only when an environment variable is set. If the registration runs during the Cloud build, it conflicts with the module that Cloud configures and the deployment fails.
+2. Commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that uses the managed Redis Workflow Engine Module.
 
 ***
 
@@ -63394,6 +63775,7 @@ Our Cloud offering automatically provisions a Redis instance and configures the 
 
 ### Prerequisites
 
+- [Medusa application set up locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md)
 - [Redis installed and Redis server running](https://redis.io/docs/getting-started/installation/)
 
 Add the module into the `modules` property of the exported object in `medusa-config.ts`:
@@ -63417,9 +63799,11 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the following environment variables:
+On Cloud, you don't need to set any environment variables, since Cloud manages the Redis instance for you.
 
-```bash
+For local development, add the `WE_REDIS_URL` environment variable to your `.env` file with your Redis server's URL:
+
+```bash title=".env"
 WE_REDIS_URL=<YOUR_REDIS_URL>
 ```
 
@@ -63447,6 +63831,8 @@ All options below are set within the `redis` property of the module's options ob
 
 ## Test the Module
 
+### Test Locally
+
 To test the module, start the Medusa application:
 
 ```bash
@@ -63458,6 +63844,12 @@ You'll see the following message in the terminal's logs:
 ```bash
 Connection to Redis in module 'workflow-engine-redis' established
 ```
+
+### Test on Cloud
+
+To test the module in a deployed environment, commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](https://docs.medusajs.com/cloud/deployments#how-are-deployments-created/index.html.md) that uses the Redis Workflow Engine Module with a managed Redis instance.
+
+Once the deployment finishes, check the environment's [runtime logs](https://docs.medusajs.com/cloud/logs#view-runtime-logs-on-cloud/index.html.md) for the `Connection to Redis` message shown above.
 
 
 ## Workflows

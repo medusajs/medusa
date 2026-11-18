@@ -1,5 +1,15 @@
 # @medusajs/oas-cli
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17743](https://github.com/medusajs/medusa/pull/17743) [`d7bc649`](https://github.com/medusajs/medusa/commit/d7bc64993fa9cdd53864dc051434398c8bdc83d4) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(medusa-oas-cli): download the public OAS of the installed Medusa version
+
+- Updated dependencies [[`3d9104d`](https://github.com/medusajs/medusa/commit/3d9104d131aa56e2490d14e3ed804d93592305fa), [`b810334`](https://github.com/medusajs/medusa/commit/b810334cbf0c0ba3a401d82182ef06f2432e2716), [`48b6d2d`](https://github.com/medusajs/medusa/commit/48b6d2d42089f8f4ba846a30a84f2031eca34b0f), [`75d8121`](https://github.com/medusajs/medusa/commit/75d81218810f5c8a60951a917d2f899bf3967d2f), [`b89101c`](https://github.com/medusajs/medusa/commit/b89101ca53b1ab106549df31e0c38a50e755aefc), [`ce6b88a`](https://github.com/medusajs/medusa/commit/ce6b88a3f01f7537dfa734ebf31e650c114a761d), [`d3fdf50`](https://github.com/medusajs/medusa/commit/d3fdf50eda77fb9bce7c4bc52bbc440a8e8835ad), [`1532c20`](https://github.com/medusajs/medusa/commit/1532c20d65386c4c0b535ec104c6ef309bc176ac), [`fd943bf`](https://github.com/medusajs/medusa/commit/fd943bf0ab1079947dd63758933b8adc5b22c114), [`93d4cc3`](https://github.com/medusajs/medusa/commit/93d4cc370e1b31be28c9b93b465c5dcf176616fb), [`33af8f3`](https://github.com/medusajs/medusa/commit/33af8f3b4b581aabb4e655307b3055b7263908ef), [`9db3748`](https://github.com/medusajs/medusa/commit/9db37488d4be757b0139aac1e15fb79ed395fc6c), [`a645563`](https://github.com/medusajs/medusa/commit/a645563f7269549feef2265c436c5cdc69ffa1b1), [`08c9355`](https://github.com/medusajs/medusa/commit/08c9355d2008a9d04bd885a89d18a602a9d5e37c), [`90901f3`](https://github.com/medusajs/medusa/commit/90901f39c53ec1ee719dfda825ec576613bf5a1b)]:
+  - @medusajs/medusa@2.22.7
+  - @medusajs/utils@2.22.7
+
 ## 2.22.6
 
 ### Patch Changes

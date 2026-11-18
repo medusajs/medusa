@@ -77,7 +77,8 @@ describe("normalizeAuditLog", () => {
   it.each([
     [{}, '"action"'],
     [{ action: "  " }, '"action"'],
-    [{ action: "a", actor_type: "robot" }, '"actor_type"'],
+    [{ action: "a", actor_type: " " }, '"actor_type"'],
+    [{ action: "a", actor_type: 5 }, '"actor_type"'],
     [{ action: "a", outcome: "maybe" }, '"outcome"'],
     [{ action: "a", started_at: "not a date" }, '"started_at"'],
     [{ action: "a", ended_at: "not a date" }, '"ended_at"'],

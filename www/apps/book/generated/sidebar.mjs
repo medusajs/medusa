@@ -1075,6 +1075,15 @@ export const generatedSidebars = [
             "children": [],
             "chapterTitle": "5.4. Type Aliases",
             "number": "5.4."
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "TypeScript 6 and 7",
+            "path": "/learn/configurations/typescript",
+            "children": [],
+            "chapterTitle": "5.5. TypeScript 6 and 7",
+            "number": "5.5."
           }
         ],
         "chapterTitle": "5. Configurations",

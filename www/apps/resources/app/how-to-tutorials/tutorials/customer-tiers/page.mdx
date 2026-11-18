@@ -33,12 +33,13 @@ A customer tiers system allows you to segment customers based on their purchase 
 
 By following this tutorial, you will learn how to:
 
-- Install and set up Medusa.
+- Create a Cloud project and set it up locally.
 - Create a Tier Module to manage customer tiers and tier rules.
 - Customize the Medusa Admin to manage tiers.
 - Automatically assign customers to tiers based on their purchase history.
 - Automatically apply tier promotions to customer carts.
 - Customize the Next.js Starter Storefront to display tier information to customers.
+- Publish the customizations to Cloud.
 
 You can follow this tutorial whether you're new to Medusa or an advanced Medusa developer.
 
@@ -61,9 +62,13 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
+  {
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
   {
     text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
@@ -78,23 +83,11 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose Yes.
-
-Afterward, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -345,7 +338,6 @@ import CustomerModule from "@medusajs/medusa/customer"
 export default defineLink(
   {
     linkable: TierModule.linkable.tier,
-    filterable: ["id"],
   },
   {
     linkable: CustomerModule.linkable.customer,
@@ -356,7 +348,7 @@ export default defineLink(
 
 You define a link using the `defineLink` function from the Modules SDK. It accepts two parameters:
 
-1. An object indicating the first data model in the link. You pass the link configurations for the `Tier` data model from the Tier Module. You also specify the `id` property as filterable, allowing you to filter customers by their tier later using the [Index Module](!docs!/learn/fundamentals/query/index-module).
+1. An object indicating the first data model in the link. You pass the link configurations for the `Tier` data model from the Tier Module.
 2. An object indicating the second data model in the link. You pass the linkable configurations of the Customer Module's `Customer` data model. You set `isList` to `true` because a tier can have multiple customers.
 
 This link allows you to retrieve and manage customers associated with a tier, and vice versa.
@@ -1868,7 +1860,7 @@ export async function GET(
   const { id } = req.params
 
   // Query customers linked to this tier
-  const { data: customers, metadata } = await query.index({
+  const { data: customers, metadata } = await query.graph({
     entity: "customer",
     filters: {
       tier: {
@@ -1880,7 +1872,7 @@ export async function GET(
 
   res.json({
     customers,
-    count: metadata?.estimate_count || 0,
+    count: metadata?.count || 0,
     offset: metadata?.skip || 0,
     limit: metadata?.take || 15,
   })
@@ -1891,7 +1883,7 @@ You export a `GET` function, which exposes a `GET` API route at `/admin/tiers/:i
 
 In the route handler, you resolve Query from the Medusa container and use it to retrieve customers linked to the tier with the given ID.
 
-Notice that you use the `query.index` method. This method is similar to `query.graph` but allows you to filter by linked records using the [Index Module](!docs!/learn/fundamentals/query/index-module).
+Notice that you filter customers by the `tier` linked data model. Query's `graph` method [filters by linked data models](!docs!/learn/fundamentals/query#filter-by-linked-data-models-property) in the database, so it only retrieves the customers linked to the tier.
 
 You return the customers in the response.
 
@@ -1928,50 +1920,7 @@ You set the following configurations:
 - `isList`: Set to `true` to indicate that the API route returns a list of records.
 - `defaults`: An array of fields to return by default if the client doesn't specify any fields in the request.
 
-### c. Install Index Module
-
-The [Index Module](!docs!/learn/fundamentals/query/index-module) is a tool for performing high-performance queries across modules, such as filtering linked modules.
-
-The Index Module is currently experimental, so you need to install and configure it manually.
-
-To install the Index Module, run the following command in the `apps/backend` directory:
-
-```bash npm2yarn
-npm install @medusajs/index
-```
-
-Then, add the following to your Medusa application's configuration file:
-
-```ts title="medusa-config.ts"
-export default config({
-  modules: [
-    // ...
-    {
-      resolve: "@medusajs/index",
-    },
-  ],
-})
-```
-
-Next, run the migrations to create the necessary tables for the Index Module in your database:
-
-```bash npm2yarn
-npx medusa db:migrate
-```
-
-Lastly, start the Medusa application to ingest the data into the Index Module:
-
-```bash npx2yarn
-npm run dev
-```
-
-You can now use the Index Module to filter customers by their tier. You'll test out the API route when you customize the Medusa Admin dashboard in the next step.
-
-<Note>
-
-Refer to the [Index Module](!docs!/learn/fundamentals/query/index-module) documentation to learn more.
-
-</Note>
+You'll test out the API route when you customize the Medusa Admin dashboard in the next step.
 
 ---
 
@@ -4147,6 +4096,27 @@ To test the customer tier component on the order confirmation page, make sure bo
 Then, on the storefront, place an order. The order confirmation page will display the customer's tier with a progress bar showing their progress toward the next tier.
 
 ![Customer tier component on order confirmation page](https://res.cloudinary.com/dza7lstvk/image/upload/v1764078663/Medusa%20Resources/CleanShot_2025-11-25_at_15.50.50_2x_liqi8r.png)
+
+---
+
+## Step 15: Publish to Cloud
+
+After you test the customer tiers feature locally, publish it to your Cloud project.
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/customer-tiers
+git add .
+git commit -m "Add customer tiers"
+git push origin feat/customer-tiers
+```
+
+Then, on GitHub, open a pull request from the `feat/customer-tiers` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+Your local database and the environment's database are separate, so after the deployment, create the tiers and their rules again from the deployed environment's Medusa Admin.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

@@ -1,5 +1,13 @@
 # @medusajs/http-types-generator
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17752](https://github.com/medusajs/medusa/pull/17752) [`ca52dd8`](https://github.com/medusajs/medusa/commit/ca52dd80d23c43dfe49b512baf3f8fa28762c4b5) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(http-types-generator): emit fields with a `.default()` value as optional
+
+- [#17753](https://github.com/medusajs/medusa/pull/17753) [`4af2ddc`](https://github.com/medusajs/medusa/commit/4af2ddc226e7145f5c8b6d190e35accd0b0b1692) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(http-types-generator): accept tsconfig files with comments and trailing commas
+
 ## 2.22.6
 
 ## 2.22.5

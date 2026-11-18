@@ -15318,10 +15318,28 @@
             "file": {
               "type": "string"
             },
+            "audit_log": {
+              "type": "string"
+            },
             "notification": {
               "type": "string"
             },
             "workflow_execution": {
+              "type": "string"
+            },
+            "search_index": {
+              "type": "string"
+            },
+            "search_index_sync": {
+              "type": "string"
+            },
+            "index_engine": {
+              "type": "string"
+            },
+            "view_configuration": {
+              "type": "string"
+            },
+            "layout_configuration": {
               "type": "string"
             },
             "store_locale": {
@@ -15409,8 +15427,14 @@
             "fulfillment_set",
             "service_zone",
             "file",
+            "audit_log",
             "notification",
             "workflow_execution",
+            "search_index",
+            "search_index_sync",
+            "index_engine",
+            "view_configuration",
+            "layout_configuration",
             "store_locale",
             "tax_provider",
             "tax_rate",

@@ -74,3 +74,70 @@ Do not compensate account holder creation with a provider-side delete in your cu
 The built-in [createPaymentSessionsWorkflow](/references/medusa-workflows/createPaymentSessionsWorkflow) accounts for this behavior by calling the `createPaymentAccountHolderStep` with `noCompensation: true`. This means the step is not compensated when the workflow rolls back. If the account holder was already linked to the customer before the workflow ran, the step returns the existing account holder and skips provider-side creation entirely.
 
 If you build a custom workflow that creates account holders, use the same `noCompensation: true` config on `createPaymentAccountHolderStep`, or omit a compensation function that calls `deleteAccountHolder` on the provider.
+
+---
+
+## Replace Missing Account Holders
+
+<Note>
+
+Replacing missing account holders is available since Medusa [v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+
+</Note>
+
+An account holder in Medusa can point to a customer that no longer exists in the third-party payment provider. For example, this happens when you copy your database from an environment that uses a different payment provider account, such as copying a production database to a staging environment that uses a Stripe test account.
+
+### Replacement in the Payment Session Flow
+
+The [createPaymentSessionsWorkflow](/references/medusa-workflows/createPaymentSessionsWorkflow) handles missing account holders automatically:
+
+1. It tries to create the payment session with the customer's existing account holder using the `tryCreatePaymentSessionStep`.
+2. If the payment provider reports that the account holder doesn't exist, the workflow uses the `replacePaymentAccountHolderStep` to create a new account holder in the provider.
+3. The workflow then creates the payment session again with the replacement account holder.
+
+The replacement keeps the account holder's ID in Medusa, so its link to the customer stays the same. However, payment methods saved under the old provider-side customer aren't available anymore.
+
+### Replace an Account Holder Manually
+
+You can also replace an account holder using the `replaceAccountHolder` method of the Payment Module's service. The method creates a new account holder in the payment provider, updates the `external_id`, `email`, and `data` fields of the existing `AccountHolder` record, then deletes the old account holder in the provider.
+
+For example:
+
+```ts
+const accountHolder =
+  await paymentModuleService.replaceAccountHolder({
+    id: "acchld_123",
+    provider_id: "pp_stripe_stripe",
+    context: {
+      customer: {
+        id: "cus_123",
+        email: "jane@example.com",
+      },
+    },
+  })
+```
+
+The method throws an error if the payment provider doesn't support account holders.
+
+In a workflow, use the `replacePaymentAccountHolderStep` from `@medusajs/medusa/core-flows` instead, which accepts the same input.
+
+### Support Replacement in Custom Payment Providers
+
+For Medusa to detect a missing account holder, your custom payment provider must throw a `MedusaError` with the `MedusaError.Codes.ACCOUNT_HOLDER_NOT_FOUND` code when the third-party service reports that the customer doesn't exist. For example, in the provider's `initiatePayment` method:
+
+```ts
+import { MedusaError } from "@medusajs/framework/utils"
+
+// in the provider's service...
+if (isCustomerMissingError(error)) {
+  throw new MedusaError(
+    MedusaError.Types.NOT_FOUND,
+    error.message,
+    MedusaError.Codes.ACCOUNT_HOLDER_NOT_FOUND
+  )
+}
+```
+
+Where `isCustomerMissingError` is a placeholder for your own check of the third-party service's error.
+
+Since replacing an account holder deletes the old one in the provider, your provider's `deleteAccountHolder` method should also succeed without errors if the customer doesn't exist in the third-party service anymore. The Stripe and Medusa Payments providers already implement both behaviors.

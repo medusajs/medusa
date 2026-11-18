@@ -1,5 +1,17 @@
 # Change Log
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17521](https://github.com/medusajs/medusa/pull/17521) [`ce6b88a`](https://github.com/medusajs/medusa/commit/ce6b88a3f01f7537dfa734ebf31e650c114a761d) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(utils,create-medusa-app): escape database names in database creation and existence queries
+
+- [#17794](https://github.com/medusajs/medusa/pull/17794) [`3e5937b`](https://github.com/medusajs/medusa/commit/3e5937b970b9c66068f57a9a7ed250ebeaa9105d) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): support installing projects with Yarn v1
+
+- Updated dependencies []:
+  - @medusajs/deps@2.22.7
+  - @medusajs/telemetry@2.22.7
+
 ## 2.22.6
 
 ### Patch Changes

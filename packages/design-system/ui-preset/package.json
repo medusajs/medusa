@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/ui-preset",
-  "version": "2.22.6",
+  "version": "2.22.7",
   "description": "Medusa UI preset",
   "license": "MIT",
   "repository": {
@@ -34,7 +34,7 @@
     "tailwindcss": "^3.4.3 || ^4.0.0"
   },
   "devDependencies": {
-    "@medusajs/toolbox": "2.22.6",
+    "@medusajs/toolbox": "2.22.7",
     "tailwindcss": "^4.3.3"
   },
   "publishConfig": {
