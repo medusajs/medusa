@@ -6,7 +6,11 @@ import {
   SignatureReflection,
 } from "typedoc"
 import { formatWorkflowDiagramComponent } from "../../utils/format-workflow-diagram-component.js"
-import { findReflectionInNamespaces, getProjectChild } from "utils"
+import {
+  findReflectionInNamespaces,
+  getProjectChild,
+  getReflectionUrl,
+} from "utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper(
@@ -112,9 +116,11 @@ function getStep({
         ? Handlebars.helpers.comments(associatedReflection.comment, true)
         : "",
     link:
-      type === "hook" || !associatedReflection?.url
+      type === "hook" || !getReflectionUrl(associatedReflection)
         ? `#${document.name}`
-        : Handlebars.helpers.relativeURL(associatedReflection.url),
+        : Handlebars.helpers.relativeURL(
+            getReflectionUrl(associatedReflection)
+          ),
     depth: parseInt(depth),
   }
 }

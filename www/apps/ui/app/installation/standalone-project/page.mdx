@@ -23,8 +23,8 @@ The icons package is installed independently from Medusa UI. Learn how to instal
 To use Medusa UI in your standalone project, you must have:
 
 - React v18.3.1 or later (within the React 18 range) installed. The package's peer dependency requires `react@^18.3.1`, so React 19 is not officially supported yet. Most React 18-compatible frameworks and libraries, such as Next.js and Vite, satisfy this requirement.
-- [Tailwind CSS](https://v3.tailwindcss.com/) installed. The components in Medusa UI are styled using Tailwind CSS, so you'll need to install it in your project as well.
-    - Medusa UI was built with Tailwind CSS v3, but it may also support v4.
+- [Tailwind CSS](https://tailwindcss.com/) v3.4.3 or later, or v4, installed. The components in Medusa UI are styled using Tailwind CSS, so you'll need to install it in your project as well.
+    - Since `@medusajs/ui-preset` v2.22.3, the preset supports both Tailwind CSS v3 and v4.
 
 ---
 
@@ -52,11 +52,31 @@ npm install @medusajs/ui-preset --save-dev
 
 ## Step 3: Configure Tailwind CSS
 
-Next, you'll need to configure Tailwind CSS to use the Medusa UI preset and explicitly add the paths to the Medusa UI components as content files.
+Next, you'll need to configure Tailwind CSS to use the Medusa UI preset and explicitly add the paths to the Medusa UI components as content files. The configurations differ based on your Tailwind CSS version.
+
+### Tailwind CSS v4 Configurations
+
+<Note title="Version Note">
+
+The CSS-first theme is available since `@medusajs/ui-preset` v2.22.3. In earlier versions, use the [Tailwind CSS v3 configurations](#tailwind-css-v3-configurations) with the `@config` directive instead.
+
+</Note>
+
+In Tailwind CSS v4, import the Medusa UI theme in the CSS file that imports Tailwind CSS, and add the path to the Medusa UI components with the `@source` directive:
+
+```css title="globals.css"
+@import "tailwindcss";
+@import "@medusajs/ui-preset/theme.css";
+@source "../node_modules/@medusajs/ui/dist";
+```
+
+The `@medusajs/ui-preset/theme.css` file includes the Medusa UI design tokens, colors, shadows, fonts, typography utilities, and animations. It also defines a `dark` variant that applies dark mode styles when an element or its ancestor has the `dark` class or the `data-mode="dark"` attribute.
+
+Make sure the path in the `@source` directive is relative to your CSS file. For example, if your CSS file is at `src/app/globals.css`, use `@source "../../node_modules/@medusajs/ui/dist";`.
 
 ### Tailwind CSS v3 Configurations
 
-In Tailwind CSS v3, which is the recommended version to use with Medusa UI, you need to add the following configurations to your `tailwind.config.js` or `tailwind.config.ts` file:
+In Tailwind CSS v3, you need to add the following configurations to your `tailwind.config.js` or `tailwind.config.ts` file:
 
 1. Add the Medusa UI preset to the `presets` array.
 2. Ensure that the `content` field includes the path to the Medusa UI package.
@@ -99,19 +119,7 @@ module.exports = {
 
 ```
 
-### Tailwind CSS v4 Configurations
-
-Medusa UI isn't officially compatible with Tailwind CSS v4 yet, so use it with caution.
-
-In your CSS file that imports Tailwind CSS, add the following `@import`, `@config`, and `@source` directives:
-
-```css
-@import "tailwindcss";
-@source "../node_modules/@medusajs/ui";
-@config "@medusajs/ui-preset";
-```
-
-This will explicitly include the Medusa UI preset and its components in your Tailwind CSS build and apply the preset styles to your project.
+By default, the preset applies Medusa UI's dark mode styles based on the user's system preference. To apply them when an element has the `dark` class instead, set the `darkMode` field in your Tailwind CSS configurations to `"class"`.
 
 ---
 

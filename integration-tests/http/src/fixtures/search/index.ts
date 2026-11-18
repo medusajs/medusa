@@ -102,4 +102,23 @@ const customerIndex = defineSearchIndex({
   },
 })
 
-export default [productIndex, customerIndex]
+/**
+ * An index whose name differs from its entity, as applications may declare.
+ * The admin search checks it against the `customer` resource, not its name.
+ */
+const customerDirectoryFields = search.define({
+  id: search.keyword().filterable(),
+  email: search.keyword().searchable(),
+})
+
+const customerDirectoryIndex = defineSearchIndex({
+  name: "customer_directory",
+  entity: "customer",
+  fields: customerDirectoryFields,
+  seed: graphSeed<typeof customerDirectoryFields>({
+    fields: ["id", "email"],
+    batch_size: BATCH_SIZE,
+  }),
+})
+
+export default [productIndex, customerIndex, customerDirectoryIndex]

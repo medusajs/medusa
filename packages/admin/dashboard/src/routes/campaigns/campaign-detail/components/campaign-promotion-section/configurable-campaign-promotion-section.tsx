@@ -10,6 +10,10 @@ import { createTableAdapter } from "../../../../../lib/table/table-adapters"
 // Registers the `promotion_method` / `promotion_status` renderers globally.
 import "../../../../promotions/promotion-list/components/promotion-list-table/promotion-list-table-renderers"
 import { PromotionActions } from "./campaign-promotion-section"
+import {
+  useCampaignPermissions,
+  usePromotionPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 const ALLOWED_FILTERS = [
   "id",
@@ -28,6 +32,11 @@ export const ConfigurableCampaignPromotionSection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
   const { mutateAsync } = useAddOrRemoveCampaignPromotions(campaign.id)
+  const { canUpdate: canUpdateCampaign } = useCampaignPermissions()
+  const { canUpdate: canUpdatePromotion, canRead: canReadPromotion } =
+    usePromotionPermissions()
+
+  const canManage = canUpdateCampaign && canUpdatePromotion && canReadPromotion
 
   const commands = useMemo<DataTableCommand[]>(
     () => [
@@ -85,7 +94,12 @@ export const ConfigurableCampaignPromotionSection = ({
         },
         getRowHref: (row) => `/promotions/${row.id}`,
         renderRowActions: (row) => (
-          <PromotionActions promotion={row} campaignId={campaign.id} />
+          <PromotionActions
+            promotion={row}
+            campaignId={campaign.id}
+            canManage={canManage}
+            canUpdatePromotion={canUpdatePromotion}
+          />
         ),
         transformColumns: (columns) =>
           columns.map((column) => ({
@@ -95,7 +109,7 @@ export const ConfigurableCampaignPromotionSection = ({
               : column.filter,
           })),
       }),
-    [t, campaign.id, commands]
+    [t, campaign.id, commands, canManage, canUpdatePromotion]
   )
 
   return (

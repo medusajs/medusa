@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
+import { usePermissions } from "@medusajs/dashboard/hooks"
 import { Check, Component, PencilSquare, Plus } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import {
@@ -58,6 +59,7 @@ import {
 } from "../../../../lib/data/currencies"
 import { getFullDate } from "../../../../lib/utils/date-utils"
 import { convertNumber } from "../../../../lib/utils/number-utils"
+import { EDIT_DRAFT_ORDER_PERMISSIONS } from "../../../../lib/permissions"
 
 const STACKED_MODAL_ID = "items_stacked_modal"
 
@@ -130,6 +132,8 @@ const ItemsForm = ({ preview, currencyCode }: ItemsFormProps) => {
 
   const { handleSuccess } = useRouteModal()
   const { searchValue, onSearchValueChange, query } = useDebouncedSearch()
+  const { hasPermission } = usePermissions()
+  const canReadVariants = hasPermission("product_variant:read")
 
   const { mutateAsync: confirmOrderEdit } = useDraftOrderConfirmEdit(preview.id)
   const { mutateAsync: requestOrderEdit } = useDraftOrderRequestEdit(preview.id)
@@ -248,10 +252,12 @@ const ItemsForm = ({ preview, currencyCode }: ItemsFormProps) => {
                         </IconButton>
                       </DropdownMenu.Trigger>
                       <DropdownMenu.Content>
-                        <StackedModalTrigger
-                          type={StackedModalContent.ADD_ITEMS}
-                          setModalContent={setModalContent}
-                        />
+                        {canReadVariants && (
+                          <StackedModalTrigger
+                            type={StackedModalContent.ADD_ITEMS}
+                            setModalContent={setModalContent}
+                          />
+                        )}
                         <StackedModalTrigger
                           type={StackedModalContent.ADD_CUSTOM_ITEM}
                           setModalContent={setModalContent}
@@ -1230,5 +1236,9 @@ const customItemSchema = z.object({
   quantity: z.number(),
   unit_price: z.union([z.number(), z.string()]),
 })
+
+export const handle = {
+  permissions: EDIT_DRAFT_ORDER_PERMISSIONS,
+}
 
 export default Items

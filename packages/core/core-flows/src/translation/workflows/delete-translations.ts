@@ -26,7 +26,6 @@ export const deleteTranslationsWorkflowId = "delete-translations"
  * to delete translations in your custom flows.
  * 
  * @since 2.12.3
- * @featureFlag translation
  *
  * @example
  * const { result } = await deleteTranslationsWorkflow(container)

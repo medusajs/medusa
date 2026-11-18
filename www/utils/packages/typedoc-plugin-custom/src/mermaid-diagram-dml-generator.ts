@@ -102,8 +102,7 @@ export class MermaidDiagramDMLGenerator {
       return
     }
 
-    this.mainFileReflection =
-      context.project.getReflectionFromSymbol(mainFileSymbol)
+    this.mainFileReflection = context.getReflectionFromSymbol(mainFileSymbol)
   }
 
   findRelations(context: Context) {

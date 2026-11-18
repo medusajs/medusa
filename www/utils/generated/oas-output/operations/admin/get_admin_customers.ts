@@ -3403,7 +3403,10 @@
  *                 - customers
  *               properties:
  *                 customers:
- *                   $ref: "#/components/schemas/AdminCustomer"
+ *                   type: array
+ *                   description: The list of customers.
+ *                   items:
+ *                     $ref: "#/components/schemas/AdminCustomer"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

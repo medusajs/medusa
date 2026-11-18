@@ -17,13 +17,18 @@ export const GET = async (
 ) => {
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
-  const { data } = await query.graph({
-    entity: "product_option",
-    filters: {
-      id: req.params.id,
+  const { data } = await query.graph(
+    {
+      entity: "product_option",
+      filters: {
+        id: req.params.id,
+      },
+      fields: req.queryConfig.fields,
     },
-    fields: req.queryConfig.fields,
-  })
+    {
+      locale: req.locale,
+    }
+  )
 
   if (!data.length) {
     throw new MedusaError(

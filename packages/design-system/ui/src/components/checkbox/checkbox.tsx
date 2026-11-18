@@ -22,7 +22,7 @@ const Checkbox = React.forwardRef<
       ref={ref}
       checked={checked}
       className={clx(
-        "group inline-flex h-5 w-5 items-center justify-center outline-none",
+        "group inline-flex h-5 w-5 items-center justify-center outline-hidden",
         className
       )}
     >

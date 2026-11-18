@@ -15194,7 +15194,10 @@ paths:
                       - customers
                     properties:
                       customers:
-                        $ref: '#/components/schemas/AdminCustomer'
+                        type: array
+                        description: The list of customers.
+                        items:
+                          $ref: '#/components/schemas/AdminCustomer'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -17623,131 +17626,17 @@ paths:
                       title: customer_id
                       description: The ID of the draft order's customer.
                     billing_address:
-                      type: object
-                      description: The billing address's details.
-                      required:
-                        - first_name
-                        - last_name
-                        - phone
-                        - company
-                        - address_1
-                        - address_2
-                        - city
-                        - country_code
-                        - province
-                        - postal_code
-                        - metadata
-                      properties:
-                        first_name:
-                          type: string
-                          title: first_name
-                          description: The billing address's first name.
-                        last_name:
-                          type: string
-                          title: last_name
-                          description: The billing address's last name.
-                        phone:
-                          type: string
-                          title: phone
-                          description: The billing address's phone.
-                        company:
-                          type: string
-                          title: company
-                          description: The billing address's company.
-                        address_1:
-                          type: string
-                          title: address_1
-                          description: The billing address's first line.
-                        address_2:
-                          type: string
-                          title: address_2
-                          description: The billing address's second line.
-                        city:
-                          type: string
-                          title: city
-                          description: The billing address's city.
-                        country_code:
-                          type: string
-                          title: country_code
-                          description: The billing address's country code.
-                        province:
-                          type: string
-                          title: province
-                          description: The billing address's ISO 3166-2 province code. Must be lower-case.
-                          example: us-ca
-                          externalDocs:
-                            url: https://en.wikipedia.org/wiki/ISO_3166-2
-                            description: Learn more about ISO 3166-2
-                        postal_code:
-                          type: string
-                          title: postal_code
-                          description: The billing address's postal code.
-                        metadata:
-                          type: object
-                          description: The billing address's metadata.
+                      oneOf:
+                        - type: string
+                          title: billing_address
+                          description: The draft order's billing address.
+                        - $ref: '#/components/schemas/OrderAddress'
                     shipping_address:
-                      type: object
-                      description: The draft order's shipping address.
-                      required:
-                        - first_name
-                        - last_name
-                        - phone
-                        - company
-                        - address_1
-                        - address_2
-                        - city
-                        - country_code
-                        - province
-                        - postal_code
-                        - metadata
-                      properties:
-                        first_name:
-                          type: string
-                          title: first_name
-                          description: The shipping address's first name.
-                        last_name:
-                          type: string
-                          title: last_name
-                          description: The shipping address's last name.
-                        phone:
-                          type: string
-                          title: phone
-                          description: The shipping address's phone.
-                        company:
-                          type: string
-                          title: company
-                          description: The shipping address's company.
-                        address_1:
-                          type: string
-                          title: address_1
-                          description: The shipping address's first line.
-                        address_2:
-                          type: string
-                          title: address_2
-                          description: The shipping address's second line.
-                        city:
-                          type: string
-                          title: city
-                          description: The shipping address's city.
-                        country_code:
-                          type: string
-                          title: country_code
-                          description: The shipping address's country code.
-                        province:
-                          type: string
-                          title: province
-                          description: The shipping address's ISO 3166-2 province code. Must be lower-case.
-                          example: us-ca
-                          externalDocs:
-                            url: https://en.wikipedia.org/wiki/ISO_3166-2
-                            description: Learn more about ISO 3166-2
-                        postal_code:
-                          type: string
-                          title: postal_code
-                          description: The shipping address's postal code.
-                        metadata:
-                          type: object
-                          description: The shipping address's metadata.
+                      oneOf:
+                        - type: string
+                          title: shipping_address
+                          description: The draft order's shipping address.
+                        - $ref: '#/components/schemas/OrderAddress'
                     items:
                       type: array
                       description: The draft order's items.

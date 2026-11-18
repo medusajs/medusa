@@ -178,7 +178,8 @@ const docPageToMarkdown_ = unstable_cache(
   async (content: string): Promise<string> => {
     try {
       return docPageToMarkdown(JSON.parse(content), {
-        baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
+        // doc-model links are app-relative, so the base path is needed too
+        baseUrl: `${process.env.NEXT_PUBLIC_BASE_URL || ""}${process.env.NEXT_PUBLIC_BASE_PATH || ""}`,
       })
     } catch {
       return ""

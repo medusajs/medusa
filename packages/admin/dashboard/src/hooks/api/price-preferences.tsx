@@ -10,6 +10,7 @@ import {
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
+import { usePricePreferencePermissions } from "../use-resource-permissions"
 
 const PRICE_PREFERENCES_QUERY_KEY = "price-preferences" as const
 export const pricePreferencesQueryKeys = queryKeysFactory(
@@ -50,10 +51,13 @@ export const usePricePreferences = (
     "queryKey" | "queryFn"
   >
 ) => {
+  const { canRead } = usePricePreferencePermissions()
+
   const { data, ...rest } = useQuery({
     queryFn: () => sdk.admin.pricePreference.list(query),
     queryKey: pricePreferencesQueryKeys.list(query),
     ...options,
+    enabled: (options?.enabled ?? true) && canRead,
   })
 
   return { ...data, ...rest }
@@ -82,7 +86,7 @@ export const useUpsertPricePreference = (
         query
       )
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: pricePreferencesQueryKeys.list(),
       })
@@ -92,7 +96,7 @@ export const useUpsertPricePreference = (
         })
       }
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -108,12 +112,12 @@ export const useDeletePricePreference = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.pricePreference.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: pricePreferencesQueryKeys.list(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

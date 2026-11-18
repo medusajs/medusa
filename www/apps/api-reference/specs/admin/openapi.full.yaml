@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.22.2
+  version: 2.22.7
   title: Medusa Admin API
   license:
     name: MIT
@@ -186,6 +186,15 @@ tags:
       url: https://docs.medusajs.com/resources/commerce-modules/translation/concepts
     x-associatedSchema:
       $ref: '#/components/schemas/AdminLocale'
+  - name: Modules
+    description: |
+      A module is a package of reusable commerce or architectural functionality installed in a Medusa application, such as the Product Module or a custom module.
+      These API routes allow admin users to retrieve the installed modules, for example to check whether a module, such as the RBAC Module, is installed.
+    externalDocs:
+      description: Learn more about modules.
+      url: https://docs.medusajs.com/learn/fundamentals/modules
+    x-associatedSchema:
+      $ref: '#/components/schemas/AdminModule'
   - name: Multi-Factor Authentication
     description: |
       Multi-factor authentication (MFA) adds an extra layer of security to admin accounts by requiring additional verification factors during login, such as a TOTP code or a recovery code.
@@ -2539,7 +2548,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createCampaignsWorkflow
-      x-events: []
+      x-events:
+        - name: campaign.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the campaign
+            }
+            ```
+          description: Emitted when campaigns are created.
+          deprecated: false
+          since: 2.22.7
   /admin/campaigns/{id}:
     get:
       operationId: GetCampaignsId
@@ -2754,7 +2773,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updateCampaignsWorkflow
-      x-events: []
+      x-events:
+        - name: campaign.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the campaign
+            }
+            ```
+          description: Emitted when campaigns are updated.
+          deprecated: false
+          since: 2.22.7
     delete:
       operationId: DeleteCampaignsId
       summary: Delete a Campaign
@@ -2836,7 +2865,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: deleteCampaignsWorkflow
-      x-events: []
+      x-events:
+        - name: campaign.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the campaign
+            }
+            ```
+          description: Emitted when campaigns are deleted.
+          deprecated: false
+          since: 2.22.7
   /admin/campaigns/{id}/promotions:
     post:
       operationId: PostCampaignsIdPromotions
@@ -2918,7 +2957,19 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: addOrRemoveCampaignPromotionsWorkflow
-      x-events: []
+      x-events:
+        - name: campaign.promotions_updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the campaign
+              added_promotion_ids, // The IDs of the promotions added to the campaign
+              removed_promotion_ids, // The IDs of the promotions removed from the campaign
+            }
+            ```
+          description: Emitted when promotions are added to or removed from a campaign.
+          deprecated: false
+          since: 2.22.7
   /admin/claims:
     get:
       operationId: GetClaims
@@ -15221,7 +15272,10 @@ paths:
                       - customers
                     properties:
                       customers:
-                        $ref: '#/components/schemas/AdminCustomer'
+                        type: array
+                        description: The list of customers.
+                        items:
+                          $ref: '#/components/schemas/AdminCustomer'
         '400':
           $ref: '#/components/responses/400_error'
         '401':
@@ -18889,131 +18943,17 @@ paths:
                       title: customer_id
                       description: The ID of the draft order's customer.
                     billing_address:
-                      type: object
-                      description: The billing address's details.
-                      required:
-                        - first_name
-                        - last_name
-                        - phone
-                        - company
-                        - address_1
-                        - address_2
-                        - city
-                        - country_code
-                        - province
-                        - postal_code
-                        - metadata
-                      properties:
-                        first_name:
-                          type: string
-                          title: first_name
-                          description: The billing address's first name.
-                        last_name:
-                          type: string
-                          title: last_name
-                          description: The billing address's last name.
-                        phone:
-                          type: string
-                          title: phone
-                          description: The billing address's phone.
-                        company:
-                          type: string
-                          title: company
-                          description: The billing address's company.
-                        address_1:
-                          type: string
-                          title: address_1
-                          description: The billing address's first line.
-                        address_2:
-                          type: string
-                          title: address_2
-                          description: The billing address's second line.
-                        city:
-                          type: string
-                          title: city
-                          description: The billing address's city.
-                        country_code:
-                          type: string
-                          title: country_code
-                          description: The billing address's country code.
-                        province:
-                          type: string
-                          title: province
-                          description: The billing address's ISO 3166-2 province code. Must be lower-case.
-                          example: us-ca
-                          externalDocs:
-                            url: https://en.wikipedia.org/wiki/ISO_3166-2
-                            description: Learn more about ISO 3166-2
-                        postal_code:
-                          type: string
-                          title: postal_code
-                          description: The billing address's postal code.
-                        metadata:
-                          type: object
-                          description: The billing address's metadata.
+                      oneOf:
+                        - type: string
+                          title: billing_address
+                          description: The draft order's billing address.
+                        - $ref: '#/components/schemas/OrderAddress'
                     shipping_address:
-                      type: object
-                      description: The draft order's shipping address.
-                      required:
-                        - first_name
-                        - last_name
-                        - phone
-                        - company
-                        - address_1
-                        - address_2
-                        - city
-                        - country_code
-                        - province
-                        - postal_code
-                        - metadata
-                      properties:
-                        first_name:
-                          type: string
-                          title: first_name
-                          description: The shipping address's first name.
-                        last_name:
-                          type: string
-                          title: last_name
-                          description: The shipping address's last name.
-                        phone:
-                          type: string
-                          title: phone
-                          description: The shipping address's phone.
-                        company:
-                          type: string
-                          title: company
-                          description: The shipping address's company.
-                        address_1:
-                          type: string
-                          title: address_1
-                          description: The shipping address's first line.
-                        address_2:
-                          type: string
-                          title: address_2
-                          description: The shipping address's second line.
-                        city:
-                          type: string
-                          title: city
-                          description: The shipping address's city.
-                        country_code:
-                          type: string
-                          title: country_code
-                          description: The shipping address's country code.
-                        province:
-                          type: string
-                          title: province
-                          description: The shipping address's ISO 3166-2 province code. Must be lower-case.
-                          example: us-ca
-                          externalDocs:
-                            url: https://en.wikipedia.org/wiki/ISO_3166-2
-                            description: Learn more about ISO 3166-2
-                        postal_code:
-                          type: string
-                          title: postal_code
-                          description: The shipping address's postal code.
-                        metadata:
-                          type: object
-                          description: The shipping address's metadata.
+                      oneOf:
+                        - type: string
+                          title: shipping_address
+                          description: The draft order's shipping address.
+                        - $ref: '#/components/schemas/OrderAddress'
                     items:
                       type: array
                       description: The draft order's items.
@@ -24435,6 +24375,8 @@ paths:
           $ref: '#/components/responses/500_error'
       x-since: 2.11.2
       x-featureFlag: index
+      deprecated: true
+      x-deprecated_message: 'The Index Module is deprecated and will be removed in a future release. Use `query.graph()` instead, which filters across linked modules: https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property'
   /admin/index/sync:
     post:
       operationId: PostIndexSync
@@ -24486,6 +24428,8 @@ paths:
           $ref: '#/components/responses/500_error'
       x-since: 2.11.2
       x-featureFlag: index
+      deprecated: true
+      x-deprecated_message: 'The Index Module is deprecated and will be removed in a future release. Use `query.graph()` instead, which filters across linked modules: https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property'
   /admin/inventory-items:
     get:
       operationId: GetInventoryItems
@@ -27286,12 +27230,35 @@ paths:
                   description: The invite's metadata. Can be custom data in key-value pairs.
                 roles:
                   type: array
-                  description: The invited user's roles.
-                  x-featureFlag: rbac
+                  description: The RBAC roles to assign to the user when they accept the invite.
                   items:
-                    type: string
-                    title: roles
-                    description: The invited user's role.
+                    type: object
+                    description: A role to assign to the user.
+                    required:
+                      - role_id
+                    properties:
+                      role_id:
+                        type: string
+                        title: role_id
+                        description: The ID of the role to assign.
+                      scopes:
+                        type: array
+                        description: The scopes the role is constrained to. A role assignment is created for each scope.
+                        items:
+                          type: object
+                          description: A scope the role is constrained to.
+                          required:
+                            - type
+                            - id
+                          properties:
+                            type:
+                              type: string
+                              title: type
+                              description: The type of the scope's entity, such as `organization`.
+                            id:
+                              type: string
+                              title: id
+                              description: The ID of the scope's entity, such as `org_123`.
       x-codeSamples:
         - lang: JavaScript
           label: JS SDK
@@ -28235,7 +28202,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/locales/{code}:
     get:
       operationId: GetLocalesCode
@@ -28310,7 +28276,60 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
+  /admin/modules:
+    get:
+      operationId: GetModules
+      summary: List Modules
+      description: Retrieve the modules installed in the Medusa application. You can use this API route to check whether a module, such as the RBAC Module, is installed.
+      x-authenticated: true
+      security:
+        - api_token: []
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.module.list()
+            .then(({ modules }) => {
+              const isRbacInstalled = modules.some((module) => module.key === "rbac")
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl '{backend_url}/admin/modules' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Modules
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminModulesListResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
   /admin/notifications:
     get:
       operationId: GetNotifications
@@ -46425,7 +46444,7 @@ paths:
     post:
       operationId: PostProductsId
       summary: Update a Product
-      description: Update a product's details.
+      description: Update a product's details. If you pass `variants` in the request body, they replace the product's full variant list, and existing variants that aren't included are deleted.
       x-authenticated: true
       parameters:
         - name: id
@@ -49651,7 +49670,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createPromotionsWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.created
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+            }
+            ```
+          description: Emitted when promotions are created.
+          deprecated: false
+          since: 2.22.7
   /admin/promotions/rule-attribute-options/{rule_type}:
     get:
       operationId: GetPromotionsRuleAttributeOptionsRule_type
@@ -50187,7 +50216,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: updatePromotionsWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+            }
+            ```
+          description: Emitted when promotions are updated, including their status.
+          deprecated: false
+          since: 2.22.7
     delete:
       operationId: DeletePromotionsId
       summary: Delete a Promotion
@@ -50268,7 +50307,17 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: deletePromotionsWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.deleted
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+            }
+            ```
+          description: Emitted when promotions are deleted.
+          deprecated: false
+          since: 2.22.7
   /admin/promotions/{id}/buy-rules/batch:
     post:
       operationId: PostPromotionsIdBuyRulesBatch
@@ -50410,7 +50459,23 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: batchPromotionRulesWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.rules_updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+              rule_type, // The type of rules changed: "rules", "target_rules", or "buy_rules"
+              created, // The IDs of the created rules
+              updated, // The IDs of the updated rules
+              deleted, // The IDs of the deleted rules
+            }
+            ```
+          description: |-
+            Emitted when a promotion's rules, target rules, or buy rules
+            are created, updated, or deleted in a batch.
+          deprecated: false
+          since: 2.22.7
   /admin/promotions/{id}/rules/batch:
     post:
       operationId: PostPromotionsIdRulesBatch
@@ -50552,7 +50617,23 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: batchPromotionRulesWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.rules_updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+              rule_type, // The type of rules changed: "rules", "target_rules", or "buy_rules"
+              created, // The IDs of the created rules
+              updated, // The IDs of the updated rules
+              deleted, // The IDs of the deleted rules
+            }
+            ```
+          description: |-
+            Emitted when a promotion's rules, target rules, or buy rules
+            are created, updated, or deleted in a batch.
+          deprecated: false
+          since: 2.22.7
   /admin/promotions/{id}/target-rules/batch:
     post:
       operationId: PostPromotionsIdTargetRulesBatch
@@ -50694,7 +50775,23 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: batchPromotionRulesWorkflow
-      x-events: []
+      x-events:
+        - name: promotion.rules_updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the promotion
+              rule_type, // The type of rules changed: "rules", "target_rules", or "buy_rules"
+              created, // The IDs of the created rules
+              updated, // The IDs of the updated rules
+              deleted, // The IDs of the deleted rules
+            }
+            ```
+          description: |-
+            Emitted when a promotion's rules, target rules, or buy rules
+            are created, updated, or deleted in a batch.
+          deprecated: false
+          since: 2.22.7
   /admin/promotions/{id}/{rule_type}:
     get:
       operationId: GetPromotionsIdRule_type
@@ -69427,7 +69524,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/translations/batch:
     post:
       operationId: PostTranslationsBatch
@@ -69569,7 +69665,6 @@ paths:
           deprecated: false
           since: 2.12.3
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/translations/entities:
     get:
       operationId: GetTranslationsEntities
@@ -69699,7 +69794,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.4
-      x-featureFlag: translation
   /admin/translations/settings:
     get:
       operationId: GetTranslationsSettings
@@ -69776,7 +69870,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/translations/settings/batch:
     post:
       operationId: PostTranslationsSettingsBatch
@@ -69855,7 +69948,6 @@ paths:
       x-workflow: batchTranslationSettingsWorkflow
       x-events: []
       x-since: 2.13.0
-      x-featureFlag: translation
   /admin/translations/statistics:
     get:
       operationId: GetTranslationsStatistics
@@ -69945,7 +70037,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /admin/uploads:
     post:
       operationId: PostUploads
@@ -70844,6 +70935,77 @@ paths:
       security:
         - cookie_auth: []
         - jwt_token: []
+    post:
+      operationId: PostUsersMe
+      summary: Update Logged-In User
+      description: Update the logged-in user's details. Unlike the Update a User API route, this API route doesn't require the `user:update` permission, so any user can update their own details.
+      x-authenticated: true
+      security:
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUpdateUser'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.user.updateMe({
+              first_name: "John",
+              last_name: "Doe",
+            })
+            .then(({ user }) => {
+              console.log(user)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/users/me' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminUserResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: updateUsersWorkflow
+      x-events:
+        - name: user.updated
+          payload: |-
+            ```ts
+            {
+              id, // The ID of the user
+            }
+            ```
+          description: Emitted when users are updated.
+          deprecated: false
   /admin/users/{id}:
     get:
       operationId: GetUsersId
@@ -71213,6 +71375,377 @@ paths:
             to send a reset password email to the user or customer, for example.
           deprecated: false
       x-since: 2.20.0
+  /admin/users/{id}/roles:
+    get:
+      operationId: GetUsersIdRoles
+      summary: List User's Roles
+      description: Retrieve a list of roles assigned to a user, including the scope of each assignment. The roles can be paginated.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The user's ID.
+          required: true
+          schema:
+            type: string
+        - name: role_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: role_id
+                description: The user's role id.
+              - type: array
+                description: The user's role id.
+                items:
+                  type: string
+                  title: role_id
+                  description: The role id's details.
+        - name: scope
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: scope
+                description: The user's scope.
+              - type: array
+                description: The user's scope.
+                items:
+                  type: string
+                  title: scope
+                  description: The scope's details.
+        - name: scope_id
+          in: query
+          required: false
+          schema:
+            oneOf:
+              - type: string
+                title: scope_id
+                description: The user's scope id.
+              - type: array
+                description: The user's scope id.
+                items:
+                  type: string
+                  title: scope_id
+                  description: The scope id's details.
+        - name: limit
+          in: query
+          description: Limit the number of items returned in the list.
+          required: false
+          schema:
+            type: number
+            title: limit
+            description: Limit the number of items returned in the list.
+            externalDocs:
+              url: '#pagination'
+        - name: offset
+          in: query
+          description: The number of items to skip when retrieving a list.
+          required: false
+          schema:
+            type: number
+            title: offset
+            description: The number of items to skip when retrieving a list.
+            externalDocs:
+              url: '#pagination'
+        - name: order
+          in: query
+          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+          required: false
+          schema:
+            type: string
+            title: order
+            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+            externalDocs:
+              url: '#pagination'
+        - name: with_deleted
+          in: query
+          description: The user's with deleted.
+          required: false
+          schema:
+            type: boolean
+            title: with_deleted
+            description: The user's with deleted.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+            externalDocs:
+              url: '#select-fields-and-relations'
+        - name: $and
+          in: query
+          description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+          required: false
+          schema:
+            type: array
+            description: Join query parameters with an AND condition. Each object's content is the same type as the expected query parameters.
+            items:
+              type: object
+            title: $and
+        - name: $or
+          in: query
+          description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+          required: false
+          schema:
+            type: array
+            description: Join query parameters with an OR condition. Each object's content is the same type as the expected query parameters.
+            items:
+              type: object
+            title: $or
+      security:
+        - cookie_auth: []
+        - jwt_token: []
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.user.listRoles("user_123")
+            .then(({ roles, count, limit, offset }) => {
+              console.log(roles)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl '{backend_url}/admin/users/{id}/roles' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminUserRoleListResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-since: 2.22.3
+    post:
+      operationId: PostUsersIdRoles
+      summary: Add Roles to User
+      description: Assign one or more roles to a user, optionally constrained to a scope. You can only assign roles whose policies you have.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The user's ID.
+          required: true
+          schema:
+            type: string
+      security:
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminAssignUserRoles'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.user.addRoles("user_123", {
+              assignments: [{ role_id: "role_123" }]
+            })
+            .then(({ roles }) => {
+              console.log(roles)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/admin/users/{id}/roles' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: assignRolesWorkflow
+      x-events: []
+      x-since: 2.22.3
+    delete:
+      operationId: DeleteUsersIdRoles
+      summary: Remove Roles from User
+      description: Unassign one or more roles from a user.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The user's ID.
+          required: true
+          schema:
+            type: string
+      security:
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUnassignUserRoles'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.user.removeRoles("user_123", {
+              assignments: [{ role_id: "role_123" }]
+            })
+            .then(({ deleted }) => {
+              console.log(deleted)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/users/{id}/roles' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: assignRolesWorkflow
+      x-events: []
+      x-since: 2.22.3
+  /admin/users/{id}/roles/{role_id}:
+    delete:
+      operationId: DeleteUsersIdRolesRole_id
+      summary: Remove Role from User
+      description: Unassign a role from a user. Pass `scope` and `scope_id` in the request body to remove the role's assignment in that scope.
+      x-authenticated: true
+      parameters:
+        - name: id
+          in: path
+          description: The user's ID.
+          required: true
+          schema:
+            type: string
+        - name: role_id
+          in: path
+          description: The user's role id.
+          required: true
+          schema:
+            type: string
+      security:
+        - cookie_auth: []
+        - jwt_token: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminUnassignUserRole'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            export const sdk = new Medusa({
+              baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+              debug: import.meta.env.DEV,
+              auth: {
+                type: "session",
+              },
+            })
+
+            sdk.admin.user.removeRole("user_123", "role_123")
+            .then(({ deleted }) => {
+              console.log(deleted)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X DELETE '{backend_url}/admin/users/{id}/roles/{role_id}' \
+            -H 'Authorization: Bearer {access_token}'
+      tags:
+        - Users
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: unassignRolesWorkflow
+      x-events: []
+      x-since: 2.22.3
   /admin/views/entities:
     get:
       operationId: GetViewsEntities
@@ -74680,6 +75213,38 @@ components:
           type: number
           title: apply_to_quantity
           description: The quantity that results from matching the `buyget` promotion's condition. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `1`.
+        target_selection_strategy:
+          type: string
+          description: The application method's target selection strategy.
+          enum:
+            - most_expensive_first
+            - cheapest_first
+    AdminAssignUserRoles:
+      type: object
+      description: The RBAC roles to assign to a user.
+      x-schemaName: AdminAssignUserRoles
+      properties:
+        assignments:
+          type: array
+          description: The roles to assign to the user.
+          items:
+            type: object
+            description: A role to assign to the user.
+            required:
+              - role_id
+            properties:
+              role_id:
+                type: string
+                title: role_id
+                description: The ID of the role to assign to the user.
+              scope:
+                type: string
+                title: scope
+                description: The type of the scope's entity, such as `organization`. Must be passed with `scope_id`.
+              scope_id:
+                type: string
+                title: scope_id
+                description: The ID of the scope's entity, such as `org_123`. Must be passed with `scope`.
     AdminAuthorizeOrderPaymentSession:
       type: object
       description: The details for authorizing a payment session for an order.
@@ -75360,7 +75925,7 @@ components:
                 description: The tag's ID.
         variants:
           type: array
-          description: The product's variants. You can add new variants or update existing ones, passing their IDs in the object.
+          description: The product's variants. This replaces the product's full variant list, so existing variants that aren't included are deleted. Pass a variant's `id` to update it, or omit the `id` to create a new variant.
           items:
             oneOf:
               - $ref: '#/components/schemas/AdminCreateProductVariant'
@@ -75923,6 +76488,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminClaimOrderResponse:
       type: object
       description: The created claim's details.
@@ -76135,6 +76701,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminCollectionResponse:
       type: object
       description: The collection's details.
@@ -78402,6 +78969,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminCurrencyResponse:
       type: object
       description: The currency's details.
@@ -79596,6 +80164,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminDraftOrderParams:
       type: object
       description: The parameters for retrieving draft orders.
@@ -80713,6 +81282,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminFulfillmentProviderOption:
       type: object
       description: The fulfillment option's details.
@@ -80761,6 +81331,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminFulfillmentResponse:
       type: object
       description: A fulfillment's details.
@@ -81046,6 +81617,7 @@ components:
           title: estimate_count
           description: The gift card's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminImportProductRequest:
       type: object
       description: The import's details.
@@ -81387,7 +81959,6 @@ components:
         - id
         - email
         - accepted
-        - token
         - expires_at
         - created_at
         - updated_at
@@ -81433,7 +82004,6 @@ components:
         rbac_roles:
           type: array
           description: The roles of the invited user.
-          x-featureFlag: rbac
           items:
             $ref: '#/components/schemas/AdminRbacRole'
     AdminInviteResponse:
@@ -81647,6 +82217,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         locales:
           type: array
           description: The list of locales.
@@ -81685,6 +82256,29 @@ components:
           title: provider_id
           description: The ID of the payment provider to use for marking the payment collection as paid. If not provided, the `system` provider will be used.
       x-schemaName: AdminMarkPaymentCollectionAsPaid
+    AdminModule:
+      type: object
+      description: A module installed in the Medusa application.
+      x-schemaName: AdminModule
+      required:
+        - key
+      properties:
+        key:
+          type: string
+          title: key
+          description: The module's key, such as `rbac` or a custom module's name.
+    AdminModulesListResponse:
+      type: object
+      description: The list of installed modules.
+      x-schemaName: AdminModulesListResponse
+      required:
+        - modules
+      properties:
+        modules:
+          type: array
+          description: The modules installed in the Medusa application.
+          items:
+            $ref: '#/components/schemas/AdminModule'
     AdminNotification:
       type: object
       description: The notification's details.
@@ -81784,6 +82378,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminNotificationResponse:
       type: object
       description: The notification's details.
@@ -84322,6 +84917,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminPriceListPrice:
       type: object
       description: The details of a price list's price.
@@ -84422,6 +85018,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         prices:
           type: array
           description: The list of prices associated with the price list.
@@ -84536,6 +85133,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminPricePreferenceResponse:
       type: object
       description: The price preference's details.
@@ -84862,6 +85460,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductCategoryResponse:
       type: object
       description: The product category's details.
@@ -85218,6 +85817,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductTagResponse:
       type: object
       description: The product tag's details.
@@ -85329,6 +85929,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductTypeResponse:
       type: object
       description: The product type's details.
@@ -85910,10 +86511,6 @@ components:
         metadata:
           type: object
           description: Key-value pairs that hold additional information about the policy.
-        inherited_from_role_id:
-          type: string
-          title: inherited_from_role_id
-          description: The ID of the role from which the policy is inherited.
         created_at:
           type: string
           format: date-time
@@ -85937,7 +86534,6 @@ components:
         - id
         - name
         - description
-        - parent_id
         - metadata
         - created_at
         - updated_at
@@ -85955,10 +86551,6 @@ components:
           type: string
           title: description
           description: The description of the RBAC role.
-        parent_id:
-          type: string
-          title: parent_id
-          description: The ID of the parent RBAC role.
         metadata:
           type: object
           description: Key-value pairs that hold additional information about the RBAC role.
@@ -85982,6 +86574,79 @@ components:
           format: date-time
           title: deleted_at
           description: The date the RBAC role was deleted.
+        scope:
+          type: object
+          description: The scope the role is constrained to, if any.
+          required:
+            - type
+            - id
+          properties:
+            type:
+              type: string
+              title: type
+              description: The type of the scope's entity, such as `organization`.
+            id:
+              type: string
+              title: id
+              description: The ID of the scope's entity, such as `org_123`.
+    AdminRbacRoleAssignment:
+      type: object
+      description: The assignment of an RBAC role to an entity, such as a user.
+      x-schemaName: AdminRbacRoleAssignment
+      required:
+        - id
+        - role_id
+        - reference
+        - reference_id
+        - scope
+        - scope_id
+        - metadata
+        - created_at
+        - updated_at
+        - deleted_at
+      properties:
+        id:
+          type: string
+          title: id
+          description: The assignment's ID.
+        role_id:
+          type: string
+          title: role_id
+          description: The ID of the role the assignment is for.
+        reference:
+          type: string
+          title: reference
+          description: The type of entity the role is assigned to (e.g. `user`, `invite`).
+        reference_id:
+          type: string
+          title: reference_id
+          description: The ID of the entity the role is assigned to.
+        scope:
+          type: string
+          title: scope
+          description: The type of the scope's entity that the assignment is constrained to, such as `organization`.
+        scope_id:
+          type: string
+          title: scope_id
+          description: The ID of the scope's entity that the assignment is constrained to, such as `org_123`.
+        metadata:
+          type: object
+          description: The assignment's metadata.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The date the assignment was created.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The date the assignment was updated.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The date the assignment was deleted.
     AdminReceiveItems:
       type: object
       description: The items details.
@@ -86630,6 +87295,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminReturnReasonResponse:
       type: object
       description: The return reason's details.
@@ -87500,6 +88166,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         shipping_option_types:
           type: array
           description: The list of shipping option types.
@@ -87747,6 +88414,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStockLocationResponse:
       type: object
       description: The stock location's details.
@@ -87921,6 +88589,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStoreCurrency:
       type: object
       description: The details of a store's currency.
@@ -88001,6 +88670,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStoreLocale:
       type: object
       description: The details of a store's locale.
@@ -88408,6 +89078,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminTransferOrderToGuest:
       type: object
       description: The details of the order transfer to a guest.
@@ -88690,6 +89361,45 @@ components:
               type: boolean
               title: deleted
               description: Whether the translations were successfully deleted.
+    AdminUnassignUserRole:
+      type: object
+      description: The scope to unassign the role from the user in.
+      x-schemaName: AdminUnassignUserRole
+      properties:
+        scope:
+          type: string
+          title: scope
+          description: The type of the scope's entity, such as `organization`. Must be passed with `scope_id`.
+        scope_id:
+          type: string
+          title: scope_id
+          description: The ID of the scope's entity, such as `org_123`. Must be passed with `scope`.
+    AdminUnassignUserRoles:
+      type: object
+      description: The RBAC roles to unassign from a user.
+      x-schemaName: AdminUnassignUserRoles
+      properties:
+        assignments:
+          type: array
+          description: The roles to unassign from the user.
+          items:
+            type: object
+            description: A role to unassign from the user.
+            required:
+              - role_id
+            properties:
+              role_id:
+                type: string
+                title: role_id
+                description: The ID of the role to unassign from the user.
+              scope:
+                type: string
+                title: scope
+                description: The type of the scope's entity, such as `organization`. Must be passed with `scope_id`.
+              scope_id:
+                type: string
+                title: scope_id
+                description: The ID of the scope's entity, such as `org_123`. Must be passed with `scope`.
     AdminUpdateApiKey:
       type: object
       description: The details to update in an API key.
@@ -89362,7 +90072,7 @@ components:
             $ref: '#/components/schemas/AdminUpdateProductOption'
         variants:
           type: array
-          description: The product's variants. You can add new variants or update existing ones, passing their IDs in the object.
+          description: The product's variants. This replaces the product's full variant list, so existing variants that aren't included are deleted. Pass a variant's `id` to update it, or omit the `id` to create a new variant.
           items:
             oneOf:
               - $ref: '#/components/schemas/AdminCreateProductVariant'
@@ -90590,6 +91300,13 @@ components:
           format: date-time
           title: deleted_at
           description: The date the user was deleted.
+        roles:
+          type: array
+          description: The user's roles.
+          items:
+            type: string
+            title: roles
+            description: The role's roles.
     AdminUserAuthProvidersResponse:
       type: object
       description: The list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
@@ -90661,6 +91378,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminUserResetPasswordTokenResponse:
       type: object
       description: The response for the reset password token generation for a user. This response contains the generated reset password token that can be used to reset the user's password.
@@ -90687,6 +91405,39 @@ components:
       properties:
         user:
           $ref: '#/components/schemas/AdminUser'
+    AdminUserRoleListResponse:
+      type: object
+      description: The paginated list of roles assigned to the user.
+      x-schemaName: AdminUserRoleListResponse
+      required:
+        - limit
+        - offset
+        - count
+        - roles
+      properties:
+        limit:
+          type: number
+          title: limit
+          description: The maximum number of items retrieved.
+        offset:
+          type: number
+          title: offset
+          description: The number of items to skip before retrieving the returned items.
+        count:
+          type: number
+          title: count
+          description: The total number of items.
+        estimate_count:
+          type: number
+          title: estimate_count
+          description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+          x-featureFlag: index_engine
+          deprecated: true
+        roles:
+          type: array
+          description: The list of roles.
+          items:
+            $ref: '#/components/schemas/AdminRbacRole'
     AdminViewConfiguration:
       type: object
       description: The details of a view configuration.
@@ -96027,6 +96778,7 @@ components:
         - is_discountable
         - is_giftcard
         - is_tax_inclusive
+        - is_custom_price
         - unit_price
         - quantity
         - detail
@@ -96226,6 +96978,10 @@ components:
         line_item_metadata:
           type: object
           description: Custom key-value pairs on the order's line items.
+        is_custom_price:
+          type: boolean
+          title: is_custom_price
+          description: Indicates whether the line item's unit price is a custom price.
     OrderLineItemAdjustment:
       type: object
       description: The line item adjustment's details.
@@ -98564,6 +99320,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreCurrencyResponse:
       type: object
       description: The currency's details.
@@ -98783,6 +99540,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreCustomerAddressResponse:
       type: object
       description: The address's details.
@@ -100336,6 +101094,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductCategoryResponse:
       type: object
       description: The product category's details.
@@ -100620,6 +101379,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductTagResponse:
       type: object
       description: The product tag's details.
@@ -100704,6 +101464,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductTypeResponse:
       type: object
       description: The product type's details.
@@ -101458,6 +102219,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     StoreUpdateCustomer:
       type: object
       description: The details to update in the customer.

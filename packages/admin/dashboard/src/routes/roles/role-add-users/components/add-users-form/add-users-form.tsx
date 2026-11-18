@@ -42,7 +42,10 @@ export const AddUsersForm = ({ roleId }: AddUsersFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const { hasAllPermissions } = usePermissions()
-  const canManageRole = hasAllPermissions(["user:update", "rbac_role:update"])
+  const canManageRole = hasAllPermissions([
+    "user:update",
+    "rbac_role_assignment:create",
+  ])
 
   const form = useForm<zod.infer<typeof AddUsersSchema>>({
     defaultValues: {

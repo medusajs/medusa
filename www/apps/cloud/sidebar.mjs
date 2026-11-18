@@ -36,6 +36,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            path: "/migrate-self-hosted",
+            title: "Migrate from Self Hosting",
+          },
+          {
+            type: "link",
             title: "Command Palette",
             path: "/command-palette",
           },
@@ -536,6 +541,23 @@ export const sidebar = [
             type: "link",
             title: "IP Addresses",
             path: "/ip-addresses",
+          },
+          {
+            type: "link",
+            title: "Medusa Security",
+            path: "/security",
+            children: [
+              {
+                type: "link",
+                title: "Security Analytics",
+                path: "/security/analytics",
+              },
+              {
+                type: "link",
+                title: "Data Protection",
+                path: "/security/data-protection",
+              },
+            ],
           },
         ],
       },

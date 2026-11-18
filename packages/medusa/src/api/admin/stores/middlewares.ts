@@ -2,7 +2,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"
@@ -14,28 +14,30 @@ import {
 
 export const adminStoreRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/stores/*",
-    policies: [
-      {
-        resource: Entities.store,
-        operation: PolicyOperation.read,
-      },
+    matcher: "/admin/stores/{*splat}",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.store,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/stores",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.store,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetStoresParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.store,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
@@ -52,17 +54,17 @@ export const adminStoreRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/stores/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.store,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateStore),
       validateAndTransformQuery(
         AdminGetStoreParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.store,
-        operation: PolicyOperation.update,
-      },
     ],
   },
 ]

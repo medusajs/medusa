@@ -1,5 +1,6 @@
 export enum Entities {
   sales_channel = "sales_channel",
+  product = "product",
 }
 
 export const defaultAdminSalesChannelFields = [

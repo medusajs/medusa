@@ -25,7 +25,7 @@ await link.dismiss({
 ```
 
 - `Link` methods: `create`, `dismiss`, `delete`, `restore`, `list`. Pass a `data` key alongside the two module keys to set link `extraColumns`.
-- `MedusaModule` (static registry): `getLoadedModules()`, `isInstalled(key)`, `getModuleInstance(key)`, `getAllJoinerConfigs()`, `bootstrap(...)`; used by tests and tooling that load a single module outside the app.
+- `MedusaModule` (static registry): `getLoadedModules()`, `getModuleKeys()` (non-link module keys), `isInstalled(key)`, `getModuleInstance(key)`, `getAllJoinerConfigs()`, `bootstrap(...)`; used by tests and tooling that load a single module outside the app.
 - `ModulesDefinition` / `MODULE_DEFINITIONS` (`src/definitions.ts`): built-in module keys, `isRequired`, `isQueryable`, and their container `dependencies`.
 - Docs: https://docs.medusajs.com/learn/fundamentals/modules.md, https://docs.medusajs.com/learn/fundamentals/modules/container.md, https://docs.medusajs.com/learn/fundamentals/modules/isolation.md, https://docs.medusajs.com/learn/fundamentals/modules/loaders.md, https://docs.medusajs.com/learn/fundamentals/module-links/link.md
 

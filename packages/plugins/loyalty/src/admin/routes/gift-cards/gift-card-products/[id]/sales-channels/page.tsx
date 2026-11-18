@@ -18,4 +18,8 @@ export const ProductSalesChannels = () => {
   );
 };
 
+export const handle = {
+  permissions: ["product:read", "sales_channel:read", "product:update"],
+};
+
 export default ProductSalesChannels;

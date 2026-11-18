@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "dist/cjs",
     "module": "CommonJS",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "tsBuildInfoFile": "./dist/cjs/.tsbuildinfo",
     "declaration": false,
     "declarationMap": false

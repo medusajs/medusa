@@ -63,8 +63,8 @@ export const useSignInWithEmailPass = (
         "emailpass",
         payload
       ) as Promise<AuthLoginResponse>,
-    onSuccess: async (data, variables, context) => {
-      options?.onSuccess?.(data, variables, context)
+    onSuccess: async (data, variables, onMutateResult, context) => {
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -79,8 +79,8 @@ export const useSignUpWithEmailPass = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.auth.register("user", "emailpass", payload),
-    onSuccess: async (data, variables, context) => {
-      options?.onSuccess?.(data, variables, context)
+    onSuccess: async (data, variables, onMutateResult, context) => {
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -94,8 +94,8 @@ export const useResetPasswordForEmailPass = (
       sdk.auth.resetPassword("user", "emailpass", {
         identifier: payload.email,
       }),
-    onSuccess: async (data, variables, context) => {
-      options?.onSuccess?.(data, variables, context)
+    onSuccess: async (data, variables, onMutateResult, context) => {
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -115,8 +115,8 @@ export const useUpdateProviderForEmailPass = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.auth.updateProvider("user", "emailpass", payload, token),
-    onSuccess: async (data, variables, context) => {
-      options?.onSuccess?.(data, variables, context)
+    onSuccess: async (data, variables, onMutateResult, context) => {
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

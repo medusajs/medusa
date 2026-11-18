@@ -16,6 +16,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { HttpTypes } from "@medusajs/types";
 import { RouteFocusModal } from "../../../../../../../components/modals";
 import { useUpdateProduct } from "../../../../../../../hooks/api/products";
@@ -30,6 +31,8 @@ export const ProductMediaGallery = ({ product }: ProductMediaGalleryProps) => {
 
   const prompt = usePrompt();
   const { mutateAsync, isPending } = useUpdateProduct(product.id);
+  const { hasPermission } = usePermissions();
+  const canUpdate = hasPermission("product:update");
 
   const media = getMedia(product.images, product.thumbnail);
 
@@ -129,15 +132,17 @@ export const ProductMediaGallery = ({ product }: ProductMediaGalleryProps) => {
     <div className="flex size-full flex-col overflow-hidden">
       <RouteFocusModal.Header>
         <div className="flex items-center justify-end gap-x-2">
-          <IconButton
-            size="small"
-            type="button"
-            onClick={handleDeleteCurrent}
-            disabled={noMedia}
-          >
-            <Trash />
-            <span className="sr-only">Delete image</span>
-          </IconButton>
+          {canUpdate && (
+            <IconButton
+              size="small"
+              type="button"
+              onClick={handleDeleteCurrent}
+              disabled={noMedia}
+            >
+              <Trash />
+              <span className="sr-only">Delete image</span>
+            </IconButton>
+          )}
           <IconButton
             size="small"
             type="button"
@@ -147,13 +152,15 @@ export const ProductMediaGallery = ({ product }: ProductMediaGalleryProps) => {
             <ArrowDownTray />
             <span className="sr-only">Download image</span>
           </IconButton>
-          <Button variant="secondary" size="small" asChild>
-            <Link to={{ pathname: ".", search: "view=edit" }}>Edit</Link>
-          </Button>
+          {canUpdate && (
+            <Button variant="secondary" size="small" asChild>
+              <Link to={{ pathname: ".", search: "view=edit" }}>Edit</Link>
+            </Button>
+          )}
         </div>
       </RouteFocusModal.Header>
       <RouteFocusModal.Body className="flex flex-col overflow-hidden">
-        <Canvas curr={curr} media={media} />
+        <Canvas curr={curr} media={media} canUpdate={canUpdate} />
         <Preview
           curr={curr}
           media={media}
@@ -166,7 +173,15 @@ export const ProductMediaGallery = ({ product }: ProductMediaGalleryProps) => {
   );
 };
 
-const Canvas = ({ media, curr }: { media: Media[]; curr: number }) => {
+const Canvas = ({
+  media,
+  curr,
+  canUpdate,
+}: {
+  media: Media[];
+  curr: number;
+  canUpdate: boolean;
+}) => {
   if (media.length === 0) {
     return (
       <div className="bg-ui-bg-subtle flex size-full flex-col items-center justify-center gap-y-4 pb-8 pt-6">
@@ -183,9 +198,11 @@ const Canvas = ({ media, curr }: { media: Media[]; curr: number }) => {
             Add images to your product
           </Text>
         </div>
-        <Button size="small" variant="secondary" asChild>
-          <Link to="?view=edit">Add images</Link>
-        </Button>
+        {canUpdate && (
+          <Button size="small" variant="secondary" asChild>
+            <Link to="?view=edit">Add images</Link>
+          </Button>
+        )}
       </div>
     );
   }

@@ -36,12 +36,35 @@
  *             description: The invite's metadata. Can be custom data in key-value pairs.
  *           roles:
  *             type: array
- *             description: The invited user's roles.
- *             x-featureFlag: rbac
+ *             description: The RBAC roles to assign to the user when they accept the invite.
  *             items:
- *               type: string
- *               title: roles
- *               description: The invited user's role.
+ *               type: object
+ *               description: A role to assign to the user.
+ *               required:
+ *                 - role_id
+ *               properties:
+ *                 role_id:
+ *                   type: string
+ *                   title: role_id
+ *                   description: The ID of the role to assign.
+ *                 scopes:
+ *                   type: array
+ *                   description: The scopes the role is constrained to. A role assignment is created for each scope.
+ *                   items:
+ *                     type: object
+ *                     description: A scope the role is constrained to.
+ *                     required:
+ *                       - type
+ *                       - id
+ *                     properties:
+ *                       type:
+ *                         type: string
+ *                         title: type
+ *                         description: The type of the scope's entity, such as `organization`.
+ *                       id:
+ *                         type: string
+ *                         title: id
+ *                         description: The ID of the scope's entity, such as `org_123`.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK

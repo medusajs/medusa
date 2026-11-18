@@ -10,18 +10,18 @@ import path from "path"
 jest.setTimeout(100000)
 
 medusaIntegrationTestRunner({
-  cwd: path.join(__dirname, "../../__fixtures__/translation-test"),
+  cwd: path.join(__dirname, "../../__fixtures__/custom-links-test"),
   testSuite: ({ getContainer }) => {
     describe("Workflows: Delete product variants", () => {
       let appContainer
       let productService: IProductModuleService
-      let translationService: any
+      let customRecordService: any
       let product
 
       beforeAll(async () => {
         appContainer = getContainer()
         productService = appContainer.resolve(Modules.PRODUCT)
-        translationService = appContainer.resolve("translation")
+        customRecordService = appContainer.resolve("custom_record")
       })
 
       beforeEach(async () => {
@@ -35,52 +35,52 @@ medusaIntegrationTestRunner({
         })
       })
 
-      const linkTranslationToVariant = async (variantId: string) => {
-        const translation = await translationService.createTranslations({
+      const linkCustomRecordToVariant = async (variantId: string) => {
+        const customRecord = await customRecordService.createCustomRecords({
           key: `variant-${variantId}`,
         })
 
         await appContainer.resolve(ContainerRegistrationKeys.LINK).create({
           [Modules.PRODUCT]: { product_variant_id: variantId },
-          translation: { translation_id: translation.id },
+          custom_record: { custom_record_id: customRecord.id },
         })
 
-        return translation
+        return customRecord
       }
 
       it("should cascade delete records linked to the deleted variants with deleteCascade", async () => {
         const [small, medium] = product.variants
-        const smallTranslation = await linkTranslationToVariant(small.id)
-        const mediumTranslation = await linkTranslationToVariant(medium.id)
+        const smallCustomRecord = await linkCustomRecordToVariant(small.id)
+        const mediumCustomRecord = await linkCustomRecordToVariant(medium.id)
 
         await deleteProductVariantsWorkflow(appContainer).run({
           input: { ids: [small.id] },
         })
 
-        const [translations] =
-          await translationService.listAndCountTranslations({
-            id: [smallTranslation.id, mediumTranslation.id],
+        const [customRecords] =
+          await customRecordService.listAndCountCustomRecords({
+            id: [smallCustomRecord.id, mediumCustomRecord.id],
           })
 
-        expect(translations).toEqual([
-          expect.objectContaining({ id: mediumTranslation.id }),
+        expect(customRecords).toEqual([
+          expect.objectContaining({ id: mediumCustomRecord.id }),
         ])
       })
 
       it("should cascade delete records linked to the variants of deleted products with deleteCascade", async () => {
         const [small] = product.variants
-        const smallTranslation = await linkTranslationToVariant(small.id)
+        const smallCustomRecord = await linkCustomRecordToVariant(small.id)
 
         await deleteProductsWorkflow(appContainer).run({
           input: { ids: [product.id] },
         })
 
-        const [translations] =
-          await translationService.listAndCountTranslations({
-            id: [smallTranslation.id],
+        const [customRecords] =
+          await customRecordService.listAndCountCustomRecords({
+            id: [smallCustomRecord.id],
           })
 
-        expect(translations).toHaveLength(0)
+        expect(customRecords).toHaveLength(0)
       })
     })
   },

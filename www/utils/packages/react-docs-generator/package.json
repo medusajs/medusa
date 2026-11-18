@@ -5,8 +5,8 @@
     "dev": "node --loader ts-node/esm src/index.ts",
     "start": "node dist/index.js",
     "generate:ui": "yarn start --src ../../../../packages/design-system/ui/src --output ../../../apps/ui/specs/components --clean",
-    "build": "tsc",
-    "watch": "tsc --watch"
+    "build": "yarn run -T tsc",
+    "watch": "yarn run -T tsc --watch"
   },
   "publishConfig": {
     "access": "public"
@@ -22,15 +22,16 @@
     "react-docgen": "^7.0.1",
     "resolve": "^1.22.8",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.27.5",
+    "typedoc": "^0.28.20",
     "typedoc-plugin-custom": "*",
-    "typescript": "^5.6.2",
+    "typescript": "^6.0.3",
     "utils": "*"
   },
   "devDependencies": {
-    "@types/node": "^20.12.10"
+    "@types/node": "^20.12.10",
+    "types": "*"
   },
   "peerDependencies": {
-    "typedoc": "0.27.x"
+    "typedoc": "0.28.x"
   }
 }

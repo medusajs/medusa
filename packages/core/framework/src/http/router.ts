@@ -1,18 +1,23 @@
+import { MedusaModule } from "@medusajs/modules-sdk"
 import {
   ContainerRegistrationKeys,
+  DEFAULT_RBAC_ACTOR_TYPES,
   FeatureFlag,
   isFileDisabled,
+  Modules,
   parseCorsOrigins,
 } from "@medusajs/utils"
 import cors, { CorsOptions } from "cors"
-import type {
-  ErrorRequestHandler,
-  Express,
-  IRouter,
-  RequestHandler,
+import {
+  type ErrorRequestHandler,
+  type Express,
+  type IRouter,
+  type RequestHandler,
+  Router,
 } from "express"
 import type {
   AdditionalDataValidatorRoute,
+  AuditConfigRoute,
   BodyParserConfigRoute,
   MedusaNextFunction,
   MedusaRequest,
@@ -24,19 +29,20 @@ import type {
   RouteHandler,
 } from "./types"
 
-import { Logger, MedusaContainer } from "@medusajs/types"
+import { IAuditModuleService, Logger, MedusaContainer } from "@medusajs/types"
 import { join } from "path"
 import { configManager } from "../config"
+import { createAuditMiddleware } from "./audit"
 import { MiddlewareFileLoader } from "./middleware-file-loader"
 import { applyLocale, authenticate, AuthType } from "./middlewares"
 import { createBodyParserMiddlewaresStack } from "./middlewares/bodyparser"
-import { wrapWithPoliciesCheck } from "./middlewares/check-permissions"
 import { ensurePublishableApiKeyMiddleware } from "./middlewares/ensure-publishable-api-key"
 import { errorHandler } from "./middlewares/error-handler"
-import { RoutesFinder } from "./routes-finder"
+import { preloadPathToRegexp, RoutesFinder } from "./routes-finder"
 import { RoutesLoader } from "./routes-loader"
 import { RoutesSorter } from "./routes-sorter"
 import { RestrictedFields } from "./utils/restricted-fields"
+import { toExpressPath } from "./utils/to-express-path"
 import { wrapHandler } from "./utils/wrap-handler"
 
 export class ApiLoader {
@@ -65,12 +71,24 @@ export class ApiLoader {
   readonly #app: Express
 
   /**
+   * Holds every route and middleware registered by this loader, so HMR
+   * can clear them without touching the rest of the app's stack.
+   */
+  readonly #router: IRouter = Router()
+
+  #isRouterMounted = false
+
+  #errorHandler: ErrorRequestHandler = errorHandler()
+
+  /**
    * Path from where to load the routes from
    * @private
    */
   readonly #sourceDirs: string[]
 
   readonly #logger: Logger
+
+  readonly #container: MedusaContainer
 
   readonly #baseRestrictedFields: string[]
 
@@ -94,6 +112,7 @@ export class ApiLoader {
     this.#baseRestrictedFields = baseRestrictedFields ?? []
     this.#storeRelationsLimit = storeRelationsLimit
     this.#logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+    this.#container = container
   }
 
   /**
@@ -119,6 +138,8 @@ export class ApiLoader {
       bodyParserConfigRoutes: middlewareLoader.getBodyParserConfigRoutes(),
       additionalDataValidatorRoutes:
         middlewareLoader.getAdditionalDataValidatorRoutes(),
+      auditConfigRoutes: middlewareLoader.getAuditConfigRoutes(),
+      auditNamespaces: middlewareLoader.getAuditNamespaces(),
     }
   }
 
@@ -177,28 +198,24 @@ export class ApiLoader {
           })
         : route.handler
 
-      this.#app[route.method.toLowerCase()](route.matcher, wrapHandler(handler))
+      this.#router[route.method.toLowerCase()](
+        toExpressPath(route.matcher),
+        wrapHandler(handler)
+      )
 
       return
     }
 
-    const isRbacEnabled = FeatureFlag.isFeatureEnabled("rbac")
     if (!route.methods) {
       this.#logger.debug(`registering global middleware for ${route.matcher}`)
 
-      // Wrap with permission check if policies are defined
-      let handlerToUse = route.handler
-      if (route.policies && isRbacEnabled) {
-        handlerToUse = wrapWithPoliciesCheck(route.handler, route.policies)
-      }
-
       const handler = ApiLoader.traceMiddleware
-        ? (ApiLoader.traceMiddleware(handlerToUse, {
+        ? (ApiLoader.traceMiddleware(route.handler, {
             route: String(route.matcher),
           }) as RequestHandler)
-        : (handlerToUse as RequestHandler)
+        : (route.handler as RequestHandler)
 
-      this.#app.use(route.matcher, wrapHandler(handler))
+      this.#router.use(toExpressPath(route.matcher), wrapHandler(handler))
       return
     }
 
@@ -218,19 +235,14 @@ export class ApiLoader {
         `registering route middleware ${method} ${route.matcher}`
       )
 
-      let handlerToUse = route.handler
-      if (route.policies && isRbacEnabled) {
-        handlerToUse = wrapWithPoliciesCheck(route.handler, route.policies)
-      }
-
       const handler = ApiLoader.traceMiddleware
-        ? (ApiLoader.traceMiddleware(wrapHandler(handlerToUse), {
+        ? (ApiLoader.traceMiddleware(wrapHandler(route.handler), {
             route: String(route.matcher),
             method: method,
           }) as RequestHandler)
-        : wrapHandler(handlerToUse)
+        : wrapHandler(route.handler)
 
-      this.#app[method.toLowerCase()](route.matcher, handler)
+      this.#router[method.toLowerCase()](toExpressPath(route.matcher), handler)
     })
   }
 
@@ -241,7 +253,7 @@ export class ApiLoader {
     baseRestrictedFields: string[],
     storeRelationsLimit?: number
   ) {
-    this.#app.use(((
+    this.#router.use(((
       req: MedusaRequest,
       _: MedusaResponse,
       next: MedusaNextFunction
@@ -250,7 +262,7 @@ export class ApiLoader {
       next()
     }) as unknown as RequestHandler)
 
-    this.#app.use("/store", ((
+    this.#router.use("/store", ((
       req: MedusaRequest,
       _: MedusaResponse,
       next: MedusaNextFunction
@@ -261,7 +273,16 @@ export class ApiLoader {
       next()
     }) as unknown as RequestHandler)
 
-    this.#app.use("/admin", ((
+    this.#router.use("/admin", ((
+      req: MedusaRequest,
+      _: MedusaResponse,
+      next: MedusaNextFunction
+    ) => {
+      req.restrictedFields = new RestrictedFields()
+      next()
+    }) as unknown as RequestHandler)
+
+    this.#router.use("/rbac", ((
       req: MedusaRequest,
       _: MedusaResponse,
       next: MedusaNextFunction
@@ -275,7 +296,20 @@ export class ApiLoader {
    * Creates the options for the Cors middleware
    */
   #createCorsOptions(origin: string): CorsOptions {
+    const { maxAge, exposedHeaders, allowedHeaders, methods } =
+      configManager.config.projectConfig.http.corsOptions ?? {}
+
+    const additionalOptions = Object.fromEntries(
+      Object.entries({
+        maxAge,
+        exposedHeaders,
+        allowedHeaders,
+        methods,
+      }).filter(([, value]) => value !== undefined)
+    )
+
     return {
+      ...additionalOptions,
       origin: parseCorsOrigins(origin),
       credentials: true,
       preflightContinue: false,
@@ -291,7 +325,8 @@ export class ApiLoader {
     toggleKey:
       | "shouldAppendAdminCors"
       | "shouldAppendAuthCors"
-      | "shouldAppendStoreCors",
+      | "shouldAppendStoreCors"
+      | "shouldAppendRbacCors",
     corsOptions: CorsOptions
   ) {
     const logger = this.#logger
@@ -316,7 +351,7 @@ export class ApiLoader {
       return next()
     }
 
-    this.#app.use(
+    this.#router.use(
       namespace,
       ApiLoader.traceMiddleware
         ? (ApiLoader.traceMiddleware(corsMiddleware, {
@@ -360,7 +395,7 @@ export class ApiLoader {
       return originalFn(req, res, next)
     }
 
-    this.#app.use(
+    this.#router.use(
       namespace,
       ApiLoader.traceMiddleware
         ? (ApiLoader.traceMiddleware(authMiddleware, {
@@ -380,7 +415,7 @@ export class ApiLoader {
     this.#logger.debug(
       `Registering bodyparser middleware for prefix ${namespace}`
     )
-    this.#app.use(
+    this.#router.use(
       namespace,
       createBodyParserMiddlewaresStack(
         namespace,
@@ -421,7 +456,7 @@ export class ApiLoader {
       return next()
     }
 
-    this.#app.use(
+    this.#router.use(
       namespace,
       ApiLoader.traceMiddleware
         ? (ApiLoader.traceMiddleware(additionalDataValidator, {
@@ -445,7 +480,7 @@ export class ApiLoader {
         })
       : ensurePublishableApiKeyMiddleware
 
-    this.#app.use(namespace, middleware as RequestHandler)
+    this.#router.use(namespace, middleware as RequestHandler)
   }
 
   #applyLocaleMiddleware(namespace: string) {
@@ -457,7 +492,54 @@ export class ApiLoader {
           route: namespace,
         })
       : applyLocale
-    this.#app.use(namespace, middleware as RequestHandler)
+    this.#router.use(namespace, middleware as RequestHandler)
+  }
+
+  /**
+   * Registers the middleware recording audited requests. It must be the first
+   * middleware, so that requests rejected by authentication or validation are
+   * recorded too.
+   */
+  #applyAuditMiddleware(
+    routesFinder: RoutesFinder<RouteDescriptor>,
+    auditConfigRoutes: AuditConfigRoute[],
+    auditNamespaces: string[]
+  ) {
+    if (!MedusaModule.isInstalled(Modules.AUDIT)) {
+      return
+    }
+
+    this.#logger.debug("Registering audit middleware")
+
+    let auditService: IAuditModuleService | undefined
+    const auditMiddleware = createAuditMiddleware({
+      routesFinder,
+      auditNamespaces,
+      auditRoutesFinder: auditConfigRoutes.length
+        ? new RoutesFinder<AuditConfigRoute>(
+            new RoutesSorter(auditConfigRoutes).sort([
+              "static",
+              "params",
+              "regex",
+              "wildcard",
+              "global",
+            ])
+          )
+        : undefined,
+      getAuditService: () =>
+        (auditService ??= this.#container.resolve<IAuditModuleService>(
+          Modules.AUDIT
+        )),
+      logger: this.#logger,
+    })
+
+    this.#router.use(
+      ApiLoader.traceMiddleware
+        ? (ApiLoader.traceMiddleware(auditMiddleware, {
+            route: "/",
+          }) as RequestHandler)
+        : auditMiddleware
+    )
   }
 
   async load() {
@@ -465,10 +547,7 @@ export class ApiLoader {
       ;(global as any).__MEDUSA_HMR_API_LOADER__ = this
     }
 
-    this.#assignRestrictedFields(
-      this.#baseRestrictedFields,
-      this.#storeRelationsLimit
-    )
+    await preloadPathToRegexp()
 
     const {
       errorHandler: sourceErrorHandler,
@@ -477,7 +556,28 @@ export class ApiLoader {
       routesFinder,
       bodyParserConfigRoutes,
       additionalDataValidatorRoutes,
+      auditConfigRoutes,
+      auditNamespaces,
     } = await this.#loadHttpResources()
+
+    if (!this.#isRouterMounted) {
+      this.#app.use(this.#router)
+
+      // Kept on the app: Express skips mounted routers when passing errors on,
+      // so errors from middlewares registered before the router would miss it
+      const handleError: ErrorRequestHandler = (err, req, res, next) =>
+        this.#errorHandler(err, req, res, next)
+      this.#app.use(handleError)
+
+      this.#isRouterMounted = true
+    }
+
+    this.#applyAuditMiddleware(routesFinder, auditConfigRoutes, auditNamespaces)
+
+    this.#assignRestrictedFields(
+      this.#baseRestrictedFields,
+      this.#storeRelationsLimit
+    )
 
     /**
      * Parse request body on all the requests and use the routes finder
@@ -530,6 +630,33 @@ export class ApiLoader {
       "api-key",
     ])
 
+    /**
+     * CORS and Auth setup for the RBAC routes. They are not admin routes, but
+     * they are consumed by the admin dashboard and therefore fall back to its
+     * CORS origins. "http.rbacCors" replaces them for other clients.
+     *
+     * Unlike the admin routes, the allowed actor types are configurable via
+     * "http.rbacActorTypes" (defaults to ["user"]). Secret API keys are not
+     * accepted: "authenticate" only supports them when the actor types are
+     * exactly ["user"]
+     */
+    this.#applyCorsMiddleware(
+      routesFinder,
+      "/rbac",
+      "shouldAppendRbacCors",
+      this.#createCorsOptions(
+        configManager.config.projectConfig.http.rbacCors ||
+          configManager.config.projectConfig.http.adminCors
+      )
+    )
+    this.#applyAuthMiddleware(
+      routesFinder,
+      "/rbac",
+      configManager.config.projectConfig.http.rbacActorTypes ??
+        DEFAULT_RBAC_ACTOR_TYPES,
+      ["bearer", "session"]
+    )
+
     this.#applyCorsMiddleware(
       routesFinder,
       "/store",
@@ -575,24 +702,14 @@ export class ApiLoader {
       this.#registerExpressHandler(route)
     })
 
-    /**
-     * Registering error handler as the final handler
-     */
-    this.#app.use(sourceErrorHandler ?? errorHandler())
+    this.#errorHandler = sourceErrorHandler ?? errorHandler()
   }
 
   /**
    * Clear all API resources registered by this loader
-   * This removes all routes and middleware added after the initial stack state
    * Used by HMR to reset the API state before reloading
    */
   clearAllResources() {
-    const router = this.#app._router as IRouter
-    const initialStackLength =
-      (global as any).__MEDUSA_HMR_INITIAL_STACK_LENGTH__ ?? 0
-
-    if (router && router.stack) {
-      router.stack.splice(initialStackLength)
-    }
+    this.#router.stack.splice(0)
   }
 }

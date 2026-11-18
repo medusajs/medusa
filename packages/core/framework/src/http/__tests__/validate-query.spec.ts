@@ -59,6 +59,8 @@ describe("validateAndTransformQuery", () => {
   })
 
   it("should transform the input query", async () => {
+    // `RestrictedFields` is nominal (it has a `#private` field), so the partial
+    // literal is not comparable to `MedusaRequest` directly.
     let mockRequest = {
       allowed: [],
       restrictedFields: new RestrictedFields(),
@@ -495,5 +497,31 @@ describe("validateAndTransformQuery", () => {
         message: "Order field created_at is not valid",
       })
     )
+  })
+
+  it("rejects query param keys with unsafe prototype-pollution segments", async () => {
+    const protoFn = Object.prototype.toString
+
+    const mockRequest = {
+      allowed: [],
+      restrictedFields: new RestrictedFields(),
+      query: { "__proto__.polluted": "x" },
+    } as unknown as MedusaRequest
+    const mockResponse = {} as MedusaResponse
+    const nextFunction: MedusaNextFunction = jest.fn()
+
+    const middleware = validateAndTransformQuery(createFindParams(), {
+      isList: true,
+    } as any)
+
+    await middleware(mockRequest, mockResponse, nextFunction)
+
+    expect(nextFunction).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: "Invalid query parameter key: __proto__.polluted",
+      })
+    )
+    expect(Object.prototype["polluted"]).toBeUndefined()
+    expect(Object.prototype.toString).toBe(protoFn)
   })
 })

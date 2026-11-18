@@ -4,6 +4,7 @@ import {
   TriangleRightMini,
   TruckFast,
 } from "@medusajs/icons"
+import { usePermissions } from "@medusajs/dashboard/hooks"
 import { HttpTypes } from "@medusajs/types"
 import {
   Badge,
@@ -21,6 +22,7 @@ import { Accordion } from "radix-ui"
 import { Link } from "react-router-dom"
 
 import { useShippingOptions } from "../../hooks/api/shipping-options"
+import { EDIT_DRAFT_ORDER_SHIPPING_PERMISSIONS } from "../../lib/permissions"
 import { getUniqueShippingProfiles } from "../../lib/utils/order-utils"
 import { pluralize } from "../../lib/utils/string-utils"
 import { Thumbnail } from "../common/thumbnail"
@@ -32,6 +34,10 @@ interface ShippingSectionProps {
 
 export const ShippingSection = ({ order }: ShippingSectionProps) => {
   const orderHasShipping = order.shipping_methods.length > 0
+  const { hasAllPermissions } = usePermissions()
+  const canEditShipping = hasAllPermissions(
+    EDIT_DRAFT_ORDER_SHIPPING_PERMISSIONS
+  )
 
   const {
     shipping_options = [],
@@ -117,8 +123,12 @@ export const ShippingSection = ({ order }: ShippingSectionProps) => {
           ))}
       </Accordion.Root>
 
-      <Divider variant="dashed" />
-      <Footer isSomeProfilesAssigned={isSomeProfilesAssigned} />
+      {canEditShipping && (
+        <>
+          <Divider variant="dashed" />
+          <Footer isSomeProfilesAssigned={isSomeProfilesAssigned} />
+        </>
+      )}
     </Container>
   )
 }

@@ -214,7 +214,8 @@ function generateRoute(
  * When the route file exports a `config` (via `defineRouteConfig`), its `label`
  * and `translationNs` are surfaced on the handle so the dashboard can fall back
  * to the sidebar label for the document title when no `seo` resolver is
- * provided. An explicit `handle` export always wins.
+ * provided, and its `permissions` so the dashboard's route permission guard
+ * enforces them. An explicit `handle` export always wins.
  */
 function generateHandle(
   index: number,
@@ -230,7 +231,7 @@ function generateHandle(
   }
 
   const configName = generateRouteConfigName(index)
-  const labelFields = `label: ${configName}.label, translationNs: ${configName}.translationNs`
+  const labelFields = `label: ${configName}.label, translationNs: ${configName}.translationNs, permissions: ${configName}.permissions`
 
   return hasHandle
     ? `{ ${labelFields}, ...${generateHandleName(index)} }`

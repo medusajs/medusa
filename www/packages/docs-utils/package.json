@@ -40,10 +40,10 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "yarn clean && tsc && yarn build:global-config:cjs",
-    "build:global-config:cjs": "tsc -p tsconfig.cjs.json && node ./scripts/mark-cjs-dir.mjs",
+    "build": "yarn clean && yarn run -T tsc && yarn build:global-config:cjs",
+    "build:global-config:cjs": "yarn run -T tsc -p tsconfig.cjs.json && node ./scripts/mark-cjs-dir.mjs",
     "clean": "rimraf dist",
-    "watch": "tsc --watch",
+    "watch": "yarn run -T tsc --watch",
     "test": "vitest --passWithNoTests"
   },
   "dependencies": {
@@ -63,7 +63,7 @@
     "rimraf": "^5.0.5",
     "tsconfig": "*",
     "types": "*",
-    "typescript": "^5.3.3",
+    "typescript": "^6.0.3",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^2.1.8"
   },

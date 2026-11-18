@@ -52,7 +52,7 @@ const Item = React.forwardRef<
     <RadixRadioGroup.Item
       ref={ref}
       className={clx(
-        "group relative flex h-5 w-5 items-center justify-center outline-none",
+        "group relative flex h-5 w-5 items-center justify-center outline-hidden",
         className
       )}
       {...props}
@@ -114,7 +114,7 @@ const ChoiceBox = React.forwardRef<
     <RadixRadioGroup.Item
       ref={ref}
       className={clx(
-        "shadow-borders-base bg-ui-bg-base focus-visible:shadow-borders-interactive-with-focus transition-fg group flex items-start gap-x-2 rounded-lg p-3 outline-none",
+        "shadow-borders-base bg-ui-bg-base focus-visible:shadow-borders-interactive-with-focus transition-fg group flex items-start gap-x-2 rounded-lg p-3 outline-hidden",
         "hover:enabled:bg-ui-bg-base-hover",
         "data-[state=checked]:shadow-borders-interactive-with-shadow",
         "group-disabled:cursor-not-allowed group-disabled:opacity-50",

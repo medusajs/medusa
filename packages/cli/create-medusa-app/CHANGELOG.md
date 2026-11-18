@@ -1,5 +1,52 @@
 # Change Log
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17521](https://github.com/medusajs/medusa/pull/17521) [`ce6b88a`](https://github.com/medusajs/medusa/commit/ce6b88a3f01f7537dfa734ebf31e650c114a761d) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(utils,create-medusa-app): escape database names in database creation and existence queries
+
+- [#17794](https://github.com/medusajs/medusa/pull/17794) [`3e5937b`](https://github.com/medusajs/medusa/commit/3e5937b970b9c66068f57a9a7ed250ebeaa9105d) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): support installing projects with Yarn v1
+
+- Updated dependencies []:
+  - @medusajs/deps@2.22.7
+  - @medusajs/telemetry@2.22.7
+
+## 2.22.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.22.6
+  - @medusajs/telemetry@2.22.6
+
+## 2.22.5
+
+### Patch Changes
+
+- [#17716](https://github.com/medusajs/medusa/pull/17716) [`d06808b`](https://github.com/medusajs/medusa/commit/d06808b468c55247b9a76fedde7dd864aec92eeb) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(create-medusa-app): apply --version to plugin dependencies and peer dependencies
+- Updated dependencies []:
+  - @medusajs/deps@2.22.5
+  - @medusajs/telemetry@2.22.5
+
+## 2.22.4
+
+### Patch Changes
+
+- [#17647](https://github.com/medusajs/medusa/pull/17647) [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: upgrade TypeScript to 6.0.3
+
+- Updated dependencies [[`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9)]:
+  - @medusajs/telemetry@2.22.4
+  - @medusajs/deps@2.22.4
+
+## 2.22.3
+
+### Patch Changes
+
+- Updated dependencies [[`9692b99`](https://github.com/medusajs/medusa/commit/9692b996485e6fc6e7cb7f6d18ab730962b9727e), [`ae1da4d`](https://github.com/medusajs/medusa/commit/ae1da4d88ac1ae9cbe345585426a29fac8790e59), [`b1632c1`](https://github.com/medusajs/medusa/commit/b1632c158acd23b845e83e3b3cc682e90e977912)]:
+  - @medusajs/deps@2.22.3
+  - @medusajs/telemetry@2.22.3
+
 ## 2.22.2
 
 ### Patch Changes

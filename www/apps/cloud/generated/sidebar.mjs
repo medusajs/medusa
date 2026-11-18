@@ -47,6 +47,13 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "path": "/migrate-self-hosted",
+            "title": "Migrate from Self Hosting",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Command Palette",
             "path": "/command-palette",
             "children": []
@@ -710,6 +717,28 @@ export const generatedSidebars = [
             "title": "IP Addresses",
             "path": "/ip-addresses",
             "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Medusa Security",
+            "path": "/security",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Security Analytics",
+                "path": "/security/analytics",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Data Protection",
+                "path": "/security/data-protection",
+                "children": []
+              }
+            ]
           }
         ]
       },

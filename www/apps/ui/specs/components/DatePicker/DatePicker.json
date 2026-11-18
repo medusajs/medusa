@@ -395,11 +395,8 @@
       "required": false,
       "tsType": {
         "name": "union",
-        "raw": "null \\| CalendarDate \\| CalendarDateTime",
+        "raw": "CalendarDate \\| CalendarDateTime \\| null",
         "elements": [
-          {
-            "name": "null"
-          },
           {
             "name": "CalendarDate",
             "elements": [],
@@ -409,6 +406,9 @@
             "name": "CalendarDateTime",
             "elements": [],
             "raw": "CalendarDateTime"
+          },
+          {
+            "name": "null"
           }
         ]
       }
@@ -426,7 +426,7 @@
       "tsType": {
         "name": "signature",
         "type": "function",
-        "raw": "(value: CalendarDate \\| CalendarDateTime) => undefined \\| null \\| true \\| ValidationError",
+        "raw": "(value: CalendarDate \\| CalendarDateTime) => true \\| ValidationError \\| null \\| undefined",
         "signature": {
           "arguments": [
             {
@@ -448,19 +448,19 @@
           ],
           "return": {
             "name": "union",
-            "raw": "undefined \\| null \\| true \\| ValidationError",
+            "raw": "true \\| ValidationError \\| null \\| undefined",
             "elements": [
-              {
-                "name": "undefined"
-              },
-              {
-                "name": "null"
-              },
               {
                 "name": "true"
               },
               {
                 "name": "ValidationError"
+              },
+              {
+                "name": "null"
+              },
+              {
+                "name": "undefined"
               }
             ]
           }

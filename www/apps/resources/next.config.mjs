@@ -1,5 +1,6 @@
 import {
   brokenLinkCheckerPlugin,
+  enterpriseNoticeLinkFixerPlugin,
   localLinksRehypePlugin,
   prerequisitesLinkFixerPlugin,
   recmaInjectMdxDataPlugin,
@@ -60,6 +61,12 @@ const withMDX = mdx({
       ],
       [
         prerequisitesLinkFixerPlugin,
+        {
+          checkLinksType: "value",
+        },
+      ],
+      [
+        enterpriseNoticeLinkFixerPlugin,
         {
           checkLinksType: "value",
         },

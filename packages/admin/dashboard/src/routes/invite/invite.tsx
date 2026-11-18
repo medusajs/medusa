@@ -6,16 +6,19 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import { decodeToken } from "react-jwt"
-import { Link, useSearchParams } from "react-router-dom"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import * as z from "zod"
 import { Form } from "../../components/common/form"
 import AvatarBox from "../../components/common/logo-box/avatar-box"
 import {
+  useLogout,
   useSignInWithEmailPass,
   useSignUpWithEmailPass,
 } from "../../hooks/api/auth"
 import { useAcceptInvite } from "../../hooks/api/invites"
+import { useMe } from "../../hooks/api/users"
 import { isFetchError } from "../../lib/is-fetch-error"
+import { queryClient } from "../../lib/query-client"
 import { AuthLoginResponse } from "@medusajs/js-sdk"
 
 const CreateAccountSchema = z
@@ -53,12 +56,20 @@ export const Invite = () => {
   const invite: DecodedInvite | null = token ? decodeToken(token) : null
   const isValidInvite = invite && validateDecodedInvite(invite)
 
+  const { user, isPending: isLoadingUser } = useMe({ fields: "email" })
+
+  if (isLoadingUser) {
+    return null
+  }
+
   return (
     <div className="relative flex min-h-dvh w-dvw items-center justify-center bg-ui-bg-subtle p-4">
       <div className="flex w-full max-w-[360px] flex-col items-center">
         <AvatarBox checked={success} />
         <div className="max-h-[557px] w-full will-change-contents">
-          {isValidInvite ? (
+          {user ? (
+            <SignedInView email={user.email} />
+          ) : isValidInvite ? (
             <AnimatePresence>
               {!success ? (
                 <motion.div
@@ -163,6 +174,36 @@ const InvalidView = () => {
         </Text>
       </div>
       <LoginLink />
+    </div>
+  )
+}
+
+const SignedInView = ({ email }: { email: string }) => {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+
+  const { mutateAsync: logout, isPending } = useLogout()
+
+  const handleLogout = async () => {
+    await logout(undefined, {
+      onSuccess: () => {
+        queryClient.clear()
+        navigate(0)
+      },
+    })
+  }
+
+  return (
+    <div className="flex w-full flex-col items-center gap-y-6">
+      <div className="flex flex-col items-center gap-y-1">
+        <Heading className="text-center">{t("invite.signedInTitle")}</Heading>
+        <Text size="small" className="text-center text-ui-fg-subtle">
+          {t("invite.signedInHint", { email })}
+        </Text>
+      </div>
+      <Button className="w-full" onClick={handleLogout} isLoading={isPending}>
+        {t("invite.signOut")}
+      </Button>
     </div>
   )
 }

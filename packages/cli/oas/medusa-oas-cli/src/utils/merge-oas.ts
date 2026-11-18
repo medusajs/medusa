@@ -22,20 +22,13 @@ export function mergeBaseIntoOAS(
    */
   const targetTags = targetOAS.tags ?? []
   const sourceTags = sourceOAS.tags ?? []
-  const combinedTags: TagObject[] = []
-  const sourceIndexes: number[] = []
-  for (const targetTag of targetTags) {
-    for (const [sourceTagIndex, sourceTag] of sourceTags.entries()) {
-      if (targetTag.name === sourceTag.name) {
-        combinedTags.push(sourceTag)
-        sourceIndexes.push(sourceTagIndex)
-        continue
-      }
-      combinedTags.push(targetTag)
-    }
-  }
-  for (const [sourceTagIndex, sourceTag] of sourceTags.entries()) {
-    if (!sourceIndexes.includes(sourceTagIndex)) {
+  const sourceTagsByName = new Map(sourceTags.map((tag) => [tag.name, tag]))
+  const targetTagNames = new Set(targetTags.map((tag) => tag.name))
+  const combinedTags: TagObject[] = targetTags.map(
+    (targetTag) => sourceTagsByName.get(targetTag.name) ?? targetTag
+  )
+  for (const sourceTag of sourceTags) {
+    if (!targetTagNames.has(sourceTag.name)) {
       combinedTags.push(sourceTag)
     }
   }

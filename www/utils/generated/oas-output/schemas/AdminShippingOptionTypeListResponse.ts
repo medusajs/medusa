@@ -26,6 +26,7 @@
  *     title: estimate_count
  *     description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
  *     x-featureFlag: index_engine
+ *     deprecated: true
  *   shipping_option_types:
  *     type: array
  *     description: The list of shipping option types.

@@ -80,7 +80,7 @@ const innerVariants = cva({
     {
       variant: "squared",
       size: "2xsmall",
-      className: "rounded-sm",
+      className: "rounded-xs",
     },
     {
       variant: "squared",

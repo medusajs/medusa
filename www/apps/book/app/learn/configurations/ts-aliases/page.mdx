@@ -74,12 +74,11 @@ Medusa also doesn't support TypeScript aliases in the admin customizations by de
 
 ### Step 1: Update `src/admin/tsconfig.json`
 
-Update `src/admin/tsconfig.json` to include `baseUrl` and `paths` configuration:
+Update `src/admin/tsconfig.json` to include the `paths` configuration:
 
 ```json title="src/admin/tsconfig.json"
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./*"] 
     }
@@ -89,7 +88,13 @@ Update `src/admin/tsconfig.json` to include `baseUrl` and `paths` configuration:
 }
 ```
 
-The `baseUrl` option sets the base directory to `src/admin`, and the `paths` option defines the `@` alias to allow importing files from the `src/admin` directory using aliases.
+The `paths` option defines the `@` alias to allow importing files from the `src/admin` directory using aliases. The paths are relative to the `src/admin/tsconfig.json` file.
+
+<Note>
+
+Don't set the `baseUrl` option. TypeScript 6 deprecates it, and TypeScript 7 removes it. Learn more in the [TypeScript 6 and 7](../typescript/page.mdx) chapter.
+
+</Note>
 
 ### Step 2: Update `medusa-config.ts`
 
@@ -137,7 +142,6 @@ For example, if you set the `@/*` alias to point to `./components/*`:
 ```json title="src/admin/tsconfig.json"
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./components/*"]
     }

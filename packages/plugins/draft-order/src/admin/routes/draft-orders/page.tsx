@@ -1,5 +1,6 @@
 import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { LayoutComposer } from "@medusajs/dashboard/components"
+import { usePermissions } from "@medusajs/dashboard/hooks"
 import type { HttpTypes } from "@medusajs/types"
 import {
   Container,
@@ -17,6 +18,10 @@ import { useRegions } from "../../hooks/api/regions"
 import { useSalesChannels } from "../../hooks/api/sales-channels"
 import { useDataTableDateFilters } from "../../hooks/common/use-data-table-date-filters"
 import { useQueryParams } from "../../hooks/common/use-query-params"
+import {
+  CREATE_DRAFT_ORDER_PERMISSIONS,
+  VIEW_DRAFT_ORDER_PERMISSIONS,
+} from "../../lib/permissions"
 import { getFullDate } from "../../lib/utils/date-utils"
 import { useTranslation } from "react-i18next"
 
@@ -46,6 +51,8 @@ const List = () => {
 
   const columns = useColumns()
   const filters = useFilters()
+  const { hasAllPermissions } = usePermissions()
+  const canCreate = hasAllPermissions(CREATE_DRAFT_ORDER_PERMISSIONS)
 
   if (isError) {
     throw error
@@ -68,10 +75,14 @@ const List = () => {
                 pageSize={PAGE_SIZE}
                 rowCount={count}
                 heading={t("draftOrders.domain")}
-                action={{
-                  label: t("actions.create"),
-                  to: "create",
-                }}
+                action={
+                  canCreate
+                    ? {
+                        label: t("actions.create"),
+                        to: "create",
+                      }
+                    : undefined
+                }
                 rowHref={(row) => `${row.id}`}
                 emptyState={{
                   empty: {
@@ -95,6 +106,7 @@ const List = () => {
 export const config = defineRouteConfig({
   label: "Drafts",
   nested: "/orders",
+  permissions: VIEW_DRAFT_ORDER_PERMISSIONS,
 })
 
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminOrder>()
@@ -150,6 +162,10 @@ const useColumns = () => {
 
 const useFilters = (): DataTableFilter[] => {
   const dateFilterOptions = useDataTableDateFilters()
+  const { hasPermission } = usePermissions()
+  const canReadCustomers = hasPermission("customer:read")
+  const canReadSalesChannels = hasPermission("sales_channel:read")
+  const canReadRegions = hasPermission("region:read")
 
   const { customers } = useCustomers(
     {
@@ -158,6 +174,7 @@ const useFilters = (): DataTableFilter[] => {
     },
     {
       throwOnError: true,
+      enabled: canReadCustomers,
     }
   )
 
@@ -168,6 +185,7 @@ const useFilters = (): DataTableFilter[] => {
     },
     {
       throwOnError: true,
+      enabled: canReadSalesChannels,
     }
   )
 
@@ -176,12 +194,14 @@ const useFilters = (): DataTableFilter[] => {
       limit: 1000,
       fields: "id,name",
     },
-    { throwOnError: true }
+    { throwOnError: true, enabled: canReadRegions }
   )
 
   return useMemo(() => {
-    return [
-      {
+    const filters: DataTableFilter[] = []
+
+    if (canReadCustomers) {
+      filters.push({
         id: "customer_id",
         label: "Customer",
         options:
@@ -195,8 +215,11 @@ const useFilters = (): DataTableFilter[] => {
               value: customer.id,
             })) ?? [],
         type: "select",
-      },
-      {
+      })
+    }
+
+    if (canReadSalesChannels) {
+      filters.push({
         id: "sales_channel_id",
         label: "Sales Channel",
         options:
@@ -205,8 +228,11 @@ const useFilters = (): DataTableFilter[] => {
             value: sales_channel.id,
           })) ?? [],
         type: "select",
-      },
-      {
+      })
+    }
+
+    if (canReadRegions) {
+      filters.push({
         id: "region_id",
         label: "Region",
         options:
@@ -215,10 +241,19 @@ const useFilters = (): DataTableFilter[] => {
             value: region.id,
           })) ?? [],
         type: "select",
-      },
-      ...dateFilterOptions,
-    ] satisfies DataTableFilter[]
-  }, [customers, sales_channels, regions, dateFilterOptions])
+      })
+    }
+
+    return [...filters, ...dateFilterOptions]
+  }, [
+    canReadCustomers,
+    canReadSalesChannels,
+    canReadRegions,
+    customers,
+    sales_channels,
+    regions,
+    dateFilterOptions,
+  ])
 }
 
 type UseDraftOrderTableQueryProps = {

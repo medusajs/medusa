@@ -139,4 +139,20 @@ post:
     '500':
       $ref: ../components/responses/500_error.yaml
   x-workflow: batchPromotionRulesWorkflow
-  x-events: []
+  x-events:
+    - name: promotion.rules_updated
+      payload: |-
+        ```ts
+        {
+          id, // The ID of the promotion
+          rule_type, // The type of rules changed: "rules", "target_rules", or "buy_rules"
+          created, // The IDs of the created rules
+          updated, // The IDs of the updated rules
+          deleted, // The IDs of the deleted rules
+        }
+        ```
+      description: |-
+        Emitted when a promotion's rules, target rules, or buy rules
+        are created, updated, or deleted in a batch.
+      deprecated: false
+      since: 2.22.7

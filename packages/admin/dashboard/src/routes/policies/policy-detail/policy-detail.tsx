@@ -57,7 +57,7 @@ export const PolicyDetail = () => {
                 <PolicyRolesSection policy={policy} />
               </LayoutComposer.Entry>
             )}
-            {detailPageDefaultEntries(policy, { permissions: false })}
+            {detailPageDefaultEntries(policy)}
           </>
         ),
       }}

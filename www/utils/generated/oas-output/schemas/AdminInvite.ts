@@ -7,7 +7,6 @@
  *   - id
  *   - email
  *   - accepted
- *   - token
  *   - expires_at
  *   - created_at
  *   - updated_at
@@ -53,7 +52,6 @@
  *   rbac_roles:
  *     type: array
  *     description: The roles of the invited user.
- *     x-featureFlag: rbac
  *     items:
  *       $ref: "#/components/schemas/AdminRbacRole"
  * 

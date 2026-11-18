@@ -1,13 +1,16 @@
 import { validateAndTransformQuery } from "@medusajs/framework"
 import { MiddlewareRoute } from "@medusajs/framework/http"
-import { ensureViewConfigurationsEnabled } from "../configurations/middleware"
+import {
+  ensureViewConfigurationsEnabled,
+  ensureViewEntityReadable,
+} from "../configurations/middleware"
 import { AdminGetColumnsParams } from "./validators"
 
 export const columnRoutesMiddlewares: MiddlewareRoute[] = [
   // Apply feature flag check to all column routes
   {
     method: ["GET", "POST"],
-    matcher: "/admin/views/*/columns",
+    matcher: "/admin/views/{*splat}/columns",
     middlewares: [ensureViewConfigurationsEnabled],
   },
   {
@@ -15,6 +18,7 @@ export const columnRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/views/:entity/columns",
     middlewares: [
       ensureViewConfigurationsEnabled,
+      ensureViewEntityReadable,
       validateAndTransformQuery(AdminGetColumnsParams, {}),
     ],
   },

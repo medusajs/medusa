@@ -333,4 +333,23 @@ describe("authenticate middleware", () => {
       expect.objectContaining({ actor_id: "apk_1", actor_type: "api-key" })
     )
   })
+
+  describe("prototype pollution", () => {
+    afterEach(() => {
+      delete (Object.prototype as any).allowUnauthenticated
+    })
+
+    it("does not treat a polluted prototype flag as an allow-unauthenticated option", async () => {
+      ;(Object.prototype as any).allowUnauthenticated = true
+
+      const req = createRequest({})
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate("user", ["bearer"])(req, res, next)
+
+      expect(next).not.toHaveBeenCalled()
+      expect(res.status).toHaveBeenCalledWith(401)
+    })
+  })
 })

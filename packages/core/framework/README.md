@@ -54,7 +54,7 @@
 | `@medusajs/framework/workflows-sdk/composer` | Re-export of `@medusajs/workflows-sdk/composer` |
 | `@medusajs/framework/modules-sdk` | Re-export of `@medusajs/modules-sdk` |
 | `@medusajs/framework/orchestration` | Re-export of `@medusajs/orchestration` |
-| `@medusajs/framework/http` | `MedusaRequest`, `AuthenticatedMedusaRequest`, `MedusaResponse`, `defineMiddlewares`, `authenticate`, `validateAndTransformBody`, `validateAndTransformQuery` |
+| `@medusajs/framework/http` | `MedusaRequest`, `AuthenticatedMedusaRequest`, `MedusaResponse`, `defineMiddlewares`, `authenticate`, `validateAndTransformBody`, `validateAndTransformQuery`, and the `AuditRouteConfig` type for a middleware route's `audit` setting |
 | `@medusajs/framework/subscribers` | `SubscriberArgs`, `SubscriberConfig` |
 | `@medusajs/framework/jobs` | Scheduled job loader and types |
 | `@medusajs/framework/logger` | The Medusa `logger` |
@@ -65,7 +65,7 @@
 | `@medusajs/framework/zod` | Re-export of the `zod` version Medusa uses |
 | `@medusajs/framework/awilix`, `/pg` | Re-exports of `awilix` and `pg` |
 | `@medusajs/framework/mikro-orm/{core,knex,postgresql,migrations,cli}` | Re-exports of the pinned MikroORM packages |
-| `@medusajs/framework/opentelemetry/{api,resources,sdk-node,sdk-trace-node,instrumentation-pg}` | Re-exports of the pinned OpenTelemetry packages |
+| `@medusajs/framework/opentelemetry/{api,resources,sdk-node,sdk-trace,instrumentation-pg}` | Re-exports of the pinned OpenTelemetry packages |
 
 The package also ships a `medusa-mikro-orm` binary that wraps the MikroORM CLI.
 
@@ -93,6 +93,44 @@ export const GET = (
     message: "[GET] Hello world!",
   })
 }
+```
+
+### Audit settings
+
+When the Audit Module is installed, `POST`, `PUT`, `PATCH`, and `DELETE` requests under `/admin`, `/rbac`, and `/auth` are recorded as audit logs. Set `audit` on a middleware route to change that for the routes it matches:
+
+```ts
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/brands",
+      methods: ["POST"],
+      // Recorded as `brand.create` with the created brand's ID by default.
+      audit: { requestData: (req) => ({ name: req.validatedBody?.name }) },
+    },
+    { matcher: "/admin/brands/sync", methods: ["POST"], audit: false },
+    // Routes outside `/admin`, `/rbac`, and `/auth` are recorded once opted in.
+    {
+      matcher: "/vendors*",
+      methods: ["POST", "DELETE"],
+      audit: { metadata: (req) => ({ vendor_id: req.get("x-vendor-id") }) },
+    },
+  ],
+})
+```
+
+Request and response bodies are never stored, only what `requestData` and `responseData` return. `metadata` adds values to the record's `metadata`.
+
+Audit logs name a route's resource after the path's first segment, such as `product` for `/admin/products`. When an API lives under a longer prefix, declare it so it isn't mistaken for the resource:
+
+```ts
+export default defineMiddlewares({
+  // `POST /v1/admin/credits` is recorded as `credit.create`
+  audit: { namespaces: ["/v1", "/v1/admin"] },
+  routes: [],
+})
 ```
 
 ## Resources

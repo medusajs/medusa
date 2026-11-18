@@ -190,7 +190,7 @@ const Command = React.forwardRef<HTMLButtonElement, CommandProps>(
       <button
         ref={ref}
         className={clx(
-          "txt-compact-small-plus flex items-center gap-x-2 bg-ui-contrast-bg-base px-3 py-2.5 text-ui-contrast-fg-primary outline-none transition-fg",
+          "txt-compact-small-plus flex items-center gap-x-2 bg-ui-contrast-bg-base px-3 py-2.5 text-ui-contrast-fg-primary outline-hidden transition-fg",
           "focus-visible:bg-ui-contrast-bg-highlight hover:bg-ui-contrast-bg-base-hover focus-visible:hover:bg-ui-contrast-bg-base-hover active:bg-ui-contrast-bg-base-pressed focus-visible:active:bg-ui-contrast-bg-base-pressed disabled:!bg-ui-bg-disabled disabled:!text-ui-fg-disabled",
           "last-of-type:-mr-1 last-of-type:pr-4",
           className

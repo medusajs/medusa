@@ -28,4 +28,8 @@ export const ProductMedia = () => {
   );
 };
 
+export const handle = {
+  permissions: ["product:read"],
+};
+
 export default ProductMedia;

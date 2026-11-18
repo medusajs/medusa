@@ -66,9 +66,9 @@ export const useCreateTaxRegion = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.taxRegion.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.all })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -86,13 +86,13 @@ export const useUpdateTaxRegion = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.taxRegion.update(id, payload, query),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: taxRegionsQueryKeys.detail(id),
       })
       queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -108,7 +108,7 @@ export const useDeleteTaxRegion = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.taxRegion.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: taxRegionsQueryKeys.detail(id),
@@ -117,7 +117,7 @@ export const useDeleteTaxRegion = (
       // Invalidate all detail queries, as the deleted tax region may have been a sublevel region
       queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.details() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
