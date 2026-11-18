@@ -51,14 +51,14 @@
     "@babel/runtime": "^8.0.10",
     "@hookform/resolvers": "6.0.0",
     "@medusajs/js-sdk": "2.22.7",
-    "@tanstack/react-query": "5.104.5",
+    "@tanstack/react-query": "5.107.1",
     "@uiw/react-json-view": "^2.0.0-alpha.17",
     "date-fns": "^4.4.0",
     "dequal": "^2.0.3",
     "lodash.debounce": "^4.0.8",
     "match-sorter": "^8.3.0",
     "radix-ui": "1.8.1",
-    "react-hook-form": "7.91.0",
+    "react-hook-form": "7.92.0",
     "zod": "4.6.7"
   },
   "devDependencies": {

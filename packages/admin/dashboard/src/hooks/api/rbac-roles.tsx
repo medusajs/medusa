@@ -254,7 +254,7 @@ export const useAddRbacRolePoliciesById = (
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.lists() })
       invalidateMePermissions()
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -271,7 +271,7 @@ export const useRemoveRbacRolePolicies = (
   return useMutation({
     mutationFn: (policies) =>
       sdk.admin.rbacRole.removePolicies(roleId, { policies }),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: rbacRolesQueryKeys.policies(roleId),
       })

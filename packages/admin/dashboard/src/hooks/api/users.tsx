@@ -120,14 +120,14 @@ export const useUpdateMe = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.user.updateMe(payload, query),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: usersQueryKeys.me() })
       queryClient.invalidateQueries({ queryKey: usersQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: usersQueryKeys.detail(data.user.id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
