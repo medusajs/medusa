@@ -502,6 +502,35 @@ moduleIntegrationTestRunner<ICachingModuleService>({
           expect(cachedAfterUpdate).toBeNull()
         })
       })
+
+      describe("Event handling", () => {
+        // The runner loads its own copy of the service class, so reach the
+        // static trace hook through the instance
+        const serviceClass = () => (service as any).constructor
+
+        afterEach(() => {
+          serviceClass().traceClear = undefined
+        })
+
+        it("should clear once per event and not from an event bus interceptor", async () => {
+          const clearedTags: string[][] = []
+          serviceClass().traceClear = async (
+            clearFn: () => Promise<unknown>,
+            _key: string,
+            tags: string[]
+          ) => {
+            clearedTags.push(tags)
+            return await clearFn()
+          }
+
+          await mockEventBus.emit(
+            [{ name: "product.updated", data: { id: "prod_1" } }],
+            {}
+          )
+
+          expect(clearedTags).toHaveLength(1)
+        })
+      })
     })
   },
 })

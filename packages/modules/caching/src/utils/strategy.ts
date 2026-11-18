@@ -91,8 +91,9 @@ export class DefaultCacheStrategy implements ICachingStrategy {
       }
     }
 
+    // Subscribe only. An interceptor would also run the clear in the emitting
+    // process (unawaited, ignoring worker_mode), duplicating the subscriber's work.
     eventBus.subscribe("*", handleEvent)
-    eventBus.addInterceptor?.(handleEvent)
   }
 
   async computeKey(input: object) {
