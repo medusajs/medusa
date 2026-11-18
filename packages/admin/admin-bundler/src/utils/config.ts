@@ -34,6 +34,10 @@ export async function getViteConfig(
     resolve: {
       dedupe: ["react", "react-dom"],
     },
+    css: {
+      // An inline config stops Vite from loading a postcss.config.* found above the project root.
+      postcss: { plugins: [] },
+    },
     build: {
       emptyOutDir: true,
       outDir: path.resolve(process.cwd(), options.outDir),

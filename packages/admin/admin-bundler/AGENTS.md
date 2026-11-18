@@ -65,4 +65,5 @@ No tests in this package. Exercise changes through a test app with `medusa devel
   - `HMR_PORT` (default: a free port), `HMR_PROTOCOL`, `HMR_HOST`, `HMR_CLIENT_PORT`.
   - `HMR_BIND_HOST` is ignored when the merged config already sets `server.hmr.server`.
 - `__MEDUSA_ADMIN_ADDITIONAL_ALLOWED_HOSTS` (comma-separated) sets Vite `server.allowedHosts`.
+- `css.postcss` is an inline config with no plugins, so Vite doesn't load a `postcss.config.*` from the project or a parent directory (e.g. a leftover Tailwind 3 `tailwindcss: {}` entry would break the build). Add PostCSS plugins through `admin.vite`.
 - `optimizeDeps.exclude` must list every `VIRTUAL_MODULES` id. Vite pre-bundling would otherwise try to resolve them.
