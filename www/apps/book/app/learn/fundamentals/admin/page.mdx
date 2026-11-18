@@ -34,6 +34,14 @@ If your project installs `react-router-dom` directly, update it to v7. Learn mor
 
 </Note>
 
+<Note>
+
+Since Medusa v2.23.0, the Medusa Admin and the Medusa UI package use React v19, and the `@medusajs/medusa` package requires `react-dom` v19.3.1 or later as a peer dependency.
+
+If your project or plugin installs `react`, `react-dom`, `@types/react`, or `@types/react-dom`, update them to v19. Then, make sure your admin customizations are compatible with React v19. For example, `useRef` now requires an initial value, and refs created with `useRef<HTMLDivElement>(null)` have the type `RefObject<HTMLDivElement | null>`. Learn more in the [React 19 Upgrade Guide](https://react.dev/blog/2024/04/25/react-19-upgrade-guide).
+
+</Note>
+
 ---
 
 ## How to Customize the Medusa Admin?
