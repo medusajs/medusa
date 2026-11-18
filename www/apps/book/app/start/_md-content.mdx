@@ -1,256 +1,34 @@
 # Set Up Medusa for AI Agents
 
-You are an AI coding agent helping a user set up a Medusa commerce application from scratch. Follow this prompt end-to-end. Each section is a discrete step — finish it, verify it, then move to the next. Do not skip verification.
+You are an AI coding agent helping a user create a Medusa commerce store on Medusa Cloud. Follow this prompt end-to-end. Each section is a discrete step: finish it, verify it, then move to the next. Do not skip verification.
+
+Some steps happen in the Cloud dashboard in the user's browser, such as creating the project. You can't perform those steps yourself. Guide the user through them one instruction at a time, wait for them to confirm each one, and then verify the result with the Cloud CLI when possible.
 
 ## Operating Rules
 
-- Run all commands in the user's shell from the project's parent directory unless a step says otherwise.
-- Before running a command that changes system state (installing software, creating a database, pushing to GitHub, deploying), state what you are about to do in one sentence so the user can interrupt.
-- Never invent values. If a step needs input from the user (account email, project name, GitHub URL), ask once and reuse the answer.
-- After each command, check exit codes and command output. If a step fails, stop and surface the error with a concrete next action — do not silently continue.
+- Before running a command that changes system state (installing software, logging in, cloning a repository, creating a database), state what you are about to do in one sentence so the user can interrupt.
+- Never invent values. If a step needs input from the user (organization, project name, starter), ask once and reuse the answer.
+- After each command, check exit codes and command output. If a step fails, stop and surface the error with a concrete next action. Do not silently continue.
 - Prefer non-interactive flags. This document calls them out explicitly. Do not run commands that block on a TTY (browser prompts, confirmations) unless the step says to.
-- Do not commit secrets, `.env` files, or admin credentials. Treat the admin password the user gives you as sensitive.
+- When a step requires the user to act in the browser, give them the exact steps to follow, then wait for them to confirm before continuing. Do not poll or guess whether they finished.
+- Do not commit secrets, `.env` files, or admin credentials.
 
 ---
 
-## Step 1: Verify Prerequisites
+## Step 1: Install the Medusa Cloud CLI
 
-Check the three prerequisites in order. For each, run the check first; only install if the check fails. Do not upgrade existing tools without asking the user.
+The Cloud CLI (`mcloud`) lets you authenticate the user, monitor deployments, and read project details from the terminal.
 
-### 1a. Node.js (v22.22.0+, LTS only, but not v25+)
+Check whether Node.js and `mcloud` are already installed:
 
 ```bash
 node --version
-```
-
-Required: Node.js `>=22.22.0` (LTS versions only, `<= 24`). The Next.js Starter Storefront does not support Node.js v25+.
-
-If Node is missing or out of range, ask the user how they want to install it. Recommend `nvm`:
-
-```bash
-# macOS / Linux
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-# then, in a new shell:
-nvm install 22
-nvm use 22
-```
-
-On Windows, point the user to https://nodejs.org/en/download and have them install Node 22 LTS, then re-run `node --version`.
-
-### 1b. Git CLI
-
-```bash
-git --version
-```
-
-If missing:
-- macOS: `xcode-select --install` (or `brew install git`)
-- Linux (Debian/Ubuntu): `sudo apt-get update && sudo apt-get install -y git`
-- Windows: install from https://git-scm.com/downloads
-
-### 1c. PostgreSQL (installed and running)
-
-```bash
-psql --version
-pg_isready
-```
-
-`pg_isready` should exit `0`. If PostgreSQL is missing:
-- macOS: `brew install postgresql@16 && brew services start postgresql@16`
-- Linux (Debian/Ubuntu): `sudo apt-get install -y postgresql && sudo systemctl enable --now postgresql`
-- Windows: install from https://www.postgresql.org/download/windows/ and start the service
-
-If `pg_isready` fails after install, ask the user to start the PostgreSQL service (`brew services start postgresql@16`, `sudo systemctl start postgresql`, or via the Windows Services panel) before continuing.
-
-Do not proceed to Step 2 until all three checks pass.
-
----
-
-## Step 2: Install Medusa
-
-Pick the package manager in this priority order — use the **first one** that is already installed:
-
-1. `pnpm` — check with `pnpm --version`
-2. `yarn` — check with `yarn --version`
-3. `npm` — always available with Node.js
-
-Ask the user for a project name (default: `my-medusa-store`).
-
-### Check for an Existing Database
-
-`create-medusa-app` creates a PostgreSQL database using the project name. Before running the install, check whether a database with that name already exists:
-
-```bash
-psql -lqt | cut -d\| -f1 | grep -qw "<project-name>"
-```
-
-- **Exit code `0`** (database exists) → generate a randomized project suffix to use with `create-medusa-app`. For example:
-
-  ```bash
-  PROJECT_SUFFIX=$(LC_ALL=C tr -dc 'a-z0-9' < /dev/urandom | head -c6)
-  ```
-
-  Use this as the project name for the install command (`<project-name>-$PROJECT_SUFFIX`).
-
-- **Exit code `1`** (database does not exist) → continue with the original project name.
-
-### Run the Installer
-
-From the directory where the project should be created, run `create-medusa-app` with `CI=true` to skip interactive prompts and `--no-browser` to prevent the command from starting servers and opening a browser (which would hang).
-
-**If you didn't set a randomized project suffix** (no collision detected):
-
-```bash
-# pnpm (preferred)
-CI=true pnpm dlx create-medusa-app@latest <project-name> --with-nextjs-starter --no-browser
-
-# yarn
-CI=true yarn dlx create-medusa-app@latest <project-name> --with-nextjs-starter --no-browser
-
-# npm
-CI=true npx create-medusa-app@latest <project-name> --with-nextjs-starter --no-browser
-```
-
-**If you set a randomized project suffix** (collision detected):
-
-```bash
-# pnpm (preferred)
-CI=true pnpm dlx create-medusa-app@latest <project-name>-$PROJECT_SUFFIX --with-nextjs-starter --no-browser
-
-# yarn
-CI=true yarn dlx create-medusa-app@latest <project-name>-$PROJECT_SUFFIX --with-nextjs-starter --no-browser
-
-# npm
-CI=true npx create-medusa-app@latest <project-name>-$PROJECT_SUFFIX --with-nextjs-starter --no-browser
-```
-
-The command:
-
-- Creates a monorepo at `./<project-name>` with `apps/backend` (Medusa server + admin) and `apps/storefront` (Next.js Starter Storefront).
-- Creates a PostgreSQL database named after the project (for example, `medusa-<project-name>`) and runs migrations.
-- Does **not** start the dev servers and does **not** open a browser (because of `--no-browser`).
-
-After the install completes, `cd` into the project directory (`<project-name>`, or `<project-name>-$PROJECT_SUFFIX` if you set a suffix) for all subsequent steps.
-
----
-
-## Step 3: Create the Admin User
-
-Because you used `--no-browser`, no admin user has been created yet. Create a local test user with preset credentials — these are for local development only and will not transfer to any deployed application.
-
-From the backend directory (`apps/backend`), run:
-
-```bash
-# pnpm
-cd apps/backend && pnpm exec medusa user -e admin@example.com -p supersecret
-# yarn
-cd apps/backend && yarn medusa user -e admin@example.com -p supersecret
-# npm
-cd apps/backend && npx medusa user -e admin@example.com -p supersecret
-```
-
-Verify the command exits `0` and prints a confirmation that the user was created. Then return to the project root: `cd ../..`.
-
----
-
-## Step 4: Start the Local Development Servers
-
-Start the Medusa backend and the Next.js storefront as background processes so the user can try the application immediately.
-
-From the project root, open two background processes (or two terminal tabs):
-
-> DO NOT run the `dev` command from the root directory — it must be run separately for the backend and storefront.
-
-```bash
-# Terminal 1 — Medusa backend (from apps/backend)
-cd apps/backend && npm run dev
-# or: pnpm dev / yarn dev
-
-# Terminal 2 — Next.js storefront (from apps/storefront)
-cd apps/storefront && npm run dev
-# or: pnpm dev / yarn dev
-```
-
-DO NOT spend time on whether the servers are running. If the user has issues, they'll report them.
-
-Once both are running, tell the user:
-
-```
-**Here's what has been set up so far:**
-
-- **Medusa backend** running at http://localhost:9000
-- **Admin dashboard** at http://localhost:9000/app — log in with:
-  - Email: `admin@example.com`
-  - Password: `supersecret`
-- **Next.js Storefront** running at http://localhost:8000
-
-The backend has a PostgreSQL database, all migrations applied, and is ready for development. The storefront is pre-connected to the local Medusa backend.
-```
-
-Then ask the user: **"Would you like to deploy your store to Medusa Cloud for seamless production hosting? (yes / no / later)"** Use your ask-question tool for this.
-
-- **Yes** → continue to Step 5.
-- **No / Later** → skip to Step 4a and finish local-only setup.
-
-DO NOT show wrap up yet. Wait until the user confirms deployment or skipping before showing the next steps.
-
----
-
-## Step 4a: Local-Only Setup (skip Cloud)
-
-If the user chose not to deploy to Cloud now, go directly to Step 5 (Install Agent Skills) and Step 8 (Docs MCP Server). After both are done, go to the Wrap Up step (Step 13).
-
-Tell the user they can run `mcloud signup` at any time when they are ready to deploy.
-
----
-
-## Step 5: Install Medusa Agent Skills
-
-Install skills so the agent has the right context for building Medusa features and storefronts.
-
-Run from the project root:
-
-### Claude Code
-
-```bash
-npx -y skills add medusajs/medusa-agent-skills --skill '*' --yes --agent claude-code
-```
-
-### Cursor
-
-```bash
-npx -y skills add medusajs/medusa-agent-skills --skill '*' --yes --agent cursor
-```
-
-### Codex
-
-```bash
-npx -y skills add medusajs/medusa-agent-skills --skill '*' --yes --agent codex
-```
-
-### Gemini CLI
-
-```bash
-npx -y skills add medusajs/medusa-agent-skills --skill '*' --yes --agent gemini-cli
-```
-
-### Other
-
-```bash
-npx -y skills add medusajs/medusa-agent-skills --skill '*' --yes
-```
-
----
-
-## Step 6: Install the Medusa Cloud CLI
-
-Check whether `mcloud` is already installed:
-
-```bash
 mcloud --version
 ```
 
-If it exits `0`, skip to Step 7. Otherwise install it globally with the same package manager priority:
+If Node.js is missing, ask the user how they want to install it. Recommend Node.js 22 LTS from https://nodejs.org/en/download or with `nvm`.
+
+If `mcloud` exits `0`, skip to Step 2. Otherwise, install it globally with the first package manager that's installed, in this order: `pnpm`, `yarn`, `npm`.
 
 ```bash
 # pnpm
@@ -267,9 +45,9 @@ For all `mcloud` commands in the rest of this prompt: pass `--json` whenever you
 
 ---
 
-## Step 7: Sign Up or Log In to Medusa Cloud
+## Step 2: Sign Up or Log In to Medusa Cloud
 
-Ask the user: **"Do you already have a Medusa Cloud account?"**
+Ask the user: **"Do you already have a Medusa Cloud account?"** Use your ask-question tool for this.
 
 ### If no
 
@@ -279,7 +57,7 @@ Run:
 mcloud signup
 ```
 
-This opens a browser. Tell the user that sign-up starts a free trial and doesn't require payment details. Wait for the user to confirm they have completed sign-up before continuing.
+This opens the sign-up page in the browser. Wait for the user to confirm they have completed sign-up before continuing.
 
 Then run:
 
@@ -299,10 +77,6 @@ mcloud login
 
 Wait for the browser flow to complete.
 
-### If the user wants to skip Cloud
-
-Skip Steps 7-12. Tell them they can revisit Cloud deployment later and jump to Step 13.
-
 ### Verify authentication
 
 ```bash
@@ -311,13 +85,281 @@ mcloud whoami --json
 
 The `auth.kind` field must not be `"none"`. If it is, retry `mcloud login`.
 
+If the user belongs to more than one organization, ask which organization to create the project in, and remember its ID:
+
+```bash
+mcloud organizations list --json
+```
+
 ---
 
-## Step 8: Add the Docs MCP Server
+## Step 3: Choose How to Create the Project
+
+Ask the user: **"Do you want to start from a Medusa starter, or deploy an existing Medusa application from your GitHub account?"** Use your ask-question tool for this.
+
+- **Starter** (recommended for new stores) → continue to Step 4a.
+- **Existing application** → continue to Step 4b.
+
+If the user is unsure, recommend a starter. Starters include the Medusa backend, the Medusa Admin dashboard, and a storefront, so the user gets a working store without writing code.
+
+Present the available starters so the user can pick one:
+
+- **Modern DTC Starter**: Medusa application for direct-to-consumer brands with a TanStack Start storefront.
+- **Industrials B2B Starter**: B2B Medusa application with features and a storefront tailored for industrial businesses, such as machinery, equipment, and supplies.
+- **Blank DTC Starter**: Standard Medusa application with fully-fledged commerce features and a Next.js storefront.
+- **Minimal B2B Starter**: Medusa application with B2B and commerce features and a Next.js storefront.
+
+---
+
+## Step 4a: Create the Project from a Starter
+
+The user creates the project in the Cloud dashboard. Medusa clones the starter into a new GitHub repository in the user's account or organization, then deploys it. The full UI flow is documented at https://docs.medusajs.com/cloud/projects.md.
+
+Tell the user to:
+
+1. Go to https://cloud.medusajs.com and confirm the correct organization is selected.
+2. Open the starters page:
+   - If the organization has no projects yet, click the **Browse starters** card.
+   - Otherwise, click **Create Project**, then click **Browse Starters** at the top right.
+3. Click the **Deploy** button of the starter they chose in Step 3.
+4. If GitHub isn't connected yet, connect it when prompted.
+5. Choose the GitHub account or organization to clone the starter into, enter a repository name, and click **Clone**.
+6. Configure the project:
+   - **Project name**: any name.
+   - **Custom subdomain**: at least 5 characters, not one of the reserved names (`medusa`, `admin`, `staging`, `production`, `preview`, `development`, `proxy`).
+   - **Region**: closest to the target users (`us-east-1`, `eu-central-1`, or `ap-southeast-1`). The region can't be changed later.
+   - Leave the build details as they are. Starters already set the backend and storefront root directories.
+7. Click **Create**.
+
+Ask the user for the project name they entered, then wait for them to confirm the project appears in the Cloud dashboard before continuing to Step 5.
+
+---
+
+## Step 4b: Create the Project from an Existing Application
+
+The application must be in a GitHub repository the user owns or can access, and it must meet the prerequisites at https://docs.medusajs.com/cloud/projects/prerequisites.md. If the application is on the user's machine, check the prerequisites against its code and point out anything that needs fixing before continuing. If the application isn't on GitHub yet, ask the user to create an empty repository (no README, no `.gitignore`, no license) and push the code to it.
+
+Then, tell the user to:
+
+1. Go to https://cloud.medusajs.com and confirm the correct organization is selected.
+2. Click **Create Project**, or the **Import repository** card if the organization has no projects yet.
+3. Connect GitHub if prompted, select the repository, and click **Continue**.
+4. Configure the project:
+   - **Project name**: any name.
+   - **Custom subdomain**: at least 5 characters, not one of the reserved names (`medusa`, `admin`, `staging`, `production`, `preview`, `development`, `proxy`).
+   - **Region**: closest to the target users (`us-east-1`, `eu-central-1`, or `ap-southeast-1`). The region can't be changed later.
+   - **Project root directory**: the path to the Medusa application in the repository, if it's a monorepo (for example, `apps/backend`). Otherwise, leave it empty.
+   - **Storefront root directory**: the path to the storefront in the repository, if the user wants to deploy one (for example, `apps/storefront`). Otherwise, leave it empty.
+   - **Environment variables**: Cloud sets the default configurations for the user, such as the database URL, Redis URL, JWT and cookie secrets, CORS, and file storage. Don't add those, since `DATABASE_URL` and `REDIS_URL` are reserved and can't be set. Only add variables for third-party integrations (for example, payment provider API keys) and the application's own customizations.
+5. Click **Create**.
+
+Ask the user for the project name they entered, then wait for them to confirm the project appears in the Cloud dashboard before continuing.
+
+---
+
+## Step 5: Monitor the Deployment
+
+Set the active context for the CLI so subsequent commands don't need flags. Resolve the IDs from names:
+
+```bash
+ORG_ID=$(mcloud organizations list --json | jq -r '.[0].id')
+# If the user chose an organization in Step 2, use its ID instead.
+
+PROJECT_HANDLE=$(mcloud projects list \
+  --organization "$ORG_ID" --json \
+  | jq -r '.[] | select(.name == "<project-name>") | .handle')
+
+ENV_HANDLE=$(mcloud environments list \
+  --organization "$ORG_ID" --project "$PROJECT_HANDLE" --json \
+  | jq -r '.[] | select(.name == "Production") | .handle')
+
+mcloud use --organization "$ORG_ID" \
+  --project "$PROJECT_HANDLE" --environment "$ENV_HANDLE"
+```
+
+If `PROJECT_HANDLE` is empty, the project may still be getting created. Wait a few seconds and retry, or ask the user to confirm the project name.
+
+Poll the latest deployment until it reaches a terminal state. A reasonable loop:
+
+```bash
+while true; do
+  STATUS=$(mcloud deployments list --limit 1 --json \
+    | jq -r '.[0].backend_status')
+  echo "Backend status: $STATUS"
+  case "$STATUS" in
+    deployed|build-failed|deployment-failed|timed-out|canceled)
+      break ;;
+  esac
+  sleep 20
+done
+```
+
+The first deployment takes a few minutes. While it runs, tell the user what's happening: Cloud is provisioning the database, Redis, and file storage, then building and deploying the application.
+
+Report `backend_status` to the user as it changes. If the final status is anything other than `deployed`, debug per the [Cloud CLI agent guide](https://docs.medusajs.com/cloud/cli/agents.md):
+
+- `build-failed` → `mcloud deployments build-logs <deployment-id>`
+- `deployment-failed` → `mcloud logs --deployment <deployment-id> --limit 1000`
+- `timed-out` → check both
+
+Surface the relevant error to the user and stop. Do not retry blindly.
+
+If the project has a storefront, repeat the polling using `storefront_status`.
+
+---
+
+## Step 6: Show the Live URLs
+
+Once `backend_status` is `deployed`, fetch the project's details:
+
+```bash
+mcloud projects get "$PROJECT_HANDLE"
+```
+
+Read the `Production Backend URL` and `Production Storefront URL` lines from the output. The backend URL already points to the admin dashboard (`/app`).
+
+Show the user:
+
+```
+**Your store is live on Medusa Cloud:**
+
+- **Admin dashboard**: <Production Backend URL>. Log in with your Medusa Cloud account using the login button on the dashboard.
+- **Storefront**: <Production Storefront URL>
+```
+
+Omit the storefront line if the project has no storefront. Without a custom domain, the URLs are subdomains of `medusajs.app` (backend) and `medusajs.site` (storefront).
+
+Then ask the user: **"Would you like to set up the project on your machine so I can help you build custom features? (yes / no / later)"** Use your ask-question tool for this.
+
+- **Yes** → continue to Step 7.
+- **No / Later** → skip to Step 10. Tell the user they can ask you to set up the project locally at any time by fetching https://docs.medusajs.com/cloud/setup-locally.md.
+
+---
+
+## Step 7: Set Up the Project Locally
+
+Customizations are built locally, then pushed to the GitHub repository. Cloud deploys every push to the Production environment's branch, so the local setup is how the user builds on top of their store.
+
+### 7a. Verify prerequisites
+
+Check each prerequisite. Only install if the check fails, and don't upgrade existing tools without asking the user.
+
+```bash
+node --version   # >=22.22.0, LTS only (v22 or v24, not v25+)
+git --version
+pg_isready       # PostgreSQL installed and running, exits 0
+```
+
+If a prerequisite is missing, ask the user how they want to install it:
+
+- **Node.js**: Node 22 LTS from https://nodejs.org/en/download or with `nvm install 22`.
+- **Git**: `xcode-select --install` or `brew install git` on macOS, `sudo apt-get install -y git` on Debian/Ubuntu, or https://git-scm.com/downloads on Windows.
+- **PostgreSQL**: `brew install postgresql@16 && brew services start postgresql@16` on macOS, `sudo apt-get install -y postgresql && sudo systemctl enable --now postgresql` on Debian/Ubuntu, or https://www.postgresql.org/download/windows/ on Windows. If the user prefers Docker, follow https://docs.medusajs.com/cloud/setup-locally/docker.md instead of the rest of this step.
+
+### 7b. Clone the repository
+
+Get the repository linked to the project:
+
+```bash
+mcloud projects get "$PROJECT_HANDLE" --json \
+  | jq -r '.repository, .root_path'
+```
+
+`repository` has the format `<owner>/<repo>`. If the user imported an existing application in Step 4b and already has its code on their machine, `cd` into it and skip the clone. Otherwise, ask where to put the project, then clone it there:
+
+```bash
+git clone https://github.com/<owner>/<repo>.git
+cd <repo>
+```
+
+If cloning fails because the user isn't authenticated with GitHub, point them to `gh auth login` (https://cli.github.com/) or to set up an SSH key, then retry.
+
+### 7c. Install and run the project
+
+Resolve the two directories used below:
+
+- `<backend-dir>`: the `root_path` from Step 7b, without the leading `/`. If it's empty, the Medusa application is at the repository root. For starters, it's `apps/backend`.
+- `<storefront-dir>`: for starters, `apps/storefront`. For an imported application, use the storefront root directory the user set in Step 4b, or ask the user. Skip the storefront steps if the project has no storefront.
+
+Fetch https://docs.medusajs.com/cloud/setup-locally.md and follow its steps from "Install Dependencies" to "Run the Storefront", using these directories wherever the guide uses `apps/backend` and `apps/storefront`. In short:
+
+1. Install dependencies from the repository root. Starters use `pnpm`. For an imported application, use the package manager its lock file indicates.
+2. Create `<backend-dir>/.env` pointing to local resources (a local PostgreSQL database, random `JWT_SECRET` and `COOKIE_SECRET`, and local CORS URLs). Create the database if it doesn't exist. Don't reuse the Cloud environment's variables, since they point to the deployed database.
+3. Run `npx medusa db:migrate` in `<backend-dir>`.
+4. Create a local admin user in `<backend-dir>` with `npx medusa user -e admin@example.com -p supersecret`. These credentials are for local development only.
+5. Start the backend with the `dev` script in `<backend-dir>`, as a background process.
+6. If the project has a storefront, copy `<storefront-dir>/.env.template` to `<storefront-dir>/.env`. The storefront needs a publishable API key: ask the user to log in to the local admin at http://localhost:9000/app, go to **Settings → Publishable API Keys**, and paste the key, then set it with the local backend URL in `<storefront-dir>/.env`. If the storefront has no `.env.template`, check its code for the variable names it expects.
+7. Start the storefront with the `dev` script in `<storefront-dir>`, as a background process.
+
+> DO NOT run the `dev` command from the repository root. Run it separately for the backend and storefront.
+
+DO NOT spend time on whether the servers are running. If the user has issues, they'll report them.
+
+Once both are running, tell the user:
+
+```
+**Your store is also running locally:**
+
+- **Medusa backend** at http://localhost:9000
+- **Admin dashboard** at http://localhost:9000/app. Log in with:
+  - Email: `admin@example.com`
+  - Password: `supersecret`
+- **Storefront** at http://localhost:8000
+
+Your local setup uses its own database, so changes to local data don't affect your live store. To deploy code changes, push them to your repository's default branch, or open a pull request to get a preview environment.
+```
+
+---
+
+## Step 8: Install Medusa Agent Skills
+
+Install skills so the agent has the right context for building Medusa features and storefronts.
+
+Run from the repository root:
+
+### Claude Code
+
+```bash
+npx -y skills add medusajs/medusa-agent-skills \
+  --skill '*' --yes --agent claude-code
+```
+
+### Cursor
+
+```bash
+npx -y skills add medusajs/medusa-agent-skills \
+  --skill '*' --yes --agent cursor
+```
+
+### Codex
+
+```bash
+npx -y skills add medusajs/medusa-agent-skills \
+  --skill '*' --yes --agent codex
+```
+
+### Gemini CLI
+
+```bash
+npx -y skills add medusajs/medusa-agent-skills \
+  --skill '*' --yes --agent gemini-cli
+```
+
+### Other
+
+```bash
+npx -y skills add medusajs/medusa-agent-skills --skill '*' --yes
+```
+
+Don't commit the installed skills unless the user asks to.
+
+---
+
+## Step 9: Add the Docs MCP Server
 
 The Docs MCP server gives the agent live access to the Medusa documentation. The connection method depends on the agent.
 
-Add the MCP servers but do not authenticate yet or block next steps. In the wrap up, remind the user to authenticate so the agent can use the docs.
+Add the MCP server but do not authenticate yet or block next steps. In the wrap up, remind the user to authenticate so the agent can use the docs.
 
 ### Claude Code
 
@@ -368,123 +410,94 @@ Then ask the user to authenticate with Medusa Cloud from the VS Code MCP extensi
 
 ### Other agents
 
-Configure the agent to connect to the Streamable HTTP MCP server at `https://docs.medusajs.com/mcp`. The MCP server requires an active Medusa Cloud subscription — the `mcloud login` from Step 7 covers this.
+Configure the agent to connect to the Streamable HTTP MCP server at `https://docs.medusajs.com/mcp`. The user authenticates with the Medusa Cloud account from Step 2.
 
 ---
 
-## Step 9: Create a GitHub Repository
+## Step 10: Add the Medusa MCP Server
 
-Cloud deploys from a GitHub repository. The user must own the repository.
+The Medusa MCP server gives the agent read-only access to the user's deployed store and Cloud project: commerce data (orders, products, customers), data from custom `GET` API routes, and Cloud data (deployments, build and runtime logs, environment variables). This lets the agent answer questions about the live store and debug deployments. Learn more at https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp.md.
 
-Ask the user to create an empty repository on GitHub for the project (no README, no .gitignore, no license — those would conflict with the existing project files). Have them paste the resulting `git@github.com:<user>/<repo>.git` or `https://github.com/<user>/<repo>.git` URL.
+Add the MCP server but do not authenticate yet or block next steps. In the wrap up, remind the user to authenticate. When they authenticate, Cloud shows a consent page where they select the environments the agent can access, such as the Production environment of the project from Step 4, and click **Approve**.
 
-Then, from the project root:
+### Claude Code
 
 ```bash
-git init
-git add .
-git commit -m "Initial Medusa application"
-git branch -M main
-git remote add origin <repo-url>
-git push -u origin main
+claude mcp add --transport http medusa-commerce \
+  https://cloud.medusajs.com/mcp
 ```
 
-If `git init` reports the repo already exists (because `create-medusa-app` already initialized it), skip `git init` and continue from `git remote add origin`.
+Then instruct the user to run `/mcp`, select the `medusa-commerce` server, and choose **Authenticate**.
 
-If the push fails because the user is not authenticated with GitHub, point them to `gh auth login` (https://cli.github.com/) or to set up an SSH key, then retry.
+### Cursor
 
----
+Add the following to `.cursor/mcp.json` (project) or the user's Cursor settings:
 
-## Step 10: Create the Cloud Project
+```json
+{
+  "mcpServers": {
+    "medusa-commerce": {
+      "url": "https://cloud.medusajs.com/mcp"
+    }
+  }
+}
+```
 
-Open the Medusa Cloud project creation flow in the user's browser. The full UI flow is documented at https://docs.medusajs.com/cloud/projects.
+Then ask the user to open **Settings > Tools & MCPs** and click **Connect** next to the `medusa-commerce` server.
 
-Tell the user:
+### VS Code (with MCP support)
 
-1. Go to https://cloud.medusajs.com and confirm the correct organization is selected.
-2. Click **Create Project**.
-3. Choose **Create from existing application** and authenticate GitHub if prompted.
-4. Select the repository pushed in Step 9.
-5. Configure the project:
-   - **Project name**: any name
-   - **Custom subdomain**: at least 5 characters, not one of the reserved names (`medusa`, `admin`, `staging`, `production`, `preview`, `development`, `proxy`)
-   - **Region**: closest to the target users (`us-east-1`, `eu-central-1`, or `ap-southeast-1`)
-   - **Project root directory**: `apps/backend`
-   - **Storefront root directory**: `apps/storefront`
-   - **Initial user**: set up a production admin user with a strong password (not the local test credentials from Step 3)
-6. Click **Create**.
+Add the following to `.vscode/mcp.json`:
 
-Wait for the user to confirm the project has been created in the Cloud dashboard before continuing.
+```json
+{
+  "servers": {
+    "medusa-commerce": {
+      "type": "http",
+      "url": "https://cloud.medusajs.com/mcp"
+    }
+  }
+}
+```
 
----
+VS Code prompts the user to log in to their Medusa account when the server starts.
 
-## Step 11: Monitor the Deployment
-
-After the project is created, set the active context for the CLI so subsequent commands don't need flags. Resolve the IDs from names:
+### Codex
 
 ```bash
-ORG_ID=$(mcloud organizations list --json | jq -r '.[0].id')
-# If the user has multiple organizations, ask which one and filter by name instead:
-# ORG_ID=$(mcloud organizations list --json | jq -r '.[] | select(.name == "<name>") | .id')
-
-PROJECT_HANDLE=$(mcloud projects list --organization "$ORG_ID" --json | jq -r '.[] | select(.name == "<project-name>") | .handle')
-ENV_HANDLE=$(mcloud environments list --organization "$ORG_ID" --project "$PROJECT_HANDLE" --json | jq -r '.[] | select(.name == "Production") | .handle')
-
-mcloud use --organization "$ORG_ID" --project "$PROJECT_HANDLE" --environment "$ENV_HANDLE"
+codex mcp add medusa-commerce \
+  --url https://cloud.medusajs.com/mcp
 ```
 
-Poll the latest deployment until it reaches a terminal state. A reasonable loop:
+Then ask the user to run `codex mcp login medusa-commerce`.
+
+### Gemini CLI
 
 ```bash
-while true; do
-  STATUS=$(mcloud deployments list --limit 1 --json | jq -r '.[0].backend_status')
-  echo "Backend status: $STATUS"
-  case "$STATUS" in
-    deployed|build-failed|deployment-failed|timed-out|canceled) break ;;
-  esac
-  sleep 20
-done
+gemini extensions install \
+  https://github.com/medusajs/gemini-cli-extension
 ```
 
-Report `backend_status` to the user as it changes. If the final status is anything other than `deployed`, debug per the [Cloud CLI agent guide](https://docs.medusajs.com/cloud/cli/agents):
+Then ask the user to start Gemini CLI and run `/mcp auth medusa`.
 
-- `build-failed` → `mcloud deployments build-logs <deployment-id>`
-- `deployment-failed` → `mcloud logs --deployment <deployment-id> --limit 1000`
-- `timed-out` → check both
+### Other agents
 
-Surface the relevant error to the user and stop. Do not retry blindly.
-
-If a storefront was deployed too, repeat the polling using `storefront_status`.
+Configure the agent to connect to the Streamable HTTP MCP server at `https://cloud.medusajs.com/mcp`. The server authenticates with OAuth, so the user doesn't need an access key.
 
 ---
 
-## Step 12: Show the Live URLs
-
-Once `backend_status` is `deployed`, fetch the URLs:
-
-```bash
-mcloud environments get "$ENV_HANDLE" --json | jq '{backend_url, storefront_url}'
-```
-
-Show the user:
-
-- **Admin dashboard**: `<backend_url>/app` (log in with the Medusa Cloud account using the login button on the dashboard)
-- **Storefront**: `<storefront_url>` (if a storefront was deployed)
-- **API base**: `<backend_url>`
-
-If a custom domain has not been set, the URLs will be subdomains of `medusajs.app` (backend) and `medusajs.site` (storefront).
-
----
-
-## Step 13: Wrap Up
+## Step 11: Wrap Up
 
 Tell the user, in one short message:
 
-- Their ecommerce store is live (or running locally, if they skipped Cloud).
-- They can now build features by asking. The installed skills (`medusa-dev`, `ecommerce-storefront`) and the Docs MCP server (if installed) give the agent everything it needs to add modules, API routes, admin UI, storefront pages, and integrations.
-- If MCP was installed, remind the user to authenticate with Medusa Cloud from the MCP settings so the agent can access the documentation.
+- Their ecommerce store is live on Medusa Cloud, with the URLs from Step 6.
+- If they set up the project locally: they can now build features by asking. The installed skills (`medusa-dev`, `ecommerce-storefront`) and the Docs MCP server give the agent everything it needs to add modules, API routes, admin UI, storefront pages, and integrations. Pushing to the repository's default branch deploys the changes to Cloud.
+- If they skipped the local setup: they can ask the agent to set it up at any time, or manage the store from the Medusa Admin.
+- Remind the user to authenticate the MCP servers they added from the agent's MCP settings. The Docs MCP server gives the agent access to the documentation, and the Medusa MCP server gives it access to the store's data and Cloud project. For the Medusa MCP server, they must select the store's environment on the consent page.
+- Suggest a question they can ask through the Medusa MCP server, such as "Why did my latest deployment fail?" or "Show me the 5 most recent orders in my store."
+- Before launch, they should follow the going-live checklist at https://docs.medusajs.com/cloud/going-live.md, such as adding a custom domain and setting up payment providers.
 - If any step was blocked due to execution mode or permissions, mention them in the message and tell the user how to re-run them.
-- Suggest two or three concrete next prompts the user could try, e.g.:
+- Suggest two or three concrete next prompts the user could try, for example:
   - "Add a product reviews module with admin moderation and a customer-facing form on the storefront."
   - "Build a wishlist feature with API routes and storefront UI."
   - "Add a megamenu to the storefront header showing product categories."
