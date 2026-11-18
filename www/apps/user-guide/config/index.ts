@@ -7,14 +7,14 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
 
 export const config: DocsConfig = {
   ...globalConfig,
-  titleSuffix: "Medusa Admin User Guide",
+  titleSuffix: "Merchant Guide",
   description:
     "Explore and learn how to use the Medusa Admin. Learn how to manage products, orders, customers, and more within the Medusa Admin dashboard.",
   baseUrl,
   basePath: process.env.NEXT_PUBLIC_BASE_PATH,
   sidebars: generatedSidebars as Sidebar.Sidebar[],
   project: {
-    title: "User Guide",
+    title: "Merchant Guide",
     key: "user-guide",
   },
   logo: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/logo.png`,

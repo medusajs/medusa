@@ -105,7 +105,7 @@ export const paymentSidebar = [
       },
       {
         type: "category",
-        title: "Admin User Guides",
+        title: "Merchant Guides",
         autogenerate_tags: "userGuide+payment",
         autogenerate_as_ref: true,
         sort_sidebar: "alphabetize",

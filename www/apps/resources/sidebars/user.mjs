@@ -70,7 +70,7 @@ export const userSidebar = [
       },
       {
         type: "category",
-        title: "Admin User Guides",
+        title: "Merchant Guides",
         autogenerate_tags: "userGuide+user",
         autogenerate_as_ref: true,
         sort_sidebar: "alphabetize",

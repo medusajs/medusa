@@ -14,7 +14,7 @@ async function main() {
   await generateEditedDates()
   await generateSitemapUrls()
   await generateLlmsIndex({
-    title: "Medusa Admin User Guide",
+    title: "Merchant Guide",
     description:
       "Guides for merchants and store operators on using the Medusa Admin dashboard to manage products, orders, customers, and store settings.",
     sections: [

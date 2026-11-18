@@ -4,7 +4,7 @@ export const generatedEditDates = {
   "app/tips/lists/page.mdx": "2026-07-10T06:21:44.183Z",
   "app/settings/sales-channels/page.mdx": "2026-07-31T12:45:34.271Z",
   "app/settings/users/page.mdx": "2026-08-20T07:43:17.621Z",
-  "app/page.mdx": "2026-11-18T12:02:00.216Z",
+  "app/page.mdx": "2026-11-18T13:44:48.913Z",
   "app/settings/page.mdx": "2026-11-13T07:37:39.406Z",
   "app/products/export/page.mdx": "2026-04-10T09:45:36.841Z",
   "app/settings/return-reasons/page.mdx": "2025-05-30T13:31:05.596Z",
