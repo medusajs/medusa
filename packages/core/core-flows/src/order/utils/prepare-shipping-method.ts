@@ -17,6 +17,8 @@ export function prepareShippingMethod(relatedEntityField?: string) {
         !!option.calculated_price?.is_calculated_price_tax_inclusive,
       data: option.data ?? {},
       name: option.name,
+      description: data.input?.description,
+      metadata: data.input?.metadata,
       version: orderChange.version,
       order_id: data.relatedEntity.order_id,
     } as any
