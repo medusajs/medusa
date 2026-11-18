@@ -58,7 +58,7 @@ export const storeCreditSidebar = [
       },
       {
         type: "category",
-        title: "Admin User Guides",
+        title: "Merchant Guides",
         autogenerate_tags: "userGuide+storeCredit",
         autogenerate_as_ref: true,
         sort_sidebar: "alphabetize",

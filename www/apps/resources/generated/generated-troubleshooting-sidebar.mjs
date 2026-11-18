@@ -21,13 +21,6 @@ const generatedgeneratedTroubleshootingSidebarSidebar = {
         {
           "loaded": true,
           "type": "link",
-          "path": "/troubleshooting/create-medusa-app-errors",
-          "title": "Create Medusa App Errors",
-          "children": []
-        },
-        {
-          "loaded": true,
-          "type": "link",
           "path": "/troubleshooting/errors-installing-cli",
           "title": "Errors Installing CLI",
           "children": []

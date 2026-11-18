@@ -33,7 +33,7 @@ export const CommerceModuleSections = () => {
   }
   const { items: userGuideItems, component: userGuidesComponent } =
     useChildDocs({
-      showItems: ["User Guides"],
+      showItems: ["Merchant Guides"],
       defaultItemsPerRow: 2,
     })
   if (userGuideItems?.length) {
