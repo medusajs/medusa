@@ -3649,6 +3649,10 @@
     "domain": "Property Labels",
     "title": "Property Labels",
     "subtitle": "Manage custom property labels for configurable tables of your entities.",
+    "editTitle": "Edit Property Labels",
+    "editDescription": "Customize how property names are displayed for {{entity}}",
+    "customLabel": "Custom Label",
+    "updateSuccess": "Property labels updated successfully",
     "fields": {
       "module": "Module",
       "model": "Model",
@@ -3696,6 +3700,9 @@
   "fields": {
     "actions": "Actions",
     "amount": "Amount",
+    "yes": "Yes",
+    "no": "No",
+    "field": "Field",
     "reference": "Reference",
     "reference_id": "Reference ID",
     "refundAmount": "Refund amount",
