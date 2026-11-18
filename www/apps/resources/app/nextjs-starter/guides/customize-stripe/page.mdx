@@ -48,18 +48,23 @@ By using the Payment Element, you can offer a unified payment experience that su
 
 By following this tutorial, you'll learn how to:
 
-- Set up a Medusa application with the Stripe Module Provider.
+- Create a Cloud project, set it up locally, and configure the Stripe Module Provider.
 - Customize the Next.js Starter Storefront to use Stripe's Payment Element.
+- Publish the customizations to Cloud.
 
 ---
 
 ## Step 1: Set Up Medusa Project
 
-In this step, you'll set up a Medusa application and configure the Stripe Module Provider. You can skip this step if you already have a Medusa application running with the Stripe Module Provider configured.
+In this step, you'll set up a Medusa project and configure the Stripe Module Provider. You can skip this step if you already have a Medusa project with the Stripe Module Provider configured.
 
-### a. Install Medusa Application
+### a. Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
+  {
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
   {
     text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
@@ -74,25 +79,11 @@ In this step, you'll set up a Medusa application and configure the Stripe Module
   }
 ]} />
 
-To install the Medusa application, run the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when you're asked whether you want to install the Next.js Starter Storefront, choose `Y` for yes.
-
-Afterwards, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form.
-
-Afterwards, you can log in with the new user and explore the dashboard. The Next.js Starter Storefront is also running at `http://localhost:8000`.
-
-<Note title="Ran into Errors?">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -143,7 +134,7 @@ For more details about other available options and the webhook URLs that Medusa 
 
 ### c. Set Environment Variables
 
-Next, make sure to add the necessary environment variables for the above options in `.env` in your Medusa application:
+Next, add the necessary environment variables for the above options in `.env` in your Medusa application:
 
 ```bash badgeLabel="Medusa Application" badgeColor="green"
 STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
@@ -159,13 +150,15 @@ NEXT_PUBLIC_STRIPE_KEY=<YOUR_STRIPE_PUBLISHABLE_API_KEY>
 
 Where `<YOUR_STRIPE_PUBLISHABLE_API_KEY>` is your Stripe [Publishable API Key](https://support.stripe.com/questions/locate-api-keys-in-the-dashboard).
 
+You'll add these variables to your Cloud environment when you [publish to Cloud](#step-5-publish-to-cloud).
+
 ### d. Enable Stripe in a Region
 
 Finally, you need to add Stripe as a payment provider to one or more regions in your Medusa Admin. This will allow customers to use Stripe as a payment method during checkout.
 
-To do that:
+To do that, start the Medusa application locally with `npm run dev`, then:
 
-1. Log in to your Medusa Admin dashboard at `http://localhost:9000/app`.
+1. Log in to your local Medusa Admin dashboard at `http://localhost:9000/app`.
 2. Go to Settings -> Regions.
 3. Select a region you want to enable Stripe for (or create a new one).
 4. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon on the upper right corner.
@@ -173,7 +166,7 @@ To do that:
 6. In the Payment Providers field, select “Stripe (STRIPE)”
 7. Click the Save button.
 
-Do this for all regions you want to enable Stripe for.
+Do this for all regions you want to enable Stripe for. Regions you configure locally don't carry over to your Cloud environments, so you'll repeat this in the deployed Medusa Admin after you [publish to Cloud](#step-5-publish-to-cloud).
 
 ---
 
@@ -1268,3 +1261,39 @@ Learn more about the webhook API routes and how to configure them in the [Stripe
 ### Testing Declined Payments
 
 You can use [Stripe's declined test cards](https://docs.stripe.com/testing#declined-payments) to test declined payments. When a payment is declined, the customer will be redirected back to the payment step to fix their payment details as necessary.
+
+---
+
+## Step 5: Publish to Cloud
+
+After you test the Payment Element locally, publish the customizations to your Cloud project.
+
+Create the environment variables that you added in the `.env` files in your Cloud project:
+
+- `STRIPE_API_KEY`: Add it in the environment's **Backend** variables.
+- `NEXT_PUBLIC_STRIPE_KEY`: Add it in the environment's **Storefront** variables.
+
+Add the variables in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variables in the environment variables section. Preview environments created afterward inherit them. Learn more in the [Preview Environments](!cloud!/environments/preview#manage-shared-previews-settings) guide.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variables and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
+
+In both places, enable the **Build** toggle of both variables, since `medusa-config.ts` reads `STRIPE_API_KEY` and Next.js includes `NEXT_PUBLIC_STRIPE_KEY` in the storefront's build. Mark `STRIPE_API_KEY` as **Sensitive**. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide, and about the Stripe Module Provider's Cloud setup in the [Stripe Module Provider](../../../commerce-modules/payment/payment-provider/stripe/page.mdx#deploy-to-cloud) guide.
+
+Then, create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/stripe-payment-element
+git add .
+git commit -m "Use Stripe's Payment Element"
+git push origin feat/stripe-payment-element
+```
+
+Then, on GitHub, open a pull request from the `feat/stripe-payment-element` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+After you merge the pull request:
+
+1. [Enable Stripe in a region](../../../commerce-modules/payment/payment-provider/stripe/page.mdx#enable-stripe-providers-in-a-region) of the deployed environment's Medusa Admin, as you did locally.
+2. [Set up the Stripe webhook](../../../commerce-modules/payment/payment-provider/stripe/page.mdx#setup-stripe-webhooks) in your Stripe dashboard with the deployed backend's URL, so that Medusa handles payment events that arrive after the customer leaves the storefront.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.

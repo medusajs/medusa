@@ -13,6 +13,12 @@ export const metadata = {
 
 Create a new Medusa application. Unlike the `create-medusa-app` CLI tool, this command provides more flexibility for experienced Medusa developers in creating and configuring their project. It creates a monorepo structure with your Medusa backend in the `apps/backend` directory.
 
+<Note title="Recommended: Start from a Cloud Project">
+
+To start a new Medusa project, create a Cloud project and clone it locally instead. Cloud creates the project's repository, deploys it, and configures its database, Redis, and file storage. Learn more in the [Create Your First Project](!cloud!/first-project) and [Set Up Medusa Locally](!cloud!/setup-locally) guides.
+
+</Note>
+
 ```bash
 medusa new [<dir_name>]
 ```
@@ -108,7 +114,7 @@ medusa new [<dir_name>]
       </Table.Cell>
       <Table.Cell>
 
-      Skip populating `.env`.
+      Skip populating `.env`. The `.env` file only configures your local application. On Cloud, you set environment variables in the [environment's settings](!cloud!/environments/environment-variables).
       
       </Table.Cell>
     </Table.Row>

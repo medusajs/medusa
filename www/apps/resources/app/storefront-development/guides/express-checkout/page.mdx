@@ -60,8 +60,9 @@ An express checkout storefront is a streamlined shopping experience that focuses
 
 In this guide, you'll learn how to:
 
-- Install and set up Medusa.
+- Create a Cloud project and set it up locally.
 - Create a custom express checkout storefront with Next.js.
+- Publish the storefront and customizations to Cloud.
 
 ![Express checkout storefront interface showing a single-page checkout flow with product selection](https://res.cloudinary.com/dza7lstvk/image/upload/v1739344861/Medusa%20Resources/Screenshot_2025-02-12_at_9.20.09_AM_ufqdi3.png)
 
@@ -76,11 +77,15 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -93,21 +98,15 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter. Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the storefront in this guide locally, then publish it to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when you're asked whether you want to install the Next.js Starter Storefront, choose `N` for no. You'll create a custom storefront instead.
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the starter's storefront is in the `apps/storefront` directory. You'll replace the starter's storefront with the express checkout storefront in [Step 2](#step-2-install-nextjs-project).
 
-Afterwards, the installation process will start, which will install the Medusa application in a directory with your project's name. Once the installation finishes successfully, the Medusa Admin dashboard will open in your browser at `http://localhost:9000/app` with a form to create a new user. Enter the user's credential and submit the form.
+<Note>
 
-Afterwards, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran to Errors?">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+In this guide, all file paths of backend customizations are relative to the `apps/backend` directory of your project.
 
 </Note>
 
@@ -115,14 +114,14 @@ Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-ap
 
 The Medusa application enforces Cross Origin Resource Sharing (CORS) security, which means you can only access the Medusa API from configured origins.
 
-The Next.js development server will run on port `3000` by default, which isn't a configured origin in the Medusa application. To add it to configured origins, change the value of `STORE_CORS` and `AUTH_CORS` in the Medusa application's `.env` file to the following:
+The Next.js development server will run on port `3000` by default, which isn't a configured origin in your local Medusa application. To add it to configured origins, append `,http://localhost:3000` to the values of `STORE_CORS` and `AUTH_CORS` in the Medusa application's `.env` file:
 
 ```plain title=".env"
-STORE_CORS=http://localhost:3000
-AUTH_CORS=http://localhost:5173,http://localhost:9000,http://localhost:3000
+STORE_CORS=previous_values...,http://localhost:3000
+AUTH_CORS=previous_values...,http://localhost:3000
 ```
 
-You can add other origins as well if necessary.
+You only need this change locally. On Cloud, Medusa configures the CORS settings of your deployed storefront automatically.
 
 Learn more about CORS configurations in [this guide](!docs!/learn/configurations/medusa-config#httpauthcors).
 
@@ -130,16 +129,24 @@ Learn more about CORS configurations in [this guide](!docs!/learn/configurations
 
 Medusa restricts the fields that you can request from a Store API route through an allowed-fields list. Later in this guide, you'll retrieve a cart with its line items' variant options and its products' options, which the cart routes don't allow by default. Medusa omits any field that isn't allowed from the response.
 
-To allow those fields, create the file `src/api/middlewares.ts` in the Medusa application with the following content:
+To allow those fields, add a route to the middlewares in `src/api/middlewares.ts` of the Medusa application. The DTC starter already has this file, so keep its existing routes. Add `allowFields` to the imports from `@medusajs/framework/http`, and add the highlighted route object to the `routes` array:
 
-```ts title="src/api/middlewares.ts"
+export const middlewaresHighlights = [
+  ["3", "allowFields", "Import the `allowFields` middleware."],
+  ["11", "matcher", "Apply the middleware to the cart routes."],
+  ["13", "allowFields", "Allow the variant and product options fields."],
+]
+
+```ts title="src/api/middlewares.ts" highlights={middlewaresHighlights}
 import {
+  // ...existing imports
   allowFields,
   defineMiddlewares,
 } from "@medusajs/framework/http"
 
 export default defineMiddlewares({
   routes: [
+    // ...existing routes
     {
       matcher: "/store/carts",
       middlewares: [
@@ -177,11 +184,20 @@ Learn more about allowed fields and how to override them in the [Allowed Fields]
 
 ## Step 2: Install Next.js Project
 
-You'll create the express checkout storefront using Next.js. So, to create a Next.js project, run the following command in a directory separate from the Medusa application:
+You'll create the express checkout storefront using Next.js.
 
-```bash npx2yarnExec
-npx create-next-app@latest express-checkout
+Cloud deploys one storefront per project, from the storefront directory you set in the project's settings. By default, that's the `apps/storefront` directory. So, you'll replace the starter's storefront with the express checkout storefront in the same directory. This way, Cloud deploys the new storefront without changes to the project's settings.
+
+Before you remove the starter's storefront, copy the values of `NEXT_PUBLIC_MEDUSA_BACKEND_URL` and `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` from `apps/storefront/.env.local`. You'll use them in the new storefront.
+
+Then, run the following commands in the `apps` directory of your project to remove the starter's storefront and create a Next.js project in its place:
+
+```bash
+rm -rf storefront
+npx create-next-app@latest storefront --skip-install
 ```
+
+The `--skip-install` option stops `create-next-app` from installing the dependencies inside `apps/storefront`, which would create a second lockfile. You install them from the monorepo's root after the project is created.
 
 Answer the installation prompts by choosing the default values:
 
@@ -195,7 +211,28 @@ Would you like to use Turbopack for `next dev`?  No
 Would you like to customize the import alias (`@/*` by default)? No
 ```
 
-After the installation finishes, your Next.js project is installed in an `express-checkout` directory.
+After the command finishes, your Next.js project is created in the `apps/storefront` directory.
+
+Then, install the dependencies from the monorepo's root directory with your project's package manager. Projects created from a starter use pnpm by default:
+
+```bash
+cd ..
+pnpm install
+```
+
+This adds the new storefront's dependencies to the monorepo's lockfile. If you switched your project to Yarn or npm when you [set it up locally](!cloud!/setup-locally#2-install-dependencies), run its install command instead.
+
+<Note>
+
+In the rest of this guide, all storefront file paths are relative to the `apps/storefront` directory, and you run storefront commands in that directory.
+
+</Note>
+
+<Note title="Next.js Version">
+
+Cloud supports Next.js v15, and v16 if your storefront doesn't use a [proxy](https://nextjs.org/docs/app/getting-started/proxy). Learn more in the [Storefront Deployment](!cloud!/storefront#supported-storefront-frameworks) guide.
+
+</Note>
 
 ---
 
@@ -286,6 +323,13 @@ This file exports a configured instance of the Medusa SDK that you can use to se
 
 - `NEXT_PUBLIC_MEDUSA_BACKEND_URL`: The URL of the Medusa application server. By default, it's set to `http://localhost:9000`.
 - `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY`: The publishable API key of the Medusa application. You can find this key in the Medusa Admin dashboard under Settings -> Publishable API Keys.
+
+On Cloud, Medusa injects both variables into your deployed storefront, so you don't need to set them there. Locally, create the file `.env.local` in the storefront with the values you copied earlier:
+
+```plain title=".env.local"
+NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://localhost:9000
+NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_123...
+```
 
 ![Navigation path in Medusa Admin dashboard: Settings showing "Publishable API Key" option, with the publishable API key displayed and a copy button to retrieve the token for storefront configuration](https://res.cloudinary.com/dza7lstvk/image/upload/v1735810830/Medusa%20Resources/Screenshot_2025-01-02_at_11.36.20_AM_gw7i7h.png)
 
@@ -1655,7 +1699,7 @@ This will show the product step and expand its details if `activeTab` is `produc
 
 ### Test it Out
 
-To test out what you've implemented so far, first, start the Medusa application by running the following command in the Medusa project's directory:
+To test out what you've implemented so far, first, start the Medusa application by running the following command in the `apps/backend` directory:
 
 ```bash npm2yarn
 npm run dev
@@ -1663,7 +1707,7 @@ npm run dev
 
 This will run the Medusa application at `http://localhost:9000`.
 
-Then, while the Medusa application is running, run the following command in the Next.js project to start the development server:
+Then, while the Medusa application is running, run the following command in the `apps/storefront` directory to start the storefront's development server:
 
 ```bash npm2yarn
 npm run dev
@@ -1673,7 +1717,7 @@ This will run the storefront at `http://localhost:3000`. To open the express che
 
 <Note title="Tip">
 
-When you first created the Medusa application, four products, including the `sweatpants` product, were created by default. You can view and add products to your application by going to the Medusa Admin dashboard at `http://localhost:9000/app`.
+The DTC starter seeds your local database with demo products, including the `sweatpants` product. You can view and add products to your application by going to the local Medusa Admin dashboard at `http://localhost:9000/app`.
 
 </Note>
 
@@ -1981,7 +2025,7 @@ This will show the address details step and expand its details if `activeTab` is
 
 ### Test it Out
 
-While both the Medusa application and the Next.js Starter Storefront are running, if you refresh the page you had opened or go to `http://localhost:3000/sweatpants?step=address`, you should see the address form where you can input your address details.
+While both the Medusa application and the storefront are running, if you refresh the page you had opened or go to `http://localhost:3000/sweatpants?step=address`, you should see the address form where you can input your address details.
 
 ![Address step showing the address form and a continue button](https://res.cloudinary.com/dza7lstvk/image/upload/v1735831238/Medusa%20Resources/Screenshot_2025-01-02_at_5.20.22_PM_leqt17.png)
 
@@ -2323,7 +2367,7 @@ This will show the shipping method selection step and expand its details if `act
 
 ### Test it Out
 
-While both the Medusa application and the Next.js Starter Storefront are running, if you refresh the page you had opened or go to `http://localhost:3000/sweatpants?step=shipping`, you should see the Shipping step where you can choose a shipping method.
+While both the Medusa application and the storefront are running, if you refresh the page you had opened or go to `http://localhost:3000/sweatpants?step=shipping`, you should see the Shipping step where you can choose a shipping method.
 
 ![Shipping step showing the shipping options and a go to payment button](https://res.cloudinary.com/dza7lstvk/image/upload/v1735832462/Medusa%20Resources/Screenshot_2025-01-02_at_5.40.45_PM_jplcn3.png)
 
@@ -2711,7 +2755,7 @@ This will show the payment method selection step and expand its details if `acti
 
 ### Test it Out
 
-While both the Medusa application and the Next.js Starter Storefront are running, if you refresh the page you had opened or go to `http://localhost:3000/sweatpants?step=payment`, you should see the Payment step where you can choose a payment method.
+While both the Medusa application and the storefront are running, if you refresh the page you had opened or go to `http://localhost:3000/sweatpants?step=payment`, you should see the Payment step where you can choose a payment method.
 
 ![Payment step showing the payment providers and a pay button](https://res.cloudinary.com/dza7lstvk/image/upload/v1735833736/Medusa%20Resources/Screenshot_2025-01-02_at_6.01.58_PM_usjlli.png)
 
@@ -2780,9 +2824,32 @@ Then, you show the order's details, including the order number, order date, and 
 
 ### Test it Out
 
-While both the Medusa application and the Next.js Starter Storefront are running, either refresh the page you had open from the previous step, or restart the express checkout flow to place an order. You'll see the confirmation page showing the order's details.
+While both the Medusa application and the storefront are running, either refresh the page you had open from the previous step, or restart the express checkout flow to place an order. You'll see the confirmation page showing the order's details.
 
 ![Confirmation page showing the order's ID and date](https://res.cloudinary.com/dza7lstvk/image/upload/v1735834096/Medusa%20Resources/Screenshot_2025-01-02_at_6.07.38_PM_um4p0a.png)
+
+---
+
+## Step 12: Publish to Cloud
+
+After you test the express checkout flow locally, publish the storefront and customizations to your Cloud project.
+
+You don't need to add environment variables in Cloud. Medusa injects the backend URL and publishable API key into your deployed storefront, and configures its CORS settings.
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/express-checkout
+git add .
+git commit -m "Add express checkout storefront"
+git push origin feat/express-checkout
+```
+
+Then, on GitHub, open a pull request from the `feat/express-checkout` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+To open the express checkout page of a deployed environment, go to `<storefront_url>/<product_handle>`, where `<storefront_url>` is the storefront URL shown in the environment's dashboard, and `<product_handle>` is the handle of a product in that environment's Medusa Admin. Learn more about storefront deployments in the [Storefront Deployment](!cloud!/storefront) guide.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

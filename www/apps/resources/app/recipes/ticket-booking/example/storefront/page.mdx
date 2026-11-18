@@ -46,13 +46,13 @@ In this tutorial, you'll customize the [Next.js Starter Storefront](../../../../
 
 <Note title="Reminder" forceMultiline>
 
-If you installed the Next.js Starter Storefront with the Medusa backend, the storefront was installed in a separate directory. The directory's name is `{your-project}-storefront`.
-
-So, if your Medusa application's directory is `medusa-ticketing`, you can find the storefront by going back to the parent directory and changing to the `medusa-ticketing-storefront` directory:
+The Next.js Starter Storefront is available in the `apps/storefront` directory of your project:
 
 ```bash
-cd ../medusa-ticketing-storefront # change based on your project name
+cd apps/storefront
 ```
+
+In this tutorial, all file paths are relative to the `apps/storefront` directory.
 
 </Note>
 
@@ -1941,6 +1941,29 @@ This prevents displaying the quantity for ticket products, as it's redundant.
 If you check the order confirmation page now, you'll see the selected seats and show dates for each ticket item.
 
 ![Order confirmation page showing selected seats and show date for ticket items](https://res.cloudinary.com/dza7lstvk/image/upload/v1757504846/Medusa%20Resources/CleanShot_2025-09-10_at_14.47.16_2x_mfnh3f.png)
+
+---
+
+## Step 6: Publish to Cloud
+
+After you test ticket booking in the storefront locally, publish the storefront customizations to your Cloud project.
+
+You don't need to add environment variables for the storefront in Cloud. Medusa injects the backend URL and publishable API key into your deployed storefront.
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/ticket-booking-storefront
+git add .
+git commit -m "Add ticket booking to the storefront"
+git push origin feat/ticket-booking-storefront
+```
+
+Then, on GitHub, open a pull request from the `feat/ticket-booking-storefront` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+To book tickets in the deployed storefront, the deployed environment must have venues and ticket products. If you haven't already, create them in the deployed environment's Medusa Admin, as explained in the [backend tutorial's Publish to Cloud step](../page.mdx#step-14-publish-to-cloud).
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 
