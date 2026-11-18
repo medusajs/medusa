@@ -44,7 +44,7 @@
     "@babel/traverse": "8.0.10",
     "@babel/types": "8.0.10",
     "@medusajs/admin-shared": "2.22.7",
-    "fdir": "6.1.1",
+    "fdir": "6.5.0",
     "magic-string": "1.4.3",
     "outdent": "^0.8.0",
     "picocolors": "^1.1.0"

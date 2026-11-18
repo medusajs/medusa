@@ -70,11 +70,11 @@ export const useCreateSalesChannel = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.salesChannel.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.lists(),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -90,7 +90,7 @@ export const useUpdateSalesChannel = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.salesChannel.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.lists(),
       })
@@ -98,7 +98,7 @@ export const useUpdateSalesChannel = (
         queryKey: salesChannelsQueryKeys.detail(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -114,7 +114,7 @@ export const useDeleteSalesChannel = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.salesChannel.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.lists(),
       })
@@ -127,7 +127,7 @@ export const useDeleteSalesChannel = (
         queryKey: productsQueryKeys.all,
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -142,7 +142,7 @@ export const useDeleteSalesChannelLazy = (
 ) => {
   return useMutation({
     mutationFn: (id: string) => sdk.admin.salesChannel.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.lists(),
       })
@@ -155,7 +155,7 @@ export const useDeleteSalesChannelLazy = (
         queryKey: productsQueryKeys.all,
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -172,7 +172,7 @@ export const useSalesChannelRemoveProducts = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.salesChannel.batchProducts(id, { remove: payload }),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.lists(),
       })
@@ -192,7 +192,7 @@ export const useSalesChannelRemoveProducts = (
         queryKey: productsQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -209,7 +209,7 @@ export const useSalesChannelAddProducts = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.salesChannel.batchProducts(id, { add: payload }),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.lists(),
       })
@@ -229,7 +229,7 @@ export const useSalesChannelAddProducts = (
         queryKey: productsQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
