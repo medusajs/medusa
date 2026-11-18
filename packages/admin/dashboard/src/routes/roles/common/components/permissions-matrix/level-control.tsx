@@ -40,7 +40,7 @@ export const LevelControl = ({ value, onChange, label }: LevelControlProps) => {
           key={option}
           value={option}
           className={clx(
-            "txt-compact-small-plus rounded-[4px] px-2 py-1 text-ui-fg-muted outline-none transition-fg",
+            "txt-compact-small-plus rounded-[4px] px-2 py-1 text-ui-fg-muted outline-hidden transition-fg",
             "hover:text-ui-fg-base focus-visible:shadow-borders-focus",
             "data-[state=on]:bg-ui-button-neutral data-[state=on]:text-ui-fg-base data-[state=on]:shadow-buttons-neutral"
           )}

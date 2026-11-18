@@ -114,7 +114,7 @@ export const SelectFilter = ({
             sideOffset={8}
             collisionPadding={8}
             className={clx(
-              "z-[1] h-full max-h-[200px] w-[300px] overflow-hidden rounded-lg bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout outline-none"
+              "z-1 h-full max-h-[200px] w-[300px] overflow-hidden rounded-lg bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout outline-hidden"
             )}
             onInteractOutside={(e) => {
               if (e.target instanceof HTMLElement) {
@@ -136,7 +136,7 @@ export const SelectFilter = ({
                       ref={setSearchRef}
                       value={search}
                       onValueChange={setSearch}
-                      className="txt-compact-small bg-transparent outline-none placeholder:text-ui-fg-muted"
+                      className="txt-compact-small bg-transparent outline-hidden placeholder:text-ui-fg-muted"
                       placeholder="Search"
                     />
                     <div className="flex h-5 w-5 items-center justify-center">
@@ -144,7 +144,7 @@ export const SelectFilter = ({
                         disabled={!search}
                         onClick={handleClearSearch}
                         className={clx(
-                          "rounded-md text-ui-fg-muted outline-none transition-fg focus-visible:bg-ui-bg-base-pressed",
+                          "rounded-md text-ui-fg-muted outline-hidden transition-fg focus-visible:bg-ui-bg-base-pressed",
                           {
                             invisible: !search,
                           }
@@ -161,7 +161,7 @@ export const SelectFilter = ({
                   {t("general.noResultsTitle")}
                 </span>
               </Command.Empty>
-              <Command.List className="h-full max-h-[163px] min-h-[0] overflow-auto p-1 outline-none">
+              <Command.List className="h-full max-h-[163px] min-h-0 overflow-auto p-1 outline-hidden">
                 {options.map((option) => {
                   const isSelected = selectedParams
                     .get()
@@ -170,7 +170,7 @@ export const SelectFilter = ({
                   return (
                     <Command.Item
                       key={String(option.value)}
-                      className="txt-compact-small relative flex cursor-pointer select-none items-center gap-x-2 rounded-md bg-ui-bg-base px-2 py-1.5 text-ui-fg-base outline-none transition-colors hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed aria-selected:bg-ui-bg-base-pressed data-[disabled=true]:pointer-events-none data-[disabled=true]:text-ui-fg-disabled"
+                      className="txt-compact-small relative flex cursor-pointer select-none items-center gap-x-2 rounded-md bg-ui-bg-base px-2 py-1.5 text-ui-fg-base outline-hidden transition-colors hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed aria-selected:bg-ui-bg-base-pressed data-[disabled=true]:pointer-events-none data-[disabled=true]:text-ui-fg-disabled"
                       value={option.label}
                       onSelect={() => {
                         handleSelect(option.value)

@@ -183,7 +183,7 @@ export const DataTableFilter = ({
             <RadixPopover.Portal>
               <RadixPopover.Content
                 className={clx(
-                  "z-[1] h-full max-h-[200px] w-[300px] overflow-auto rounded-lg bg-ui-bg-base p-1 text-ui-fg-base shadow-elevation-flyout outline-none"
+                  "z-1 h-full max-h-[200px] w-[300px] overflow-auto rounded-lg bg-ui-bg-base p-1 text-ui-fg-base shadow-elevation-flyout outline-hidden"
                 )}
                 data-name="filters_menu_content"
                 align="start"
@@ -202,7 +202,7 @@ export const DataTableFilter = ({
                 {availableFilters.map((filter) => {
                   return (
                     <div
-                      className="txt-compact-small relative flex cursor-pointer select-none items-center rounded-md bg-ui-bg-base px-2 py-1.5 text-ui-fg-base outline-none transition-colors hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed data-[disabled]:pointer-events-none data-[disabled]:text-ui-fg-disabled"
+                      className="txt-compact-small relative flex cursor-pointer select-none items-center rounded-md bg-ui-bg-base px-2 py-1.5 text-ui-fg-base outline-hidden transition-colors hover:bg-ui-bg-base-hover focus-visible:bg-ui-bg-base-pressed data-disabled:pointer-events-none data-disabled:text-ui-fg-disabled"
                       role="menuitem"
                       key={filter.key}
                       onClick={() => {

@@ -9,7 +9,7 @@ export const TwoColumnLayoutComponent = ({
   return (
     <div
       className={clx(
-        "flex w-full flex-col items-start gap-x-4 gap-y-3 xl:grid xl:grid-cols-[minmax(0,_1fr)_440px]",
+        "flex w-full flex-col items-start gap-x-4 gap-y-3 xl:grid xl:grid-cols-[minmax(0,1fr)_440px]",
         className
       )}
     >

@@ -75,7 +75,7 @@ const Content = ({ stackedModalOpen, children }: ContentProps) => {
           : undefined
       }
       className={clx({
-        "!inset-x-5 !inset-y-3 !bg-ui-bg-disabled": stackedModalOpen,
+        "inset-x-5! inset-y-3! bg-ui-bg-disabled!": stackedModalOpen,
       })}
     >
       {children}
