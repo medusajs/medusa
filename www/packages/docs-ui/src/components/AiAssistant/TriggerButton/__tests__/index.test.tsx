@@ -79,7 +79,7 @@ describe("rendering", () => {
   test("renders the trigger button", () => {
     const { container } = render(<AiAssistantTriggerButton />)
     expect(container).toBeInTheDocument()
-    expect(container).toHaveTextContent("Ask Bloom")
+    expect(container).toHaveTextContent("Ask Docs Assistant")
   })
   test("renders the trigger button with correct OS shortcut", () => {
     const { container } = render(<AiAssistantTriggerButton />)

@@ -22,7 +22,9 @@ Learn more about Medusa's event systems in the [Events and Subscribers documenta
 
 ### Default Event Module
 
-By default, Medusa uses the [Local Event Module](./local/page.mdx). This module uses Node’s EventEmitter to implement the publish/subscribe system. While this is suitable for development, it's recommended to use other Event Modules, such as the [Redis Event Module](./redis/page.mdx), for production. You can also [Create an Event Module](./create/page.mdx).
+On Cloud, Medusa provisions a managed [Redis](!cloud!/redis) instance for each environment and configures the [Redis Event Module](./redis/page.mdx) to use it. So, you don't configure an Event Module for your deployed application.
+
+Locally, Medusa uses the [Local Event Module](./local/page.mdx) by default. This module uses Node’s EventEmitter to implement the publish/subscribe system. While this is suitable for development, it's recommended to use other Event Modules, such as the [Redis Event Module](./redis/page.mdx), in production. You can also [Create an Event Module](./create/page.mdx).
 
 ---
 

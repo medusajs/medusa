@@ -28,11 +28,12 @@ You can extend the Medusa application to automatically generate invoices (or sal
 
 By following this tutorial, you will learn how to:
 
-- Install and set up Medusa.
+- Create a Cloud project and set it up locally.
 - Store default invoice configurations and manage them from the Medusa Admin dashboard.
 - Generate PDF invoices for orders, and allow admin users and customers to download them.
 - Send PDF invoices as attachments in order confirmation emails.
 - Mark previously generated invoices as stale when orders are updated.
+- Publish the customizations to Cloud.
 
 You can follow this tutorial whether you're new to Medusa or an advanced Medusa developer.
 
@@ -53,13 +54,27 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
   },
 ]} />
 
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/invoice-generator.md and implement invoice generation for orders in my Medusa project
+```
+
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -72,23 +87,11 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose Yes.
-
-Afterward, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors?">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -2385,9 +2388,12 @@ export default async function orderPlacedHandler({
 
   await notificationModuleService.createNotifications({
     to: order.email || "",
-    template: "order-placed",
     channel: "email",
-    data: order,
+    content: {
+      subject: `Order #${order.display_id} confirmed`,
+      html: `<h1>Thank you for your order!</h1>
+<p>Your invoice for order #${order.display_id} is attached.</p>`,
+    },
     attachments: [
       {
         content: binaryString,
@@ -2411,32 +2417,57 @@ A subscriber file must export:
 
 In the subscriber, you:
 
-- Use Query to retrieve the order details. These details are useful to pass to the notification template.
+- Use Query to retrieve the order details. These details are useful to show in the email's content.
 - Generate the invoice PDF using the `generateInvoicePdfWorkflow`.
 - Convert the PDF buffer to a binary string, which is required for the email attachment.
 - Send an email using the [Notification Module](../../../infrastructure-modules/notification/page.mdx) with the order details and the invoice PDF attached.
 
-#### Notification Module Provider to Use
+#### Send Emails with Medusa Emails
 
-Since the notification's channel is `email`, you need a Notification Module Provider that supports sending emails, such as [SendGrid](../../../infrastructure-modules/notification/sendgrid/page.mdx) or [Resend](../../../integrations/guides/resend/page.mdx).
+Cloud projects send notifications of the `email` channel with [Medusa Emails](!cloud!/emails), Cloud's built-in email service. Medusa Emails is enabled by default, so you don't need to configure a Notification Module Provider. It sends the HTML in the notification's `content` with the invoice PDF attached.
 
-After setting up the Notification Module provider, make sure to replace the `template` of the notification with the template ID from the provider:
+<Note>
 
-```ts title="src/subscribers/order-placed.ts"
-await notificationModuleService.createNotifications({
-  template: "your-template-id", // Replace with your actual template ID
+Without a verified sender domain, Medusa Emails only sends emails to addresses of users in your Cloud organization. To send order confirmation emails to your customers, [add an email sender domain](!cloud!/emails#add-email-sender-domain-to-cloud) to your Cloud project.
+
+</Note>
+
+The subscriber sends a basic HTML email. To build richer email templates that show the order's details, use [React Email](!cloud!/emails/react-email). The React Email guide includes an [order placed email template](!cloud!/emails/react-email#order-placed-email-template) that you can use.
+
+#### Log Emails During Local Development
+
+Medusa Emails isn't available when you run the Medusa application locally. So, register the [Local Notification Module Provider](../../../infrastructure-modules/notification/local/page.mdx) for the `email` channel during development. It logs the emails' details in the terminal instead of sending them.
+
+Add the following to `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
   // ...
+  modules: [
+    // ...
+    {
+      resolve: "@medusajs/medusa/notification",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/notification-local",
+            id: "local",
+            options: {
+              channels: [
+                process.env.NODE_ENV === "development"
+                  ? "email"
+                  : "feed",
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
 })
 ```
 
-Alternatively, for testing purposes, you can change the channel to `feed`. This will only log the notification to the console instead of sending an email:
-
-```ts title="src/subscribers/order-placed.ts"
-await notificationModuleService.createNotifications({
-  channel: "feed", // Change for testing
-  // ...
-})
-```
+The Local Notification Module Provider handles the `email` channel only in development. In your Cloud environments, it handles the `feed` channel, so Medusa Emails sends the `email` notifications.
 
 ### Test Order Confirmation Email with Invoice
 
@@ -2448,7 +2479,7 @@ Then, place an order in the storefront. You'll see the following message in the 
 info:    Processing order.placed which has 1 subscribers
 ```
 
-The notification will either be sent to the customer's email address, or logged to the console if you set the channel to `feed`.
+The Local Notification Module Provider logs the email's details in the terminal. After you publish the customizations to Cloud, Medusa Emails sends the email with the invoice attached to the customer.
 
 ---
 
@@ -2630,6 +2661,25 @@ info:    Processing order.updated which has 1 subscribers
 ```
 
 Afterward, try clicking the "Download Invoice" button. The new invoice will contain the order's updated details.
+
+---
+
+## Step 11: Publish to Cloud
+
+After you test the invoice generator locally, publish it to your Cloud project.
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/invoice-generator
+git add .
+git commit -m "Add invoice generator"
+git push origin feat/invoice-generator
+```
+
+Then, on GitHub, open a pull request from the `feat/invoice-generator` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

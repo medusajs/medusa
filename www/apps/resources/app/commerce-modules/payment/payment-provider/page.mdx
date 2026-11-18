@@ -10,7 +10,7 @@ In this guide, you’ll learn about the Payment Module Provider and how it's use
 
 <Note title="Looking for no-code docs?">
 
-Refer to this [Medusa Admin User Guide](!user-guide!/settings/regions) to learn how to manage the payment providers available in a region using the dashboard.
+Refer to this [Merchant Guide](!user-guide!/settings/regions) to learn how to manage the payment providers available in a region using the dashboard.
 
 </Note>
 
@@ -80,6 +80,14 @@ Learn more about this option in the [Module Options](../module-options/page.mdx)
 When the Medusa application starts, it registers the Payment Module Providers defined in the `providers` option of the Payment Module.
 
 For each Payment Module Provider, the Medusa application finds all payment provider services defined in them to register.
+
+### Register Payment Providers on Cloud
+
+On Cloud, Medusa registers the `system` payment provider by default, the same as locally. To use other payment providers in a deployed environment:
+
+1. Add the provider to the `providers` option of the Payment Module in `medusa-config.ts`.
+2. Add the environment variables that the provider's options use in your Cloud environment's [Environment variables settings](!cloud!/environments/environment-variables#add-environment-variables-on-cloud). Mark secrets, such as API keys, as **Sensitive**, and enable the **Build** toggle, since `medusa-config.ts` reads them during the build. For local development, add the same variables to your `.env` file.
+3. Commit the changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created), and the Medusa application registers the provider when it starts.
 
 ### PaymentProvider Data Model
 

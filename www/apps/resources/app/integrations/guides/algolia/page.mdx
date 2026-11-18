@@ -57,10 +57,11 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 By following this tutorial, you'll learn how to:
 
-- Install and set up Medusa.
+- Create a Cloud project and set it up locally.
 - Integrate Algolia into Medusa.
 - Trigger Algolia reindexing when a product is created, updated, deleted, or when the admin manually triggers a reindex.
 - Customize the Next.js Starter Storefront to allow searching for products through Algolia.
+- Publish the customizations to Cloud.
 
 ![Diagram illustrating the integration of Algolia with Medusa](https://res.cloudinary.com/dza7lstvk/image/upload/v1742889842/Medusa%20Resources/algolia-summary_lhegrr.jpg)
 
@@ -79,13 +80,27 @@ By following this tutorial, you'll learn how to:
   },
 ]} />
 
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/algolia.md and integrate Algolia with my Medusa project
+```
+
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -98,23 +113,11 @@ By following this tutorial, you'll learn how to:
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose "Yes."
-
-Afterwards, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -384,6 +387,8 @@ Where:
 - `your-product-index-name` is the name of the index where you'll store products. You can find it by going to Search -> Index, and copying the index name at the top of the page.
 
 ![In the Algolia dashboard, go to Search -> Index and copy the index name at the top of the page](https://res.cloudinary.com/dza7lstvk/image/upload/v1742815790/Medusa%20Resources/Screenshot_2025-03-24_at_1.28.58_PM_yq10sf.png)
+
+You'll add these variables to your Cloud environment when you [publish to Cloud](#step-8-publish-to-cloud).
 
 Your module is now ready for use. You'll see how to use it in the next steps.
 
@@ -872,8 +877,8 @@ The JS SDK is installed by default in your Medusa application. To configure it, 
 import Medusa from "@medusajs/js-sdk"
 
 export const sdk = new Medusa({
-  baseUrl: "http://localhost:9000",
-  debug: import.meta.env.NODE_ENV === "development",
+  baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+  debug: import.meta.env.DEV,
   auth: {
     type: "session",
   },
@@ -961,7 +966,7 @@ Run the following command to start the Medusa application:
 npm run dev
 ```
 
-Then, open the Medusa Admin at `http://localhost:9000/app` and log in with the credentials you set up in the first step.
+Then, open the Medusa Admin at `http://localhost:9000/app` and log in with the admin user you created when you set up the project locally.
 
 <Note>
 
@@ -1306,6 +1311,8 @@ Where:
 - `your_algolia_api_key` is your Algolia Search API key. You can retrieve it from the [same API keys page on the Algolia dashboard](#add-environment-variables) that you retrieved the Admin API key from.
 - `your-products-index-name` is the name of the index you created in Algolia to store the products, which you can retrieve as explained in the [Add Environment Variables section](#add-environment-variables) earlier. You'll use this variable later.
 
+You'll add these variables to your Cloud environment when you [publish to Cloud](#step-8-publish-to-cloud).
+
 <Note type="warning">
 
 Do not expose your Admin API key in the storefront. The Admin API key should only be used in the Medusa application to interact with Algolia, as it has full access to your Algolia account.
@@ -1428,6 +1435,39 @@ npm run dev
 Next, go to `localhost:8000`. You'll find a Search button at the top right of the navigation bar. If you click on it, you can search through your products. You can also click on a product to view its page.
 
 ![The Next.js Starter Storefront showing the search modal with search results](https://res.cloudinary.com/dza7lstvk/image/upload/v1742827777/Medusa%20Resources/Screenshot_2025-03-24_at_4.49.23_PM_kzhldx.png)
+
+---
+
+## Step 8: Publish to Cloud
+
+After you test the Algolia integration locally, publish the customizations to your Cloud project.
+
+Create the environment variables that you added in the `.env` files in your Cloud project:
+
+- `ALGOLIA_APP_ID`, `ALGOLIA_API_KEY`, and `ALGOLIA_PRODUCT_INDEX_NAME`: Add them in the environment's **Backend** variables.
+- `NEXT_PUBLIC_ALGOLIA_APP_ID`, `NEXT_PUBLIC_ALGOLIA_API_KEY`, and `NEXT_PUBLIC_ALGOLIA_PRODUCT_INDEX_NAME`: Add them in the environment's **Storefront** variables.
+
+Add the variables in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variables in the environment variables section. Preview environments created afterward inherit them. Learn more in the [Preview Environments](!cloud!/environments/preview#manage-shared-previews-settings) guide.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variables and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
+
+In both places, enable the **Build** toggle of all the variables, since `medusa-config.ts` reads the backend variables and Next.js includes the `NEXT_PUBLIC_` variables in the storefront's build. Mark `ALGOLIA_API_KEY` as **Sensitive**, since it's your Algolia Admin API key. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+
+Then, create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/algolia-integration
+git add .
+git commit -m "Add Algolia integration"
+git push origin feat/algolia-integration
+```
+
+Then, on GitHub, open a pull request from the `feat/algolia-integration` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+After you merge the pull request, open the deployed environment's Medusa Admin, go to Settings > Algolia, and click the sync button to index the deployed environment's products in Algolia, as you did locally.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

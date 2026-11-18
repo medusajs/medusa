@@ -1,4 +1,4 @@
-import { Table } from "docs-ui"
+import { Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `Local File Module Provider`,
@@ -10,7 +10,7 @@ The Local File Module Provider stores files uploaded to your Medusa application 
 
 <Note type="warning">
 
-- The Local File Module Provider is only for development purposes. Use the [S3 File Module Provider](../s3/page.mdx) in production instead.
+- The Local File Module Provider is only for development purposes. On Cloud, Medusa configures the [S3 File Module Provider](../s3/page.mdx) with managed [S3 storage](!cloud!/s3) by default, which is more suitable for production.
 - The Local File Module Provider will only read files uploaded through Medusa. It will not read files uploaded manually to the `static` (or other configured) directory.
 
 </Note>
@@ -18,6 +18,15 @@ The Local File Module Provider stores files uploaded to your Medusa application 
 ---
 
 ## Register the Local File Module
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa application set up locally",
+      link: "!cloud!/setup-locally",
+    },
+  ]}
+/>
 
 <Note>
 

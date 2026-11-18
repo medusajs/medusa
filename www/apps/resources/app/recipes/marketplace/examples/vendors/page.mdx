@@ -48,13 +48,27 @@ This guide provides an example of an approach to implement marketplaces. You're 
   },
 ]} />
 
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/recipes/marketplace/examples/vendors.md and implement a vendors marketplace in my Medusa project
+```
+
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -67,23 +81,11 @@ This guide provides an example of an approach to implement marketplaces. You're 
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this guide locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. You can also optionally choose to install the [Next.js Starter Storefront](../../../../nextjs-starter/page.mdx).
-
-the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors?">
-
-Check out the [troubleshooting guides](../../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory. This guide only uses the Medusa application.
 
 <Note>
 
@@ -1978,6 +1980,27 @@ curl 'http://localhost:9000/vendors/orders' \
 Make sure to replace the `{token}` with the vendor admin’s authentication token.
 
 You’ll receive in the response the orders of the vendor created in the previous step.
+
+---
+
+## Step 10: Publish to Cloud
+
+After you test the marketplace locally, publish it to your Cloud project.
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/marketplace
+git add .
+git commit -m "Add marketplace customizations"
+git push origin feat/marketplace
+```
+
+Then, on GitHub, open a pull request from the `feat/marketplace` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+Vendors and vendor admins that you created locally aren't copied to deployed environments. So, register and create them again by sending requests to your deployed backend's URL instead of `http://localhost:9000`.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

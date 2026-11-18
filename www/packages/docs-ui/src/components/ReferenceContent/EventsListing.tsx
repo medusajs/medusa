@@ -107,44 +107,44 @@ export const ReferenceEventsListing = ({
             .replace(/[^a-z0-9]+/g, "-")
             .replace(/^-+|-+$/g, "") || `category-${index}`
         return (
-        <React.Fragment key={index}>
-          {multi && category.title ? (
-            <DocHeading level={2} id={`${categorySlug}-events`}>
-              {category.title} Events
+          <React.Fragment key={index}>
+            {multi && category.title ? (
+              <DocHeading level={2} id={`${categorySlug}-events`}>
+                {category.title} Events
+              </DocHeading>
+            ) : null}
+            <DocHeading level={summaryLevel} id={`${categorySlug}-summary`}>
+              Summary
             </DocHeading>
-          ) : null}
-          <DocHeading level={summaryLevel} id={`${categorySlug}-summary`}>
-            Summary
-          </DocHeading>
-          <Table>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Event</Table.HeaderCell>
-                <Table.HeaderCell>Description</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {category.events.map((event) => (
-                <Table.Row key={event.id}>
-                  <Table.Cell>
-                    <Anchor href={`#${event.id}`}>
-                      <Code>{event.name}</Code>
-                    </Anchor>{" "}
-                    <EventBadges event={event} />
-                  </Table.Cell>
-                  <Table.Cell>
-                    {event.description ? (
-                      <MarkdownContent>{event.description}</MarkdownContent>
-                    ) : null}
-                  </Table.Cell>
+            <Table>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Event</Table.HeaderCell>
+                  <Table.HeaderCell>Description</Table.HeaderCell>
                 </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-          {category.events.map((event) => (
-            <EventDetail key={event.id} event={event} level={eventLevel} />
-          ))}
-        </React.Fragment>
+              </Table.Header>
+              <Table.Body>
+                {category.events.map((event) => (
+                  <Table.Row key={event.id}>
+                    <Table.Cell>
+                      <Anchor href={`#${event.id}`}>
+                        <Code>{event.name}</Code>
+                      </Anchor>{" "}
+                      <EventBadges event={event} />
+                    </Table.Cell>
+                    <Table.Cell>
+                      {event.description ? (
+                        <MarkdownContent>{event.description}</MarkdownContent>
+                      ) : null}
+                    </Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table>
+            {category.events.map((event) => (
+              <EventDetail key={event.id} event={event} level={eventLevel} />
+            ))}
+          </React.Fragment>
         )
       })}
     </>

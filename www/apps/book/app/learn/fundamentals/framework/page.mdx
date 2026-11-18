@@ -10,9 +10,9 @@ In this chapter, you'll learn about the Medusa Framework and how it facilitates 
 
 ## What is the Medusa Framework?
 
-All commerce application require some degree of customization. So, it's important to choose a platform that facilitates building those customizations.
+All commerce applications require some degree of customization. So, it's important to choose a platform that facilitates building those customizations.
 
-When you build customizations with other ecommerce platforms, they require you to pull data through HTTP APIs, run custom logic that span across systems in a separate application, and manually ensure data consistency across systems. This adds significant overhead and slows down development as you spend time managing complex distributed systems.
+When you build customizations with other ecommerce platforms, they require you to pull data through HTTP APIs, run custom logic that spans across systems in a separate application, and manually ensure data consistency across systems. This adds significant overhead and slows down development as you spend time managing complex distributed systems.
 
 The Medusa Framework eliminates this overhead by providing powerful low-level APIs and tools that let you build any type of customization directly within your Medusa project. You can build custom features, orchestrate operations and query data seamlessly across systems, extend core functionality, and automate tasks in your Medusa application.
 
@@ -222,7 +222,7 @@ export const POST = async (
 ) => {
   const { result } = await createPostWorkflow(req.scope)
     .run({
-      input: result.validatedBody,
+      input: req.validatedBody,
     })
 
   return res.json(result)
@@ -601,7 +601,7 @@ export const productsCreatedHandlerHighlights = [
 
 ```ts highlights={productsCreatedHandlerHighlights}
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework"
-import { sendOrderConfirmationWorkflow } from "../workflows/send-order-confirmation"
+import { syncFromErpWorkflow } from "../workflows/sync-from-erp"
 
 export default async function productsCreatedHandler({
   event: { data },
@@ -657,7 +657,7 @@ The following tutorials are step-by-step guides that show you how to orchestrate
     {
       title: "Integrate Third-Party Services",
       text: "Integrate CMS, Fulfillment, Payment, and other third-party services.",
-      href: "!resources!/integrations",
+      href: "!cloud!/integrations",
     }
   ]}
   className="mb-2"

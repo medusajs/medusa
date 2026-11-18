@@ -6,7 +6,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this chapter, you'll learn how environment variables are loaded in Medusa.
+In this chapter, you'll learn how to set environment variables in Cloud and locally, and how Medusa loads them.
 
 ## System Environment Variables
 
@@ -18,9 +18,36 @@ In production, you should always use system environment variables that you set t
 
 ---
 
+## Set Environment Variables in Cloud
+
+When you deploy your Medusa application to [Cloud](!cloud!), you set its environment variables in the environment's **Environment variables** settings in the Cloud dashboard. Cloud passes them to your application as system environment variables.
+
+To add environment variables to a Cloud environment:
+
+1. Open the environment's dashboard in Cloud.
+2. Click **Environment variables** in the sidebar.
+3. Add the variables, then click **Save**.
+4. [Redeploy the environment](!cloud!/environments/long-lived#redeploy-environment) for the changes to take effect.
+
+Each environment, such as Production or a staging environment, has its own variables. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+
+<Note title="Variables that Cloud manages">
+
+Cloud sets some variables for you, such as `DATABASE_URL`, `REDIS_URL`, and `PORT`, so you don't add them yourself. Refer to the [Restricted Environment Variable Names](!cloud!/environments/environment-variables#restricted-environment-variable-names) section for the full list.
+
+</Note>
+
+<Note title="Variables used in medusa-config.ts">
+
+Medusa evaluates `medusa-config.ts` during the build. So, enable the **Build** toggle for any variable that `medusa-config.ts` reads. Otherwise, the variable is `undefined` during the build.
+
+</Note>
+
+---
+
 ## Environment Variables in .env Files
 
-During development, it's easier to set environment variables in a `.env` file in your repository.
+During local development, set environment variables in a `.env` file in your repository. To use the same values that your Cloud environment uses, [export the environment's variables](!cloud!/environments/environment-variables#export-environment-variables-on-cloud) as a `.env` file.
 
 Based on your `NODE_ENV` system environment variable, Medusa will try to load environment variables from the following `.env` files:
 
@@ -115,7 +142,7 @@ Learn more in the [Admin Environment Variables](../admin/environment-variables/p
 
 ## Predefined Medusa Environment Variables
 
-You can further customize the Medusa application behavior using the following predefined environment variables. You can set the environment variables in your `.env` file or in your deployment platform.
+You can further customize the Medusa application behavior using the following predefined environment variables. Set them in your [Cloud environment's variables](#set-environment-variables-in-cloud), then in your `.env` file for local development.
 
 <Note title="Tip">
 

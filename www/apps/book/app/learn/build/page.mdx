@@ -10,7 +10,7 @@ The next chapter explains how to deploy your Medusa application.
 
 <Note title="Deploy with Cloud" type="success">
 
-The below instructions are useful for self-hosting your Medusa application. You can also use [Cloud](!cloud!) to deploy and manage your Medusa application without worrying about infrastructure. Medusa will handle the configurations, deployment, and scaling for you.
+The below instructions are useful for self-hosting your Medusa application. You can also use [Cloud](!cloud!) to deploy and manage your Medusa application without worrying about infrastructure. Cloud builds your application on every deployment and loads the environment variables you set in the [environment's settings](!cloud!/environments/environment-variables), so you don't run these steps yourself.
 
 </Note>
 
@@ -47,7 +47,7 @@ You need to run these steps every time you run the `build` command, since the `.
 cd .medusa/server && npm install
 ```
 
-2. When running the application locally, make sure to copy the `.env` file from the root project's directory. In production, use system environment variables instead.
+2. When running the application locally, make sure to copy the `.env` file from the root project's directory. In production, set system environment variables through your hosting provider instead.
 
 ```bash title=".medusa/server"
 cp ../../.env .env.production

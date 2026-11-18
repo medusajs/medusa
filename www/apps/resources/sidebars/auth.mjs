@@ -105,7 +105,7 @@ export const authSidebar = [
       },
       {
         type: "category",
-        title: "Admin User Guides",
+        title: "Merchant Guides",
         autogenerate_tags: "userGuide+auth",
         autogenerate_as_ref: true,
         sort_sidebar: "alphabetize",

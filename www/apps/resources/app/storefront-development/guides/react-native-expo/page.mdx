@@ -36,10 +36,11 @@ When you install a Medusa application, you get a fully-fledged commerce server a
 
 By following this tutorial, you'll learn how to:
 
-1. Set up a Medusa application.
+1. Create a Cloud project and set it up locally.
 2. Create an app with React Native and Expo.
 3. Connect the Expo app to the Medusa backend.
 4. Implement essential ecommerce features such as product listing, cart management, and checkout.
+5. Connect the Expo app to your deployed Medusa backend on Cloud.
 
 You can follow this guide whether you're new to Medusa or an advanced Medusa developer. However, this tutorial assumes you have a basic understanding of React Native and JavaScript.
 
@@ -52,13 +53,27 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
   icon={Github}
 />
 
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/storefront-development/guides/react-native-expo.md and build a React Native and Expo mobile app for my Medusa project
+```
+
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -71,23 +86,11 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter. Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the Expo app in this tutorial against your local Medusa application, then connect it to your deployed Medusa application at the end.
 
-You'll first be asked for the project's name. Then, when you're asked whether you want to install the Next.js Starter Storefront, choose `N` for no. You'll create the Expo app instead.
-
-Afterwards, the installation process will start, which will install the Medusa application in a directory with your project's name. Once the installation finishes successfully, the Medusa Admin dashboard will open in your browser at `http://localhost:9000/app` with a form to create a new user. Enter the user's credentials and submit the form.
-
-Then, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors?">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory. The project also includes a Next.js storefront in the `apps/storefront` directory, which you don't use in this tutorial.
 
 ---
 
@@ -95,7 +98,7 @@ Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-ap
 
 In this step, you'll create a new Expo app with React Native.
 
-In a directory separate from your Medusa application, run the following command to create a new Expo project:
+Cloud doesn't host mobile apps, so you create the Expo app outside your Cloud project. In a directory separate from your Cloud project, run the following command to create a new Expo project:
 
 ```bash npx2yarnExec
 npx create-expo-app@latest
@@ -294,7 +297,7 @@ ipconfig
   </CodeTab>
 </CodeTabs>
 
-Next, to get the Publishable API key, start the Medusa application by running the following command in its directory:
+Next, to get the Publishable API key, start the Medusa application by running the following command in the `apps/backend` directory of your Cloud project:
 
 ```bash npm2yarn badgeLabel="Medusa Application" badgeColor="green"
 npm run dev
@@ -302,7 +305,7 @@ npm run dev
 
 Then:
 
-1. Open the Medusa Admin dashboard at `http://localhost:9000/app` and log in.
+1. Open the local Medusa Admin dashboard at `http://localhost:9000/app` and log in.
 2. Go to **Settings** > **Publishable API Keys**.
 3. Either copy the key of an existing Publishable API key, or create a new one by clicking on the **Create Publishable API Key** button.
 
@@ -313,13 +316,13 @@ EXPO_PUBLIC_MEDUSA_URL=http://192.168.1.100:9000
 EXPO_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY=your_publishable_api_key
 ```
 
-Make sure to replace the values with your actual Medusa backend URL and Publishable API key.
+Make sure to replace the values with your actual Medusa backend URL and Publishable API key. You'll change them to your deployed Medusa application's values when you [connect the app to Cloud](#step-13-connect-the-app-to-cloud).
 
 ### Optional: Update CORS in Medusa
 
 If you plan to test the Expo app in a web browser, you'll need to update the CORS settings in the Medusa backend to allow requests from the Expo development server.
 
-In your Medusa application's directory, add the Expo development server URL to the `STORE_CORS` and `AUTH_CORS` environment variables in the `.env` file:
+In the `apps/backend` directory of your Cloud project, add the Expo development server URL to the `STORE_CORS` and `AUTH_CORS` environment variables in the `.env` file:
 
 ```env
 STORE_CORS=previous_values...,http://localhost:8081
@@ -5358,6 +5361,44 @@ To test the order confirmation screen, run your Medusa application and Expo app.
 Then, in your Expo app, go through the checkout flow as before. After selecting a payment provider and placing the order, you should be taken to the order confirmation screen displaying the order details.
 
 ![Order confirmation screen](https://res.cloudinary.com/dza7lstvk/image/upload/v1762360994/Medusa%20Resources/CleanShot_2025-11-05_at_18.42.42_2x_prvkba.png)
+
+---
+
+## Step 13: Connect the App to Cloud
+
+After you test the Expo app with your local Medusa application, connect it to your deployed Medusa application on Cloud.
+
+### Update Environment Variables
+
+In the Expo app's `.env` file, change the environment variables to the values of the Cloud environment you want to connect to, such as Production:
+
+```shell title=".env"
+EXPO_PUBLIC_MEDUSA_URL=https://my-store.medusajs.app
+EXPO_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY=your_publishable_api_key
+```
+
+Where:
+
+- `EXPO_PUBLIC_MEDUSA_URL` is the deployed Medusa application's URL, which you can find in the environment's dashboard.
+- `EXPO_PUBLIC_MEDUSA_PUBLISHABLE_API_KEY` is a Publishable API key that you copy or create in the deployed environment's Medusa Admin under **Settings** > **Publishable API Keys**. Each environment has its own database, so the key you used locally doesn't work in Cloud environments.
+
+Then, restart the Expo development server and test the app again. The app now shows the products, regions, and shipping options of your deployed environment.
+
+### Optional: Update CORS in Cloud
+
+Native iOS and Android apps don't send CORS requests, so they work without changes to your Cloud environment. If you also run the Expo app in a web browser, add the web app's origin to the CORS settings of your Cloud environment.
+
+On Cloud, Medusa configures the CORS settings for your project's storefront. To allow other origins, add the `STORE_CORS` and `AUTH_CORS` variables in the environment's **Backend** variables:
+
+1. In the dashboard of the environment, click **Environment variables** in the sidebar.
+2. Add `STORE_CORS` and `AUTH_CORS` with the web app's origin as the value, such as `https://my-expo-app.com`.
+3. Click **Save**, then redeploy the environment to apply the changes.
+
+Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+
+### Publish the App
+
+When you're ready to release the app, set the environment variables to the values of your Production environment before you build it. Learn more about building and publishing Expo apps in [Expo's documentation](https://docs.expo.dev/distribution/app-stores/).
 
 ---
 

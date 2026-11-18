@@ -1,7 +1,7 @@
 export const generatedSidebars = [
   {
-    "sidebar_id": "cloud",
-    "title": "Cloud",
+    "sidebar_id": "get-started",
+    "title": "Get Started",
     "items": [
       {
         "loaded": true,
@@ -33,6 +33,13 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "path": "/going-live",
+            "title": "Going Live Checklist",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "path": "/faq",
             "title": "FAQ",
             "children": []
@@ -41,7 +48,7 @@ export const generatedSidebars = [
             "loaded": true,
             "type": "link",
             "path": "/comparison",
-            "title": "Cloud vs Self Hosting",
+            "title": "Cloud vs Self-Hosted",
             "children": []
           },
           {
@@ -54,15 +61,8 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "title": "Command Palette",
-            "path": "/command-palette",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Changelog",
-            "path": "/changelog",
+            "path": "/features",
+            "title": "Features",
             "children": []
           }
         ]
@@ -70,67 +70,208 @@ export const generatedSidebars = [
       {
         "loaded": true,
         "type": "category",
-        "title": "AI Tools",
-        "initialOpen": true,
+        "title": "AI Toolkit",
         "children": [
           {
             "loaded": true,
             "type": "link",
-            "title": "Cloud Assistant",
-            "path": "/assistant",
+            "path": "/ai-toolkit",
+            "title": "Overview",
             "children": []
           },
           {
             "loaded": true,
             "type": "link",
             "title": "Medusa MCP",
-            "path": "/medusa-mcp",
+            "path": "/ai-toolkit/medusa-mcp",
             "children": [
               {
                 "loaded": true,
                 "type": "link",
                 "title": "Claude Connector",
-                "path": "/medusa-mcp/claude",
+                "path": "/ai-toolkit/medusa-mcp/claude",
                 "children": []
               },
               {
                 "loaded": true,
                 "type": "link",
                 "title": "ChatGPT App",
-                "path": "/medusa-mcp/chatgpt",
+                "path": "/ai-toolkit/medusa-mcp/chatgpt",
                 "children": []
               },
               {
                 "loaded": true,
                 "type": "link",
                 "title": "n8n",
-                "path": "/medusa-mcp/n8n",
+                "path": "/ai-toolkit/medusa-mcp/n8n",
                 "children": []
               },
               {
                 "loaded": true,
                 "type": "link",
                 "title": "Custom Agents",
-                "path": "/medusa-mcp/custom-agents",
+                "path": "/ai-toolkit/medusa-mcp/custom-agents",
                 "children": []
               },
               {
                 "loaded": true,
                 "type": "link",
                 "title": "Retrieve Custom Data",
-                "path": "/medusa-mcp/custom-data",
+                "path": "/ai-toolkit/medusa-mcp/custom-data",
                 "children": []
               }
             ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/ai-toolkit/docs-mcp",
+            "title": "Docs MCP",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Ask Medusa Questions",
+                "path": "/ai-toolkit/docs-mcp/ask-medusa-question",
+                "description": "Answer Medusa questions from the official documentation.",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from Shopify",
+                "path": "/ai-toolkit/docs-mcp/migrate-from-shopify",
+                "description": "Migrate your store's data from Shopify to Medusa.",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from WooCommerce",
+                "path": "/ai-toolkit/docs-mcp/migrate-from-woocommerce",
+                "description": "Migrate your store's data from WooCommerce to Medusa.",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Migrate from Magento",
+                "path": "/ai-toolkit/docs-mcp/migrate-from-magento",
+                "description": "Migrate your store's data from Magento to Medusa.",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Integrate Providers",
+                "path": "/ai-toolkit/docs-mcp/integrate-providers",
+                "description": "Build payment and fulfillment module providers for third-party services.",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Extend Products",
+                "path": "/ai-toolkit/docs-mcp/extend-products",
+                "description": "Attach custom data and features to products, variants, and options.",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Upgrade Medusa",
+                "path": "/ai-toolkit/docs-mcp/upgrade-instructions",
+                "description": "Upgrade a Medusa project to a newer version, breaking changes included.",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Submit Feedback",
+                "path": "/ai-toolkit/docs-mcp/submit-feedback",
+                "description": "Send documentation, bug, and feedback to the Medusa team.",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Cloud Assistant",
+            "path": "/ai-toolkit/assistant",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/ai-toolkit/agent-skills",
+            "title": "Skills",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "ref",
+            "title": "Cloud CLI",
+            "path": "/cli",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/ai-toolkit/ai-friendly-docs",
+            "title": "AI-Friendly Docs",
+            "children": []
           }
         ]
       },
       {
         "loaded": true,
         "type": "category",
-        "title": "Basics",
-        "initialOpen": true,
+        "title": "Building Features",
         "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/setup-locally",
+            "title": "Setup Locally",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "path": "/setup-locally/docker",
+                "title": "Setup with Docker",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/development-resources",
+            "title": "Development Resources",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/integrations",
+            "title": "Integrations",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Management",
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/command-palette",
+            "title": "Command Palette",
+            "children": []
+          },
           {
             "loaded": true,
             "type": "link",
@@ -157,13 +298,6 @@ export const generatedSidebars = [
                 "type": "link",
                 "title": "Prerequisites",
                 "path": "/projects/prerequisites",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "Clone Project Locally",
-                "path": "/projects/clone-locally",
                 "children": []
               },
               {
@@ -288,8 +422,14 @@ export const generatedSidebars = [
         "loaded": true,
         "type": "category",
         "title": "Resources",
-        "initialOpen": true,
         "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/admin",
+            "title": "Admin",
+            "children": []
+          },
           {
             "loaded": true,
             "type": "link",
@@ -328,17 +468,30 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "title": "Emails",
+            "title": "Changelog",
+            "path": "/changelog",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Emails",
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Overview",
             "path": "/emails",
-            "children": [
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "React Email Templates",
-                "path": "/emails/react-email",
-                "children": []
-              }
-            ]
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "React Email Templates",
+            "path": "/emails/react-email",
+            "children": []
           }
         ]
       },
@@ -346,10 +499,6 @@ export const generatedSidebars = [
         "loaded": true,
         "type": "category",
         "title": "Search",
-        "badge": {
-          "variant": "green",
-          "text": "New"
-        },
         "children": [
           {
             "loaded": true,
@@ -441,32 +590,245 @@ export const generatedSidebars = [
       {
         "loaded": true,
         "type": "category",
-        "title": "CLI",
-        "initialOpen": false,
+        "title": "Enterprise",
         "children": [
           {
             "loaded": true,
             "type": "link",
-            "title": "Installation",
-            "path": "/cli",
-            "hideFromChildItems": true,
+            "path": "/enterprise",
+            "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "external",
+            "path": "https://docs.medusajs.com/resources/enterprise/rbac",
+            "title": "RBAC",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "external",
+            "path": "https://docs.medusajs.com/resources/enterprise/sso",
+            "title": "SSO",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Webhooks",
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Manage Endpoints",
+            "path": "/webhooks/endpoints",
             "children": []
           },
           {
             "loaded": true,
             "type": "link",
-            "title": "For Agents",
-            "path": "/cli/agents",
+            "title": "Manage Events",
+            "path": "/webhooks/events",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Reference",
+            "path": "/webhooks/reference",
             "children": []
           },
           {
             "loaded": true,
             "type": "link",
             "title": "Changelog",
-            "path": "/cli/changelog",
-            "hideFromChildItems": true,
+            "path": "/webhooks/changelog",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Billing",
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Overview",
+            "path": "/billing",
             "children": []
           },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Plans & Pricing",
+            "path": "/pricing",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Manage Plans",
+            "path": "/billing/plans",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Manage Billing Details",
+            "path": "/billing/manage",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Monitoring",
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Logs",
+            "path": "/logs",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Status Page",
+            "path": "/status",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Notifications",
+            "path": "/notifications",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Usage",
+            "path": "/usage",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Compute Hours",
+                "path": "/usage/compute",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Performance",
+            "path": "/monitoring",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Servers",
+                "path": "/monitoring/servers",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Workers",
+                "path": "/monitoring/workers",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "HTTP",
+                "path": "/monitoring/http",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Networking",
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "IP Addresses",
+            "path": "/ip-addresses",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Medusa Security",
+            "path": "/security",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Security Analytics",
+                "path": "/security/analytics",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Data Protection",
+                "path": "/security/data-protection",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "sidebar_id": "cloud-cli",
+    "title": "Cloud CLI",
+    "items": [
+      {
+        "loaded": true,
+        "type": "link",
+        "title": "Installation",
+        "path": "/cli",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "type": "link",
+        "title": "For Agents",
+        "path": "/cli/agents",
+        "children": []
+      },
+      {
+        "loaded": true,
+        "type": "link",
+        "title": "Changelog",
+        "path": "/cli/changelog",
+        "children": []
+      },
+      {
+        "type": "separator"
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Commands",
+        "initialOpen": true,
+        "children": [
           {
             "loaded": true,
             "type": "link",
@@ -556,210 +918,6 @@ export const generatedSidebars = [
             "type": "link",
             "title": "logout",
             "path": "/cli/commands/logout",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "type": "category",
-        "title": "Billing",
-        "initialOpen": true,
-        "children": [
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Overview",
-            "path": "/billing",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Plans & Pricing",
-            "path": "/pricing",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Manage Plans",
-            "path": "/billing/plans",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Manage Billing Details",
-            "path": "/billing/manage",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "type": "category",
-        "title": "Monitoring",
-        "initialOpen": true,
-        "children": [
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Logs",
-            "path": "/logs",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Status Page",
-            "path": "/status",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Notifications",
-            "path": "/notifications",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Usage",
-            "path": "/usage",
-            "children": [
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "Compute Hours",
-                "path": "/usage/compute",
-                "children": []
-              }
-            ]
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Performance",
-            "path": "/monitoring",
-            "children": [
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "Servers",
-                "path": "/monitoring/servers",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "Workers",
-                "path": "/monitoring/workers",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "HTTP",
-                "path": "/monitoring/http",
-                "children": []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "type": "category",
-        "title": "Webhooks",
-        "initialOpen": true,
-        "children": [
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Manage Endpoints",
-            "path": "/webhooks/endpoints",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Manage Events",
-            "path": "/webhooks/events",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Reference",
-            "path": "/webhooks/reference",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Changelog",
-            "path": "/webhooks/changelog",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "type": "category",
-        "title": "Networking",
-        "initialOpen": true,
-        "children": [
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "IP Addresses",
-            "path": "/ip-addresses",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Medusa Security",
-            "path": "/security",
-            "children": [
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "Security Analytics",
-                "path": "/security/analytics",
-                "children": []
-              },
-              {
-                "loaded": true,
-                "type": "link",
-                "title": "Data Protection",
-                "path": "/security/data-protection",
-                "children": []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "type": "category",
-        "title": "Best Practices",
-        "initialOpen": true,
-        "children": [
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Update Medusa",
-            "path": "/update-medusa",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Connect Storefront",
-            "path": "/connect-storefront",
             "children": []
           }
         ]

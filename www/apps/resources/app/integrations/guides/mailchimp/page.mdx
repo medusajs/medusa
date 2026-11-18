@@ -29,10 +29,11 @@ In this tutorial, you'll integrate Mailchimp with Medusa to allow customers to s
 
 By following this tutorial, you'll learn how to:
 
-- Install and set up Medusa.
+- Create a Cloud project and set it up locally.
 - Integrate Mailchimp with Medusa.
 - Allow customers to subscribe to your store's newsletter.
 - Automate sending newsletters about new products to subscribed customers.
+- Publish the customizations to Cloud.
 
 You can follow this tutorial whether you're new to Medusa or an advanced Medusa developer.
 
@@ -45,13 +46,27 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
   icon={Github}
 />
 
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/mailchimp.md and integrate Mailchimp with my Medusa project
+```
+
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -64,23 +79,11 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-First, you'll be asked for the project's name. Then, when prompted about installing the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose "Yes."
-
-Afterwards, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors?">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -702,6 +705,8 @@ Where:
 - `MAILCHIMP_NEW_PRODUCTS_SUBJECT_LINE`: The subject line for the new products newsletter.
 - `MAILCHIMP_NEW_PRODUCTS_STOREFRONT_URL`: The URL of your storefront where users can view the new products. In development, the Next.js Starter Storefront runs on `http://localhost:8000`, so you can set it to that URL.
 
+You'll add these variables to your Cloud environment when you [publish to Cloud](#step-6-publish-to-cloud).
+
 The Mailchimp integration is now ready. You'll test it out as you implement the subscription features in the next steps.
 
 ---
@@ -981,7 +986,7 @@ Now you have an API route that allows customers to subscribe to the newsletter. 
 
 ## Step 4: Add Newsletter Subscription Form in the Storefront
 
-In this step, you'll customize the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx) that you installed as part of the first step. You'll add a newsletter subscription form in the storefront's footer that allows customers to subscribe to the newsletter.
+In this step, you'll customize the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx) that's part of your project. You'll add a newsletter subscription form in the storefront's footer that allows customers to subscribe to the newsletter.
 
 <Note title="Reminder" forceMultiline>
 
@@ -1360,6 +1365,42 @@ export const config = {
   schedule: "0 0 * * 0", // Every Sunday at midnight
 }
 ```
+
+---
+
+## Step 6: Publish to Cloud
+
+After you test the newsletter subscription and the automated newsletter locally, publish the customizations to your Cloud project.
+
+Create the environment variables that you added in the `.env` file in your Cloud project:
+
+- `MAILCHIMP_API_KEY`: Add it in the environment's **Backend** variables.
+- `MAILCHIMP_SERVER`: Add it in the environment's **Backend** variables.
+- `MAILCHIMP_LIST_ID`: Add it in the environment's **Backend** variables.
+- `MAILCHIMP_NEW_PRODUCTS_SUBJECT_LINE`: Add it in the environment's **Backend** variables, if you set it locally.
+- `MAILCHIMP_NEW_PRODUCTS_STOREFRONT_URL`: Add it in the environment's **Backend** variables, if you set it locally. Set it to your deployed environment's storefront URL.
+
+Add the variables in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variables in the environment variables section. Preview environments created afterward inherit them. Learn more in the [Preview Environments](!cloud!/environments/preview#manage-shared-previews-settings) guide.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variables and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
+
+In both places, enable the **Build** toggle of all the variables, since `medusa-config.ts` reads them. Mark `MAILCHIMP_API_KEY` as **Sensitive**. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+
+Then, create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/mailchimp-integration
+git add .
+git commit -m "Add Mailchimp integration"
+git push origin feat/mailchimp-integration
+```
+
+Then, on GitHub, open a pull request from the `feat/mailchimp-integration` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+If you created the [welcome email template](#optional-step-send-welcome-emails-from-mailchimp), change its "Start Exploring" link in Mailchimp from `http://localhost:8000` to your deployed storefront's URL.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

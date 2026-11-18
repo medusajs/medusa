@@ -4,11 +4,21 @@
 
 > For the complete documentation index, see [llms.txt](/llms.txt)
 
-Learn how to build Medusa projects. Explore our guides.
+Get Started with Medusa, the Agent-Native Commerce Platform.
 
-## AI Assistant
+## Get Started with Your AI Agent
 
-Hello! I'm Bloom, your go-to ecommerce assistant. How can I help you?
+Use this prompt with any AI agent to install and deploy a Medusa-powered ecommerce store.
+
+```
+Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
+```
+
+- [Learn more](https://docs.medusajs.com/start): Get started with Medusa using an AI agent.
+
+## Docs Assistant
+
+Hello! I'm the Docs Assistant. How can I help you?
 
 Ask anything about Medusa...
 
@@ -27,35 +37,48 @@ Ask anything about Medusa...
 - How do I build subscription-based purchases?
 - What other recipes are available?
 
-## Customize Medusa Application
+## Get Started
 
-- [Install Medusa](https://docs.medusajs.com/learn/installation): Install a digital commerce application with Medusa.
-- [Deploy to Cloud](https://docs.medusajs.com/cloud/sign-up): Deploy Medusa to Medusa Cloud.
-- [Browse integrations](https://docs.medusajs.com/resources/integrations): Integrate third-party services with Medusa.
+- [Sign up](https://docs.medusajs.com/cloud/sign-up): Create a Medusa Cloud account.
+- [Create your first project](https://docs.medusajs.com/cloud/first-project): Create and deploy your first Medusa project.
+- [Go live](https://docs.medusajs.com/cloud/going-live): Take your store live in production.
 
-## Admin Development
+## Medusa Cloud Resources
 
-- [Build a UI widget](https://docs.medusajs.com/learn/fundamentals/admin/widgets): Create custom widgets for the admin dashboard.
-- [Add a UI route](https://docs.medusajs.com/learn/fundamentals/admin/ui-routes): Create custom UI routes in the admin dashboard.
-- [Browse the UI library](https://docs.medusajs.com/ui): A React library to build applications using Medusa's design system.
+- [Storefront](https://docs.medusajs.com/cloud/storefront): Deploy and manage your storefront on Medusa Cloud.
+- [Search](https://docs.medusajs.com/cloud/search): Add product search with Medusa Search.
+- [Emails](https://docs.medusajs.com/cloud/emails): Send transactional emails with Medusa Emails.
+
+## Build with Agents
+
+- [Medusa MCP](https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp): Connect AI agents to your Medusa Cloud projects and stores.
+- [Agent Skills](https://docs.medusajs.com/cloud/ai-toolkit/agent-skills): Teach AI agents how to build with Medusa.
+- [Cloud CLI](https://docs.medusajs.com/cloud/cli): Manage Medusa Cloud from the terminal.
+
+## Customize Medusa
+
+- [Learn the Framework](https://docs.medusajs.com/learn): Build custom features with the Medusa Framework.
+- [Add integrations](https://docs.medusajs.com/cloud/integrations): Integrate third-party services with Medusa.
+- [Extend the Admin](https://docs.medusajs.com/learn/fundamentals/admin): Add widgets and pages to the Medusa Admin.
 
 ## Storefront Development
 
 - [Explore storefront starter](https://docs.medusajs.com/resources/nextjs-starter): Next.js storefront starter template.
 - [Build custom storefront](https://docs.medusajs.com/resources/storefront-development): Build storefronts with Medusa.
-- [Use agent skills](https://docs.medusajs.com/learn/introduction/build-with-llms-ai#ecommerce-storefront-best-practices): Best practices for storefront development with AI agents.
+- [Use agent skills](https://docs.medusajs.com/cloud/ai-toolkit/agent-skills#ecommerce-storefront-best-practices): Best practices for storefront development with AI agents.
 
 ## Medusa Cloud
 
-- [Deploy from GitHub](https://docs.medusajs.com/cloud/projects): Deploy Medusa projects from GitHub.
-- [Preview environments](https://docs.medusajs.com/cloud/environments/preview): Use preview environments in Medusa Cloud.
-- [Medusa Emails](https://docs.medusajs.com/cloud/emails): Manage emails in Medusa Cloud.
+Everything your store needs to go live, managed for you. Explore the features and resources that come with a Medusa Cloud project.
 
-## Agentic Development
-
-- [Build with Bloom](https://bloom.chat): Build Medusa projects with Bloom, an AI coding assistant.
-- [Agent Skills](https://docs.medusajs.com/learn/introduction/build-with-llms-ai): Learn how to build with AI assistants and LLMs.
-- [Medusa Docs MCP](https://docs.medusajs.com/learn/introduction/build-with-llms-ai#mcp-remote-server): Use the Medusa Docs MCP server.
+- [Learn more about Medusa Cloud](https://docs.medusajs.com/cloud): Overview of Medusa Cloud.
+- [Deployments](https://docs.medusajs.com/cloud/deployments): Push to GitHub and go live. Every commit builds and deploys automatically.
+- [Preview environments](https://docs.medusajs.com/cloud/environments/preview): Every pull request gets its own live environment, so you can review changes before they ship.
+- [Managed resources](https://docs.medusajs.com/cloud/features#managed-resources-and-services): Postgres, Redis, S3, and caching, set up for every project. No servers to manage.
+- [Medusa Search](https://docs.medusajs.com/cloud/search): Help customers find the right product fast with full-text and semantic search.
+- [Medusa Emails](https://docs.medusajs.com/cloud/emails): Send order confirmations and password resets out of the box, with no email provider to set up.
+- [Monitoring](https://docs.medusajs.com/cloud/monitoring): See logs, performance, and usage for every environment, and catch issues before customers do.
+- [Enterprise security](https://docs.medusajs.com/cloud/enterprise): Control who can do what with role-based access, and let your team sign in with SSO.
 
 ## Framework
 

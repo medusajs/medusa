@@ -70,9 +70,9 @@ Only one File Module Provider can be registered at a time. If you register multi
 
 </Note>
 
-By default, Medusa uses the [Local File Module](./local/page.mdx). This module uploads files to the `uploads` directory of your Medusa application.
+On Cloud, Medusa provisions managed [S3 storage](!cloud!/s3) for each environment and configures the File Module with the [S3 File Module Provider](./s3/page.mdx) to use it. So, you don't configure a File Module Provider for your deployed application.
 
-This is useful for development. However, for production, it’s highly recommended to use other File Module Providers, such as the S3 File Module Provider. You can also [Create a File Provider](/references/file-provider-module).
+Locally, Medusa uses the [Local File Module](./local/page.mdx) by default. This module uploads files to the `uploads` directory of your Medusa application. This is useful for development. However, it’s highly recommended to use other File Module Providers in production, such as the S3 File Module Provider. You can also [Create a File Provider](/references/file-provider-module).
 
 <CardList
   items={[

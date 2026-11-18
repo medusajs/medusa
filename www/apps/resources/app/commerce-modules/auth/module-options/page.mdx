@@ -68,7 +68,7 @@ The `providers` option is an array of objects that accept the following properti
 
 The Medusa application's authentication API routes are defined under the `/auth` prefix that requires setting the `authCors` property of the `http` configuration.
 
-By default, the Medusa application you created will have an `AUTH_CORS` environment variable, which is used as the value of `authCors`.
+By default, the Medusa application uses the `AUTH_CORS` environment variable as the value of `authCors`. On Cloud, Medusa configures the CORS settings of each environment for its Medusa Admin and storefront. For local development, set `AUTH_CORS` in your `.env` file to the URLs of your local admin and storefront.
 
 Refer to [Medusa's configuration guide](!docs!/learn/configurations/medusa-config#httpauthCors) to learn more about the `authCors` configuration.
 
@@ -78,7 +78,7 @@ Refer to [Medusa's configuration guide](!docs!/learn/configurations/medusa-confi
 
 The `mfa` option configures multi-factor authentication (MFA) settings for the Auth Module.
 
-When passing any options to the Auth Module, you must set the `mfa.encryption_key` option. This option is set by default to the `AUTH_MFA_ENCRYPTION_KEY` environment variable. If you created your Medusa application after v2.15.5, this environment variable is already set in your `.env` file. If not, make sure to set it to a random string.
+When passing any options to the Auth Module, you must set the `mfa.encryption_key` option. This option is set by default to the `AUTH_MFA_ENCRYPTION_KEY` environment variable. Learn how to set it in Cloud and locally in the [MFA guide](../mfa/page.mdx#configure-mfa-encryption-key).
 
 <Note>
 

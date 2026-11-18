@@ -47,16 +47,17 @@ When you install a Medusa application, you get a fully-fledged commerce platform
 
 Medusa's [Notification Module](../../../infrastructure-modules/notification/page.mdx) allows you to send notifications to users or customers, such as password reset emails, order confirmation SMS, or other types of notifications.
 
-In this tutorial, you will use the Notification Module to send an email to customers who have abandoned their carts. The email will contain a link to recover the customer's cart, encouraging them to complete their purchase. You will use SendGrid to send the emails, but you can also use other email providers.
+In this tutorial, you will use the Notification Module to send an email to customers who have abandoned their carts. The email will contain a link to recover the customer's cart, encouraging them to complete their purchase. You will send the emails with [Medusa Emails](!cloud!/emails), Cloud's built-in email service.
 
 ## Summary
 
 By following this tutorial, you will:
 
-- Install and set up Medusa.
+- Create a Cloud project and set it up locally.
 - Create the logic to send an email to customers who have abandoned their carts.
 - Run the above logic once a day.
 - Add a route to the storefront to recover the cart.
+- Publish the customizations to Cloud.
 
 ![Diagram illustrating the flow of the abandoned-cart functionalities](https://res.cloudinary.com/dza7lstvk/image/upload/v1742460588/Medusa%20Resources/abandoned-cart-summary_fcf2tn.jpg)
 
@@ -67,11 +68,25 @@ By following this tutorial, you will:
   text="Find the full code for this tutorial."
 />
 
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/abandoned-cart.md and implement abandoned cart notifications in my Medusa project
+```
+
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
+  {
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
   {
     text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
@@ -86,23 +101,11 @@ By following this tutorial, you will:
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You will first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose "Yes."
-
-Afterwards, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -112,30 +115,25 @@ In this guide, all file paths of backend customizations are relative to the `app
 
 ---
 
-## Step 2: Set up SendGrid
+## Step 2: Set Up Email Sending
 
-<Prerequisites items={[
-  {
-    text: "SendGrid account",
-    link: "https://sendgrid.com"
-  },
-  {
-    text: "Verified Sender Identity",
-    link: "https://mc.sendgrid.com/senders"
-  },
-  {
-    text: "SendGrid API Key",
-    link: "https://app.sendgrid.com/settings/api_keys"
-  }
-]} />
+Medusa's Notification Module provides the general functionality to send notifications, but the sending logic is implemented in a module provider registered for a channel, such as `email`.
 
-Medusa's Notification Module provides the general functionality to send notifications, but the sending logic is implemented in a module provider. This allows you to integrate the email provider of your choice.
+### Medusa Emails on Cloud
 
-To send the cart-abandonment emails, you will use SendGrid. Medusa provides a [SendGrid Notification Module Provider](../../../infrastructure-modules/notification/sendgrid/page.mdx) that you can use to send emails.
+Cloud projects send notifications of the `email` channel with [Medusa Emails](!cloud!/emails), Cloud's built-in email service. Medusa Emails is enabled by default, so you don't need to configure a Notification Module Provider or add API keys.
 
-Alternatively, you can use [other Notification Module Providers](../../../infrastructure-modules/notification/page.mdx#what-is-a-notification-module-provider) or [create a custom provider](/references/notification-provider-module).
+<Note>
 
-To set up SendGrid, add the SendGrid Notification Module Provider to `medusa-config.ts`:
+Without a verified sender domain, Medusa Emails only sends emails to addresses of users in your Cloud organization. To send abandoned cart emails to your customers, [add an email sender domain](!cloud!/emails#add-email-sender-domain-to-cloud) to your Cloud project.
+
+</Note>
+
+### Log Emails During Local Development
+
+Medusa Emails isn't available when you run the Medusa application locally. So, register the [Local Notification Module Provider](../../../infrastructure-modules/notification/local/page.mdx) for the `email` channel during development. It logs the emails' details in the terminal instead of sending them.
+
+Add the following to `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -146,12 +144,14 @@ module.exports = defineConfig({
       options: {
         providers: [
           {
-            resolve: "@medusajs/medusa/notification-sendgrid",
-            id: "sendgrid",
+            resolve: "@medusajs/medusa/notification-local",
+            id: "local",
             options: {
-              channels: ["email"],
-              api_key: process.env.SENDGRID_API_KEY,
-              from: process.env.SENDGRID_FROM,
+              channels: [
+                process.env.NODE_ENV === "development"
+                  ? "email"
+                  : "feed",
+              ],
             },
           },
         ],
@@ -161,20 +161,139 @@ module.exports = defineConfig({
 })
 ```
 
-In the `modules` configuration, you pass the Notification Provider and add SendGrid as a provider. You also pass to the SendGrid Module Provider the following options:
+The Local Notification Module Provider handles the `email` channel only in development. In your Cloud environments, it handles the `feed` channel, so Medusa Emails sends the `email` notifications.
 
-- `channels`: The channels that the provider supports. In this case, it is only email.
-- `api_key`: Your SendGrid API key.
-- `from`: The email address that the emails will be sent from.
+### Create the Email Template
 
-Then, set the SendGrid API key and "from" email as environment variables, such as in the `.env` file at the root of your project:
+Medusa Emails sends the HTML content that you pass in the notification. To build the HTML, you'll create a [React Email](https://react.email) template, then render it to an HTML string when sending the notification.
 
-```plain
-SENDGRID_API_KEY=your-sendgrid-api-key
-SENDGRID_FROM=test@gmail.com
+First, install the React Email dependencies in the Medusa application:
+
+```bash npm2yarn
+npm install @react-email/components@0.3.3 @react-email/render@1.1.4 react react-dom
 ```
 
-You can now use SendGrid to send emails in Medusa.
+<Note>
+
+Newer versions of React Email are not supported due to Node version incompatibilities on Cloud.
+
+</Note>
+
+Then, create the file `src/emails/abandoned-cart.tsx` with the following content:
+
+```tsx title="src/emails/abandoned-cart.tsx"
+import {
+  Body,
+  Button,
+  Container,
+  Heading,
+  Html,
+  Img,
+  Preview,
+  Section,
+  Tailwind,
+  Text,
+} from "@react-email/components"
+
+type AbandonedCartEmailProps = {
+  customerName?: string
+  cartUrl: string
+  currencyCode: string
+  items: {
+    title: string
+    quantity: number
+    unit_price: number
+    thumbnail?: string | null
+  }[]
+}
+
+function Template({
+  customerName,
+  cartUrl,
+  currencyCode,
+  items,
+}: AbandonedCartEmailProps) {
+  return (
+    <Tailwind>
+      <Html className="font-sans bg-gray-100">
+        <Preview>Your cart is waiting for you</Preview>
+        <Body className="bg-white my-10 mx-auto max-w-2xl">
+          <Container className="p-6 text-center">
+            <Heading className="text-xl font-semibold">
+              Hi {customerName || "there"}, your cart is waiting!
+            </Heading>
+            <Text className="text-sm text-gray-600">
+              You left some great items in your cart. Complete
+              your purchase before they're gone!
+            </Text>
+            {items.map((item, index) => (
+              <Section
+                key={index}
+                className="text-left bg-gray-50 p-3 mb-3"
+              >
+                {item.thumbnail && (
+                  <Img
+                    src={item.thumbnail}
+                    alt={item.title}
+                    width="80"
+                  />
+                )}
+                <Text className="font-semibold m-0">
+                  {item.title}
+                </Text>
+                <Text className="m-0">
+                  Quantity: {item.quantity}
+                </Text>
+                <Text className="m-0">
+                  Price: {currencyCode.toUpperCase()}{" "}
+                  {item.unit_price}
+                </Text>
+              </Section>
+            ))}
+            <Button
+              href={cartUrl}
+              className="bg-black text-white py-3 px-8 mt-4"
+            >
+              Return to Cart & Checkout
+            </Button>
+          </Container>
+        </Body>
+      </Html>
+    </Tailwind>
+  )
+}
+
+export default function getAbandonedCartTemplate(
+  props?: AbandonedCartEmailProps
+) {
+  return (
+    <Template
+      customerName={props?.customerName}
+      cartUrl={props?.cartUrl ?? "#"}
+      currencyCode={props?.currencyCode ?? "usd"}
+      items={props?.items ?? []}
+    />
+  )
+}
+```
+
+The template shows each item's image, title, quantity, and price in the cart. It also shows a button that links to the cart recovery URL, which you'll implement in the storefront in a later step.
+
+The file's default export is a function that returns the template with default props. You'll use it to render the template to HTML when sending the notification.
+
+<Note title="Tip">
+
+Learn how to preview your email templates during development in the [Set Up React Email Templates](!cloud!/emails/react-email#step-3-preview-email-template-optional) guide.
+
+</Note>
+
+Finally, set the URL of your storefront as an environment variable in the `.env` file at the root of your Medusa application. You'll use it to build the cart recovery link:
+
+```plain
+STOREFRONT_URL=http://localhost:8000
+```
+
+You'll add this variable to your Cloud environment with your deployed storefront's URL when you [publish to Cloud](#step-6-publish-to-cloud).
 
 ---
 
@@ -225,6 +344,8 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { Modules } from "@medusajs/framework/utils"
 import { CartDTO, CustomerDTO } from "@medusajs/framework/types"
+import { render } from "@react-email/render"
+import getAbandonedCartTemplate from "../../emails/abandoned-cart"
 
 type SendAbandonedNotificationsStepInput = {
   carts: (CartDTO & {
@@ -238,25 +359,30 @@ export const sendAbandonedNotificationsStep = createStep(
     const notificationModuleService = container.resolve(
       Modules.NOTIFICATION
     )
+    const storefrontUrl = process.env.STOREFRONT_URL ||
+      "http://localhost:8000"
 
-    const notificationData = input.carts.map((cart) => ({
-      to: cart.email!,
-      channel: "email", 
-      template: process.env.ABANDONED_CART_TEMPLATE_ID || "",
-      data: {
-        customer: {
-          first_name: cart.customer?.first_name || cart.shipping_address?.first_name,
-          last_name: cart.customer?.last_name || cart.shipping_address?.last_name,
+    const notificationData = await Promise.all(
+      input.carts.map(async (cart) => ({
+        to: cart.email!,
+        channel: "email",
+        content: {
+          subject: "Your cart is waiting for you",
+          html: await render(getAbandonedCartTemplate({
+            customerName: cart.customer?.first_name || 
+              cart.shipping_address?.first_name,
+            cartUrl: `${storefrontUrl}/cart/recover/${cart.id}`,
+            currencyCode: cart.currency_code,
+            items: cart.items?.map((item) => ({
+              title: item.title,
+              quantity: item.quantity,
+              unit_price: item.unit_price,
+              thumbnail: item.thumbnail,
+            })) || [],
+          })),
         },
-        cart_id: cart.id,
-        items: cart.items?.map((item) => ({
-          product_title: item.title,
-          quantity: item.quantity,
-          unit_price: item.unit_price,
-          thumbnail: item.thumbnail,
-        })),
-      },
-    }))
+      }))
+    )
 
     const notifications = await notificationModuleService.createNotifications(
       notificationData
@@ -281,11 +407,8 @@ In the step function, you first resolve the Notification Module's service, which
 Notice that each notification is an object with the following properties:
 
 - `to`: The email address of the customer.
-- `channel`: The channel that the notification will be sent through. The Notification Module uses the provider registered for the channel.
-- `template`: The ID or name of the email template in the third-party provider. Make sure to set it as an environment variable once you have it.
-- `data`: The data to pass to the template to render the email's dynamic content.
-
-Based on the dynamic template you create in SendGrid or another provider, you can pass different data in the `data` object.
+- `channel`: The channel that the notification will be sent through. The Notification Module uses the provider registered for the channel. On Cloud, Medusa Emails handles the `email` channel.
+- `content`: The email's subject and HTML content. You render the abandoned cart template to an HTML string using React Email's `render` function, passing it the customer's name, the cart recovery URL, and the cart's items.
 
 A step function must return a `StepResponse` instance. The `StepResponse` constructor accepts the step's output as a parameter, which is the created notifications.
 
@@ -351,141 +474,6 @@ In the workflow's constructor function, you:
 Notice that you use the `transform` function to prepare the `updateCartsStep`'s input. Medusa does not support direct data manipulation in a workflow's constructor function. You can learn more about it in the [Data Manipulation in Workflows documentation](!docs!/learn/fundamentals/workflows/variable-manipulation).
 
 Your workflow is now ready for use. You will learn how to execute it in the next section.
-
-### Setup Email Template
-
-Before you can test the workflow, you need to set up an email template in SendGrid. The template should contain the dynamic content that you pass in the workflow's step.
-
-To create an email template in SendGrid:
-
-- Go to [Dynamic Templates](https://mc.sendgrid.com/dynamic-templates) in the SendGrid dashboard.
-- Click on the "Create Dynamic Template" button.
-
-![Button is at the top right of the page](https://res.cloudinary.com/dza7lstvk/image/upload/v1742457153/Medusa%20Resources/Screenshot_2025-03-20_at_9.51.38_AM_g5nk80.png)
-
-- In the side window that opens, enter a name for the template, then click on the Create button.
-- The template will be added to the middle of the page. When you click on it, a new section will show with an "Add Version" button. Click on it.
-
-![The template is a collapsible in the middle of the page,with the "Add Version" button shown in the middle](https://res.cloudinary.com/dza7lstvk/image/upload/v1742458096/Medusa%20Resources/Screenshot_2025-03-20_at_10.07.54_AM_y2dys7.png)
-
-In the form that opens, you can either choose to start with a blank template or from an existing design. You can then use the drag-and-drop or code editor to design the email template.
-
-You can also use the following template as an example:
-
-```html title="Abandoned Cart Email Template"
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Complete Your Purchase</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .header {
-            font-size: 26px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .message {
-            font-size: 16px;
-            color: #555;
-            margin-bottom: 20px;
-        }
-        .item {
-            display: flex;
-            align-items: center;
-            background: #f9f9f9;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        .item img {
-            width: 80px;
-            height: auto;
-            margin-right: 15px;
-            border-radius: 5px;
-        }
-        .item-details {
-            text-align: left;
-            flex-grow: 1;
-        }
-        .item-details strong {
-            font-size: 18px;
-            color: #333;
-        }
-        .item-details p {
-            font-size: 14px;
-            color: #777;
-            margin: 5px 0;
-        }
-        .button {
-            display: inline-block;
-            background-color: #007bff;
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 18px;
-            padding: 12px 20px;
-            border-radius: 5px;
-            margin-top: 20px;
-            transition: background 0.3s ease;
-        }
-        .button:hover {
-            background-color: #0056b3;
-        }
-        .footer {
-            font-size: 12px;
-            color: #888;
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">Hi {{customer.first_name}}, your cart is waiting! 🛍️</div>
-        <p class="message">You left some great items in your cart. Complete your purchase before they're gone!</p>
-        
-        {{#each items}}
-        <div class="item">
-            <img src="{{thumbnail}}" alt="{{product_title}}">
-            <div class="item-details">
-                <strong>{{product_title}}</strong>
-                <p>{{subtitle}}</p>
-                <p>Quantity: <strong>{{quantity}}</strong></p>
-                <p>Price: <strong>$ {{unit_price}}</strong></p>
-            </div>
-        </div>
-        {{/each}}
-        
-        <a href="https://yourstore.com/cart/recover/{{cart_id}}" class="button">Return to Cart & Checkout</a>
-        <p class="footer">Need help? <a href="mailto:support@yourstore.com">Contact us</a></p>
-    </div>
-</body>
-</html>
-```
-
-This template will show each item's image, title, quantity, and price in the cart. It will also show a button to return to the cart and checkout.
-
-You can replace `https://yourstore.com` with your storefront's URL. You'll later implement the `/cart/recover/:cart_id` route in the storefront to recover the cart.
-
-Once you are done, copy the template ID from SendGrid and set it as an environment variable in your Medusa project:
-
-```plain
-ABANDONED_CART_TEMPLATE_ID=your-sendgrid-template-id
-```
 
 ---
 
@@ -557,9 +545,11 @@ const {
   fields: [
     "id",
     "email",
+    "currency_code",
     "items.*",
     "metadata",
     "customer.*",
+    "shipping_address.*",
   ],
   filters: {
     updated_at: {
@@ -648,6 +638,8 @@ Afterwards, wait for the job to execute. Once it is executed, you will see the f
 info:    Sent 1 abandoned cart notifications
 ```
 
+The Local Notification Module Provider also logs the email's details in the terminal.
+
 Once you're done testing, make sure to revert the changes to the `oneDayAgo` date and the job's schedule.
 
 ---
@@ -709,6 +701,40 @@ npm run dev
 Then, either open the link in an abandoned cart email or navigate to `localhost:8000/cart/recover/:cart_id` in your browser. You will be redirected to the cart page with the recovered cart.
 
 ![Cart page in the storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1742459552/Medusa%20Resources/Screenshot_2025-03-20_at_10.32.17_AM_frmbup.png)
+
+---
+
+## Step 6: Publish to Cloud
+
+After you test the abandoned cart notifications locally, publish them to your Cloud project.
+
+### a. Add Environment Variables to Cloud
+
+Create the `STOREFRONT_URL` environment variable in your Cloud project, and set it to your deployed storefront's URL. This ensures the cart recovery links in the emails point to your live store.
+
+Add the variable in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variable in the environment variables section. Preview environments created afterward inherit it. Learn more in the [Preview Environments](!cloud!/environments/preview#manage-shared-previews-settings) guide.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variable and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
+
+Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+
+### b. Push Changes and Open a Pull Request
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/abandoned-cart
+git add .
+git commit -m "Add abandoned cart notifications"
+git push origin feat/abandoned-cart
+```
+
+Then, on GitHub, open a pull request from the `feat/abandoned-cart` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+After the changes are deployed, Medusa Emails sends the abandoned cart emails. You can track their delivery on the [Email Activity page](!cloud!/emails#monitor-email-sending-activity-on-cloud) of your Cloud project.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

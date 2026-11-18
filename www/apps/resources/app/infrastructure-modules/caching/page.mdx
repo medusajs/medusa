@@ -8,12 +8,6 @@ export const metadata = {
 
 In this guide, you'll learn about the Caching Module and its providers.
 
-<Note title="Cloud user?">
-
-Refer to the [Medusa Cache Cloud](!cloud!/cache) guide for setting up the Caching Module in Cloud.
-
-</Note>
-
 <Note>
 
 The Caching Module is available starting [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0). It replaces the deprecated [Cache Module](../cache/page.mdx).
@@ -27,6 +21,10 @@ The Caching Module provides functionality to cache data in your Medusa applicati
 For example, Medusa uses the Caching Module to cache product information, and you can cache custom data such as brand information.
 
 The Caching Module stores and retrieves cached data using the caching service you integrate, such as [Redis](./providers/redis/page.mdx) or [Memcached](./guides/memcached/page.mdx). This provides flexibility in customizing your Medusa application's infrastructure to meet your performance and scalability requirements.
+
+On Cloud, Medusa provides [Medusa Cache](!cloud!/cache), which configures the Caching Module with the [Redis Caching Module Provider](./providers/redis/page.mdx) and the environment's managed [Redis](!cloud!/redis) instance. You only enable the caching feature flag, as explained in the [Install the Caching Module](#install-the-caching-module) section.
+
+Locally, you register the Caching Module with a provider, such as Redis, as explained in the same section.
 
 ![Diagram illustrating the Caching Module architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1759846791/Medusa%20Resources/caching-overview_tz91tw.jpg)
 
@@ -51,17 +49,30 @@ If you're using the Cache Module in your application, refer to the [migrate to t
 
 The Caching Module is installed by default in your application. To use it, enable the caching feature flag and register the module in your `medusa-config.ts` file.
 
+On Cloud, you only enable the feature flag. Cloud configures the Caching Module with a managed Redis instance, so you don't need Redis or the second step.
+
 ### 1. Enable Caching Feature Flag
 
-The caching feature is currently behind a feature flag. To enable it, set the `MEDUSA_FF_CACHING` environment variable to `true` in your `.env` file:
+The caching feature is currently behind a feature flag. To enable it, set the `caching` feature flag in `medusa-config.ts`:
 
-```bash
-MEDUSA_FF_CACHING=true
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  featureFlags: {
+    caching: true,
+  },
+})
 ```
 
-This enables you to use the Caching Module and activates caching features in Medusa's core.
+This enables you to use the Caching Module and activates caching features in Medusa's core, both locally and in your Cloud environments once you deploy the change.
 
 ### 2. Register the Caching Module
+
+<Note>
+
+Skip this step on Cloud. If you registered the Caching Module with the Redis Caching Module Provider in `medusa-config.ts`, remove it before you deploy to avoid conflicts with the module that Cloud configures.
+
+</Note>
 
 Next, add the Caching Module to the `modules` property of the exported object in `medusa-config.ts`:
 

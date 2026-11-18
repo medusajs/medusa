@@ -16,7 +16,7 @@ In this guide, you'll learn how to handle the `invite.created` and `invite.resen
 
 <Note title="Looking for no-code docs?">
 
-Refer to the [Manage Invites](!user-guide!/settings/users/invites) user guide to learn how to manage invites using the Medusa Admin.
+Refer to the [Manage Invites](!user-guide!/settings/users/invites) Merchant Guide to learn how to manage invites using the Medusa Admin.
 
 </Note>
 
@@ -40,17 +40,23 @@ After adding the subscriber, you will have a complete user invite flow that you 
 
 ---
 
-## Prerequisites: Notification Module Provider
+## Prerequisites: Email Sending
 
-To send an email or notification to the user, you must have a Notification Module Provider set up.
+To send an email to the user, you need a Notification Module Provider registered for the `email` channel.
 
-Medusa provides providers like [SendGrid](../../../infrastructure-modules/notification/sendgrid/page.mdx) and [Resend](../../../integrations/guides/resend/page.mdx), and you can also [create your own custom provider](/references/notification-provider-module).
+Cloud projects send notifications of the `email` channel with [Medusa Emails](!cloud!/emails), Cloud's built-in email service. Medusa Emails is enabled by default, so you don't need to configure a Notification Module Provider or add API keys.
 
-Refer to the [Notification Module](../../../infrastructure-modules/notification/page.mdx#what-is-a-notification-module-provider) documentation for a list of available providers and how to set them up.
+<Note>
+
+Without a verified sender domain, Medusa Emails only sends emails to addresses of users in your Cloud organization. To send invite emails to other email addresses, [add an email sender domain](!cloud!/emails#add-email-sender-domain-to-cloud) to your Cloud project.
+
+</Note>
+
+If you're not using Cloud, you can use another [Notification Module Provider](../../../infrastructure-modules/notification/page.mdx#what-is-a-notification-module-provider) for the `email` channel, or [create your own custom provider](/references/notification-provider-module).
 
 ### Testing with the Local Notification Module Provider
 
-For testing purposes, you can use the [Local Notification Module Provider](../../../infrastructure-modules/notification/local/page.mdx) by adding this to your `medusa-config.ts`:
+Medusa Emails isn't available when you run the Medusa application locally. So, register the [Local Notification Module Provider](../../../infrastructure-modules/notification/local/page.mdx) for the `email` channel during development by adding this to your `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -65,7 +71,11 @@ module.exports = defineConfig({
             resolve: "@medusajs/medusa/notification-local",
             id: "local",
             options: {
-              channels: ["email"],
+              channels: [
+                process.env.NODE_ENV === "development"
+                  ? "email"
+                  : "feed",
+              ],
             },
           },
         ],
@@ -75,7 +85,7 @@ module.exports = defineConfig({
 })
 ```
 
-The Local provider logs email details to your terminal instead of sending actual emails, which is useful for development and testing.
+The Local provider logs email details to your terminal instead of sending actual emails, which is useful for development and testing. It handles the `email` channel only in development, so Medusa Emails sends the emails in your Cloud environments.
 
 ---
 
@@ -87,10 +97,11 @@ export const highlights = [
   ["23", "invite", "Retrieve the invite's details."],
   ["34", "backend_url", "Construct the backend URL."],
   ["36", "adminPath", "Get the admin path from the config."],
-  ["38", "createNotifications", "Send the notification to the user."],
-  ["42", "channel", "Use the Notification Module Provider configured for the email channel."],
-  ["43", "data", "Pass the invite URL to the notification template."],
-  ["50", "event", "Subscribe to the invite events."]
+  ["38", "inviteUrl", "Construct the invite URL."],
+  ["41", "createNotifications", "Send the notification to the user."],
+  ["43", "channel", "Use the Notification Module Provider configured for the email channel."],
+  ["44", "content", "Pass the email's subject and HTML content."],
+  ["52", "event", "Subscribe to the invite events."]
 ]
 
 ```ts title="src/subscribers/user-invited.ts" highlights={highlights}
@@ -131,13 +142,15 @@ export default async function inviteCreatedHandler({
     "http://localhost:9000"
   const adminPath = config.admin.path
 
+  const inviteUrl = `${backend_url}${adminPath}` +
+    `/invite?token=${invite.token}`
+
   await notificationModuleService.createNotifications({
     to: invite.email,
-    // TODO replace with template ID in notification provider
-    template: "user-invited",
     channel: "email",
-    data: {
-      invite_url: `${backend_url}${adminPath}/invite?token=${invite.token}`,
+    content: {
+      subject: "You've been invited",
+      html: `<p>Click <a href="${inviteUrl}">here</a> to accept the invite.</p>`,
     },
   })
 }
@@ -165,14 +178,13 @@ Note that the Medusa Admin has an invite form at `/invite?token=`, which accepts
 
 For the notification, you can configure the following fields:
 
-- `template`: The template ID of the email to send. This ID depends on the Notification Module provider you use. For example, if you use SendGrid, this would be the ID of the SendGrid template.
-    - Refer to the [Example Notification Templates](#example-notification-templates) section below for examples of notification templates to use.
 - `channel`: The channel to send the notification through. In this case, it's set to `email`.
-- `data`: The data to pass to the notification template. You can add additional fields as needed, such as the invited user's email.
+- `content`: The email's subject and HTML content, which includes the invite link. On Cloud, Medusa Emails sends this content to the user.
+    - Refer to the [Use a React Email Template](#use-a-react-email-template) section below to build a richer email template.
 
 ### Test It Out
 
-After you set up the Notification Module Provider, create a template in the provider, and create the subscriber, you can test the full invite flow.
+After you set up the Local Notification Module Provider and create the subscriber, you can test the full invite flow.
 
 Start the Medusa application with the following command:
 
@@ -180,7 +192,7 @@ Start the Medusa application with the following command:
 npm run dev
 ```
 
-Then, open the Medusa Admin (locally at `http://localhost:9000/app`) and go to Settings → Users. Create an invite as explained in the [Manage Invites](!user-guide!/settings/users/invites) user guide.
+Then, open the Medusa Admin (locally at `http://localhost:9000/app`) and go to Settings → Users. Create an invite as explained in the [Manage Invites](!user-guide!/settings/users/invites) Merchant Guide.
 
 Once you create the invite, you should see that the `invite.created` event is emitted in the server's logs:
 
@@ -188,274 +200,12 @@ Once you create the invite, you should see that the `invite.created` event is em
 info:    Processing invite.created which has 1 subscribers
 ```
 
-If you're using an email Notification Module Provider, check the recipient's email inbox for the invite email with the link to accept the invite.
-
-If you're using the Local provider, check your terminal for the logged email details.
+The Local provider logs the email details in your terminal. After you deploy the subscriber to Cloud, Medusa Emails sends the invite email to the recipient's inbox. You can track its delivery on the [Email Activity page](!cloud!/emails#monitor-email-sending-activity-on-cloud) of your Cloud project.
 
 ---
 
-## Example Notification Templates
+## Use a React Email Template
 
-The following section provides example notification templates for some Notification Module Providers.
+The subscriber sends a basic HTML email. To build a richer email template, use [React Email](https://react.email) to create the template as a React component, then render it to an HTML string in the subscriber.
 
-### SendGrid
-
-<Note>
-
-Refer to the [SendGrid Notification Module Provider](../../../infrastructure-modules/notification/sendgrid/page.mdx) documentation for more details on how to set up SendGrid.
-
-</Note>
-
-The following HTML template can be used with SendGrid to send an invite email:
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>You're Invited!</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-            background-color: #ffffff;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 465px;
-            margin: 40px auto;
-            border: 1px solid #eaeaea;
-            border-radius: 5px;
-            padding: 20px;
-        }
-        .header {
-            text-align: center;
-            margin: 30px 0;
-        }
-        .title {
-            color: #000000;
-            font-size: 24px;
-            font-weight: normal;
-            margin: 0;
-        }
-        .content {
-            margin: 32px 0;
-        }
-        .text {
-            color: #000000;
-            font-size: 14px;
-            line-height: 24px;
-            margin: 0 0 16px 0;
-        }
-        .button-container {
-            text-align: center;
-            margin: 32px 0;
-        }
-        .invite-button {
-            background-color: #000000;
-            border-radius: 3px;
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: 600;
-            text-decoration: none;
-            text-align: center;
-            padding: 12px 20px;
-            display: inline-block;
-        }
-        .invite-button:hover {
-            background-color: #333333;
-        }
-        .url-section {
-            margin: 32px 0;
-        }
-        .url-link {
-            color: #2563eb;
-            text-decoration: none;
-            font-size: 14px;
-            line-height: 24px;
-            word-break: break-all;
-        }
-        .footer {
-            margin-top: 32px;
-        }
-        .footer-text {
-            color: #666666;
-            font-size: 12px;
-            line-height: 24px;
-            margin: 0;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1 class="title">You're Invited!</h1>
-        </div>
-
-        <div class="content">
-            <p class="text">
-                Hello{{#if email}} {{email}}{{/if}},
-            </p>
-            <p class="text">
-                You've been invited to join our platform. Click the button below to accept your invitation and set up your account.
-            </p>
-        </div>
-
-        <div class="button-container">
-            <a href="{{invite_url}}" class="invite-button">
-                Accept Invitation
-            </a>
-        </div>
-
-        <div class="url-section">
-            <p class="text">
-                Or copy and paste this URL into your browser:
-            </p>
-            <a href="{{invite_url}}" class="url-link">
-                {{invite_url}}
-            </a>
-        </div>
-
-        <div class="footer">
-            <p class="footer-text">
-                If you weren't expecting this invitation, you can ignore this email.
-            </p>
-        </div>
-    </div>
-</body>
-</html>
-```
-
-Make sure to pass the `invite_url` variable to the template, which contains the URL to accept the invite.
-
-You can also customize the template further to show other information, such as the user's email.
-
-### Resend
-
-If you've integrated Resend as explained in the [Resend Integration Guide](../../../integrations/guides/resend/page.mdx), you can add a new template for user invites at `src/modules/resend/emails/user-invited.tsx`:
-
-```tsx title="src/modules/resend/emails/user-invited.tsx"
-import { 
-  Text, 
-  Container, 
-  Heading, 
-  Html, 
-  Section, 
-  Tailwind, 
-  Head, 
-  Preview, 
-  Body, 
-  Link,
-  Button, 
-} from "@react-email/components"
-
-type UserInvitedEmailProps = {
-  invite_url: string
-  email?: string
-}
-
-function UserInvitedEmailComponent({ invite_url, email }: UserInvitedEmailProps) {
-  return (
-    <Html>
-      <Head />
-      <Preview>You've been invited to join our platform</Preview>
-      <Tailwind>
-        <Body className="bg-white my-auto mx-auto font-sans px-2">
-          <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
-            <Section className="mt-[32px]">
-              <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
-                You're Invited!
-              </Heading>
-            </Section>
-
-            <Section className="my-[32px]">
-              <Text className="text-black text-[14px] leading-[24px]">
-                Hello{email ? ` ${email}` : ""},
-              </Text>
-              <Text className="text-black text-[14px] leading-[24px]">
-                You've been invited to join our platform. Click the button below to accept your invitation and set up your account.
-              </Text>
-            </Section>
-
-            <Section className="text-center mt-[32px] mb-[32px]">
-              <Button
-                className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3"
-                href={invite_url}
-              >
-                Accept Invitation
-              </Button>
-            </Section>
-
-            <Section className="my-[32px]">
-              <Text className="text-black text-[14px] leading-[24px]">
-                Or copy and paste this URL into your browser:
-              </Text>
-              <Link
-                href={invite_url}
-                className="text-blue-600 no-underline text-[14px] leading-[24px] break-all"
-              >
-                {invite_url}
-              </Link>
-            </Section>
-
-            <Section className="mt-[32px]">
-              <Text className="text-[#666666] text-[12px] leading-[24px]">
-                If you weren't expecting this invitation, you can ignore this email.
-              </Text>
-            </Section>
-          </Container>
-        </Body>
-      </Tailwind>
-    </Html>
-  )
-}
-
-export const userInvitedEmail = (props: UserInvitedEmailProps) => (
-  <UserInvitedEmailComponent {...props} />
-)
-
-// Mock data for preview/development
-const mockInvite: UserInvitedEmailProps = {
-  invite_url: "https://your-app.com/app/invite/sample-token-123",
-  email: "user@example.com",
-}
-
-export default () => <UserInvitedEmailComponent {...mockInvite} />
-```
-
-Feel free to customize the email template further to match your branding and style, or to add additional information such as the user's email.
-
-Then, in the Resend Module's service at `src/modules/resend/service.ts`, add the new template to the `templates` object and `Templates` type:
-
-```ts title="src/modules/resend/service.ts"
-// other imports...
-import { userInvitedEmail } from "./emails/user-invited"
-
-enum Templates {
-  // ...
-  USER_INVITED = "user-invited",
-}
-
-const templates: {[key in Templates]?: (props: unknown) => React.ReactNode} = {
-  // ...
-  [Templates.USER_INVITED]: userInvitedEmail,
-}
-```
-
-Finally, find the `getTemplateSubject` function in the `ResendNotificationProviderService` and add a case for the `USER_INVITED` template:
-
-```ts title="src/modules/resend/service.ts"
-class ResendNotificationProviderService extends AbstractNotificationProviderService {
-  // ...
-
-  private getTemplateSubject(template: Templates) {
-    // ...
-    switch (template) {
-      // ...
-      case Templates.USER_INVITED:
-        return "You've been invited to join our platform"
-    }
-  }
-}
-```
+The [Set Up React Email Templates](!cloud!/emails/react-email) guide explains how to install React Email in your Medusa project, and walks you through creating an invite user email template and a subscriber that sends it.

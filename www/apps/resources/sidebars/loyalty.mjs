@@ -66,7 +66,7 @@ export const loyaltySidebar = [
       },
       {
         type: "category",
-        title: "Admin User Guides",
+        title: "Merchant Guides",
         autogenerate_tags: "userGuide+loyalty",
         autogenerate_as_ref: true,
         sort_sidebar: "alphabetize",

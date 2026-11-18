@@ -44,7 +44,7 @@ export const AiAssistantTriggerButton = () => {
       >
         <BloomIcon className="text-medusa-fg-subtle" />
         <span className="hidden md:inline-block text-medusa-fg-subtle">
-          Ask Bloom
+          Ask Docs Assistant
         </span>
       </Button>
     </Tooltip>

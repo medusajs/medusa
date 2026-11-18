@@ -40,9 +40,12 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the necessary environment variables for the above options to your `.env` file:
+On Cloud, Medusa sets the `JWT_SECRET` environment variable for each environment, so you don't need to add it. To use asymmetric key validation, set the other variables:
 
-```bash
+1. In Cloud, add `JWT_PUBLIC_KEY`, `JWT_ALGORITHM`, and `JWT_ISSUER` in your environment's [Environment variables settings](!cloud!/environments/environment-variables#add-environment-variables-on-cloud). Enable the **Build** toggle for them, since `medusa-config.ts` reads them during the build. Then, [redeploy the environment](!cloud!/environments/long-lived#redeploy-environment) to apply them.
+2. For local development, add the variables to your `.env` file:
+
+```bash title=".env"
 JWT_SECRET=supersecret
 # Optional: For asymmetric key validation
 JWT_PUBLIC_KEY=your_public_key_here

@@ -53,3 +53,28 @@ When a Cloud feature or notable guide ships, also add it to the docs-wide What's
 New list in `www/apps/book/components/Homepage/WhatsNewSection/data.ts` with the
 `Medusa Cloud` tag. See [`www/apps/book/CLAUDE.md`](../book/CLAUDE.md) for the
 entry format.
+
+## Agent setup prompt (`/start`)
+
+`www/apps/book/app/start/_md-content.mdx` is the prompt AI agents follow to
+create a store on Cloud. It repeats steps from these docs, so update it in the
+same PR when you change any of them:
+
+- Sign-up, login, and organizations (`sign-up`, `cli/commands/signup`, `login`)
+- Project creation, starters, and their configuration (`projects`,
+  `first-project`, `projects/prerequisites`), including subdomain rules,
+  regions, and reserved environment variables
+- CLI commands or JSON fields the prompt uses (`organizations`, `projects`,
+  `environments`, `deployments`, `use`, `logs`)
+- Local setup (`setup-locally`) and the AI toolkit (`ai-toolkit/agent-skills`,
+  `ai-toolkit/docs-mcp`, `ai-toolkit/medusa-mcp`)
+
+Also check `www/apps/book/app/start/page.mdx`, the human-facing summary of the
+same flow.
+
+## Features page
+
+When you document a new feature, in this app or any other docs app, also add it
+to the Features page in `app/features/page.mdx`. Add it as a bullet under the
+section it belongs to (Cloud, Commerce, or Framework), with a link to its docs
+page.

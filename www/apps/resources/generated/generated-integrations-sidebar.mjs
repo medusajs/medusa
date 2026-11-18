@@ -4,8 +4,8 @@ const generatedgeneratedIntegrationsSidebarSidebar = {
   "items": [
     {
       "loaded": true,
-      "type": "link",
-      "path": "/integrations",
+      "type": "external",
+      "path": "https://docs.medusajs.com/cloud/integrations",
       "title": "Overview",
       "children": []
     },

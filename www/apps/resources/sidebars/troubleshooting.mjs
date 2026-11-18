@@ -15,11 +15,6 @@ export const troubleshootingSidebar = [
     children: [
       {
         type: "link",
-        path: "/troubleshooting/create-medusa-app-errors",
-        title: "Create Medusa App Errors",
-      },
-      {
-        type: "link",
         path: "/troubleshooting/errors-installing-cli",
         title: "Errors Installing CLI",
       },
@@ -234,11 +229,6 @@ export const troubleshootingSidebar = [
         type: "sub-category",
         title: "Next.js Starter",
         children: [
-          {
-            type: "link",
-            path: "/troubleshooting/nextjs-node-25",
-            title: "Errors with Node v25+",
-          },
           {
             type: "link",
             path: "/troubleshooting/nextjs-starter-rewrites",

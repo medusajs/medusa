@@ -38,13 +38,13 @@ export const whatsNewItems: WhatsNewItem[] = [
     title: "RBAC & SSO",
     tag: "Enterprise",
     date: "2026-11-04",
-    link: "https://docs.medusajs.com/resources/enterprise",
+    link: "https://docs.medusajs.com/cloud/enterprise",
   },
   {
     title: "Medusa MCP",
     tag: "Medusa Cloud",
     date: "2026-10-20",
-    link: "https://docs.medusajs.com/cloud/medusa-mcp",
+    link: "https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp",
   },
   {
     title: "Medusa Security",
@@ -73,7 +73,7 @@ export const whatsNewItems: WhatsNewItem[] = [
   {
     title: "AI Assistant in Dashboard",
     date: "2026-08-19",
-    link: "https://docs.medusajs.com/cloud/assistant",
+    link: "https://docs.medusajs.com/cloud/ai-toolkit/assistant",
     tag: "Medusa Cloud",
   },
 ]

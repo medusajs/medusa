@@ -67,7 +67,7 @@ By following this guide, you'll add the following features to Medusa:
 
 ![Quote management system workflow diagram illustrating the complete quote lifecycle: customers request quotes from cart items, merchants review and create detailed quotes with pricing, quotes are sent to customers for approval, and upon acceptance, quotes are automatically converted into processable orders within the Medusa e-commerce platform](https://res.cloudinary.com/dza7lstvk/image/upload/v1741173690/Medusa%20Resources/quote-management-summary_xd319j.jpg)
 
-To implement these features, you'll be customizing the Medusa server and the Medusa Admin dashboard.
+To implement these features, you'll be customizing the Medusa server and the Medusa Admin dashboard. Then, you'll publish the customizations to Cloud.
 
 You can follow this guide whether you're new to Medusa or an advanced Medusa developer.
 
@@ -86,13 +86,27 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
   },
 ]} />
 
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/examples/guides/quote-management.md and implement quote management in my Medusa project
+```
+
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -105,23 +119,11 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from a starter, such as the DTC starter. Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this guide locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. You can also optionally choose to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx).
-
-Afterwards, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory.
 
 <Note>
 
@@ -1125,7 +1127,7 @@ To learn more about publishable API keys, refer to the [Publishable API Key docu
 
 </Note>
 
-To retrieve the publishable API key from the Medusa Admin, refer to [this user guide](!user-guide!/settings/developer/publishable-api-keys).
+To retrieve the publishable API key from the Medusa Admin, refer to [this Merchant Guide](!user-guide!/settings/developer/publishable-api-keys).
 
 #### Retrieve Customer Authentication Token
 
@@ -4240,6 +4242,25 @@ Click on the button, and you'll be taken to the manage quote page where you can 
 ![Edit quote items page in Medusa Admin](https://res.cloudinary.com/dza7lstvk/image/upload/v1741169659/Medusa%20Resources/Screenshot_2025-03-05_at_12.14.05_PM_ufvkqb.png)
 
 The changes can now be previewed from the quote's details page. The customer can also see these changes using the preview API route you created earlier. Once the customer accepts the quote, the changes will be applied to the order.
+
+---
+
+## Step 16: Publish to Cloud
+
+After you test the quote management features locally, publish them to your Cloud project.
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/quote-management
+git add .
+git commit -m "Add quote management"
+git push origin feat/quote-management
+```
+
+Then, on GitHub, open a pull request from the `feat/quote-management` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

@@ -10,11 +10,16 @@ The Redis Locking Module Provider uses Redis to manage locks across multiple ins
 
 This provider is recommended for production environments where Medusa is running in a multi-instance setup.
 
-<Note title="Using Cloud?">
+---
 
-Our Cloud offering automatically provisions a Redis instance and configures the Redis Locking Module Provider for you. Learn more in the [Redis](!cloud!/redis) Cloud documentation.
+## Set Up on Cloud
 
-</Note>
+Cloud provisions a [Redis](!cloud!/redis) instance for each environment and configures the Redis Locking Module Provider to use it. So, you don't configure the module or set up Redis yourself.
+
+To deploy your application with the managed Redis Locking Module Provider:
+
+1. Remove the Redis Locking Module Provider from `medusa-config.ts` if you registered it. Remove it entirely instead of registering it only when an environment variable is set. If the registration runs during the Cloud build, it conflicts with the module that Cloud configures and the deployment fails.
+2. Commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) that uses the managed Redis Locking Module Provider.
 
 ---
 
@@ -22,6 +27,10 @@ Our Cloud offering automatically provisions a Redis instance and configures the 
 
 <Prerequisites
   items={[
+    {
+      text: "Medusa application set up locally",
+      link: "!cloud!/setup-locally",
+    },
     {
       text: "A redis server set up locally or a database in your deployed application.",
       link: "https://redis.io/download",
@@ -58,9 +67,11 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the following environment variable:
+On Cloud, you don't need to set any environment variables, since Cloud manages the Redis instance for you.
 
-```bash
+For local development, add the `LOCKING_REDIS_URL` environment variable to your `.env` file with your Redis server's URL:
+
+```bash title=".env"
 LOCKING_REDIS_URL=<YOUR_LOCKING_REDIS_URL>
 ```
 
@@ -253,6 +264,8 @@ The default Redis URL in a local environment is `redis://localhost:6379`.
 
 ## Test out the Module
 
+### Test Locally
+
 To test out the Redis Locking Module Provider, start the Medusa application:
 
 ```bash npm2yarn
@@ -268,6 +281,12 @@ info:    Connection to Redis in "locking-redis" provider established
 This message indicates that the Redis Locking Module Provider has successfully connected to the Redis server.
 
 If you set the `is_default` flag to `true` in the provider options or you only registered the Redis Locking Module Provider, the Locking Module will use it by default for all locking operations.
+
+### Test on Cloud
+
+To test the module in a deployed environment, commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) that uses the Redis Locking Module Provider with a managed Redis instance.
+
+Once the deployment finishes, check the environment's [runtime logs](!cloud!/logs#view-runtime-logs-on-cloud) for the `Connection to Redis` message shown above.
 
 ---
 

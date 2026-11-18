@@ -49,11 +49,12 @@ Customers browsing your store may be interested in a product but not ready to bu
 
 This guide will teach you how to:
 
-- Install and set up a Medusa application project.
+- Create a Cloud project and set it up locally.
 - Install and set up a Medusa plugin.
 - Implement the wishlist features in the plugin.
   - Features include allowing customers to add products to a wishlist, view and manage their wishlist, and share their wishlist.
 - Test and use the wishlist plugin in your Medusa application.
+- Publish the customizations to Cloud.
 
 You can follow this guide whether you're new to Medusa or an advanced Medusa developer.
 
@@ -72,15 +73,29 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
   },
 ]} />
 
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/plugins/guides/wishlist.md and build a wishlist plugin for my Medusa project
+```
+
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
-You'll first install a Medusa application that exposes core commerce features through REST APIs. You'll later install the wishlist plugin in this application to test it out.
+You'll first create a Medusa application that exposes core commerce features through REST APIs. You'll later install the wishlist plugin in this application to test it out.
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -93,23 +108,11 @@ You'll first install a Medusa application that exposes core commerce features th
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this guide locally, then publish them to Cloud at the end.
 
-You'll be asked for the project's name. You can also optionally choose to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx).
-
-Afterward, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory. This guide only uses the Medusa application.
 
 <Note>
 
@@ -147,7 +150,7 @@ Once the installation process is done, a new directory named `medusa-plugin-wish
 
 ## Step 3: Set up Plugin in Medusa Application
 
-Before you start your development, you'll set up the plugin in the Medusa application you installed in the first step. This will allow you to test the plugin during your development process.
+Before you start your development, you'll set up the plugin in the Medusa application you set up in the first step. This will allow you to test the plugin during your development process.
 
 In the plugin's directory, run the following command to publish the plugin to the local package registry:
 
@@ -788,7 +791,7 @@ In the route handler function, you execute the `createWishlistWorkflow`, passing
 
 ### Test API Route
 
-You'll now test that this API route defined in the plugin is working as expected using the Medusa application you installed in the first step.
+You'll now test that this API route defined in the plugin is working as expected using the Medusa application you set up in the first step.
 
 <Note>
 
@@ -2215,9 +2218,46 @@ Then:
 
 ---
 
+## Step 14: Publish to Cloud
+
+After you test the wishlist plugin locally, publish the plugin and the Medusa application's changes to your Cloud project.
+
+### Publish the Plugin
+
+Cloud can't install a plugin that you only published to the local package registry with `plugin:publish`. So, publish the plugin to npm, or to a private registry that your Cloud project can access.
+
+Build and publish the plugin as explained in the [Publish Plugin to NPM](!docs!/learn/fundamentals/plugins/create#5-publish-plugin-to-npm) chapter.
+
+Next, in the `apps/backend` directory of your Medusa application, install the published plugin to replace the version from the local package registry:
+
+```bash npm2yarn
+npm install medusa-plugin-wishlist
+```
+
+Where `medusa-plugin-wishlist` is the name of your plugin as published on npm. If you published it under a different name, also change the plugin's `resolve` property in `medusa-config.ts` to that name.
+
+### Push the Changes
+
+Then, create a new branch, commit your changes in the Medusa application, and push them to the project's repository:
+
+```bash
+git checkout -b feat/wishlist
+git add .
+git commit -m "Add wishlist plugin"
+git push origin feat/wishlist
+```
+
+Then, on GitHub, open a pull request from the `feat/wishlist` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+Cloud runs the plugin's migrations when it deploys the application, so the wishlist tables are created in the deployed environment's database.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
+
+---
+
 ## Next Steps
 
-You've now implemented the wishlist functionality in a Medusa plugin. You can publish that plugin as explained in [this documentation](!docs!/learn/fundamentals/plugins/create#5-publish-plugin-to-npm) to NPM and install it in any Medusa application. This will allow you to re-use your plugin or share it with the community.
+You've now implemented the wishlist functionality in a Medusa plugin and published it to npm. You can install it in any Medusa application, allowing you to re-use your plugin or share it with the community.
 
 If you're new to Medusa, check out the [main documentation](!docs!/learn), where you'll get a more in-depth learning of all the concepts you've used in this guide and more.
 

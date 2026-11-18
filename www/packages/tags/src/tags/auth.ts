@@ -4,12 +4,12 @@ export const auth = [
     "path": "https://docs.medusajs.com/user-guide/reset-password"
   },
   {
-    "title": "Login Options",
-    "path": "https://docs.medusajs.com/user-guide/tips/login-options"
-  },
-  {
     "title": "Create Actor Type",
     "path": "https://docs.medusajs.com/resources/commerce-modules/auth/create-actor-type"
+  },
+  {
+    "title": "Login Options",
+    "path": "https://docs.medusajs.com/user-guide/tips/login-options"
   },
   {
     "title": "Link Auth Provider to Existing Actor",
