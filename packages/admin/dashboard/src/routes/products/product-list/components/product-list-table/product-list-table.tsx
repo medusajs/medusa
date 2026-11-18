@@ -14,12 +14,14 @@ import { useProductTableFilters } from "../../../../../hooks/table/filters/use-p
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { productsLoader } from "../../loader"
+import { useProductPermissions } from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 20
 
 export const ProductListTable = () => {
   const { t } = useTranslation()
   const location = useLocation()
+  const { canCreate } = useProductPermissions()
 
   const initialData = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof productsLoader>>
@@ -61,12 +63,18 @@ export const ProductListTable = () => {
           <Button size="small" variant="secondary" asChild>
             <Link to={`export${location.search}`}>{t("actions.export")}</Link>
           </Button>
-          <Button size="small" variant="secondary" asChild>
-            <Link to={`import${location.search}`}>{t("actions.import")}</Link>
-          </Button>
-          <Button size="small" variant="secondary" asChild>
-            <Link to="create">{t("actions.create")}</Link>
-          </Button>
+          {canCreate && (
+            <>
+              <Button size="small" variant="secondary" asChild>
+                <Link to={`import${location.search}`}>
+                  {t("actions.import")}
+                </Link>
+              </Button>
+              <Button size="small" variant="secondary" asChild>
+                <Link to="create">{t("actions.create")}</Link>
+              </Button>
+            </>
+          )}
         </div>
       </div>
       <_DataTable

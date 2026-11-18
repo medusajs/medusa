@@ -33,7 +33,7 @@ const CalendarCell = ({ state, date }: CalendarCellProps) => {
         ref={ref}
         hidden={isOutsideVisibleRange}
         className={clx(
-          "bg-ui-bg-base txt-compact-small relative flex size-8 items-center justify-center rounded-md outline-none transition-fg border border-transparent",
+          "bg-ui-bg-base txt-compact-small relative flex size-8 items-center justify-center rounded-md outline-hidden transition-fg border border-transparent",
           "hover:bg-ui-bg-base-hover",
           "focus-visible:shadow-borders-focus focus-visible:border-ui-border-interactive",
           {

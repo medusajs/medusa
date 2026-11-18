@@ -64,7 +64,11 @@ BANNER_URL=$(node www/utils/packages/release-banner/dist/cli.js upload \
   --type cloud-changelog --date "August 10, 2026")
 
 node www/apps/cloud/scripts/set-changelog-image.mjs \
-  --date 2026-08-10 --url "$BANNER_URL"
+  --file www/apps/cloud/generated/changelog/2026-08-10.mjs \
+  --url "$BANNER_URL"
 ```
+
+`--date` resolves the entry against the current directory, so it only works
+when you run the script from `www/apps/cloud`.
 
 An entry without an `image` is valid — the endpoint returns `null` for it.

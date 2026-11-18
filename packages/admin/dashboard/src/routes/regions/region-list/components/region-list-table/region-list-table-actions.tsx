@@ -3,8 +3,12 @@ import type { HttpTypes } from "@medusajs/types"
 import { toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { useDeleteRegion } from "../../../../../hooks/api/regions"
+import { useRegionPermissions } from "../../../../../exports/hooks"
 
 export const RegionListTableActions = ({
   region,
@@ -13,6 +17,7 @@ export const RegionListTableActions = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { canUpdate, canDelete } = useRegionPermissions()
 
   const { mutateAsync } = useDeleteRegion(region.id)
 
@@ -42,28 +47,35 @@ export const RegionListTableActions = ({
     })
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              label: t("actions.edit"),
-              to: `/settings/regions/${region.id}/edit`,
-              icon: <PencilSquare />,
-            },
-          ],
+          label: t("actions.edit"),
+          to: `/settings/regions/${region.id}/edit`,
+          icon: <PencilSquare />,
         },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              label: t("actions.delete"),
-              onClick: handleDelete,
-              icon: <Trash />,
-            },
-          ],
+          label: t("actions.delete"),
+          onClick: handleDelete,
+          icon: <Trash />,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }

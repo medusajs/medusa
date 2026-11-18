@@ -421,3 +421,50 @@ moduleIntegrationTestRunner<IAuthModuleService>({
       })
     }),
 })
+
+moduleIntegrationTestRunner<IAuthModuleService>({
+  moduleName: Modules.AUTH,
+  moduleOptions: {
+    cloud: {
+      oauth_authorize_endpoint: "https://medusa.cloud/oauth/authorize",
+      oauth_token_endpoint: TOKEN_ENDPOINT,
+      oauth_jwks_uri: JWKS_URI,
+      oauth_audience: "test-environment",
+      oauth_client_secret: "test-oauth-client-secret",
+      api_key: "test-api-key",
+      callback_url: "https://store.app/oauth/callback",
+      environment_handle: "test-environment",
+    },
+  },
+  moduleDependencies: [Modules.CACHE],
+  injectedDependencies: {
+    [Modules.CACHE]: inMemoryCache,
+  },
+  testSuite: ({ service }) =>
+    describe("Medusa Cloud Auth provider - with an OAuth client secret", () => {
+      afterEach(() => {
+        mockCache.clear()
+        nextTokenResponse = null
+        lastTokenRequest = null
+      })
+
+      it("should send the OAuth client secret instead of the API key", async () => {
+        const authResponse = await service.authenticate("cloud", {
+          query: {},
+          body: {},
+        })
+        const state = new URL(authResponse.location!).searchParams.get("state")!
+
+        nextTokenResponse = { body: { id_token: createMockIdToken() } }
+
+        const response = await service.validateCallback("cloud", {
+          query: { code: "code1", state },
+        })
+
+        expect(response.success).toBe(true)
+        expect(lastTokenRequest!.body.get("client_secret")).toBe(
+          "test-oauth-client-secret"
+        )
+      })
+    }),
+})

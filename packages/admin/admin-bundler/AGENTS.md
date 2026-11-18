@@ -39,6 +39,7 @@ Docs: https://docs.medusajs.com/learn/fundamentals/admin/environment-variables.m
 - `src/utils/config.ts` (`getViteConfig`):
   - Vite root is `<cwd>/.medusa/client`. `writeStaticFiles` generates `index.html`, `index.css`, and an `entry.jsx` there that imports `@medusajs/dashboard` and each plugin, then renders `<App plugins={[...]} />`.
   - Tailwind uses `@medusajs/ui-preset`, with content globs covering `.medusa/client`, the dashboard, `@medusajs/ui`, every admin source, and every plugin package. Extensions don't need their own Tailwind setup.
+  - `resolvePlugins` is a fallback resolver for plugin admin imports that Vite can't resolve from the project root, e.g. a default plugin installed only as a dependency of `@medusajs/medusa` in a pnpm project. It re-resolves them from the plugin's own `package.json`.
   - `admin.vite` output is merged last with Vite's `mergeConfig`.
 - `src/commands/plugin.ts`:
   - Externalizes all of the plugin's `dependencies`, `peerDependencies`, and `devDependencies`, plus React, React Router, `react-i18next`, `@medusajs/js-sdk`, `@medusajs/admin-sdk`, and `@tanstack/react-query`.

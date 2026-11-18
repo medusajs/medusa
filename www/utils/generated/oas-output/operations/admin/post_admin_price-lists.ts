@@ -436,7 +436,17 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: createPriceListsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: price-list.created
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the price list
+ *       }
+ *       ```
+ *     description: Emitted when price lists are created.
+ *     deprecated: false
+ *     since: 2.21.3
  * 
 */
 

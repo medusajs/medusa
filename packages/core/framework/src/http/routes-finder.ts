@@ -1,6 +1,25 @@
-import { pathToRegexp } from "path-to-regexp"
 import type { MiddlewareVerb, RouteVerb } from "./types"
 import { isString } from "@medusajs/utils"
+
+type PathToRegexp = typeof import("path-to-regexp", {
+  with: { "resolution-mode": "import" },
+})
+
+let pathToRegexpModule: PathToRegexp | undefined
+
+/**
+ * Loads the ESM-only path-to-regexp with `import()`. Jest run with
+ * `--experimental-vm-modules` rejects `require()` of ESM, so call this
+ * before creating a {@link RoutesFinder}.
+ */
+export async function preloadPathToRegexp(): Promise<void> {
+  pathToRegexpModule ??= await import("path-to-regexp")
+}
+
+function loadPathToRegexp(): PathToRegexp {
+  pathToRegexpModule ??= require("path-to-regexp") as PathToRegexp
+  return pathToRegexpModule
+}
 
 export class RoutesFinder<
   T extends
@@ -58,7 +77,7 @@ export class RoutesFinder<
     }
     this.#routes.push({
       ...route,
-      matchRegex: pathToRegexp(normalizedPath).regexp,
+      matchRegex: loadPathToRegexp().pathToRegexp(normalizedPath).regexp,
     })
   }
 

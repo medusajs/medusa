@@ -79,7 +79,7 @@ const modules = {
   },
   [Modules.RBAC]: {
     resolve: "@medusajs/rbac",
-    disable: process.env.MEDUSA_FF_RBAC !== "true",
+    disable: process.env.ENABLE_RBAC_MODULE !== "true",
   },
   [Modules.AUTH]: {
     options: {
@@ -94,12 +94,6 @@ const modules = {
       ],
     },
   },
-}
-
-if (process.env.MEDUSA_FF_TRANSLATION === "true") {
-  modules[Modules.TRANSLATION] = {
-    resolve: "@medusajs/translation",
-  }
 }
 
 module.exports = defineConfig({
@@ -121,8 +115,6 @@ module.exports = defineConfig({
   },
   featureFlags: {
     index_engine: process.env.ENABLE_INDEX_MODULE === "true",
-    translation: process.env.MEDUSA_FF_TRANSLATION === "true",
-    rbac: process.env.MEDUSA_FF_RBAC === "true",
   },
   modules,
   plugins: [

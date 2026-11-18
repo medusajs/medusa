@@ -9,6 +9,7 @@ import { KeyboundForm } from "../../../../components/common/keybound-form"
 import { RouteDrawer, useRouteModal } from "../../../../components/modals"
 import { useUpdateDraftOrder } from "../../../../hooks/api/draft-orders"
 import { useOrder } from "../../../../hooks/api/orders"
+import { EDIT_DRAFT_ORDER_PERMISSIONS } from "../../../../lib/permissions"
 
 const Email = () => {
   const { id } = useParams()
@@ -107,5 +108,9 @@ const EmailForm = ({ order }: EmailFormProps) => {
 const schema = z.object({
   email: z.string().email(),
 })
+
+export const handle = {
+  permissions: EDIT_DRAFT_ORDER_PERMISSIONS,
+}
 
 export default Email

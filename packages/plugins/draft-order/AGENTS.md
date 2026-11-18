@@ -20,6 +20,7 @@ module.exports = defineConfig({
 ## Architecture
 
 - `src/admin/routes/draft-orders/`: list page (`page.tsx`, `defineRouteConfig({ label: "Drafts", nested: "/orders" })`), `@create` modal, and `[id]` detail with parallel `@<section>` routes (items, shipping, addresses, promotions, email, metadata, sales-channel, transfer-ownership, custom-items).
+- RBAC: the core `/admin/draft-orders` routes are guarded by the `order` resource. Every page declares its permissions (`config.permissions` on the list, `export const handle = { permissions }` on the others) and actions are gated with `usePermissions` from `@medusajs/dashboard/hooks`. Shared permission sets live in `src/admin/lib/permissions.ts`, so an action and the route it opens check the same list. Child routes repeat `order:read`, since the deepest route's permissions replace the parent's.
 - `src/admin/hooks/api/`: React Query hooks wrapping `sdk.admin.*` calls; `draft-orders.tsx` covers the edit flow (`beginEdit`, `requestEdit`, `cancelEdit`, `convertToOrder`, action-item updates).
 - `src/admin/lib/queries/sdk.ts`: JS SDK client configured from the admin build globals `__BACKEND_URL__`, `__AUTH_TYPE__`, `__JWT_TOKEN_STORAGE_KEY__` (declared in `src/admin/vite-env.d.ts`).
 - `src/admin/components/`: local copies of dashboard UI primitives (modals, forms, data table). Layout comes from `@medusajs/dashboard/components`.

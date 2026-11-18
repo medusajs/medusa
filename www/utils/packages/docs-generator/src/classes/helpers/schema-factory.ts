@@ -134,7 +134,7 @@ class SchemaFactory {
       if (!typeArgs || typeArgs.length === 0) {
         return {}
       }
-      const typeStr = this.checker.typeToString(typeArgs[0])
+      const typeStr = this.getOperatorMapType(typeArgs[0])
       return {
         type: "object",
         properties: {
@@ -356,6 +356,42 @@ class SchemaFactory {
     }
 
     return schema
+  }
+
+  /**
+   * Retrieve the OAS type of an `OperatorMap`'s type argument. Array members
+   * of a union are skipped, and non-primitive types fall back to `string`.
+   *
+   * @param type - The type argument of the `OperatorMap`.
+   * @returns The OAS type.
+   */
+  private getOperatorMapType(type: ts.Type): string {
+    const types = type.isUnion() ? type.types : [type]
+    const scalarType = types
+      .map((unionType) => {
+        return this.checker.isArrayType(unionType)
+          ? this.checker.getTypeArguments(unionType as ts.TypeReference)[0]
+          : unionType
+      })
+      .find(
+        (unionType) =>
+          unionType &&
+          !(unionType.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined))
+      )
+
+    if (!scalarType) {
+      return "string"
+    }
+
+    if (scalarType.flags & ts.TypeFlags.NumberLike) {
+      return "number"
+    }
+
+    if (scalarType.flags & ts.TypeFlags.BooleanLike) {
+      return "boolean"
+    }
+
+    return "string"
   }
 
   private mergeSchemas(...schemas: SchemaMap[]): SchemaMap {

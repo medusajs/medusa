@@ -662,3 +662,78 @@ This component uses the [Container](../../guides/container/page.mdx) and [Header
 
 It will add at the top of a product's details page a new section, and in its header you'll find an "Edit Item" button. If you click on it, it will open the drawer with your form.
 
+---
+
+## Rich Text Fields
+
+The Medusa Admin doesn't have a rich text (WYSIWYG) editor, and neither the [Medusa UI package](!ui!) nor the `@medusajs/dashboard` package exports one. For example, the Medusa Admin shows a product's description in a plain [Textarea](!ui!/components/textarea), and the Product Module stores the description as a plain text value.
+
+To add a rich text field to your form, install a third-party React editor, such as [Tiptap](https://tiptap.dev/), in your Medusa application. Then, render the editor inside a `Form.Field` like any other input.
+
+For example, after installing the `@tiptap/react`, `@tiptap/pm`, and `@tiptap/starter-kit` packages, create the following component:
+
+```tsx title="src/admin/components/rich-text-editor.tsx"
+import { useEditor, EditorContent } from "@tiptap/react"
+import StarterKit from "@tiptap/starter-kit"
+
+type RichTextEditorProps = {
+  value: string
+  onChange: (value: string) => void
+}
+
+export const RichTextEditor = ({
+  value,
+  onChange,
+}: RichTextEditorProps) => {
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: value,
+    onUpdate: ({ editor }) => {
+      onChange(editor.getHTML())
+    },
+  })
+
+  return (
+    <div
+      className={
+        "bg-ui-bg-field shadow-borders-base " +
+        "rounded-md px-2 py-1.5"
+      }
+    >
+      <EditorContent editor={editor} />
+    </div>
+  )
+}
+```
+
+The `RichTextEditor` component passes the editor's content as an HTML string to the `onChange` prop whenever the content changes.
+
+Then, use it in your form instead of the `Input` component:
+
+```tsx title="src/admin/components/edit-form.tsx"
+<Form.Field
+  control={form.control}
+  name="description"
+  render={({ field }) => (
+    <Form.Item>
+      <Form.Label>Description</Form.Label>
+      <Form.Control>
+        <RichTextEditor
+          value={field.value}
+          onChange={field.onChange}
+        />
+      </Form.Control>
+      <Form.ErrorMessage />
+    </Form.Item>
+  )}
+/>
+```
+
+When you submit the form, you can save the HTML string in a text property, such as a product's `description`, or in the `metadata` property of a resource. Refer to the [Tiptap documentation](https://tiptap.dev/docs) to learn about the editor's extensions and toolbar options.
+
+<Note title="Warning" type="warning">
+
+Medusa stores and returns the HTML string as is. Sanitize it before rendering it in your storefront to avoid cross-site scripting (XSS) attacks.
+
+</Note>
+

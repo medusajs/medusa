@@ -3,6 +3,8 @@ import { IndexQueryConfig, QueryResultSet } from "./query-config"
 
 /**
  * Represents the module options that can be provided
+ *
+ * @deprecated The Index Module is deprecated and will be removed in a future release. Use `query.graph()` instead, which filters across linked modules: https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property
  */
 export interface IndexModuleOptions {
   customAdapter?: {
@@ -22,6 +24,9 @@ export interface IndexInfo {
   last_synced_key: string | null
 }
 
+/**
+ * @deprecated The Index Module is deprecated and will be removed in a future release. Use `query.graph()` instead, which filters across linked modules: https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property
+ */
 export interface IIndexService extends IModuleService {
   query<const TEntry extends string>(
     config: IndexQueryConfig<TEntry>

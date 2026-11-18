@@ -28,6 +28,7 @@ const redisMock = {
   expire: () => jest.fn(),
   unlink: () => jest.fn(),
   pipeline: jest.fn(() => pipelineMock),
+  multi: jest.fn(() => pipelineMock),
 } as unknown as Redis
 
 const moduleDeps = {
@@ -1126,6 +1127,33 @@ describe("RedisEventBusService", () => {
         600_000
       )
       expect(pipelineMock.exec).toHaveBeenCalledTimes(1)
+    })
+
+    it("should re-stage kept events in a transaction and throw when a command in it fails", async () => {
+      const staged = [
+        JSON.stringify({ name: "kept-event", data: {} }),
+        JSON.stringify({ name: "cleared-event", data: {} }),
+      ]
+      const rpushError = new Error(
+        "OOM command not allowed when used memory > 'maxmemory'."
+      )
+
+      redis.lrange = jest.fn().mockResolvedValue(staged)
+      redis.pttl = jest.fn().mockResolvedValue(600_000)
+      pipelineMock.exec.mockResolvedValueOnce([
+        [null, 1],
+        [rpushError, null],
+        [null, 1],
+      ])
+
+      await expect(
+        eventBus.clearGroupedEvents("failing-group", {
+          eventNames: ["cleared-event"],
+        })
+      ).rejects.toThrow(rpushError)
+
+      expect(redis.multi).toHaveBeenCalledTimes(1)
+      expect(redis.pipeline).not.toHaveBeenCalled()
     })
   })
 

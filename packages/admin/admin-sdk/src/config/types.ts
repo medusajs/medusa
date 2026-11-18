@@ -70,6 +70,20 @@ export interface RouteConfig {
    * ```
    */
   translationNs?: string
+
+  /**
+   * The RBAC permissions, as `resource:operation` keys, required to open the
+   * route. The user must hold all of them. Without them, the route renders an
+   * access denied page and its sidebar item is hidden. Child routes inherit
+   * the requirement unless they declare their own. Only enforced when the RBAC
+   * module is installed.
+   *
+   * @example
+   * ```ts
+   * permissions: ["gift_card:read"]
+   * ```
+   */
+  permissions?: string | string[]
 }
 
 export type CustomFormField<

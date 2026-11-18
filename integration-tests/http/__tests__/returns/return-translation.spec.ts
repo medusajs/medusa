@@ -7,8 +7,6 @@ import {
 
 jest.setTimeout(60000)
 
-process.env.MEDUSA_FF_TRANSLATION = "true"
-
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     let order

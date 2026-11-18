@@ -34,23 +34,8 @@ export class RbacRepository extends MikroOrmBase {
     const placeholders = roleIds.map(() => "?").join(",")
 
     const query = `
-      WITH RECURSIVE role_hierarchy AS (
-        SELECT id, name, id as original_role_id, ARRAY[id] as path
-        FROM rbac_role
-        WHERE id IN (${placeholders}) AND deleted_at IS NULL
-        
-        UNION ALL
-        
-        SELECT r.id, r.name, rh.original_role_id, rh.path || r.id
-        FROM rbac_role r
-        INNER JOIN rbac_role_parent ri ON ri.parent_id = r.id
-        INNER JOIN role_hierarchy rh ON rh.id = ri.role_id
-        WHERE r.deleted_at IS NULL 
-          AND ri.deleted_at IS NULL
-          AND NOT (r.id = ANY(rh.path))
-      )
       SELECT DISTINCT
-        rh.original_role_id,
+        rp.role_id AS role_id,
         p.id,
         p.key,
         p.resource,
@@ -59,13 +44,15 @@ export class RbacRepository extends MikroOrmBase {
         p.description,
         p.metadata,
         p.created_at,
-        p.updated_at,
-        CASE WHEN rp.role_id = rh.original_role_id THEN NULL ELSE rp.role_id END as inherited_from_role_id
+        p.updated_at
       FROM rbac_policy p
       INNER JOIN rbac_role_policy rp ON rp.policy_id = p.id
-      INNER JOIN role_hierarchy rh ON rh.id = rp.role_id
-      WHERE p.deleted_at IS NULL AND rp.deleted_at IS NULL
-      ORDER BY rh.original_role_id, p.resource, p.operation, p.key
+      INNER JOIN rbac_role r ON r.id = rp.role_id
+      WHERE rp.role_id IN (${placeholders})
+        AND r.deleted_at IS NULL
+        AND p.deleted_at IS NULL
+        AND rp.deleted_at IS NULL
+      ORDER BY rp.role_id, p.resource, p.operation, p.key
     `
 
     const result = await knex.raw(query, roleIds)
@@ -75,8 +62,8 @@ export class RbacRepository extends MikroOrmBase {
     const policiesByRole = new Map<string, any[]>()
 
     for (const row of rows) {
-      const roleId = row.original_role_id
-      delete row.original_role_id
+      const roleId = row.role_id
+      delete row.role_id
 
       if (!policiesByRole.has(roleId)) {
         policiesByRole.set(roleId, [])
@@ -86,41 +73,5 @@ export class RbacRepository extends MikroOrmBase {
     }
 
     return policiesByRole
-  }
-
-  async checkForCycle(
-    roleId: string,
-    parentId: string,
-    sharedContext: Context = {}
-  ): Promise<boolean> {
-    const manager = this.getActiveManager<SqlEntityManager>(sharedContext)
-    const knex = manager.getKnex()
-
-    // Check if adding this parent would create a circular dependency
-    // A cycle exists if role_id is already an ancestor of parent_id
-    // (i.e., if we traverse up from parent_id, we reach role_id)
-    const query = `
-      WITH RECURSIVE role_hierarchy AS (
-        SELECT id, ARRAY[id] as path
-        FROM rbac_role
-        WHERE id = ? AND deleted_at IS NULL
-        
-        UNION ALL
-        
-        SELECT r.id, rh.path || r.id
-        FROM role_hierarchy rh
-        INNER JOIN rbac_role_parent ri ON ri.role_id = rh.id
-        INNER JOIN rbac_role r ON r.id = ri.parent_id
-        WHERE r.deleted_at IS NULL 
-          AND ri.deleted_at IS NULL
-          AND NOT (r.id = ANY(rh.path))
-      )
-      SELECT EXISTS(
-        SELECT 1 FROM role_hierarchy WHERE id = ?
-      ) as has_cycle
-    `
-
-    const result = await knex.raw(query, [parentId, roleId])
-    return result.rows[0]?.has_cycle || false
   }
 }

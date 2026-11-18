@@ -50,8 +50,7 @@ post:
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_products_{id}_variants_{variant_id}_inventory-items/post.sh
+        $ref: ../code_samples/Shell/admin_products_{id}_variants_{variant_id}_inventory-items/post.sh
   tags:
     - Products
   responses:

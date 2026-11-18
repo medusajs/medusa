@@ -3,8 +3,12 @@ import { AdminCampaign } from "@medusajs/types"
 import { toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
-import { ActionMenu } from "../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../components/common/action-menu"
 import { useDeleteCampaign } from "../../../../hooks/api/campaigns"
+import { useCampaignPermissions } from "../../../../hooks/use-resource-permissions"
 
 export const CampaignListTableActions = ({
   campaign,
@@ -13,6 +17,7 @@ export const CampaignListTableActions = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { canUpdate, canDelete } = useCampaignPermissions()
   const { mutateAsync } = useDeleteCampaign(campaign.id)
 
   const handleDelete = async () => {
@@ -43,28 +48,35 @@ export const CampaignListTableActions = ({
     })
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canUpdate) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/campaigns/${campaign.id}/edit`,
-            },
-          ],
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `/campaigns/${campaign.id}/edit`,
         },
+      ],
+    })
+  }
+
+  if (canDelete) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
+          icon: <Trash />,
+          label: t("actions.delete"),
+          onClick: handleDelete,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }

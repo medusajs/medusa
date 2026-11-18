@@ -1,5 +1,6 @@
 import {
   ApplicationMethodAllocationValues,
+  ApplicationMethodTargetSelectionStrategyValues,
   ApplicationMethodTargetTypeValues,
   ApplicationMethodTypeValues,
   PromotionRuleOperatorValues,
@@ -52,6 +53,7 @@ export interface BaseApplicationMethod {
   max_quantity?: number | null
   buy_rules_min_quantity?: number | null
   apply_to_quantity?: number | null
+  target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues
   promotion?: BasePromotion
   target_rules?: BasePromotionRule[]
   buy_rules?: BasePromotionRule[]

@@ -46,6 +46,10 @@ export const POST = async (
     input: {
       entityId: user.email,
       actorType: "user",
+      actor_id: id,
+      granting_actor_id: req.auth_context.actor_id,
+      granting_actor: req.auth_context.actor_type,
+      granting_scope: req.rbac_context?.scope,
       provider: "emailpass",
       secret: http.jwtSecret!,
       jwtOptions: http.jwtOptions,

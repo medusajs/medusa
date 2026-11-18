@@ -245,7 +245,7 @@ export const CreateProductVariantForm = ({
               required_quantity: castNumber(i.required_quantity),
             }
           })
-          .filter(Boolean),
+          .filter(Boolean) as HttpTypes.AdminCreateProductVariantInventoryKit[],
       },
       {
         onSuccess: () => {

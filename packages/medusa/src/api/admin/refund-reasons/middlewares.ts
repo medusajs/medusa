@@ -2,7 +2,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import * as queryConfig from "./query-config"
 import { Entities } from "./query-config"
@@ -16,61 +16,63 @@ import {
 export const adminRefundReasonsRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/refund-reasons/*",
-    policies: [
-      {
-        resource: Entities.refund_reason,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.refund_reason,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/refund-reasons",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.refund_reason,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetRefundReasonsParams,
         queryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.refund_reason,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
     method: ["POST"],
     matcher: "/admin/refund-reasons",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.refund_reason,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreatePaymentRefundReason),
       validateAndTransformQuery(
         AdminGetRefundReasonsParams,
         queryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.refund_reason,
-        operation: PolicyOperation.create,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/refund-reasons/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.refund_reason,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdatePaymentRefundReason),
       validateAndTransformQuery(
         AdminGetRefundReasonParams,
         queryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.refund_reason,
-        operation: PolicyOperation.update,
-      },
     ],
   },
   {
@@ -87,16 +89,16 @@ export const adminRefundReasonsRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["DELETE"],
     matcher: "/admin/refund-reasons/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.refund_reason,
+          operation: PolicyOperation.delete,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetRefundReasonsParams,
         queryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.refund_reason,
-        operation: PolicyOperation.delete,
-      },
     ],
   },
 ]

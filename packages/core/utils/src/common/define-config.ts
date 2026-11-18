@@ -8,13 +8,13 @@ import {
   InternalModuleDeclaration,
   MedusaCloudOptions,
 } from "@medusajs/types"
-import { FeatureFlag } from "../feature-flags/flag-router"
 import {
   MODULE_PACKAGE_NAMES,
   Modules,
   REVERSED_MODULE_PACKAGE_NAMES,
   TEMPORARY_REDIS_MODULE_PACKAGE_NAMES,
 } from "../modules-sdk"
+import { LicenseFeature, loadLicense } from "../license"
 import { isObject } from "./is-object"
 import { isProduction } from "./is-production"
 import { isString } from "./is-string"
@@ -50,6 +50,13 @@ const DEFAULT_STORE_CORS = "http://localhost:8000"
 const DEFAULT_DATABASE_URL = "postgres://localhost/medusa-starter-default"
 const DEFAULT_ADMIN_CORS =
   "http://localhost:7000,http://localhost:7001,http://localhost:5173"
+
+/**
+ * The actor types allowed on the "/rbac" API routes. Defaults to "user" only,
+ * so that existing applications keep the behaviour of the previously
+ * admin-only RBAC routes. Applications opt other actors in explicitly.
+ */
+export const DEFAULT_RBAC_ACTOR_TYPES = ["user"]
 
 export const DEFAULT_STORE_RESTRICTED_FIELDS = [
   "order",
@@ -87,10 +94,11 @@ export function defineConfig(config: InputConfig = {}): ConfigModule {
     config.modules,
     options,
     config.projectConfig,
-    projectDir
+    projectDir,
+    projectConfig?.cloud
   )
   applyCloudOptionsToModules(modules, projectConfig?.cloud, adminConfig)
-  const plugins = resolvePlugins(config.plugins, options)
+  const plugins = resolvePlugins(config.plugins)
 
   return {
     projectConfig,
@@ -227,13 +235,23 @@ function applyDefaultAuthMfaOptions(
 }
 
 function resolvePlugins(
-  configPlugins: InputConfig["plugins"],
-  { isCloud }: { isCloud: boolean }
+  configPlugins: InputConfig["plugins"]
 ): ConfigModule["plugins"] {
   const defaultPlugins: Map<string, ConfigModule["plugins"][number]> = new Map([
     [
       "@medusajs/draft-order",
       { resolve: "@medusajs/draft-order", options: {} },
+    ],
+    [
+      "@medusajs/cloud",
+      {
+        resolve: "@medusajs/cloud",
+        options: {
+          apiUrl: process.env.MEDUSA_CLOUD_API_URL,
+          organizationId: process.env.MEDUSA_CLOUD_ORGANIZATION_ID,
+          planHandle: process.env.MEDUSA_CLOUD_PLAN_HANDLE,
+        },
+      },
     ],
   ])
 
@@ -247,10 +265,13 @@ function resolvePlugins(
     })
   }
 
-  // We don't have any cloud plugins yet, but we might in the future
-  const cloudPlugins = [...Array.from(defaultPlugins.values())]
+  // The plugin's admin widgets and settings page can only be hidden by not loading it.
+  const cloudPlugin = defaultPlugins.get("@medusajs/cloud")
+  if (typeof cloudPlugin === "object" && cloudPlugin.options?.disabled) {
+    defaultPlugins.delete("@medusajs/cloud")
+  }
 
-  return isCloud ? cloudPlugins : Array.from(defaultPlugins.values())
+  return Array.from(defaultPlugins.values())
 }
 
 /**
@@ -263,7 +284,8 @@ function resolveModules(
   configModules: InputConfig["modules"],
   { isCloud }: { isCloud: boolean },
   projectConfig: InputConfig["projectConfig"],
-  projectDir: string = process.cwd()
+  projectDir: string = process.cwd(),
+  cloudOptions?: MedusaCloudOptions
 ): Exclude<ConfigModule["modules"], undefined> {
   const authMfaEncryptionKey = process.env.AUTH_MFA_ENCRYPTION_KEY
   const authModuleOptions = {
@@ -297,14 +319,7 @@ function resolveModules(
     { resolve: MODULE_PACKAGE_NAMES[Modules.ORDER] },
     { resolve: MODULE_PACKAGE_NAMES[Modules.SETTINGS] },
 
-    {
-      resolve: MODULE_PACKAGE_NAMES[Modules.TRANSLATION],
-      disable: !FeatureFlag.isFeatureEnabled("translation"),
-    },
-    {
-      resolve: MODULE_PACKAGE_NAMES[Modules.RBAC],
-      disable: !FeatureFlag.isFeatureEnabled("rbac"),
-    },
+    { resolve: MODULE_PACKAGE_NAMES[Modules.TRANSLATION] },
 
     {
       resolve: MODULE_PACKAGE_NAMES[Modules.AUTH],
@@ -461,6 +476,14 @@ function resolveModules(
     )
   }
 
+  if (isLicensed(LicenseFeature.RBAC)) {
+    cloudModules.push({ resolve: MODULE_PACKAGE_NAMES[Modules.RBAC] })
+  }
+
+  if (shouldAddCloudAuditModule(cloudOptions)) {
+    cloudModules.push({ resolve: MODULE_PACKAGE_NAMES[Modules.AUDIT] })
+  }
+
   if (process.env.CACHE_REDIS_URL) {
     cloudModules.push({
       resolve: MODULE_PACKAGE_NAMES[Modules.CACHING],
@@ -528,7 +551,6 @@ function normalizeProjectConfig(
 
   const mergedCloudOptions: MedusaCloudOptions = {
     environmentHandle: process.env.MEDUSA_CLOUD_ENVIRONMENT_HANDLE,
-    sandboxHandle: process.env.MEDUSA_CLOUD_SANDBOX_HANDLE,
     apiKey: process.env.MEDUSA_CLOUD_API_KEY,
     webhookSecret: process.env.MEDUSA_CLOUD_WEBHOOK_SECRET,
     emailsEndpoint: process.env.MEDUSA_CLOUD_EMAILS_ENDPOINT,
@@ -537,6 +559,7 @@ function normalizeProjectConfig(
       .map((handle) => handle.trim())
       .filter(Boolean),
     searchEndpoint: process.env.MEDUSA_CLOUD_SEARCH_ENDPOINT,
+    auditEndpoint: process.env.MEDUSA_CLOUD_AUDIT_ENDPOINT,
     oauthAuthorizeEndpoint: process.env.MEDUSA_CLOUD_OAUTH_AUTHORIZE_ENDPOINT,
     oauthTokenEndpoint: process.env.MEDUSA_CLOUD_OAUTH_TOKEN_ENDPOINT,
     oauthCallbackUrl: process.env.MEDUSA_CLOUD_OAUTH_CALLBACK_URL,
@@ -544,6 +567,7 @@ function normalizeProjectConfig(
       process.env.MEDUSA_CLOUD_OAUTH_DISABLED === "true" ? true : undefined,
     oauthJwksUri: process.env.MEDUSA_CLOUD_OAUTH_JWKS_ENDPOINT,
     oauthAudience: process.env.MEDUSA_CLOUD_OAUTH_AUDIENCE,
+    oauthClientSecret: process.env.MEDUSA_CLOUD_OAUTH_CLIENT_SECRET,
     ...cloud,
   }
   const hasCloudOptions = Object.values(mergedCloudOptions).some(
@@ -567,6 +591,7 @@ function normalizeProjectConfig(
       restrictedFields: {
         store: DEFAULT_STORE_RESTRICTED_FIELDS,
       },
+      rbacActorTypes: DEFAULT_RBAC_ACTOR_TYPES,
       ...http,
     },
     redisOptions: {
@@ -682,7 +707,6 @@ function applyCloudOptionsToModules(
             api_key: config.apiKey,
             endpoint: config.emailsEndpoint,
             environment_handle: config.environmentHandle,
-            sandbox_handle: config.sandboxHandle,
           },
           ...(module.options ?? {}),
         }
@@ -695,7 +719,6 @@ function applyCloudOptionsToModules(
             endpoint: config.paymentsEndpoint,
             payment_accounts: config.paymentAccounts,
             environment_handle: config.environmentHandle,
-            sandbox_handle: config.sandboxHandle,
           },
           ...(module.options ?? {}),
         }
@@ -705,6 +728,16 @@ function applyCloudOptionsToModules(
           cloud: {
             api_key: config.apiKey,
             endpoint: config.searchEndpoint,
+            environment_handle: config.environmentHandle,
+          },
+          ...(module.options ?? {}),
+        }
+        break
+      case Modules.AUDIT:
+        module.options = {
+          cloud: {
+            api_key: config.apiKey,
+            endpoint: config.auditEndpoint,
             environment_handle: config.environmentHandle,
           },
           ...(module.options ?? {}),
@@ -721,8 +754,8 @@ function applyCloudOptionsToModules(
             oauth_token_endpoint: config.oauthTokenEndpoint,
             oauth_jwks_uri: config.oauthJwksUri,
             oauth_audience: config.oauthAudience,
+            oauth_client_secret: config.oauthClientSecret,
             environment_handle: config.environmentHandle,
-            sandbox_handle: config.sandboxHandle,
             api_key: config.apiKey,
             callback_url: callbackUrl,
             disabled: config.oauthDisabled,
@@ -734,4 +767,24 @@ function applyCloudOptionsToModules(
         break
     }
   }
+}
+
+/**
+ * Licensed modules refuse to boot without their feature, so on Cloud they're
+ * only a default when the license covers it.
+ */
+function isLicensed(feature: LicenseFeature): boolean {
+  return !!loadLicense()?.features.includes(feature)
+}
+
+/**
+ * The Cloud provider throws without the API key and environment handle, so
+ * those are required on top of the license.
+ */
+function shouldAddCloudAuditModule(cloud?: MedusaCloudOptions): boolean {
+  if (!cloud?.auditEndpoint || !cloud.apiKey || !cloud.environmentHandle) {
+    return false
+  }
+
+  return isLicensed(LicenseFeature.AUDIT)
 }

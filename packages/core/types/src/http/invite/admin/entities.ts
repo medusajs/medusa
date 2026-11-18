@@ -14,9 +14,10 @@ export interface AdminInvite {
    */
   accepted: boolean
   /**
-   * The invite token.
+   * The invite token. Omitted when the authenticated actor can't assign the
+   * invite's roles.
    */
-  token: string
+  token?: string
   /**
    * The date the invite expires.
    */
@@ -27,8 +28,6 @@ export interface AdminInvite {
   metadata?: Record<string, unknown>
   /**
    * The RBAC roles assigned to the invite.
-   *
-   * @featureFlag rbac
    */
   rbac_roles?: AdminRbacRole[]
   /**

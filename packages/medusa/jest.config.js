@@ -1,3 +1,5 @@
+const defineJestConfig = require("../../define_jest_config")
+
 module.exports = {
   //moduleNameMapper: {
   //  "^highlight.js$": `<rootDir>/node_modules/highlight.js/lib/index.js`,
@@ -11,6 +13,7 @@ module.exports = {
   //  : [`default`].concat(useCoverage ? `jest-junit` : []),
   transform: { "^.+\\.[jt]s?$": "@swc/jest" },
   modulePathIgnorePatterns: ["__fixtures__", "node_modules", "dist"],
+  transformIgnorePatterns: defineJestConfig().transformIgnorePatterns,
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `ts`],
   setupFilesAfterEnv: ["<rootDir>/setupTests.js"],

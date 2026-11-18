@@ -4,6 +4,7 @@ import {
 } from "@medusajs/framework/http"
 import { HttpTypes, SettingsTypes } from "@medusajs/framework/types"
 import { MedusaError, Modules } from "@medusajs/framework/utils"
+import { filterReadableColumns } from "./helpers"
 
 /**
  * Get available columns for an entity.
@@ -49,6 +50,6 @@ export const GET = async (
   }
 
   return res.json({
-    columns,
+    columns: await filterReadableColumns(req, entity, columns),
   })
 }

@@ -1,3 +1,4 @@
+import { OPERATION_IMPLICATIONS } from "./constants"
 import type {
   Permission,
   PermissionOperation,
@@ -39,4 +40,59 @@ export function buildPermission(
   operation: PermissionOperation
 ): Permission {
   return `${resource}:${operation}` as Permission
+}
+
+/**
+ * Build a lookup of all permissions granted by the given permission strings,
+ * expanding each operation to the operations it implies (e.g. a `*` grant
+ * implies read/create/update/delete).
+ *
+ * @param granted - The raw permission strings granted to the user
+ * @returns A record keyed by the implied permission strings
+ */
+export function buildPermissionLookup(
+  granted: string[]
+): Record<Permission, true> {
+  const lookup: Record<Permission, true> = Object.create(null)
+
+  for (const permission of granted) {
+    const parsed = parsePermission(permission)
+    if (!parsed) {
+      continue
+    }
+
+    const { resource, operation } = parsed
+    const impliedOperations = OPERATION_IMPLICATIONS[operation] || [operation]
+
+    for (const impliedOperation of impliedOperations) {
+      lookup[buildPermission(resource, impliedOperation)] = true
+    }
+  }
+
+  return lookup
+}
+
+/**
+ * Check whether the granted permissions satisfy the required ones.
+ *
+ * @param granted - The raw permission strings granted to the user
+ * @param required - The permissions required to pass the check
+ * @param requireAll - When true (default), all required permissions must be
+ *   held. When false, holding any one is enough.
+ * @returns Whether the requirement is satisfied
+ */
+export function checkPermissions(
+  granted: string[],
+  required: Permission[],
+  requireAll: boolean = true
+): boolean {
+  if (!required.length) {
+    return true
+  }
+
+  const lookup = buildPermissionLookup(granted)
+
+  return requireAll
+    ? required.every((permission) => !!lookup[permission])
+    : required.some((permission) => !!lookup[permission])
 }

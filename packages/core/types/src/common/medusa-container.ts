@@ -11,7 +11,7 @@ export interface ModuleImplementations {}
  * provide dependency injection functionalities.
  */
 export type MedusaContainer<Cradle extends object = ModuleImplementations> =
-  Omit<AwilixContainer, "resolve"> & {
+  Omit<AwilixContainer<any>, "resolve" | "createScope"> & {
     resolve<K extends keyof Cradle>(
       key: K,
       resolveOptions?: ResolveOptions

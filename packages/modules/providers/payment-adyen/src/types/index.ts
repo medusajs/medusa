@@ -66,6 +66,10 @@ export interface AdyenSessionData {
    * Incremented for every payment method the storefront submits, to key `/payments` requests.
    */
   attempt: number
+  /**
+   * The saved card to charge without the shopper present, set when the session is created.
+   */
+  off_session_payment_method: string | null
   result_code: string | null
   action: Types.checkout.PaymentResponseAction | null
   client?: AdyenClientData

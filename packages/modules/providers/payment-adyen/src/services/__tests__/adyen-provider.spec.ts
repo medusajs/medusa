@@ -74,6 +74,7 @@ const sessionData = (overrides = {}) => ({
   psp_reference: null,
   capture_psp_reference: null,
   attempt: 0,
+  off_session_payment_method: null,
   result_code: null,
   action: null,
   ...overrides,
@@ -934,6 +935,115 @@ describe("AdyenProviderService", () => {
         ["TOKEN_1", "cus_123", MERCHANT_ACCOUNT],
         ["TOKEN_2", "cus_123", MERCHANT_ACCOUNT],
       ])
+    })
+  })
+
+  describe("off-session payments", () => {
+    const accountHolder = { data: { id: "cus_123" } }
+    const offSessionData = {
+      session_id: SESSION_ID,
+      payment_method: "TOKEN_1",
+      off_session: true,
+    }
+
+    const initiate = (provider: AdyenProviderService, overrides = {}) =>
+      provider.initiatePayment({
+        amount: 10,
+        currency_code: "eur",
+        data: offSessionData,
+        context: { account_holder: accountHolder },
+        ...overrides,
+      })
+
+    it("charges a saved card without the shopper present", async () => {
+      const { provider, checkout } = createProvider()
+      checkout.PaymentsApi.payments.mockResolvedValue({
+        resultCode: "Authorised",
+        pspReference: "PSP_123",
+      })
+
+      const initiated = await initiate(provider)
+      expect(initiated.data).toEqual(
+        expect.objectContaining({ off_session_payment_method: "TOKEN_1" })
+      )
+
+      const result = await provider.authorizePayment({ data: initiated.data })
+
+      expect(checkout.PaymentsApi.payments).toHaveBeenCalledWith(
+        {
+          merchantAccount: MERCHANT_ACCOUNT,
+          amount: { currency: "EUR", value: 1000 },
+          reference: SESSION_ID,
+          shopperReference: "cus_123",
+          paymentMethod: { type: "scheme", storedPaymentMethodId: "TOKEN_1" },
+          shopperEmail: undefined,
+          shopperInteraction: "ContAuth",
+          recurringProcessingModel: "UnscheduledCardOnFile",
+          additionalData: { manualCapture: "true" },
+          applicationInfo: APPLICATION_INFO,
+        },
+        { idempotencyKey: "payses_123-0" }
+      )
+      expect(result.status).toEqual(PaymentSessionStatus.AUTHORIZED)
+    })
+
+    it.each([
+      ["the session has no account holder", { context: {} }],
+      [
+        "off_session isn't set",
+        { data: { session_id: SESSION_ID, payment_method: "TOKEN_1" } },
+      ],
+    ])("doesn't charge off-session when %s", async (_, input) => {
+      const { provider, checkout } = createProvider()
+
+      const initiated = await initiate(provider, input)
+      const result = await provider.authorizePayment({ data: initiated.data })
+
+      expect(initiated.data!.off_session_payment_method).toBeNull()
+      expect(checkout.PaymentsApi.payments).not.toHaveBeenCalled()
+      expect(result.status).toEqual(PaymentSessionStatus.PENDING)
+    })
+
+    it("uses the storefront's payment details when submitted", async () => {
+      const { provider, checkout } = createProvider()
+      checkout.PaymentsApi.payments.mockResolvedValue({
+        resultCode: "Authorised",
+        pspReference: "PSP_123",
+      })
+
+      const initiated = await initiate(provider)
+      await provider.authorizePayment({
+        data: {
+          ...initiated.data,
+          client: {
+            payment_method: { type: "scheme", encryptedCardNumber: "enc" },
+          },
+        },
+      })
+
+      expect(checkout.PaymentsApi.payments).toHaveBeenCalledWith(
+        expect.objectContaining({ shopperInteraction: "Ecommerce" }),
+        expect.any(Object)
+      )
+    })
+
+    it("saves a card to charge without the shopper present", async () => {
+      const { provider, checkout } = createProvider()
+
+      await provider.savePaymentMethod({
+        data: {
+          payment_method: { type: "scheme", encryptedCardNumber: "enc" },
+          usage: "off_session",
+        },
+        context: { account_holder: accountHolder },
+      })
+
+      expect(checkout.RecurringApi.storedPaymentMethods).toHaveBeenCalledWith(
+        expect.objectContaining({
+          recurringProcessingModel: "UnscheduledCardOnFile",
+        }),
+        expect.any(Object)
+      )
     })
   })
 

@@ -1,12 +1,10 @@
+import { PolicyOperationValue, PolicyResourceValue } from "../../../rbac"
+
 export interface AdminCreateRbacRole {
   /**
    * The role's name.
    */
   name: string
-  /**
-   * The ID of the parent role, if any.
-   */
-  parent_id?: string | null
   /**
    * The role's description.
    */
@@ -29,10 +27,6 @@ export interface AdminUpdateRbacRole {
    */
   name?: string
   /**
-   * The ID of the parent role, if any.
-   */
-  parent_id?: string | null
-  /**
    * The role's description.
    */
   description?: string | null
@@ -45,6 +39,13 @@ export interface AdminUpdateRbacRole {
 export interface AdminAddRolePolicies {
   /**
    * The IDs of the policies to add to the role.
+   */
+  policies: string[]
+}
+
+export interface AdminRemoveRolePolicies {
+  /**
+   * The IDs of the policies to remove from the role.
    */
   policies: string[]
 }
@@ -63,6 +64,48 @@ export interface AdminRemoveRoleUsers {
   users: string[]
 }
 
+export interface AdminCreateRoleAssignments {
+  /**
+   * The type of entity the role is assigned to (e.g. `user`, `invite`).
+   */
+  reference: string
+  /**
+   * The IDs of the entities to assign the role to.
+   */
+  reference_ids: string[]
+  /**
+   * The type of scope entity the assignments are constrained to (e.g.
+   * `sales_channel`). Must be provided together with `scope_id`.
+   */
+  scope?: string
+  /**
+   * The ID of the scope entity the assignments are constrained to. Must be
+   * provided together with `scope`.
+   */
+  scope_id?: string
+}
+
+export interface AdminRemoveRoleAssignments {
+  /**
+   * The type of entity the role is assigned to (e.g. `user`, `invite`).
+   */
+  reference: string
+  /**
+   * The IDs of the entities to remove the role from.
+   */
+  reference_ids: string[]
+  /**
+   * When provided together with `scope_id`, only assignments constrained to
+   * that exact scope are removed.
+   */
+  scope?: string
+  /**
+   * When provided together with `scope`, only assignments constrained to
+   * that exact scope are removed.
+   */
+  scope_id?: string
+}
+
 export interface AdminCreateRbacPolicy {
   /**
    * The policy's unique key.
@@ -71,11 +114,11 @@ export interface AdminCreateRbacPolicy {
   /**
    * The resource the policy applies to.
    */
-  resource: string
+  resource: PolicyResourceValue
   /**
    * The operation the policy allows.
    */
-  operation: string
+  operation: PolicyOperationValue
   /**
    * The policy's name.
    */
@@ -90,19 +133,13 @@ export interface AdminCreateRbacPolicy {
   metadata?: Record<string, unknown> | null
 }
 
+/**
+ * The policy's `key`, `resource` and `operation` are its identity and cannot be
+ * changed through the API: every role holding the policy would silently gain
+ * the new permission. Create a new policy instead, or change them from a
+ * migration script you control.
+ */
 export interface AdminUpdateRbacPolicy {
-  /**
-   * The policy's unique key.
-   */
-  key?: string
-  /**
-   * The resource the policy applies to.
-   */
-  resource?: string
-  /**
-   * The operation the policy allows.
-   */
-  operation?: string
   /**
    * The policy's name.
    */

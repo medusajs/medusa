@@ -83,6 +83,7 @@ type ResolvedModuleProvider = ModuleProviderExports & {
 // provider's definition key is the id chosen in the config.
 const LICENSED_MODULES: Record<string, LicenseFeature> = {
   [Modules.RBAC]: LicenseFeature.RBAC,
+  [Modules.AUDIT]: LicenseFeature.AUDIT,
 }
 
 const LICENSED_PROVIDERS: Record<string, LicenseFeature> = {

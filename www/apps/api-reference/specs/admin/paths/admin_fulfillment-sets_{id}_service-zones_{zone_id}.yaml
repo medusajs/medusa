@@ -43,13 +43,11 @@ get:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_fulfillment-sets_{id}_service-zones_{zone_id}/get.js
+        $ref: ../code_samples/JavaScript/admin_fulfillment-sets_{id}_service-zones_{zone_id}/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_fulfillment-sets_{id}_service-zones_{zone_id}/get.sh
+        $ref: ../code_samples/Shell/admin_fulfillment-sets_{id}_service-zones_{zone_id}/get.sh
   tags:
     - Fulfillment Sets
   responses:
@@ -121,13 +119,11 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_fulfillment-sets_{id}_service-zones_{zone_id}/post.js
+        $ref: ../code_samples/JavaScript/admin_fulfillment-sets_{id}_service-zones_{zone_id}/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_fulfillment-sets_{id}_service-zones_{zone_id}/post.sh
+        $ref: ../code_samples/Shell/admin_fulfillment-sets_{id}_service-zones_{zone_id}/post.sh
   tags:
     - Fulfillment Sets
   responses:
@@ -178,13 +174,11 @@ delete:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_fulfillment-sets_{id}_service-zones_{zone_id}/delete.js
+        $ref: ../code_samples/JavaScript/admin_fulfillment-sets_{id}_service-zones_{zone_id}/delete.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_fulfillment-sets_{id}_service-zones_{zone_id}/delete.sh
+        $ref: ../code_samples/Shell/admin_fulfillment-sets_{id}_service-zones_{zone_id}/delete.sh
   tags:
     - Fulfillment Sets
   responses:

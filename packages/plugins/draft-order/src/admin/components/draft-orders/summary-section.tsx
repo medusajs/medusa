@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks"
 import { Plus, ReceiptPercent } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import {
@@ -13,6 +14,10 @@ import {
 import { Link, useNavigate } from "react-router-dom"
 import { useConvertDraftOrder } from "../../hooks/api/draft-orders"
 import { getLocaleAmount, getStylizedAmount } from "../../lib/data/currencies"
+import {
+  EDIT_DRAFT_ORDER_PERMISSIONS,
+  EDIT_DRAFT_ORDER_PROMOTIONS_PERMISSIONS,
+} from "../../lib/permissions"
 import { ActionMenu } from "../common/action-menu"
 import { Thumbnail } from "../common/thumbnail"
 
@@ -24,33 +29,49 @@ interface SummarySectionProps {
 
 export const SummarySection = ({ order }: SummarySectionProps) => {
   const promotions: HttpTypes.AdminPromotion[] | null = order.promotions || []
+  const { hasAllPermissions, hasPermission } = usePermissions()
+  const canEditItems = hasAllPermissions(EDIT_DRAFT_ORDER_PERMISSIONS)
+  const canEditPromotions = hasAllPermissions(
+    EDIT_DRAFT_ORDER_PROMOTIONS_PERMISSIONS
+  )
+  const canConvert = hasPermission("order:update")
 
   return (
     <Container className="p-0 overflow-hidden">
       <div className="px-6 py-4 flex items-center justify-between gap-x-4">
         <Heading>Summary</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: "Edit items",
-                  icon: <Plus />,
-                  to: "items",
-                },
-              ],
-            },
-            {
-              actions: [
-                {
-                  label: "Edit promotions",
-                  icon: <ReceiptPercent />,
-                  to: "promotions",
-                },
-              ],
-            },
-          ]}
-        />
+        {(canEditItems || canEditPromotions) && (
+          <ActionMenu
+            groups={[
+              ...(canEditItems
+                ? [
+                    {
+                      actions: [
+                        {
+                          label: "Edit items",
+                          icon: <Plus />,
+                          to: "items",
+                        },
+                      ],
+                    },
+                  ]
+                : []),
+              ...(canEditPromotions
+                ? [
+                    {
+                      actions: [
+                        {
+                          label: "Edit promotions",
+                          icon: <ReceiptPercent />,
+                          to: "promotions",
+                        },
+                      ],
+                    },
+                  ]
+                : []),
+            ]}
+          />
+        )}
       </div>
       <Divider variant="dashed" />
       <div>
@@ -83,8 +104,12 @@ export const SummarySection = ({ order }: SummarySectionProps) => {
           order.items?.reduce((acc, item) => acc + item.quantity, 0) || 0
         }
       />
-      <Divider variant="dashed" />
-      <Footer order={order} />
+      {canConvert && (
+        <>
+          <Divider variant="dashed" />
+          <Footer order={order} />
+        </>
+      )}
     </Container>
   )
 }

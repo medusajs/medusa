@@ -13,7 +13,7 @@ yarn medusa-oas docs --src-file ./oas/store.oas.json --out-dir ./docs --split
 `oas` options:
 
 - `-t, --type <admin|store|combined>` (required). `combined` merges admin and store.
-- `--local`: build from this repo's `www/utils/generated/oas-output/{operations/<type>,schemas,base}` plus error schemas in `@medusajs/medusa/dist/utils/middlewares`. Without it, the CLI downloads the published spec from `https://docs.medusajs.com/api/download/<type>`.
+- `--local`: build from this repo's `www/utils/generated/oas-output/{operations/<type>,schemas,base}` plus error schemas in `@medusajs/medusa/dist/utils/middlewares`. Without it, the CLI downloads the published spec of the installed `@medusajs/medusa` version from `https://docs.medusajs.com/api/download/<type>?version=<version>`, and falls back (with a warning) to the latest spec at `https://docs.medusajs.com/api/download/<type>` if that request fails.
 - `-p, --paths <dirs...>`: extra directories to crawl for swagger-inline JSDoc (each must be a directory). `-b, --base <file>`: custom base OAS (default `oas/default.oas.base.yaml`).
 - `-o, --out-dir` (default cwd), `-D, --dry-run`, `-F, --force` (write even if validation fails).
 - Output: `<type>.oas.json`, with `info.version` set to the installed `@medusajs/medusa` version.

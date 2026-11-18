@@ -51,6 +51,10 @@ moduleIntegrationTestRunner<BlogModuleService>({
 - Options: `moduleName` (required; for core modules use `Modules.*` so `ModulesDefinition` is found), `resolve`, `moduleModels` (else auto-loaded from `<resolve>/dist/models` or `<resolve>/models`), `moduleOptions`, `moduleDependencies`, `injectedDependencies`, `pathToMigrations` (use migrations instead of model-derived schema, e.g. module + provider), `hooks.beforeModuleInit` / `hooks.afterModuleInit(medusaApp, service)`, `cwd`, `dbName`, `schema`, `debug`.
 - Default injections: `PG_CONNECTION`, `LOGGER` (`console`), `CONFIG_MODULE`, and `Modules.EVENT_BUS` as a no-op `MockEventBusService` (events are not delivered).
 
+### Jest preset
+
+Set `preset: "@medusajs/test-utils"` in `jest.config.js`. It sets `testEnvironment: "node"` and `transformIgnorePatterns` so the project's transformer (e.g. `@swc/jest`) compiles the ESM-only packages Medusa depends on to CommonJS. Keep the project's own `transform`; the preset doesn't define one.
+
 ### Other exports
 
 - `TestEventUtils.waitSubscribersExecution(eventName, eventBus, { timeout?, triggerCount? })`: create the promise before triggering the action, then await it. Works by wrapping listeners on `eventBus.eventEmitter_`, so it needs the local event bus.
@@ -70,6 +74,7 @@ Docs:
 - DB isolation (full app): the first `beforeEach` snapshots the DB into a Postgres template DB (`<dbName>-template`); every later `beforeEach` restores from it (`medusa-test-runner-utils/postgres-template.ts`). `afterEach` waits for in-flight workflow executions.
 - `module-test-runner.ts`: one pg connection per suite; each test gets a fresh `initModules()` boot, schema setup in `beforeEach`, `clearDatabase()` + shutdown in `afterEach`.
 - `database.ts`: `getDatabaseURL`, `getMikroOrmWrapper` (`setupDatabase` / `clearDatabase`), `dbTestUtilFactory`.
+- `jest-preset.ts`: builds the preset from `ESM_ONLY_DEPENDENCIES`; the root `jest-preset.js` re-exports it from `dist` because Jest resolves `<preset>/jest-preset` from the package root.
 
 ## Development
 
@@ -84,4 +89,6 @@ Docs:
 - Suite options are proxies resolved lazily; use `api`, `getContainer()`, `service` inside hooks/tests, not at `testSuite` definition time.
 - `moduleIntegrationTestRunner` sets `process.env.LOG_LEVEL = "error"` and the module's `MockEventBusService` drops all events; test event-driven behavior with `medusaIntegrationTestRunner` instead.
 - `waitWorkflowExecutions` (also run in every `afterEach`) polls until no execution is outside `not_started`/`done`/`reverted`/`failed`; its 60s timeout throws from a timer (uncaught), not as a rejection.
+- When a Medusa package starts loading an ESM-only dependency at runtime, add it to `ESM_ONLY_DEPENDENCIES` in `src/jest-preset.ts` in the same PR, or users' Jest suites fail with `ERR_REQUIRE_ESM`. The repo's `define_jest_config.js` builds its patterns from this list too, so the monorepo's suites catch a missing entry; its own `REPO_ESM_DEPENDENCIES` is only for dependencies that this repo's tests use.
+- A project's own `transformIgnorePatterns` replaces the preset's instead of merging with it.
 - `@medusajs/medusa` and `@medusajs/core-flows` are optional peer deps, but the full-app runner `require`s `@medusajs/medusa/loaders/*`, so apps need `@medusajs/medusa` installed.

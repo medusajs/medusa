@@ -3,6 +3,7 @@ import {
   MiddlewareRoute,
   validateAndTransformBody,
 } from "@medusajs/framework/http"
+import { loginAuditMetadata } from "./utils/login-audit-metadata"
 import { validateScopeProviderAssociation } from "./utils/validate-scope-provider-association"
 import { validateToken } from "./utils/validate-token"
 import {
@@ -20,6 +21,8 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/auth/session",
+    // The login itself is recorded; exchanging its token for a session is not.
+    audit: false,
     middlewares: [
       authenticate("*", "bearer", {
         allowUnregistered: true,
@@ -40,6 +43,8 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/auth/token/refresh",
+    // Frequent, and not a change worth an audit log.
+    audit: false,
     middlewares: [
       authenticate("*", ["session", "bearer"], {
         allowUnregistered: true,
@@ -110,6 +115,8 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["GET", "POST"],
     matcher: "/auth/:actor_type/:auth_provider/callback",
+    // GET too, since providers usually redirect back to the callback.
+    audit: { action: "auth.authenticate", metadata: loginAuditMetadata },
     middlewares: [validateScopeProviderAssociation()],
   },
   {
@@ -120,6 +127,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/auth/:actor_type/:auth_provider",
+    audit: { action: "auth.authenticate", metadata: loginAuditMetadata },
     middlewares: [validateScopeProviderAssociation()],
   },
   {

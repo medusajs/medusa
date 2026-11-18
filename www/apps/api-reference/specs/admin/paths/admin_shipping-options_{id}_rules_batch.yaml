@@ -61,8 +61,7 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_shipping-options_{id}_rules_batch/post.js
+        $ref: ../code_samples/JavaScript/admin_shipping-options_{id}_rules_batch/post.js
     - lang: Shell
       label: cURL
       source:

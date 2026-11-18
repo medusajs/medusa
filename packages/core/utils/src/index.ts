@@ -1,5 +1,6 @@
 export * from "./analytics"
 export * from "./api-key"
+export * from "./audit"
 export * from "./auth"
 export * from "./bundles"
 export * from "./caching"

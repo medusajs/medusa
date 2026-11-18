@@ -7,12 +7,14 @@ import { DataTable } from "../../../../../components/data-table"
 import { useRefundReasons } from "../../../../../hooks/api"
 import { useRefundReasonTableColumns } from "../../../../../hooks/table/columns"
 import { useRefundReasonTableQuery } from "../../../../../hooks/table/query"
+import { useRefundReasonPermissions } from "../../../../../hooks/use-resource-permissions"
 import { RefundReasonListTableActions } from "./refund-reason-list-table-actions"
 
 const PAGE_SIZE = 20
 
 export const RefundReasonListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = useRefundReasonPermissions()
   const { searchParams } = useRefundReasonTableQuery({
     pageSize: PAGE_SIZE,
   })
@@ -49,12 +51,16 @@ export const RefundReasonListTable = () => {
             description: t("general.noRecordsMessageFiltered"),
           },
         }}
-        actions={[
-          {
-            label: t("actions.create"),
-            to: "create",
-          },
-        ]}
+        actions={
+          canCreate
+            ? [
+                {
+                  label: t("actions.create"),
+                  to: "create",
+                },
+              ]
+            : []
+        }
         isLoading={isLoading}
         enableSearch={true}
       />

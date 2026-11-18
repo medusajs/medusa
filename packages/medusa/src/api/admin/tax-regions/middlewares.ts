@@ -3,6 +3,7 @@ import { Entities } from "./query-config"
 
 import {
   AdminCreateTaxRegion,
+  AdminCreateTaxRegionType,
   AdminGetTaxRegionParams,
   AdminGetTaxRegionsParams,
   AdminUpdateTaxRegion,
@@ -12,67 +13,77 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import {
+  authorize,
+  authorizeIfNecessary,
+  MiddlewareRoute,
+} from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 
 export const adminTaxRegionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/tax-regions/*",
-    policies: [
-      {
-        resource: Entities.tax_region,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.tax_region,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: "POST",
     matcher: "/admin/tax-regions",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.tax_region,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateTaxRegion),
+      authorizeIfNecessary<AdminCreateTaxRegionType>(
+        (req) => !!req.validatedBody?.default_tax_rate,
+        { resource: "tax_rate", operation: PolicyOperation.create }
+      ),
       validateAndTransformQuery(
         AdminGetTaxRegionsParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.tax_region,
-        operation: PolicyOperation.create,
-      },
     ],
   },
   {
     method: "POST",
     matcher: "/admin/tax-regions/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.tax_region,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateTaxRegion),
       validateAndTransformQuery(
         AdminGetTaxRegionsParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.tax_region,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: "GET",
     matcher: "/admin/tax-regions",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.tax_region,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetTaxRegionsParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.tax_region,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
@@ -88,12 +99,13 @@ export const adminTaxRegionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: "DELETE",
     matcher: "/admin/tax-regions/:id",
-    middlewares: [],
-    policies: [
-      {
-        resource: Entities.tax_region,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.tax_region,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
 ]

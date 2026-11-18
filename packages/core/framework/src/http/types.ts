@@ -4,16 +4,32 @@ import type {
   ZodOptional,
   ZodRawShape,
 } from "@medusajs/deps/zod"
-import type { NextFunction, Request, Response } from "express"
 
-import {
-  FindConfig,
-  MedusaPricingContext,
-  RequestQueryFields,
+import type {
+  AuthContext,
+  MedusaNextFunction,
+  MedusaRequest,
+  MedusaRequestHandler,
+  MedusaResponse,
 } from "@medusajs/types"
-import { MedusaContainer } from "../container"
-import { PolicyAction } from "./middlewares/check-permissions"
-import { RestrictedFields } from "./utils/restricted-fields"
+
+/**
+ * The HTTP request/response types were moved to`@medusajs/types`.
+ * They are re-exported here to keep `@medusajs/framework/http` import paths
+ * working.
+ */
+export type {
+  AuthContext,
+  AuthenticatedMedusaRequest,
+  MedusaNextFunction,
+  MedusaRequest,
+  MedusaRequestHandler,
+  MedusaResponse,
+  MedusaStoreRequest,
+  PublishableKeyContext,
+  RestrictedFieldsSet,
+  SecretKeyContext,
+} from "@medusajs/types"
 
 /**
  * List of all the supported HTTP methods
@@ -57,6 +73,87 @@ export type ParserConfigArgs = {
 
 export type ParserConfig = false | ParserConfigArgs
 
+/**
+ * The request passed to the functions of an {@link AuditRouteConfig}. The
+ * request may have been rejected before authentication, so `auth_context` can
+ * be missing.
+ */
+export type AuditRequest = MedusaRequest<any> & {
+  auth_context?: AuthContext
+}
+
+/**
+ * The resource an audited request acted on.
+ */
+export type AuditResource = {
+  /**
+   * The resource type, such as `order`.
+   */
+  type: string
+  /**
+   * The resource ID. Omit it, or pass `null`, when the request acts on several
+   * resources.
+   */
+  id?: string | null
+}
+
+/**
+ * How a route is recorded in the audit logs. Every function runs after the
+ * response is sent, and an error thrown by one is logged and ignored.
+ */
+export type AuditRouteConfig<TResponseBody = any> = {
+  /**
+   * The action name.
+   *
+   * @defaultValue The resource followed by the route segments after it, such
+   * as `order.cancel` for `POST /admin/orders/:id/cancel`, or by `create`,
+   * `update`, or `delete` when there are none, such as `product.create`.
+   */
+  action?: string
+  /**
+   * Returns the resource acted on. `body` is the JSON response body, passed
+   * only for a successful response. Return `undefined` to fall back to the
+   * default: the last path parameter as the ID and the segment before it, in
+   * singular snake case, as the type. A route without path parameters uses its
+   * second segment as the type and the ID of the resource in the response.
+   */
+  resource?: (
+    req: AuditRequest,
+    body: TResponseBody | undefined
+  ) => AuditResource | undefined
+  /**
+   * Returns the request fields to keep. Request bodies are never stored, so pick
+   * only the fields worth keeping.
+   */
+  requestData?: (req: AuditRequest) => Record<string, unknown> | undefined
+  /**
+   * Returns the response fields to keep. Response bodies are never stored, so
+   * pick only the fields worth keeping. `body` is the JSON response body, passed
+   * only for a successful response.
+   */
+  responseData?: (
+    req: AuditRequest,
+    body: TResponseBody | undefined
+  ) => Record<string, unknown> | undefined
+  /**
+   * Returns values to add to the record's `metadata`, such as the tenant the
+   * request belongs to. The values the framework sets itself, such as
+   * `auth_identity_id`, take precedence. `body` is the JSON response body,
+   * passed only for a successful response.
+   */
+  metadata?: (
+    req: AuditRequest,
+    body: TResponseBody | undefined
+  ) => Record<string, unknown> | undefined
+}
+
+/**
+ * Whether and how a route is recorded in the audit logs: `false` never records
+ * it, `true` records it with the defaults, and an object records it with the
+ * defaults it doesn't override.
+ */
+export type AuditRouteSetting = boolean | AuditRouteConfig
+
 export type MiddlewareRoute = {
   /**
    * @deprecated. Instead use {@link MiddlewareRoute.methods}
@@ -66,16 +163,31 @@ export type MiddlewareRoute = {
   matcher: string | RegExp
   bodyParser?: ParserConfig
   additionalDataValidator?: ZodRawShape
+  /**
+   * Whether and how matching requests are recorded in the audit logs, when the
+   * Audit Module is installed. By default, `POST`, `PUT`, `PATCH`, and `DELETE`
+   * requests under `/admin`, `/rbac`, and `/auth` are recorded.
+   */
+  audit?: AuditRouteSetting
   middlewares?: MiddlewareFunction[]
-  /** @ignore */
-  policies?:
-    | { resource: string; operation: string }
-    | Array<{ resource: string; operation: string | string[] }>
+}
+
+/**
+ * Audit settings for every route.
+ */
+export type AuditMiddlewaresConfig = {
+  /**
+   * Path prefixes that are never the resource, such as `/v1/admin`. With it,
+   * `POST /v1/admin/credits` is recorded as `credit.create`. By default, only
+   * the first segment is skipped (`/admin`).
+   */
+  namespaces?: string[]
 }
 
 export type MiddlewaresConfig = {
   errorHandler?: false | MedusaErrorHandlerFunction
   routes?: MiddlewareRoute[]
+  audit?: AuditMiddlewaresConfig
 }
 
 /**
@@ -89,12 +201,13 @@ export type RouteDescriptor = {
   handler: RouteHandler
   optedOutOfAuth: boolean
   isRoute: true
-  routeType?: "admin" | "store" | "auth"
+  routeType?: "admin" | "store" | "auth" | "rbac"
   absolutePath?: string
   relativePath?: string
   shouldAppendAdminCors: boolean
   shouldAppendStoreCors: boolean
   shouldAppendAuthCors: boolean
+  shouldAppendRbacCors: boolean
 }
 
 /**
@@ -104,9 +217,6 @@ export type MiddlewareDescriptor = {
   matcher: string | RegExp
   methods?: MiddlewareVerb | MiddlewareVerb[]
   handler: MiddlewareFunction
-  policies?:
-    | { resource: string; operation: string }
-    | Array<{ resource: string; operation: string | string[] }>
 }
 
 export type BodyParserConfigRoute = {
@@ -122,169 +232,12 @@ export type AdditionalDataValidatorRoute = {
   validator: ZodOptional<ZodNullable<ZodObject<any, any>>>
 }
 
+export type AuditConfigRoute = {
+  matcher: string | RegExp
+  methods: MiddlewareVerb[]
+  config: AuditRouteSetting
+}
+
 export type GlobalMiddlewareDescriptor = {
   config?: MiddlewaresConfig
 }
-
-export interface MedusaRequest<
-  Body = unknown,
-  QueryFields = Record<string, unknown>,
-> extends Request<{ [key: string]: string }, any, Body> {
-  validatedBody: Body
-  validatedQuery: RequestQueryFields & QueryFields
-  /**
-   * TODO: shouldn't this correspond to returnable fields instead of allowed fields? also it is used by the cleanResponseData util
-   */
-  allowedProperties: string[]
-  /**
-   * An object containing the select, relation, skip, take and order to be used with medusa internal services
-   */
-  listConfig: FindConfig<unknown>
-  /**
-   * An object containing the select, relation to be used with medusa internal services
-   */
-  retrieveConfig: FindConfig<unknown>
-
-  /**
-   * An object containing fields and variables to be used with the remoteQuery
-   *
-   * @since 2.2.0
-   */
-  queryConfig: {
-    fields: string[]
-    pagination: { order?: Record<string, string>; skip: number; take?: number }
-    withDeleted?: boolean
-  }
-
-  /**
-   * @deprecated Use {@link queryConfig} instead.
-   */
-  remoteQueryConfig: MedusaRequest["queryConfig"]
-
-  /**
-   * An object containing the fields that are filterable e.g `{ id: Any<String> }`
-   */
-  filterableFields: QueryFields
-  includes?: Record<string, boolean>
-
-  /**
-   * An array of fields and relations that are allowed to be queried, this can be set by the
-   * consumer as part of a middleware and it will take precedence over the req.allowed set
-   * by the api
-   *
-   * Initialized per request, so add to it with `req.allowed.push(field)` — several
-   * middlewares can each contribute that way. Reassigning the array discards what other
-   * middlewares granted. To disallow an allowed field use {@link disallowed}, which is
-   * applied after this list.
-   */
-  allowed: string[]
-  /**
-   * An array of fields and relations that must never be resolved, this can be set by the
-   * consumer as part of a global middleware and it replaces the disallowed fields
-   * configured by the route's query configuration
-   *
-   * Since disallowed fields are a security boundary that keeps sensitive relations off an
-   * endpoint, set this to the route's configured fields minus the ones you need, rather
-   * than to a short list of your own. An empty array removes the boundary entirely.
-   *
-   * @since v2.21.0
-   */
-  disallowed?: (string | RegExp)[]
-  errors: string[]
-  scope: MedusaContainer
-  session?: any
-  rawBody?: any
-  requestId?: string
-
-  restrictedFields?: RestrictedFields
-
-  /**
-   * The maximum number of relations that can be expanded by the request. It is only set for
-   * routes under the `/store` prefix, and can be overridden by a route's query configuration.
-   *
-   * @since v2.20.0
-   */
-  storeRelationsLimit?: number
-
-  /**
-   * An object that carries the context that is used to calculate prices for variants
-   */
-  pricingContext?: MedusaPricingContext
-  /**
-   * A generic context object that can be used across the request lifecycle
-   */
-  context?: Record<string, any>
-
-  /**
-   * Custom validator to validate the `additional_data` property in
-   * requests that allows for additional_data
-   */
-  additionalDataValidator?: ZodOptional<ZodNullable<ZodObject<any, any>>>
-
-  /**
-   * The locale for the current request, resolved from:
-   * 1. Query parameter `?locale=`
-   * 2. x-medusa-locale header
-   * 3. Store's default locale
-   */
-  locale?: string
-}
-
-export interface AuthContext {
-  actor_id: string
-  actor_type: string
-  auth_identity_id: string
-  auth_provider?: string
-  app_metadata: Record<string, unknown>
-  user_metadata: Record<string, unknown>
-  entity_id?: string
-  purpose?: string
-  jti?: string
-  /**
-   * Whether the auth identity had an enabled MFA factor when the token was issued.
-   */
-  mfa_enabled?: boolean
-  /**
-   * When the MFA challenge was completed, or null when it has not been. Routes
-   * can require a recent completion to gate elevated actions.
-   */
-  mfa_challenge_completed_at?: string | null
-}
-
-export interface PublishableKeyContext {
-  key: string
-  sales_channel_ids: string[]
-}
-
-export interface SecretKeyContext {
-  created_by: string
-}
-
-export interface AuthenticatedMedusaRequest<
-  Body = unknown,
-  QueryFields = Record<string, unknown>,
-> extends MedusaRequest<Body, QueryFields> {
-  auth_context: AuthContext
-  publishable_key_context?: PublishableKeyContext
-  secret_key_context?: SecretKeyContext
-  policies?: PolicyAction[]
-}
-
-export interface MedusaStoreRequest<
-  Body = unknown,
-  QueryFields = Record<string, unknown>,
-> extends MedusaRequest<Body, QueryFields> {
-  auth_context?: AuthContext
-  publishable_key_context: PublishableKeyContext
-  policies?: PolicyAction | PolicyAction[]
-}
-
-export type MedusaResponse<Body = unknown> = Response<Body>
-
-export type MedusaNextFunction = NextFunction
-
-export type MedusaRequestHandler<Body = unknown, Res = unknown> = (
-  req: MedusaRequest<Body>,
-  res: MedusaResponse<Res>,
-  next: MedusaNextFunction
-) => Promise<void> | void

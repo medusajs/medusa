@@ -1,12 +1,5 @@
 import { ModuleJoinerConfig } from "@medusajs/framework/types"
-import { isObject } from "@medusajs/framework/utils"
-import {
-  GraphQLObjectType,
-  GraphQLSchema,
-  isListType,
-  isNonNullType,
-  isObjectType,
-} from "graphql"
+import { GraphQLUtils, isObject } from "@medusajs/framework/utils"
 
 export interface EntityReference {
   type: string
@@ -39,17 +32,20 @@ const LIST_AFFECTING_OPERATIONS: InvalidationOperation[] = [
 ]
 
 export class CacheInvalidationParser {
-  private typeMap: Map<string, GraphQLObjectType>
+  private typeMap: Map<string, GraphQLUtils.GraphQLObjectType>
   private idPrefixToEntityName: Record<string, string>
 
-  constructor(schema: GraphQLSchema, joinerConfigs: ModuleJoinerConfig[]) {
+  constructor(
+    schema: GraphQLUtils.GraphQLSchema,
+    joinerConfigs: ModuleJoinerConfig[]
+  ) {
     this.typeMap = new Map()
 
     // Build type map for quick lookups
     const schemaTypeMap = schema.getTypeMap()
     Object.keys(schemaTypeMap).forEach((typeName) => {
       const type = schemaTypeMap[typeName]
-      if (isObjectType(type) && !typeName.startsWith("__")) {
+      if (GraphQLUtils.isObjectType(type) && !typeName.startsWith("__")) {
         this.typeMap.set(typeName, type)
       }
     })
@@ -152,7 +148,10 @@ export class CacheInvalidationParser {
   /**
    * Check if object structure matches GraphQL type fields
    */
-  private objectMatchesType(obj: any, type: GraphQLObjectType): boolean {
+  private objectMatchesType(
+    obj: any,
+    type: GraphQLUtils.GraphQLObjectType
+  ): boolean {
     const fields = type.getFields()
     const objKeys = Object.keys(obj)
 
@@ -187,17 +186,17 @@ export class CacheInvalidationParser {
     let fieldType = field.type
 
     // Unwrap NonNull and List wrappers
-    if (isNonNullType(fieldType)) {
+    if (GraphQLUtils.isNonNullType(fieldType)) {
       fieldType = fieldType.ofType
     }
-    if (isListType(fieldType)) {
+    if (GraphQLUtils.isListType(fieldType)) {
       fieldType = fieldType.ofType
     }
-    if (isNonNullType(fieldType)) {
+    if (GraphQLUtils.isNonNullType(fieldType)) {
       fieldType = fieldType.ofType
     }
 
-    if (isObjectType(fieldType)) {
+    if (GraphQLUtils.isObjectType(fieldType)) {
       return fieldType.name
     }
 

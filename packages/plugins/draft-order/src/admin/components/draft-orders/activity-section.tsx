@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks"
 import { HttpTypes } from "@medusajs/types"
 import {
   Avatar,
@@ -118,8 +119,11 @@ interface ActivityItemProps {
 }
 
 const ActivityItem = ({ item, isFirst = false }: ActivityItemProps) => {
+  const { hasPermission } = usePermissions()
+  const showUser = !!item.userId && hasPermission("user:read")
+
   const { user, isPending, isError, error } = useUser(item.userId!, undefined, {
-    enabled: !!item.userId,
+    enabled: showUser,
   })
 
   if (isError) {
@@ -158,7 +162,7 @@ const ActivityItem = ({ item, isFirst = false }: ActivityItemProps) => {
           </Tooltip>
         </div>
         {item.content && renderContent(item.content)}
-        {item.userId && (
+        {showUser && (
           <div className="text-ui-fg-muted pt-2">
             {isUserLoaded ? (
               <Link to={`/settings/users/${user.id}`} className="w-fit">

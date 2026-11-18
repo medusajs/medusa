@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { Container } from "@medusajs/ui";
 import { Fragment } from "react";
 import { Outlet } from "react-router-dom";
@@ -27,6 +28,8 @@ export function StoreCreditAccountsTable() {
 
   const columns = useStoreCreditAccountTableColumns();
   const filters = useStoreCreditAccountFilters();
+  const { hasPermission } = usePermissions();
+  const canCreate = hasPermission("store_credit_account:create");
 
   return (
     <Fragment>
@@ -53,12 +56,16 @@ export function StoreCreditAccountsTable() {
                 "No store credit accounts match your filter criteria.",
             },
           }}
-          actions={[
-            {
-              label: "Create",
-              to: "/store-credit-accounts/create",
-            },
-          ]}
+          actions={
+            canCreate
+              ? [
+                  {
+                    label: "Create",
+                    to: "/store-credit-accounts/create",
+                  },
+                ]
+              : []
+          }
         />
       </Container>
 

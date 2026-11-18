@@ -2,7 +2,11 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import {
+  authorize,
+  authorizeIfNecessary,
+  MiddlewareRoute,
+} from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import { DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT } from "../../../utils/middlewares"
 import { createBatchBody } from "../../utils/validators"
@@ -11,56 +15,68 @@ import { Entities } from "./query-config"
 import {
   AdminCreatePromotion,
   AdminCreatePromotionRule,
+  AdminCreatePromotionType,
   AdminGetPromotionParams,
   AdminGetPromotionRuleParams,
   AdminGetPromotionRuleTypeParams,
   AdminGetPromotionsParams,
   AdminGetPromotionsRuleValueParams,
   AdminUpdatePromotion,
+  AdminUpdatePromotionType,
   AdminUpdatePromotionRule,
 } from "./validators"
 
 export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   {
     matcher: "/admin/promotions/*",
-    policies: [
-      {
-        resource: Entities.promotion,
-        operation: PolicyOperation.read,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.promotion,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/promotions",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.promotion,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetPromotionsParams,
         QueryConfig.listTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.promotion,
-        operation: PolicyOperation.read,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/promotions",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.promotion,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreatePromotion),
+      authorizeIfNecessary<AdminCreatePromotionType>(
+        (req) => !!req.validatedBody?.campaign,
+        { resource: "campaign", operation: PolicyOperation.create }
+      ),
+      authorizeIfNecessary<AdminCreatePromotionType>(
+        (req) => !!req.validatedBody?.campaign_id,
+        { resource: "campaign", operation: PolicyOperation.update }
+      ),
       validateAndTransformQuery(
         AdminGetPromotionParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.promotion,
-        operation: PolicyOperation.create,
-      },
     ],
   },
   {
@@ -77,28 +93,33 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/promotions/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.promotion,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdatePromotion),
+      authorizeIfNecessary<AdminUpdatePromotionType>(
+        (req) => req.validatedBody?.campaign_id !== undefined,
+        { resource: "campaign", operation: PolicyOperation.update }
+      ),
       validateAndTransformQuery(
         AdminGetPromotionParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.promotion,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/promotions/:id",
-    middlewares: [],
-    policies: [
-      {
-        resource: Entities.promotion,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.promotion,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
   {
@@ -118,6 +139,12 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
     middlewares: [
+      authorize([
+        {
+          resource: Entities.promotion,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(
         createBatchBody(AdminCreatePromotionRule, AdminUpdatePromotionRule)
       ),
@@ -125,12 +152,6 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetPromotionRuleParams,
         QueryConfig.retrieveRuleTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.promotion,
-        operation: PolicyOperation.update,
-      },
     ],
   },
   {
@@ -140,6 +161,12 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
     middlewares: [
+      authorize([
+        {
+          resource: Entities.promotion,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(
         createBatchBody(AdminCreatePromotionRule, AdminUpdatePromotionRule)
       ),
@@ -147,12 +174,6 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetPromotionRuleParams,
         QueryConfig.retrieveRuleTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.promotion,
-        operation: PolicyOperation.update,
-      },
     ],
   },
   {
@@ -162,6 +183,12 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
     },
     middlewares: [
+      authorize([
+        {
+          resource: Entities.promotion,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(
         createBatchBody(AdminCreatePromotionRule, AdminUpdatePromotionRule)
       ),
@@ -169,12 +196,6 @@ export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetPromotionRuleParams,
         QueryConfig.retrieveRuleTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.promotion,
-        operation: PolicyOperation.update,
-      },
     ],
   },
   {

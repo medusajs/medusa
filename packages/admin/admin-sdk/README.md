@@ -47,7 +47,7 @@ Admin SDK for Medusa: helpers for configuring Medusa Admin dashboard extensions 
 ## Features
 
 - `defineWidgetConfig`: set the injection zone(s) a widget is shown in, with an optional stable `id`.
-- `defineRouteConfig`: set a UI route's sidebar `label`, `icon`, `nested` position, `rank`, and `translationNs`.
+- `defineRouteConfig`: set a UI route's sidebar `label`, `icon`, `nested` position, `rank`, `translationNs`, and the RBAC `permissions` required to open it.
 - `defineLayoutConfig`: declare a custom layout's `id` and `sections`.
 - Types: `WidgetConfig`, `RouteConfig`, `LayoutConfig`.
 

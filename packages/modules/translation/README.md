@@ -43,35 +43,16 @@ Translation Module for Medusa: manages locales, translations of entity fields (s
 | Package | `@medusajs/translation` |
 | Type | Commerce Module |
 | Module key | `Modules.TRANSLATION` (`"translation"`) |
-| Registered by default | Yes, but disabled unless the `translation` feature flag is enabled |
+| Registered by default | Yes |
 | Import from | `@medusajs/medusa/translation` |
 
 ## Installation
 
-No installation needed. The module ships with `@medusajs/medusa`. Enable the `translation` feature flag in `medusa-config.ts`:
-
-```ts
-import { defineConfig } from "@medusajs/framework/utils"
-
-module.exports = defineConfig({
-  // ...
-  featureFlags: {
-    translation: true,
-  },
-})
-```
-
-Then run the migrations:
+No installation needed. The module ships with `@medusajs/medusa` and is registered by default. Run the migrations to create its tables:
 
 ```bash
 npx medusa db:migrate
 ```
-
-## Configuration
-
-| Environment variable | Description | Default |
-| --- | --- | --- |
-| `MEDUSA_FF_TRANSLATION` | Enables the `translation` feature flag, as an alternative to `featureFlags.translation` in `medusa-config.ts`. | `false` |
 
 ## Resources
 

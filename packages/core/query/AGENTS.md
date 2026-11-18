@@ -33,7 +33,7 @@ const { data: products, metadata } = await query.graph(
 - In API routes use `req.scope.resolve(ContainerRegistrationKeys.QUERY)`; in workflows prefer `useQueryGraphStep` from `@medusajs/core-flows`.
 - `query.graph(input, options)` input: `entity`, `fields`, `filters`, `pagination` (`skip`, `take`, `order`), `context`, `withDeleted`, `strategy` (`"joined" | "select-in" | "balanced"`). Returns `{ data, metadata }` (`metadata` holds `count`/`skip`/`take` when paginated).
 - Options (`RemoteJoinerOptions`): `throwIfKeyNotFound`, `throwIfRelationNotFound`, `initialData`, `initialDataOnly`, `locale` (applies translations), `cache` (`enable`, `key`, `ttl`, `tags`, `autoInvalidate`, `providers`).
-- `query.index(...)` filters through the Index Module and accepts `joinFilters`; throws `Index module is not loaded.` without it.
+- `query.index(...)` (**deprecated**, will be removed with the Index Module) filters through the Index Module and accepts `joinFilters`; throws `Index module is not loaded.` without it, and logs a deprecation warning once per process. Use `query.graph()` with nested filters on linked models instead. See "Filter by linked data models" in https://docs.medusajs.com/learn/fundamentals/query.md
 - `query.search(...)` runs through the Search Module and hydrates fields the index doesn't store with `query.graph`; throws `Search module is not loaded.` without it.
 - Legacy: calling `query(...)` / `query.gql(...)` (old remote query) still works.
 - Entity names and field typings come from `.medusa/types/query-entry-points` generated on `medusa develop`.
