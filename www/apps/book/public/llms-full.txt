@@ -32066,7 +32066,7 @@ If you're a human, copy this prompt and run it in your AI agent:
 Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
 ```
 
-The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medusajs.com/cloud/index.html.md), and help you build your custom commerce features. New Cloud accounts start with a free trial, so you can go live without entering payment details.
+The AI agent will guide you through creating a store on [Cloud](https://docs.medusajs.com/cloud/index.html.md) from a starter, watch its deployment until it's live, then set it up on your machine so it can help you build your custom commerce features. New Cloud accounts start with a free trial, so you can go live without entering payment details.
 
 ## FAQ
 
@@ -32074,11 +32074,21 @@ The AI agent will set up Medusa locally, deploy it to [Cloud](https://docs.medus
 
 The prompt instructs the AI agent to fetch this page. When the agent fetches it, it receives step-by-step instructions to set up Medusa.
 
-The AI agent will then execute the instructions, which include installing Medusa, deploying it to [Cloud](https://docs.medusajs.com/cloud/index.html.md), and providing next steps to build custom commerce features.
+The AI agent will then execute the instructions, which include signing you in to [Cloud](https://docs.medusajs.com/cloud/index.html.md), guiding you through creating and deploying your project, setting it up locally, and providing next steps to build custom commerce features.
 
 ### Do I need a Cloud account?
 
-Not to get started. The AI agent first sets up Medusa locally on your machine. To deploy the store, you need a [Cloud](https://docs.medusajs.com/cloud/index.html.md) account. The AI agent helps you create one if needed, then guides you through the deployment.
+Yes, your store is created and hosted on [Cloud](https://docs.medusajs.com/cloud/index.html.md). If you don't have an account, the AI agent helps you sign up, which starts a free trial.
+
+### What steps do I perform myself?
+
+The AI agent runs the commands in your terminal, such as installing the Cloud CLI, monitoring the deployment, and setting up the project locally.
+
+Some steps happen in your browser, such as signing in to Cloud and creating the project from the Cloud dashboard. For those steps, the AI agent tells you exactly what to do and waits for you to confirm before it continues.
+
+### Can I deploy an existing Medusa application?
+
+Yes, tell the AI agent that you want to deploy an existing application instead of a starter. The application must be in a GitHub repository and meet the [project prerequisites](https://docs.medusajs.com/cloud/projects/prerequisites/index.html.md).
 
 ### Is Cloud free to try?
 
@@ -64408,6 +64418,10 @@ npx medusa codemod <transformation>
 
 Commands in the Medusa CLI starting with `db:` perform actions on the database.
 
+On Cloud, Medusa creates and manages the database of each environment, and sets its connection URL for you. You don't need to set `DATABASE_URL` in the environment's variables. Medusa also [runs migrations](https://docs.medusajs.com/cloud/database#running-migrations-on-cloud/index.html.md) for every deployment, so you don't run `db:` commands on Cloud.
+
+Use these commands for your local database, which you configure with `DATABASE_URL` in your `.env` file. Learn more in the [Set Up Medusa Locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md) guide.
+
 ## db:setup
 
 Creates a database for the Medusa application with the specified name, if it doesn't exist. Then, it runs migrations and syncs links.
@@ -64552,7 +64566,9 @@ npx medusa db:sync-links
 
 ## Reset the Database
 
-The Medusa CLI does not provide a dedicated command to drop or reset the database. To reset your database, drop it manually using PostgreSQL tools, then run `db:setup` to recreate and reinitialize it.
+The Medusa CLI does not provide a dedicated command to drop or reset the database. To reset your local database, drop it manually using PostgreSQL tools, then run `db:setup` to recreate and reinitialize it.
+
+To replace the database of a Cloud environment, [restore a backup](https://docs.medusajs.com/cloud/database#restore-a-backup/index.html.md) or [import a database dump](https://docs.medusajs.com/cloud/database#importexport-cloud-database-dumps/index.html.md) instead.
 
 Dropping the database permanently deletes all data. Make sure to back up any data you want to keep before running these commands.
 
@@ -64641,6 +64657,8 @@ The command exits with code `1` when lint errors are found. It exits with code `
 
 Create a new Medusa application. Unlike the `create-medusa-app` CLI tool, this command provides more flexibility for experienced Medusa developers in creating and configuring their project. It creates a monorepo structure with your Medusa backend in the `apps/backend` directory.
 
+To start a new Medusa project, create a Cloud project and clone it locally instead. Cloud creates the project's repository, deploys it, and configures its database, Redis, and file storage. Learn more in the [Create Your First Project](https://docs.medusajs.com/cloud/first-project/index.html.md) and [Set Up Medusa Locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md) guides.
+
 ```bash
 medusa new [<dir_name>]
 ```
@@ -64657,7 +64675,7 @@ medusa new [<dir_name>]
 |---|---|
 |`-y`, `--useDefaults`|Skip all prompts, such as database prompts. A database might not be created if default PostgreSQL credentials don't work.|
 |`--skip-db`|Skip database creation.|
-|`--skip-env`|Skip populating `.env`.|
+|`--skip-env`|Skip populating `.env`. The `.env` file only configures your local application. On Cloud, you set environment variables in the [environment's settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md).|
 |`--db-user <user>`|The database user to use for database setup.|
 |`--db-database <database>`|The name of the database used for database setup.|
 |`--db-pass <password>`|The database password to use for database setup.|
@@ -64949,6 +64967,10 @@ npx medusa codemod <transformation>
 
 Commands in the Medusa CLI starting with `db:` perform actions on the database.
 
+On Cloud, Medusa creates and manages the database of each environment, and sets its connection URL for you. You don't need to set `DATABASE_URL` in the environment's variables. Medusa also [runs migrations](https://docs.medusajs.com/cloud/database#running-migrations-on-cloud/index.html.md) for every deployment, so you don't run `db:` commands on Cloud.
+
+Use these commands for your local database, which you configure with `DATABASE_URL` in your `.env` file. Learn more in the [Set Up Medusa Locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md) guide.
+
 ## db:setup
 
 Creates a database for the Medusa application with the specified name, if it doesn't exist. Then, it runs migrations and syncs links.
@@ -65093,7 +65115,9 @@ npx medusa db:sync-links
 
 ## Reset the Database
 
-The Medusa CLI does not provide a dedicated command to drop or reset the database. To reset your database, drop it manually using PostgreSQL tools, then run `db:setup` to recreate and reinitialize it.
+The Medusa CLI does not provide a dedicated command to drop or reset the database. To reset your local database, drop it manually using PostgreSQL tools, then run `db:setup` to recreate and reinitialize it.
+
+To replace the database of a Cloud environment, [restore a backup](https://docs.medusajs.com/cloud/database#restore-a-backup/index.html.md) or [import a database dump](https://docs.medusajs.com/cloud/database#importexport-cloud-database-dumps/index.html.md) instead.
 
 Dropping the database permanently deletes all data. Make sure to back up any data you want to keep before running these commands.
 
@@ -65182,6 +65206,8 @@ The command exits with code `1` when lint errors are found. It exits with code `
 
 Create a new Medusa application. Unlike the `create-medusa-app` CLI tool, this command provides more flexibility for experienced Medusa developers in creating and configuring their project. It creates a monorepo structure with your Medusa backend in the `apps/backend` directory.
 
+To start a new Medusa project, create a Cloud project and clone it locally instead. Cloud creates the project's repository, deploys it, and configures its database, Redis, and file storage. Learn more in the [Create Your First Project](https://docs.medusajs.com/cloud/first-project/index.html.md) and [Set Up Medusa Locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md) guides.
+
 ```bash
 medusa new [<dir_name>]
 ```
@@ -65198,7 +65224,7 @@ medusa new [<dir_name>]
 |---|---|
 |`-y`, `--useDefaults`|Skip all prompts, such as database prompts. A database might not be created if default PostgreSQL credentials don't work.|
 |`--skip-db`|Skip database creation.|
-|`--skip-env`|Skip populating `.env`.|
+|`--skip-env`|Skip populating `.env`. The `.env` file only configures your local application. On Cloud, you set environment variables in the [environment's settings](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md).|
 |`--db-user <user>`|The database user to use for database setup.|
 |`--db-database <database>`|The name of the database used for database setup.|
 |`--db-pass <password>`|The database password to use for database setup.|
@@ -148678,38 +148704,30 @@ By using the Payment Element, you can offer a unified payment experience that su
 
 By following this tutorial, you'll learn how to:
 
-- Set up a Medusa application with the Stripe Module Provider.
+- Create a Cloud project, set it up locally, and configure the Stripe Module Provider.
 - Customize the Next.js Starter Storefront to use Stripe's Payment Element.
+- Publish the customizations to Cloud.
 
 ***
 
 ## Step 1: Set Up Medusa Project
 
-In this step, you'll set up a Medusa application and configure the Stripe Module Provider. You can skip this step if you already have a Medusa application running with the Stripe Module Provider configured.
+In this step, you'll set up a Medusa project and configure the Stripe Module Provider. You can skip this step if you already have a Medusa project with the Stripe Module Provider configured.
 
-### a. Install Medusa Application
+### a. Create a Cloud Project and Set It Up Locally
 
 ### Prerequisites
 
+- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
-To install the Medusa application, run the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/nextjs-starter/index.html.md). Follow the [Create Your First Project](https://docs.medusajs.com/cloud/first-project#option-1-choose-a-starter/index.html.md) guide to create the project.
 
-```bash
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when you're asked whether you want to install the Next.js Starter Storefront, choose `Y` for yes.
-
-Afterwards, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form.
-
-Afterwards, you can log in with the new user and explore the dashboard. The Next.js Starter Storefront is also running at `http://localhost:8000`.
-
-Check out the [troubleshooting guides](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/troubleshooting/create-medusa-app-errors/index.html.md) for help.
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 In this guide, all backend customizations are relative to the `apps/backend` directory of your project, and all storefront customizations are relative to the `apps/storefront` directory.
 
@@ -148750,7 +148768,7 @@ For more details about other available options and the webhook URLs that Medusa 
 
 ### c. Set Environment Variables
 
-Next, make sure to add the necessary environment variables for the above options in `.env` in your Medusa application:
+Next, add the necessary environment variables for the above options in `.env` in your Medusa application:
 
 ```bash
 STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
@@ -148766,13 +148784,15 @@ NEXT_PUBLIC_STRIPE_KEY=<YOUR_STRIPE_PUBLISHABLE_API_KEY>
 
 Where `<YOUR_STRIPE_PUBLISHABLE_API_KEY>` is your Stripe [Publishable API Key](https://support.stripe.com/questions/locate-api-keys-in-the-dashboard).
 
+You'll add these variables to your Cloud environment when you [publish to Cloud](#step-5-publish-to-cloud).
+
 ### d. Enable Stripe in a Region
 
 Finally, you need to add Stripe as a payment provider to one or more regions in your Medusa Admin. This will allow customers to use Stripe as a payment method during checkout.
 
-To do that:
+To do that, start the Medusa application locally with `npm run dev`, then:
 
-1. Log in to your Medusa Admin dashboard at `http://localhost:9000/app`.
+1. Log in to your local Medusa Admin dashboard at `http://localhost:9000/app`.
 2. Go to Settings -> Regions.
 3. Select a region you want to enable Stripe for (or create a new one).
 4. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon on the upper right corner.
@@ -148780,7 +148800,7 @@ To do that:
 6. In the Payment Providers field, select “Stripe (STRIPE)”
 7. Click the Save button.
 
-Do this for all regions you want to enable Stripe for.
+Do this for all regions you want to enable Stripe for. Regions you configure locally don't carry over to your Cloud environments, so you'll repeat this in the deployed Medusa Admin after you [publish to Cloud](#step-5-publish-to-cloud).
 
 ***
 
@@ -149855,6 +149875,42 @@ Learn more about the webhook API routes and how to configure them in the [Stripe
 ### Testing Declined Payments
 
 You can use [Stripe's declined test cards](https://docs.stripe.com/testing#declined-payments) to test declined payments. When a payment is declined, the customer will be redirected back to the payment step to fix their payment details as necessary.
+
+***
+
+## Step 5: Publish to Cloud
+
+After you test the Payment Element locally, publish the customizations to your Cloud project.
+
+Create the environment variables that you added in the `.env` files in your Cloud project:
+
+- `STRIPE_API_KEY`: Add it in the environment's **Backend** variables.
+- `NEXT_PUBLIC_STRIPE_KEY`: Add it in the environment's **Storefront** variables.
+
+Add the variables in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variables in the environment variables section. Preview environments created afterward inherit them. Learn more in the [Preview Environments](https://docs.medusajs.com/cloud/environments/preview#manage-shared-previews-settings/index.html.md) guide.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variables and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
+
+In both places, enable the **Build** toggle of both variables, since `medusa-config.ts` reads `STRIPE_API_KEY` and Next.js includes `NEXT_PUBLIC_STRIPE_KEY` in the storefront's build. Mark `STRIPE_API_KEY` as **Sensitive**. Learn more in the [Environment Variables](https://docs.medusajs.com/cloud/environments/environment-variables/index.html.md) Cloud guide, and about the Stripe Module Provider's Cloud setup in the [Stripe Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/stripe#deploy-to-cloud/index.html.md) guide.
+
+Then, create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/stripe-payment-element
+git add .
+git commit -m "Use Stripe's Payment Element"
+git push origin feat/stripe-payment-element
+```
+
+Then, on GitHub, open a pull request from the `feat/stripe-payment-element` branch to your production branch. Cloud deploys the changes to a [preview environment](https://docs.medusajs.com/cloud/environments/preview/index.html.md), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+After you merge the pull request:
+
+1. [Enable Stripe in a region](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/stripe#enable-stripe-providers-in-a-region/index.html.md) of the deployed environment's Medusa Admin, as you did locally.
+2. [Set up the Stripe webhook](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/payment/payment-provider/stripe#setup-stripe-webhooks/index.html.md) in your Stripe dashboard with the deployed backend's URL, so that Medusa handles payment events that arrive after the customer leaves the storefront.
+
+Learn more in the [Publish Customizations to Cloud](https://docs.medusajs.com/docs/learn/customization/publish/index.html.md) chapter.
 
 
 # Remove Country Code Prefix in Next.js Starter Storefront
@@ -150984,27 +151040,20 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ***
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 ### Prerequisites
 
+- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/nextjs-starter/index.html.md). Follow the [Create Your First Project](https://docs.medusajs.com/cloud/first-project#option-1-choose-a-starter/index.html.md) guide to create the project.
 
-```bash
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](https://docs.medusajs.com/cloud/setup-locally/index.html.md) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/nextjs-starter/index.html.md), choose Yes.
-
-Afterward, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
-
-Check out the [troubleshooting guides](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/troubleshooting/create-medusa-app-errors/index.html.md) for help.
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 ***
 
@@ -152141,14 +152190,14 @@ npm run dev
 
 Before you can test the return request page, you need to create return shipping options in the Medusa Admin. To do that:
 
-1. Open the Medusa Admin in your browser at `localhost:9000/app` and log in.
+1. Open the local Medusa Admin in your browser at `localhost:9000/app` and log in.
 2. Go to Settings -> Locations & Shipping.
 3. Click on "View details" of a location to add the shipping options to.
 4. In the Shipping Options section, find the "Return options" subsection and click "Create option".
 5. In the form, enter the shipping option's details and price.
 6. Click "Save" to create the return shipping option.
 
-You can learn more about creating a shipping option in the [Manage Locations](https://docs.medusajs.com/user-guide/settings/locations-and-shipping/locations/index.html.md) user guide.
+You can learn more about creating a shipping option in the [Manage Locations](https://docs.medusajs.com/user-guide/settings/locations-and-shipping/locations/index.html.md) Merchant Guide.
 
 ![Form to create a return shipping option in the Medusa Admin](https://res.cloudinary.com/dza7lstvk/image/upload/v1758012545/Medusa%20Resources/CleanShot_2025-09-16_at_11.47.47_2x_fx6tan.png)
 
@@ -152161,7 +152210,7 @@ Next, you need to create return reasons in the Medusa Admin. To do that:
 3. In the form, enter the return reason's label and value.
 4. Click "Save" to create the return reason.
 
-You can learn more about creating return reasons in the [Manage Return Reasons](https://docs.medusajs.com/user-guide/settings/return-reasons/index.html.md) user guide.
+You can learn more about creating return reasons in the [Manage Return Reasons](https://docs.medusajs.com/user-guide/settings/return-reasons/index.html.md) Merchant Guide.
 
 ![Form to create a return reason in the Medusa Admin](https://res.cloudinary.com/dza7lstvk/image/upload/v1758012657/Medusa%20Resources/CleanShot_2025-09-16_at_11.50.47_2x_qcrqj6.png)
 
@@ -152195,7 +152244,7 @@ Finally, you need to deliver the items in the order from the Medusa Admin to mak
 
 The order's fulfillment status will change to "Delivered", and the items will become returnable.
 
-Learn more about creating fulfillments and marking them as delivered in the [Manage Order Fulfillments](https://docs.medusajs.com/user-guide/orders/fulfillments/index.html.md) user guide.
+Learn more about creating fulfillments and marking them as delivered in the [Manage Order Fulfillments](https://docs.medusajs.com/user-guide/orders/fulfillments/index.html.md) Merchant Guide.
 
 ![Order details page in the Medusa Admin showing the fulfillment status as "Delivered"](https://res.cloudinary.com/dza7lstvk/image/upload/v1758013188/Medusa%20Resources/CleanShot_2025-09-16_at_11.59.29_2x_tlqaoo.png)
 
@@ -152222,6 +152271,27 @@ You should see a success message after submitting the return request.
 If you open the order's details page in the Medusa Admin, you'll see the requested return in the Activity section. You'll also see a note below the order's items that were requested for return.
 
 ![Order details page in the Medusa Admin showing the requested return in the Activity section](https://res.cloudinary.com/dza7lstvk/image/upload/v1758013557/Medusa%20Resources/CleanShot_2025-09-16_at_12.05.31_2x_wv9z8o.png)
+
+***
+
+## Step 8: Publish to Cloud
+
+After you test the return request flow locally, publish the customizations to your Cloud project.
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/storefront-returns
+git add .
+git commit -m "Add return requests to the storefront"
+git push origin feat/storefront-returns
+```
+
+Then, on GitHub, open a pull request from the `feat/storefront-returns` branch to your production branch. Cloud deploys the changes to a [preview environment](https://docs.medusajs.com/cloud/environments/preview/index.html.md), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+The return shipping options and return reasons you created in your local Medusa Admin don't carry over to your Cloud environments. Create them in the deployed environment's Medusa Admin, as you did locally, so customers can request returns.
+
+Learn more in the [Publish Customizations to Cloud](https://docs.medusajs.com/docs/learn/customization/publish/index.html.md) chapter.
 
 ***
 
@@ -185051,13 +185121,13 @@ In this tutorial, you'll customize the [Next.js Starter Storefront](https://docs
 
 ![Preview of the seat selection on the product page](https://res.cloudinary.com/dza7lstvk/image/upload/v1757422831/Medusa%20Resources/CleanShot_2025-09-09_at_15.59.33_2x_afkysa.png)
 
-If you installed the Next.js Starter Storefront with the Medusa backend, the storefront was installed in a separate directory. The directory's name is `{your-project}-storefront`.
-
-So, if your Medusa application's directory is `medusa-ticketing`, you can find the storefront by going back to the parent directory and changing to the `medusa-ticketing-storefront` directory:
+The Next.js Starter Storefront is available in the `apps/storefront` directory of your project:
 
 ```bash
-cd ../medusa-ticketing-storefront # change based on your project name
+cd apps/storefront
 ```
+
+In this tutorial, all file paths are relative to the `apps/storefront` directory.
 
 ## Step 1: Ticket Product Utilities
 
@@ -186936,6 +187006,29 @@ This prevents displaying the quantity for ticket products, as it's redundant.
 If you check the order confirmation page now, you'll see the selected seats and show dates for each ticket item.
 
 ![Order confirmation page showing selected seats and show date for ticket items](https://res.cloudinary.com/dza7lstvk/image/upload/v1757504846/Medusa%20Resources/CleanShot_2025-09-10_at_14.47.16_2x_mfnh3f.png)
+
+***
+
+## Step 6: Publish to Cloud
+
+After you test ticket booking in the storefront locally, publish the storefront customizations to your Cloud project.
+
+You don't need to add environment variables for the storefront in Cloud. Medusa injects the backend URL and publishable API key into your deployed storefront.
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/ticket-booking-storefront
+git add .
+git commit -m "Add ticket booking to the storefront"
+git push origin feat/ticket-booking-storefront
+```
+
+Then, on GitHub, open a pull request from the `feat/ticket-booking-storefront` branch to your production branch. Cloud deploys the changes to a [preview environment](https://docs.medusajs.com/cloud/environments/preview/index.html.md), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+To book tickets in the deployed storefront, the deployed environment must have venues and ticket products. If you haven't already, create them in the deployed environment's Medusa Admin, as explained in the [backend tutorial's Publish to Cloud step](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/recipes/ticket-booking/example#step-14-publish-to-cloud/index.html.md).
+
+Learn more in the [Publish Customizations to Cloud](https://docs.medusajs.com/docs/learn/customization/publish/index.html.md) chapter.
 
 ***
 
