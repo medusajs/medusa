@@ -8,7 +8,7 @@ type UseDataGridClipboardEventsOptions<
   TData,
   TFieldValues extends FieldValues,
 > = {
-  containerRef: RefObject<HTMLDivElement>
+  containerRef: RefObject<HTMLDivElement | null>
   matrix: DataGridMatrix<TData, TFieldValues>
   isEditing: boolean
   anchor: DataGridCoordinates | null
