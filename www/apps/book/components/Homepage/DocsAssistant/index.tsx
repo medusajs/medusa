@@ -1,19 +1,13 @@
 "use client"
 
-import { Telescope, XMarkMini } from "@medusajs/icons"
 import clsx from "clsx"
-import { BloomIcon, Button, HeadlineTags, useAiAssistant } from "docs-ui"
+import { Button, HeadlineTags, useAiAssistant } from "docs-ui"
 import { useState } from "react"
 import HomepageEdges from "../Edges"
 import HomepageArrowUpMini from "./ArrowUpMini"
 
 const HomepageDocsAssistant = () => {
-  const {
-    setChatOpened,
-    submitQuery,
-    deepThinkingEnabled,
-    toggleDeepThinking,
-  } = useAiAssistant()
+  const { setChatOpened, submitQuery } = useAiAssistant()
   const [question, setQuestion] = useState("")
   const [showCustomCarat, setShowCustomCaret] = useState(false)
 
@@ -37,33 +31,21 @@ const HomepageDocsAssistant = () => {
         "How do I deploy Medusa to production?",
       ],
     },
-    {
-      tag: "Recipes",
-      questions: [
-        "How do I build a marketplace?",
-        "How do I build digital products?",
-        "How do I build subscription-based purchases?",
-        "What other recipes are available?",
-      ],
-    },
   ]
 
   return (
-    <div className="w-full flex gap-0 items-center border-b border-medusa-border-base flex-col lg:flex-row lg:h-[480px]">
+    <div className="w-full flex gap-0 items-stretch border-b border-medusa-border-base flex-col lg:flex-row">
       {/* Chat area */}
       <div
         className={clsx(
-          "w-full h-full lg:w-1/2 bg-medusa-bg-component relative",
+          "w-full lg:w-1/2 bg-medusa-bg-component relative",
           "flex flex-col justify-between gap-2",
           "p-2 border-r border-medusa-border-base",
           "border-b lg:border-b-0"
         )}
       >
         <div className="flex flex-col gap-2 flex-1">
-          <BloomIcon className="w-2 h-2 text-medusa-fg-subtle" />
-          <span className="text-h1 text-pretty">
-            Hello! I’m the Docs Assistant. How can I help you?
-          </span>
+          <span className="text-h1 text-pretty">Ask AI</span>
           <div className="w-full flex-1 py-0.75 border-t border-medusa-border-base relative">
             <textarea
               className={clsx(
@@ -73,7 +55,7 @@ const HomepageDocsAssistant = () => {
                 !question && "caret-transparent"
               )}
               placeholder={
-                !showCustomCarat ? "Ask anything about Medusa..." : ""
+                !showCustomCarat ? "How do I get started with Medusa?" : ""
               }
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
@@ -91,44 +73,7 @@ const HomepageDocsAssistant = () => {
             )}
           </div>
         </div>
-        <div className="flex justify-between">
-          <Button
-            variant="transparent-clear"
-            onClick={(e) => {
-              toggleDeepThinking()
-              e.currentTarget.blur()
-            }}
-            className={clsx(
-              "group",
-              deepThinkingEnabled && [
-                "!bg-medusa-button-neutral rounded-full flex !pl-[10px] !pr-[9px] !py-0 gap-[6px]",
-                "!shadow-button-neutral",
-              ],
-              !deepThinkingEnabled && [
-                "focus:!bg-transparent active:!bg-transparent",
-                "focus:!shadow-none active:!shadow-none",
-              ]
-            )}
-          >
-            <Telescope
-              className={clsx(
-                deepThinkingEnabled &&
-                  "text-medusa-fg-interactive group-hover:hidden",
-                !deepThinkingEnabled && "text-medusa-fg-muted"
-              )}
-            />
-            <XMarkMini
-              className={clsx(
-                "hidden text-medusa-fg-base",
-                deepThinkingEnabled && "group-hover:block"
-              )}
-            />
-            {deepThinkingEnabled && (
-              <span className="text-compact-small-plus text-medusa-fg-base">
-                Deep research
-              </span>
-            )}
-          </Button>
+        <div className="flex justify-end">
           <Button
             variant="primary"
             className={clsx(
@@ -147,8 +92,8 @@ const HomepageDocsAssistant = () => {
       {/* Chat suggestions area */}
       <div
         className={clsx(
-          "w-full h-full lg:w-1/2 flex justify-start items-center",
-          "px-2 py-2 lg:py-0"
+          "w-full lg:w-1/2 flex justify-start items-start",
+          "p-2"
         )}
       >
         <div className="flex gap-2 flex-col">

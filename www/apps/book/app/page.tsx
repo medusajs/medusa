@@ -64,9 +64,9 @@ const Homepage = () => {
               <HomepageSectionsSeparator />
               <HomepageDocsAssistant />
               <HomepageSectionsSeparator />
-              <HomepageWhatsNewSection />
-              <HomepageSectionsSeparator />
               <HomepageLinksSection />
+              <HomepageSectionsSeparator />
+              <HomepageWhatsNewSection />
               <HomepageSectionsSeparator />
               <HomepageCloudSection />
               <HomepageSectionsSeparator />

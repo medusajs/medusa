@@ -1,7 +1,6 @@
 import clsx from "clsx"
 import { HeadlineTags, ShadedBlock } from "docs-ui"
 import Link from "next/link"
-import { LinksSectionBloomIcon } from "./Icon"
 
 const HomepageLinksSection = () => {
   const links: {
@@ -23,42 +22,8 @@ const HomepageLinksSection = () => {
           text: "Create your first project",
         },
         {
-          link: "https://docs.medusajs.com/cloud/going-live",
-          text: "Go live",
-        },
-      ],
-    },
-    {
-      tag: "Medusa Cloud Resources",
-      links: [
-        {
-          link: "https://docs.medusajs.com/cloud/storefront",
-          text: "Storefront",
-        },
-        {
-          link: "https://docs.medusajs.com/cloud/search",
-          text: "Search",
-        },
-        {
-          link: "https://docs.medusajs.com/cloud/emails",
-          text: "Emails",
-        },
-      ],
-    },
-    {
-      tag: "Build with Agents",
-      links: [
-        {
-          link: "https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp",
-          text: "Medusa MCP",
-        },
-        {
-          link: "https://docs.medusajs.com/cloud/ai-toolkit/agent-skills",
-          text: "Agent Skills",
-        },
-        {
-          link: "https://docs.medusajs.com/cloud/cli",
-          text: "Cloud CLI",
+          link: "https://docs.medusajs.com/cloud/migrate-self-hosted",
+          text: "Migrate from self-hosting",
         },
       ],
     },
@@ -80,34 +45,33 @@ const HomepageLinksSection = () => {
       ],
     },
     {
-      tag: "Storefront Development",
+      tag: "Build with Agents",
       links: [
         {
-          link: "https://docs.medusajs.com/resources/nextjs-starter",
-          text: "Explore storefront starter",
+          link: "https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp",
+          text: "Medusa MCP",
         },
         {
-          link: "https://docs.medusajs.com/resources/storefront-development",
-          text: "Build custom storefront",
+          link: "https://docs.medusajs.com/cloud/ai-toolkit/agent-skills",
+          text: "Agent Skills",
         },
         {
-          link: "https://docs.medusajs.com/cloud/ai-toolkit/agent-skills#ecommerce-storefront-best-practices",
-          text: "Use agent skills",
+          link: "https://docs.medusajs.com/cloud/cli",
+          text: "Cloud CLI",
         },
       ],
     },
   ]
 
   return (
-    <div className="w-full flex gap-0 flex-col md:flex-row flex-wrap border-b border-medusa-border-base">
+    <div className="w-full flex gap-0 flex-col md:flex-row border-b border-medusa-border-base">
       {links.map((section, index) => (
         <div
           key={index}
           className={clsx(
             "p-2 flex justify-between flex-col w-full md:w-1/3 gap-2 md:min-h-[320px]",
-            "border-b border-medusa-border-base md:border-b-0",
-            index !== 2 && "md:border-r",
-            index > 2 && "md:border-t"
+            "border-medusa-border-base",
+            index !== links.length - 1 && "border-b md:border-b-0 md:border-r"
           )}
         >
           <HeadlineTags tags={[section.tag]} className="!justify-start" />
@@ -128,14 +92,6 @@ const HomepageLinksSection = () => {
           </div>
         </div>
       ))}
-      <div
-        className={clsx(
-          "p-2 flex justify-center items-center w-full md:w-1/3 gap-2 md:min-h-[320px]",
-          "border-medusa-border-base md:border-t bg-medusa-bg-component"
-        )}
-      >
-        <LinksSectionBloomIcon />
-      </div>
     </div>
   )
 }
