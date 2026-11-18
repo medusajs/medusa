@@ -13,6 +13,7 @@
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
     "skipLibCheck": true,
+    "types": ["*"],
     "strict": true,
     "checkJs": false
   },

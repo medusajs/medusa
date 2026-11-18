@@ -8,19 +8,19 @@ import {
 } from "@medusajs/framework/types"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export type CreateRbacPoliciesStepInput = {
   policies: CreateRbacPolicyDTO[]
 }
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const createRbacPoliciesStepId = "create-rbac-policies"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const createRbacPoliciesStep = createStep(
   createRbacPoliciesStepId,

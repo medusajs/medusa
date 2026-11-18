@@ -60,9 +60,9 @@ export const useStartAuthMfa = (
   return useMutation({
     mutationFn: (payload) => sdk.auth.mfa.start(payload),
     ...options,
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: mfaQueryKeys.lists() })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })
 }
@@ -78,9 +78,9 @@ export const useVerifyAuthMfa = (
   return useMutation({
     mutationFn: (payload) => sdk.auth.mfa.verify(id, payload),
     ...options,
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: mfaQueryKeys.lists() })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })
 }
@@ -96,9 +96,9 @@ export const useDisableAuthMfa = (
   return useMutation({
     mutationFn: (payload) => sdk.auth.mfa.disable(id, payload ?? {}),
     ...options,
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: mfaQueryKeys.lists() })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })
 }

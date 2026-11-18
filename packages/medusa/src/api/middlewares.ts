@@ -1,5 +1,6 @@
 import { defineMiddlewares } from "../utils/define-middlewares"
 import { adminApiKeyRoutesMiddlewares } from "./admin/api-keys/middlewares"
+import { adminAuditLogRoutesMiddlewares } from "./admin/audit-logs/middlewares"
 import { adminCampaignRoutesMiddlewares } from "./admin/campaigns/middlewares"
 import { adminClaimRoutesMiddlewares } from "./admin/claims/middlewares"
 import { adminCollectionRoutesMiddlewares } from "./admin/collections/middlewares"
@@ -82,7 +83,7 @@ import { adminTranslationsRoutesMiddlewares } from "./admin/translations/middlew
 export default defineMiddlewares([
   ...storeRoutesMiddlewares,
   {
-    matcher: "/admin*",
+    matcher: "/admin{*splat}",
     middlewares: [setSecretApiKeyContext],
   },
   ...adminCustomerGroupRoutesMiddlewares,
@@ -113,6 +114,7 @@ export default defineMiddlewares([
   ...adminTaxRegionRoutesMiddlewares,
   ...adminTranslationsRoutesMiddlewares,
   ...adminApiKeyRoutesMiddlewares,
+  ...adminAuditLogRoutesMiddlewares,
   ...hooksRoutesMiddlewares,
   ...adminStoreRoutesMiddlewares,
   ...adminCurrencyRoutesMiddlewares,

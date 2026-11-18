@@ -49,6 +49,7 @@ Promotion Module for Medusa: manages promotions, promotion rules, application me
 ## Features
 
 - Create standard and buy-get promotions with fixed or percentage discounts.
+- Choose whether a buy-get promotion discounts the most expensive or the cheapest eligible items.
 - Apply discounts to an order, its items, or its shipping methods.
 - Restrict when a promotion applies with rules.
 - Group promotions in campaigns with start and end dates and spend or usage budgets.

@@ -1031,6 +1031,99 @@ medusaIntegrationTestRunner({
               ["Cotton", "Wool"]
             )
           })
+
+          it("restores the product's metadata and type when updating by selector on rollback", async () => {
+            const workflow = updateProductsWorkflow(appContainer)
+
+            workflow.appendAction("throw", updateProductsWorkflowId, {
+              invoke: async function failStep() {
+                throw new Error(`Fail`)
+              },
+            })
+
+            const [productType] = await service.createProductTypes([
+              { value: "Apparel" },
+            ])
+
+            const [withoutMetadata, withMetadata, updatedById] =
+              await service.createProducts([
+                {
+                  title: "Without metadata",
+                  shipping_profile_id: shippingProfile.id,
+                  type_id: productType.id,
+                },
+                {
+                  title: "With metadata",
+                  shipping_profile_id: shippingProfile.id,
+                  metadata: { kept: "value" },
+                },
+                {
+                  title: "Updated by id",
+                  shipping_profile_id: shippingProfile.id,
+                  type_id: productType.id,
+                  metadata: { kept: "value" },
+                },
+              ])
+
+            const runs = [
+              {
+                selector: { id: withoutMetadata.id },
+                update: { metadata: { a: { b: 1 } }, type_id: null },
+              },
+              {
+                selector: { id: withMetadata.id },
+                update: { metadata: { added: "value" } },
+              },
+              {
+                products: [
+                  {
+                    id: updatedById.id,
+                    metadata: { added: "value" },
+                    type_id: null,
+                  },
+                ],
+              },
+            ]
+
+            for (const input of runs) {
+              const { errors } = await workflow.run({
+                input: input as any,
+                throwOnError: false,
+              })
+
+              expect(errors).toEqual([
+                {
+                  action: "throw",
+                  handlerType: "invoke",
+                  error: expect.objectContaining({ message: `Fail` }),
+                },
+              ])
+            }
+
+            const compensated = await service.listProducts(
+              { id: [withoutMetadata.id, withMetadata.id, updatedById.id] },
+              { select: ["id", "metadata", "type_id"] }
+            )
+
+            expect(compensated).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({
+                  id: withoutMetadata.id,
+                  metadata: null,
+                  type_id: productType.id,
+                }),
+                expect.objectContaining({
+                  id: withMetadata.id,
+                  metadata: { kept: "value" },
+                }),
+                expect.objectContaining({
+                  id: updatedById.id,
+                  metadata: { kept: "value" },
+                  type_id: productType.id,
+                }),
+              ])
+            )
+          })
         })
       })
     })

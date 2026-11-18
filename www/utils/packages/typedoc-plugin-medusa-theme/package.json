@@ -15,7 +15,7 @@
   "author": "Shahed Nasser",
   "type": "module",
   "scripts": {
-    "build": "tsc && copyfiles --up 1 ./src/**/*.hbs ./dist/",
+    "build": "yarn run -T tsc && copyfiles --up 1 ./src/**/*.hbs ./dist/",
     "lint": "eslint --ext .ts src",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -29,7 +29,7 @@
     "copyfiles": "^2.4.1",
     "typedoc": "^0.28.20",
     "types": "*",
-    "typescript": "^5.6.2",
+    "typescript": "^6.0.3",
     "vitest": "^2.1.8"
   },
   "keywords": [

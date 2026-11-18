@@ -9,7 +9,7 @@ import { createRbacRolePoliciesStep, createRbacRolesStep } from "../steps"
 import { validateActorPermissionsStep } from "../steps/validate-actor-permissions"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export type CreateRbacRolesWorkflowInput = {
   actor_id?: string
@@ -23,12 +23,12 @@ export type CreateRbacRolesWorkflowInput = {
 }
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const createRbacRolesWorkflowId = "create-rbac-roles"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const createRbacRolesWorkflow = createWorkflow(
   createRbacRolesWorkflowId,

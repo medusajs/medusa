@@ -102,14 +102,14 @@ export const useSetLayoutConfiguration = (
     mutationFn: (payload: HttpTypes.AdminSetLayoutConfiguration) =>
       sdk.admin.layouts.setConfiguration(zone, payload),
     ...options,
-    onSuccess: async (data, variables, context) => {
+    onSuccess: async (data, variables, onMutateResult, context) => {
       await queryClient.invalidateQueries({
         queryKey: layoutsQueryKeys.configuration(zone),
       })
       await queryClient.invalidateQueries({
         queryKey: [layoutsQueryKeys.all, "configurations"],
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })
 }

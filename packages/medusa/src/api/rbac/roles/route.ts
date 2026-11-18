@@ -13,7 +13,7 @@ import {
 import { AdminCreateRbacRoleType } from "./validators"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest,
@@ -37,7 +37,7 @@ export const GET = async (
 }
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateRbacRoleType>,

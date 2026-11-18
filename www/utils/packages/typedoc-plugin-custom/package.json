@@ -15,8 +15,8 @@
   "author": "Shahed Nasser",
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch",
+    "build": "yarn run -T tsc",
+    "watch": "yarn run -T tsc --watch",
     "lint": "eslint --ext .ts src"
   },
   "peerDependencies": {
@@ -26,7 +26,7 @@
     "@types/eslint": "^9.6.1",
     "@types/node": "^20.12.10",
     "types": "*",
-    "typescript": "^5.6.2"
+    "typescript": "^6.0.3"
   },
   "keywords": [
     "typedocplugin",

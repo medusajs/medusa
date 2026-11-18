@@ -16,7 +16,7 @@ import { HttpTypes } from "@medusajs/framework/types"
  * `scope_id` query params (both required to take effect); otherwise the
  * request's ambient scope set applies.
  *
- * @ignore
+ * @since 2.22.3
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest<

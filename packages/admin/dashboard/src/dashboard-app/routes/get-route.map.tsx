@@ -2250,11 +2250,22 @@ export function getRouteMap({
             {
               path: "search",
               errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("searchIndexes.domain"),
+                permissions: "search_index:read",
               },
-              lazy: () =>
-                import("../../routes/search-indexes/search-index-list"),
+              children: [
+                {
+                  path: "",
+                  lazy: () =>
+                    import("../../routes/search-indexes/search-index-list"),
+                },
+              ],
             },
             {
               path: "product-types",

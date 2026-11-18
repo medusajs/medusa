@@ -75,7 +75,7 @@ export const updatePriceListPricesStep = createStep(
     const existingPrices = priceIds.length
       ? await pricingModule.listPrices(
           { id: priceIds },
-          { relations: ["price_list"] }
+          { relations: ["price_list", "price_set", "price_rules"] }
         )
       : []
 
@@ -86,10 +86,11 @@ export const updatePriceListPricesStep = createStep(
       const priceListId = price.price_list!.id
       const prices = priceListPricesMap.get(priceListId) || []
 
+      prices.push(price)
       priceListPricesMap.set(priceListId, prices)
     }
 
-    for (const [priceListId, prices] of Object.entries(priceListPricesMap)) {
+    for (const [priceListId, prices] of priceListPricesMap) {
       dataBeforePriceUpdate.push({
         price_list_id: priceListId,
         prices: buildPriceSetPricesForModule(prices),

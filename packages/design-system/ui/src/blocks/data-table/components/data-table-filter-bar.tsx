@@ -6,7 +6,7 @@ import { DataTableFilter } from "@/blocks/data-table/components/data-table-filte
 import { useDataTableContext } from "@/blocks/data-table/context/use-data-table-context"
 import { Button } from "@/components/button"
 import { Skeleton } from "@/components/skeleton"
-import isEqual from "lodash.isequal"
+import { dequal as isEqual } from "dequal"
 
 interface DataTableFilterBarProps {
   /**

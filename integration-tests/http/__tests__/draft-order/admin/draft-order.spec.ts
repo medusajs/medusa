@@ -1682,6 +1682,52 @@ medusaIntegrationTestRunner({
           }),
         ])
       })
+
+      it("should save metadata and description when adding a shipping method", async () => {
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit`,
+          {},
+          adminHeaders
+        )
+
+        const preview = (
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/shipping-methods`,
+            {
+              shipping_option_id: shippingOptionHeavy.id,
+              description: "Leave at the door",
+              metadata: { delivery_option: "pickup" },
+            },
+            adminHeaders
+          )
+        ).data.draft_order_preview
+
+        const addedMethod = preview.shipping_methods.find(
+          (method) => method.shipping_option_id === shippingOptionHeavy.id
+        )
+
+        await api.post(
+          `/admin/draft-orders/${testDraftOrder.id}/edit/confirm`,
+          {},
+          adminHeaders
+        )
+
+        const order = (
+          await api.get(
+            `/admin/draft-orders/${testDraftOrder.id}?fields=+shipping_methods.metadata,+shipping_methods.description`,
+            adminHeaders
+          )
+        ).data.draft_order
+
+        expect(
+          order.shipping_methods.find((method) => method.id === addedMethod.id)
+        ).toEqual(
+          expect.objectContaining({
+            description: "Leave at the door",
+            metadata: { delivery_option: "pickup" },
+          })
+        )
+      })
     })
 
     describe("POST /draft-orders/:id/edit/items", () => {

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "./dist",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "rootDir": ".",
   },
   "include": ["*.ts"],

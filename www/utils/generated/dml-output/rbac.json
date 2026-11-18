@@ -14,18 +14,6 @@
 			"is_deprecated": false
 		}
 	},
-	"RbacRoleParent": {
-		"filePath": "packages/modules/rbac/src/models/rbac-role-parent.ts",
-		"properties": {
-			"id": "The ID of the rbac role parent.",
-			"role": "The associated role.\n\n@expandable",
-			"parent": "The associated parent.\n\n@expandable",
-			"metadata": "Holds custom data in key-value pairs."
-		},
-		"deprecated": {
-			"is_deprecated": false
-		}
-	},
 	"RbacRolePolicy": {
 		"filePath": "packages/modules/rbac/src/models/rbac-role-policy.ts",
 		"properties": {
@@ -46,18 +34,21 @@
 			"description": "The description of the rbac role",
 			"metadata": "Holds custom data in key-value pairs.",
 			"policies": "The associated policies.\n\n@expandable",
-			"parents": "The associated parents.\n\n@expandable"
+			"assignments": "The associated assignments.\n\n@expandable"
 		},
 		"deprecated": {
 			"is_deprecated": false
 		}
 	},
-	"RbacRoleInheritance": {
-		"filePath": "packages/modules/rbac/src/models/rbac-role-inheritance.ts",
+	"RbacRoleAssignment": {
+		"filePath": "packages/modules/rbac/src/models/rbac-role-assignment.ts",
 		"properties": {
-			"id": "The ID of the rbac role inheritance.",
+			"id": "The ID of the rbac role assignment.",
 			"role": "The associated role.\n\n@expandable",
-			"inherited_role": "The associated inherited_role.\n\n@expandable",
+			"reference": "The reference of the rbac role assignment",
+			"reference_id": "The reference id of the rbac role assignment",
+			"scope": "The scope of the rbac role assignment",
+			"scope_id": "The scope id of the rbac role assignment",
 			"metadata": "Holds custom data in key-value pairs."
 		},
 		"deprecated": {

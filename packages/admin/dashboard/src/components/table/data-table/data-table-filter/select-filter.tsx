@@ -110,7 +110,6 @@ export const SelectFilter = ({
       {!readonly && (
         <RadixPopover.Portal>
           <RadixPopover.Content
-            hideWhenDetached
             align="start"
             sideOffset={8}
             collisionPadding={8}

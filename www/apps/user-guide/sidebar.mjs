@@ -323,6 +323,23 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Roles",
+            path: "/settings/roles",
+            children: [
+              {
+                type: "link",
+                title: "Common Roles",
+                path: "/settings/roles/common-roles",
+              },
+            ],
+          },
+          {
+            type: "link",
+            title: "Policies",
+            path: "/settings/policies",
+          },
+          {
+            type: "link",
             title: "Regions",
             path: "/settings/regions",
           },
@@ -419,6 +436,11 @@ export const sidebar = [
             type: "link",
             title: "Search Indexes",
             path: "/settings/search",
+          },
+          {
+            type: "link",
+            title: "Announcements",
+            path: "/settings/announcements",
           },
         ],
       },

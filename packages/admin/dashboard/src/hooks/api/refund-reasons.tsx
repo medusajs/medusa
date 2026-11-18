@@ -65,12 +65,12 @@ export const useCreateRefundReason = (
 ) => {
   return useMutation({
     mutationFn: async (data) => sdk.admin.refundReason.create(data, query),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: refundReasonsQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -86,7 +86,7 @@ export const useUpdateRefundReason = (
 ) => {
   return useMutation({
     mutationFn: async (data) => sdk.admin.refundReason.update(id, data),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: refundReasonsQueryKeys.lists(),
       })
@@ -94,7 +94,7 @@ export const useUpdateRefundReason = (
         queryKey: refundReasonsQueryKeys.detail(data.refund_reason.id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -109,7 +109,7 @@ export const useDeleteRefundReasonLazy = (
 ) => {
   return useMutation({
     mutationFn: (id: string) => sdk.admin.refundReason.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: refundReasonsQueryKeys.lists(),
       })
@@ -117,7 +117,7 @@ export const useDeleteRefundReasonLazy = (
         queryKey: refundReasonsQueryKeys.details(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

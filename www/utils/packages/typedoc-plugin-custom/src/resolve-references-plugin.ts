@@ -45,6 +45,7 @@ export function load(app: Application) {
   let symbolToOwningModule = new Map<ts.Symbol, Reflection>()
   let knownPrograms = new Map<Reflection, ts.Program>()
   let checkedVariableSymbols = false
+  let projectContext: Context | undefined
 
   function discoverMissingExports(
     owningModule: Reflection,
@@ -104,11 +105,23 @@ export function load(app: Application) {
     }
   )
 
+  app.converter.on(Converter.EVENT_BEGIN, (context: Context) => {
+    projectContext = context
+  })
+
   app.converter.on(Converter.EVENT_CREATE_DECLARATION, (context: Context) => {
-    if (!app.options.getValue("checkVariables") || checkedVariableSymbols) {
+    if (
+      !app.options.getValue("checkVariables") ||
+      checkedVariableSymbols ||
+      !projectContext
+    ) {
       return
     }
     checkedVariableSymbols = true
+    // TypeDoc 0.28 only allows `withScope` on the current scope's children,
+    // and this context's scope is the declaration being created.
+    const rootContext = projectContext
+    rootContext.setActiveProgram(context.program)
 
     context.program
       .getSourceFiles()
@@ -123,7 +136,7 @@ export function load(app: Application) {
           }
 
           const internalNs = getOrCreateInternalNs({
-            context,
+            context: rootContext,
             scope: context.project,
             nameSuffix: `${Math.random() * 100}`,
           })
@@ -132,7 +145,7 @@ export function load(app: Application) {
             return
           }
 
-          const internalContext = context.withScope(internalNs)
+          const internalContext = rootContext.withScope(internalNs)
 
           for (const [, value] of localVariables) {
             if (!value.valueDeclaration) {
@@ -174,7 +187,7 @@ export function load(app: Application) {
 
         const internalNs = getOrCreateInternalNs({ context, scope: mod })
 
-        const internalContext = context.withScope(internalNs || mod)
+        const internalContext = withNestedScope(context, internalNs || mod)
 
         // Keep track of which symbols we've tried to convert. If they don't get converted
         // when calling convertSymbol, then the user has excluded them somehow, don't go into
@@ -241,6 +254,14 @@ function getOwningModule(context: Context): Reflection {
   }
 
   return refl
+}
+
+function withNestedScope(context: Context, scope: Reflection): Context {
+  if (scope === context.scope) {
+    return context
+  }
+
+  return withNestedScope(context, scope.parent!).withScope(scope)
 }
 
 function shouldConvertSymbol(symbol: ts.Symbol, checker: ts.TypeChecker) {

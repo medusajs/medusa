@@ -257,7 +257,7 @@ const parseDisplayValue = (
   let displayValue = ""
 
   if (typeof parsed === "object") {
-    const parts = []
+    const parts: string[] = []
     if (parsed.$gt) {
       parts.push(t("filters.compare.greaterThanLabel", { value: parsed.$gt }))
     }

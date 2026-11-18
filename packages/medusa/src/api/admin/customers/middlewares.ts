@@ -23,7 +23,7 @@ import { createLinkBody } from "../../utils/validators"
 
 export const adminCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/customers/*",
+    matcher: "/admin/customers/{*splat}",
     middlewares: [
       authorize([
         {

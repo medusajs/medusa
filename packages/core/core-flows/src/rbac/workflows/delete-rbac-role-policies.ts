@@ -10,7 +10,7 @@ import { deleteRbacRolePoliciesStep } from "../steps"
 import { validateActorPermissionsStep } from "../steps/validate-actor-permissions"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export type DeleteRbacRolePoliciesWorkflowInput = {
   role_policy_ids: string[]
@@ -27,7 +27,7 @@ export type DeleteRbacRolePoliciesWorkflowInput = {
 }
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const deleteRbacRolePoliciesWorkflowId = "delete-rbac-role-policies"
 
@@ -35,7 +35,7 @@ export const deleteRbacRolePoliciesWorkflowId = "delete-rbac-role-policies"
  * This workflow detaches policies from roles. When an actor is provided, it
  * validates that the actor holds every policy being detached, so that an
  * actor cannot strip a role of permissions they do not have themselves.
- * @ignore
+ * @since 2.22.3
  */
 export const deleteRbacRolePoliciesWorkflow = createWorkflow(
   deleteRbacRolePoliciesWorkflowId,

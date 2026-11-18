@@ -10,7 +10,7 @@ import {
 import { updateRbacPoliciesStep } from "../steps/update-rbac-policies"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export type UpdateRbacPoliciesWorkflowInput = {
   selector: FilterableRbacPolicyProps
@@ -18,12 +18,12 @@ export type UpdateRbacPoliciesWorkflowInput = {
 }
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const updateRbacPoliciesWorkflowId = "update-rbac-policies"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const updateRbacPoliciesWorkflow = createWorkflow(
   updateRbacPoliciesWorkflowId,

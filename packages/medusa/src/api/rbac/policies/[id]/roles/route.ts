@@ -13,7 +13,7 @@ import {
 /**
  * Lists the roles that include the given policy.
  *
- * @ignore
+ * @since 2.22.3
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest<

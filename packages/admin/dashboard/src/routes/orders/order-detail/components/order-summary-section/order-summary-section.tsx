@@ -226,95 +226,92 @@ export const OrderSummarySection = ({
       <DiscountAndTotalBreakdown order={order} plugins={plugins} />
       <Total order={order} />
 
-      {showReturns ||
-        showAllocateButton ||
-        showPayment ||
-        (showRefund && (
-          <div className="flex items-center justify-end gap-x-2 rounded-b-xl bg-ui-bg-subtle px-4 py-4">
-            {showReturns &&
-              (receivableReturns.length === 1 ? (
-                <Button asChild variant="secondary" size="small">
-                  <Link
-                    to={`/orders/${order.id}/returns/${receivableReturns[0].id}/receive`}
-                  >
-                    {t("orders.returns.receive.action")}
-                  </Link>
-                </Button>
-              ) : (
-                <ActionMenu
-                  groups={[
-                    {
-                      actions: receivableReturns.map((r) => {
-                        let id = r.id
-                        let returnType = "Return"
-
-                        if (r.exchange_id) {
-                          id = r.exchange_id
-                          returnType = "Exchange"
-                        }
-
-                        if (r.claim_id) {
-                          id = r.claim_id
-                          returnType = "Claim"
-                        }
-
-                        return {
-                          label: t("orders.returns.receive.receiveItems", {
-                            id: `#${id.slice(-7)}`,
-                            returnType,
-                          }),
-                          icon: <ArrowLongRight />,
-                          to: `/orders/${order.id}/returns/${r.id}/receive`,
-                        }
-                      }),
-                    },
-                  ]}
-                >
-                  <Button variant="secondary" size="small">
-                    {t("orders.returns.receive.action")}
-                  </Button>
-                </ActionMenu>
-              ))}
-
-            {showAllocateButton && (
+      {(showReturns || showAllocateButton || showPayment || showRefund) && (
+        <div className="flex items-center justify-end gap-x-2 rounded-b-xl bg-ui-bg-subtle px-4 py-4">
+          {showReturns &&
+            (receivableReturns.length === 1 ? (
               <Button asChild variant="secondary" size="small">
-                <Link to="allocate-items">
-                  {t("orders.allocateItems.action")}
+                <Link
+                  to={`/orders/${order.id}/returns/${receivableReturns[0].id}/receive`}
+                >
+                  {t("orders.returns.receive.action")}
                 </Link>
               </Button>
-            )}
+            ) : (
+              <ActionMenu
+                groups={[
+                  {
+                    actions: receivableReturns.map((r) => {
+                      let id = r.id
+                      let returnType = "Return"
 
-            {showPayment && (
-              <CopyPaymentLink
-                paymentCollection={unpaidPaymentCollection}
-                order={order}
-              />
-            )}
+                      if (r.exchange_id) {
+                        id = r.exchange_id
+                        returnType = "Exchange"
+                      }
 
-            {showPayment && (
-              <Button
-                size="small"
-                variant="secondary"
-                onClick={() => handleMarkAsPaid(unpaidPaymentCollection)}
+                      if (r.claim_id) {
+                        id = r.claim_id
+                        returnType = "Claim"
+                      }
+
+                      return {
+                        label: t("orders.returns.receive.receiveItems", {
+                          id: `#${id.slice(-7)}`,
+                          returnType,
+                        }),
+                        icon: <ArrowLongRight />,
+                        to: `/orders/${order.id}/returns/${r.id}/receive`,
+                      }
+                    }),
+                  },
+                ]}
               >
-                {t("orders.payment.markAsPaid")}
-              </Button>
-            )}
+                <Button variant="secondary" size="small">
+                  {t("orders.returns.receive.action")}
+                </Button>
+              </ActionMenu>
+            ))}
 
-            {showRefund && (
-              <Button size="small" variant="secondary" asChild>
-                <Link to={`/orders/${order.id}/refund`}>
-                  {t("orders.payment.refundAmount", {
-                    amount: getStylizedAmount(
-                      pendingDifference * -1,
-                      order?.currency_code
-                    ),
-                  })}
-                </Link>
-              </Button>
-            )}
-          </div>
-        ))}
+          {showAllocateButton && (
+            <Button asChild variant="secondary" size="small">
+              <Link to="allocate-items">
+                {t("orders.allocateItems.action")}
+              </Link>
+            </Button>
+          )}
+
+          {showPayment && (
+            <CopyPaymentLink
+              paymentCollection={unpaidPaymentCollection}
+              order={order}
+            />
+          )}
+
+          {showPayment && (
+            <Button
+              size="small"
+              variant="secondary"
+              onClick={() => handleMarkAsPaid(unpaidPaymentCollection)}
+            >
+              {t("orders.payment.markAsPaid")}
+            </Button>
+          )}
+
+          {showRefund && (
+            <Button size="small" variant="secondary" asChild>
+              <Link to={`/orders/${order.id}/refund`}>
+                {t("orders.payment.refundAmount", {
+                  amount: getStylizedAmount(
+                    pendingDifference * -1,
+                    order?.currency_code
+                  ),
+                })}
+              </Link>
+            </Button>
+          )}
+        </div>
+      )}
     </Container>
   )
 }

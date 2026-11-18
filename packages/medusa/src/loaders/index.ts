@@ -115,11 +115,13 @@ async function loadEntrypoints(
     next()
   })
 
-  const [{ shutdown }] = await promiseAll([
-    expressLoader({
-      app: expressApp,
-      container,
-    }),
+  // Must finish before the API loader mounts its router, so routes run after the session middleware
+  const { shutdown } = await expressLoader({
+    app: expressApp,
+    container,
+  })
+
+  await promiseAll([
     adminLoader({ app: expressApp, configModule, rootDirectory, plugins }),
     apiLoader({
       container,

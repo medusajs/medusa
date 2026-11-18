@@ -7,7 +7,6 @@
  *   - id
  *   - name
  *   - description
- *   - parent_id
  *   - metadata
  *   - created_at
  *   - updated_at
@@ -25,10 +24,6 @@
  *     type: string
  *     title: description
  *     description: The description of the RBAC role.
- *   parent_id:
- *     type: string
- *     title: parent_id
- *     description: The ID of the parent RBAC role.
  *   metadata:
  *     type: object
  *     description: Key-value pairs that hold additional information about the RBAC role.
@@ -52,6 +47,21 @@
  *     format: date-time
  *     title: deleted_at
  *     description: The date the RBAC role was deleted.
+ *   scope:
+ *     type: object
+ *     description: The scope the role is constrained to, if any.
+ *     required:
+ *       - type
+ *       - id
+ *     properties:
+ *       type:
+ *         type: string
+ *         title: type
+ *         description: The type of the scope's entity, such as `organization`.
+ *       id:
+ *         type: string
+ *         title: id
+ *         description: The ID of the scope's entity, such as `org_123`.
  * 
 */
 

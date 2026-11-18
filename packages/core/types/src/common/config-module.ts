@@ -4,7 +4,7 @@ import {
   InternalModuleDeclaration,
 } from "../modules-sdk"
 
-import type { RedisOptions } from "ioredis"
+import type { RedisClientOptions } from "redis"
 
 import { ConnectionOptions } from "node:tls"
 // This package emits CommonJS under `moduleResolution: Node16`, while Vite ships
@@ -278,6 +278,48 @@ export type HttpCompressionOptions = {
 /**
  * @interface
  *
+ * Security headers set on every HTTP response, including the Medusa Admin.
+ */
+export type HttpSecurityHeadersOptions = {
+  /**
+   * Whether the security headers are set. By default, it's `true`.
+   */
+  enabled?: boolean
+  /**
+   * The sources allowed to embed the Medusa application in an iframe, set in the
+   * `Content-Security-Policy: frame-ancestors` header. By default, it's `["'self'"]`.
+   * When set, the `X-Frame-Options` header isn't sent, since it can't allow other origins.
+   */
+  frameAncestors?: string[]
+}
+
+/**
+ * @interface
+ *
+ * Additional CORS configurations applied to the `/admin`, `/store`, and `/auth` API Routes.
+ */
+export type HttpCorsOptions = {
+  /**
+   * How long, in seconds, browsers can cache the response of a preflight request, set in the `Access-Control-Max-Age` header.
+   */
+  maxAge?: number
+  /**
+   * The response headers exposed to the browser, set in the `Access-Control-Expose-Headers` header.
+   */
+  exposedHeaders?: string | string[]
+  /**
+   * The request headers allowed in cross-origin requests, set in the `Access-Control-Allow-Headers` header.
+   */
+  allowedHeaders?: string | string[]
+  /**
+   * The HTTP methods allowed in cross-origin requests, set in the `Access-Control-Allow-Methods` header.
+   */
+  methods?: string | string[]
+}
+
+/**
+ * @interface
+ *
  * Medusa Cloud configurations.
  */
 export type MedusaCloudOptions = {
@@ -310,6 +352,11 @@ export type MedusaCloudOptions = {
    * The endpoint of the Medusa Cloud search service.
    */
   searchEndpoint?: string
+  /**
+   * The endpoint of the Medusa Cloud audit log service. In Medusa Cloud, the Audit Module
+   * is added by default when this is set and the license covers the `audit` feature.
+   */
+  auditEndpoint?: string
   /**
    * The authorization endpoint of the Medusa Cloud OAuth service.
    */
@@ -526,15 +573,15 @@ export type ProjectConfigOptions = {
   redisPrefix?: string
 
   /**
-   * This configuration defines options to pass ioredis for the Redis connection used to store the Medusa server's session. Refer to [ioredis’s RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions)
-   * for the list of available options.
+   * This configuration defines options to pass to `redis` (node-redis) for the Redis connection used to store the Medusa server's session. Refer to [node-redis's client configuration documentation](https://github.com/redis/node-redis/blob/master/docs/client-configuration.md)
+   * for the list of available options. The connection URL is always taken from `redisUrl`.
    *
    * @example
    * ```js title="medusa-config.ts"
    * module.exports = defineConfig({
    *   projectConfig: {
    *     redisOptions: {
-   *       connectionName: process.env.REDIS_CONNECTION_NAME ||
+   *       name: process.env.REDIS_CONNECTION_NAME ||
    *         "medusa",
    *     }
    *     // ...
@@ -543,7 +590,7 @@ export type ProjectConfigOptions = {
    * })
    * ```
    */
-  redisOptions?: RedisOptions
+  redisOptions?: Omit<RedisClientOptions, "url">
 
   /**
    * This configuration defines additional options to pass to [express-session](https://www.npmjs.com/package/express-session), which is used to store the Medusa server's session.
@@ -841,6 +888,28 @@ export type ProjectConfigOptions = {
      */
     rbacCors?: string
     /**
+     * Additional CORS configurations applied to the `/admin`, `/store`, and `/auth` API Routes, on top of the
+     * allowed origins set in `adminCors`, `storeCors`, and `authCors`.
+     *
+     * For example, set `maxAge` so browsers cache preflight responses.
+     *
+     * @example
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       corsOptions: {
+     *         maxAge: 7200,
+     *       }
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    corsOptions?: HttpCorsOptions
+    /**
      *
      * Configure HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there.
      * However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.
@@ -867,6 +936,28 @@ export type ProjectConfigOptions = {
      * ```
      */
     compression?: HttpCompressionOptions
+    /**
+     * Configure the security headers set on every response, including the Medusa Admin:
+     * `X-Content-Type-Options`, `X-Frame-Options`, and `Content-Security-Policy: frame-ancestors`.
+     *
+     * For example, allow a dashboard on another domain to embed the Medusa Admin in an iframe.
+     *
+     * @example
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       securityHeaders: {
+     *         frameAncestors: ["'self'", "https://dashboard.example.com"],
+     *       }
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    securityHeaders?: HttpSecurityHeadersOptions
     /**
      * The Medusa application's API Routes are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s API Routes.
      *

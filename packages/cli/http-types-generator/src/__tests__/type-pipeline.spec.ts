@@ -274,6 +274,37 @@ describe("ZodPipe (transform) schemas", () => {
 })
 
 // ---------------------------------------------------------------------------
+// Fields with a default value (`.default()`)
+// ---------------------------------------------------------------------------
+
+describe("schemas with defaulted fields", () => {
+  it("emits fields that are optional in the input but required in the output as optional", () => {
+    const [result] = runPipeline(`
+      export declare const StoreGetProductReviewsParams: {
+        _input: { sort?: "asc" | "desc"; include_hidden?: boolean; product_id: string }
+        _output: { sort: "asc" | "desc"; include_hidden: boolean; product_id: string }
+      }
+    `)
+    expect(result.code).toMatch(/sort\?: "asc" \| "desc"/)
+    expect(result.code).toContain("include_hidden?: boolean")
+    expect(result.code).toContain("product_id: string")
+    expect(result.code).not.toContain("product_id?")
+  })
+
+  it("emits defaulted fields as optional when the schema also has FindParams fields", () => {
+    const [result] = runPipeline(`
+      declare function createFindParams(): {
+        _input: { limit?: number; offset?: number; fields?: string; order?: string; with_deleted?: boolean; status?: string }
+        _output: { limit: number; offset: number; fields?: string; order?: string; with_deleted?: boolean; status: string }
+      }
+      export const StoreGetReviewsParams = createFindParams()
+    `)
+    expect(result.code).toContain("extends FindParams")
+    expect(result.code).toContain("status?: string")
+  })
+})
+
+// ---------------------------------------------------------------------------
 // createOperatorMap fields routed through the shape-arg fallback
 // (regression: applyAndAndOrOperators' `z.lazy()` makes `_output` unresolvable)
 // ---------------------------------------------------------------------------

@@ -100,6 +100,27 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it("should reject accepting an invite with another user's session", async () => {
+        const createSession = await api.post("/auth/session", {}, adminHeaders)
+        const [cookie] = createSession.headers["set-cookie"][0].split(";")
+
+        const error = await api
+          .post(
+            `/admin/invites/accept?token=${invite.token}`,
+            {
+              first_name: "Test",
+              last_name: "User",
+            },
+            { headers: { Cookie: cookie } }
+          )
+          .catch((e) => e.response)
+
+        expect(error.status).toEqual(400)
+        expect(error.data.message).toEqual(
+          "The user is already authenticated and cannot accept an invite."
+        )
+      })
+
       it("should fail to accept an invite given an invalid token", async () => {
         expect.assertions(2)
         const signup = await api.post("/auth/user/emailpass/register", {

@@ -1,5 +1,23 @@
 # @medusajs/admin-shared
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17518](https://github.com/medusajs/medusa/pull/17518) [`b89101c`](https://github.com/medusajs/medusa/commit/b89101ca53b1ab106549df31e0c38a50e755aefc) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(cloud,utils,medusa,admin-shared,dashboard): add Medusa Cloud plugin that shows Cloud announcements in the admin, and a `sidebar.settings.before` injection zone
+
+## 2.22.6
+
+## 2.22.5
+
+No changes in this release.
+
+## 2.22.4
+
+### Patch Changes
+
+- [#17647](https://github.com/medusajs/medusa/pull/17647) [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: upgrade TypeScript to 6.0.3
+
 ## 2.22.3
 
 ## 2.22.2

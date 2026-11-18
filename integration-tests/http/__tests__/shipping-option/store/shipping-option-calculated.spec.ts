@@ -9,7 +9,7 @@ import {
   generatePublishableKey,
   generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
-import { ProductStatus } from "@medusajs/utils"
+import { Modules, ProductStatus } from "@medusajs/utils"
 
 jest.setTimeout(50000)
 
@@ -828,6 +828,77 @@ medusaIntegrationTestRunner({
           expect(respB.data.shipping_option.amount).toBe(1.5)
         })
       })
+      describe("listShippingOptionsForCartWithPricingWorkflow", () => {
+        it("should set each option's stock location without the location's fulfillment sets", async () => {
+          cart = (
+            await api.post(
+              `/store/carts`,
+              {
+                region_id: region.id,
+                sales_channel_id: salesChannel.id,
+                currency_code: "usd",
+                email: "test@admin.com",
+                items: [{ variant_id: product.variants[0].id, quantity: 2 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const fulfillmentModule = appContainer.resolve(Modules.FULFILLMENT)
+          const calculatePricesSpy = jest.spyOn(
+            fulfillmentModule,
+            "calculateShippingOptionsPrices"
+          )
+
+          try {
+            const { result } = await listShippingOptionsForCartWithPricingWorkflow(
+              appContainer
+            ).run({ input: { cart_id: cart.id } })
+
+            const expectedLocation = expect.objectContaining({
+              id: stockLocation.id,
+              name: stockLocation.name,
+            })
+
+            expect(result).toHaveLength(2)
+            expect(result).toEqual(
+              expect.arrayContaining([
+                expect.objectContaining({
+                  id: shippingOptionFlat.id,
+                  amount: 1100,
+                  stock_location: expectedLocation,
+                }),
+                expect.objectContaining({
+                  id: shippingOptionCalculated.id,
+                  amount: 3,
+                  stock_location: expectedLocation,
+                }),
+              ])
+            )
+            result.forEach((option) => {
+              expect(option.stock_location).not.toHaveProperty(
+                "fulfillment_sets"
+              )
+            })
+
+            const [priceInput] = calculatePricesSpy.mock.calls[0]
+            expect(priceInput).toEqual([
+              expect.objectContaining({
+                id: shippingOptionCalculated.id,
+                context: expect.objectContaining({
+                  from_location: expectedLocation,
+                }),
+              }),
+            ])
+            expect(priceInput[0].context.from_location).not.toHaveProperty(
+              "fulfillment_sets"
+            )
+          } finally {
+            calculatePricesSpy.mockRestore()
+          }
+        })
+      })
+
       describe("setCalculatedShippingPricingContext hook", () => {
         const createCart = async () =>
           (

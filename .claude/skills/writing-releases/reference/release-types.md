@@ -35,6 +35,44 @@ Either signal alone is sufficient. The workflow pre-counts both and passes the t
 
 ---
 
+## Identifying Behavior Changes
+
+A non-breaking change still gets a Highlight when it can change how an existing store behaves after upgrading. Check every `fix:` and `feat:` commit touching `packages/modules/`, `packages/core/core-flows/`, or `packages/medusa/src/api/` with `git show <hash> --stat`, then read the diff of the ones that look relevant.
+
+It's a behavior change when the PR:
+
+- Adds validation or a new error where the operation used to succeed (even if succeeding was the bug)
+- Changes a default value, calculation (totals, taxes, prices, inventory quantities), or status transition
+- Changes which records a workflow or route reads, creates, or returns
+
+Example: a fix that makes inventory confirmation fail when no stock location level is linked to the sales channel's location. It's correct, but stores without location levels now get errors at checkout, so it needs a Highlight telling them to set location levels.
+
+**What to do with a behavior change:**
+- Add a Highlight with `**Behavior change**` on its own line (no emoji)
+- Add a `>` blockquote saying who is affected and what to check or configure before upgrading
+
+---
+
+## Identifying Migrations
+
+The release needs the `## Run Migrations` section (see `format.md`) when any commit adds a file under:
+
+- `packages/modules/**/src/migrations/` or `packages/plugins/**/migrations/` (database migrations)
+- `packages/**/src/migration-scripts/` (migration scripts)
+
+Check with `git show <hash> --stat --diff-filter=A`. Ignore `__fixtures__` and `__tests__` paths.
+
+---
+
+## Identifying Dependency Changes
+
+Check commits touching any `packages/**/package.json` (`chore(deps)`, `build`, and new-package PRs especially) with `git show <hash> -- '**/package.json'`. Ignore `devDependencies`, version bumps of `@medusajs/*` packages from the release itself, and root/`www/` changes.
+
+- **Breaking dependency change**: a minor changeset on the PR, a major bump of a `peerDependency`, a new required `peerDependency`, a raised Node.js `engines` version, or a major bump of a dependency whose API users touch directly (e.g. `zod`, `react`, `@mikro-orm/*`). Treat it as a breaking change: a `🚧` Highlight with the exact install command.
+- **Non-breaking dependency change**: a new published `@medusajs/*` package, a new dependency, or a minor/patch bump. Group them in a single `Dependency Updates` Highlight placed last (see ordering in `highlights.md`), one line per package with old and new version.
+
+---
+
 ## Identifying Feature Highlights
 
 A change qualifies as a Highlight only if it meets **at least one** of these criteria:
@@ -43,6 +81,13 @@ A change qualifies as a Highlight only if it meets **at least one** of these cri
 - **Wide API surface**: adds a substantial range of new endpoints or service methods across a domain — not a single new field or filter
 - **New architecture pattern**: introduces a new framework-level capability (e.g. new workflow primitives, new plugin architecture, new event system)
 - **Significant new commerce capability**: unlocks a major use case that wasn't possible before (e.g. B2B pricing, digital products, multi-warehouse fulfillment, new payment flow architecture)
+
+**Also a Highlight, whatever the commit prefix** (these often ship as `chore:` or `fix:`, so don't skip them):
+
+- **Module or feature leaves beta**: a feature flag is removed or a module becomes enabled by default. Title it `<Name> Stable` and say what's now available without a flag.
+- **Deprecation**: a module, API, or option is deprecated. Say what replaces it and show the config or code to remove or change.
+- **Support for a new major version of user-facing tooling**: TypeScript, Tailwind CSS, Node.js, React, or a package manager. Show the install command.
+- **Security fix**: a PR fixing a vulnerability or hardening input handling (`security` label, CVE in the title, words like "harden", "escape", "sanitize", "unsafe"). See `highlights.md` for the structure. Routine dependency bumps for CVEs stay in bullets unless the vulnerability affects Medusa's own code paths.
 
 **Not a Highlight** (put in Features bullets only):
 - A single new filter parameter on an existing endpoint
@@ -61,8 +106,11 @@ A change qualifies as a Highlight only if it meets **at least one** of these cri
 ## Decision Flowchart
 
 ```
-Are there any minor changesets (breaking changes)?
+Are there any minor changesets (breaking changes) or breaking dependency changes?
   └─ Yes → Multi-Highlight required (each breaking change gets a Highlight)
+
+Are there any behavior changes or dependency changes?
+  └─ Yes → Each gets a Highlight (dependency changes share one non-breaking Highlight)
 
 Are there any changes matching the Feature Highlight criteria above?
   ├─ No → Minimal release (no Highlights section)

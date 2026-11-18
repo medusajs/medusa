@@ -34,8 +34,21 @@ export class ProgramFactory {
       }
     }
 
+    const { config, error } = ts.parseConfigFileTextToJson(
+      tsconfigBasePath,
+      configStr
+    )
+    if (error) {
+      throw new Error(
+        `Failed to parse ${tsconfigBasePath}: ${ts.flattenDiagnosticMessageText(
+          error.messageText,
+          "\n"
+        )}`
+      )
+    }
+
     const parsed = ts.parseJsonConfigFileContent(
-      JSON.parse(configStr),
+      config,
       ts.sys,
       projectRoot
     )

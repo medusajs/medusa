@@ -86,4 +86,5 @@ cd packages/core/js-sdk && ../../../node_modules/.bin/jest src/__tests__/client.
 - Header precedence: defaults (`content-type`, `accept`, API key, publishable key) < `globalHeaders` < JWT `Authorization` < per-call `headers`.
 - Without `auth.jwtTokenStorageMethod`, the token goes to `localStorage` if available, else `nostore` (not persisted) on the server. `"local"`/`"session"` throw outside the browser; `"custom"` throws without `auth.storage`.
 - `credentials` is only set when `Request.prototype` supports it (omitted on some server runtimes); for `jwt` it is `"omit"`.
+- Some admin namespaces call routes that only exist when an optional module is installed and return `404` otherwise, e.g. `sdk.admin.auditLog` (`/admin/audit-logs`, Audit Module).
 - The Medusa Admin dashboard depends on this package, so changes to `Client`/`Auth` behavior affect it too.

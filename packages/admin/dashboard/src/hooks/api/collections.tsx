@@ -69,7 +69,6 @@ export const useInfiniteCollections = (
       HttpTypes.AdminCollectionListResponse,
       FetchError,
       InfiniteData<HttpTypes.AdminCollectionListResponse, number>,
-      HttpTypes.AdminCollectionListResponse,
       QueryKey,
       number
     >,
@@ -98,13 +97,13 @@ export const useUpdateCollection = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.productCollection.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: collectionsQueryKeys.detail(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -121,7 +120,7 @@ export const useUpdateCollectionProducts = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.productCollection.updateProducts(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: collectionsQueryKeys.detail(id),
@@ -133,7 +132,7 @@ export const useUpdateCollectionProducts = (
         queryKey: productsQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -148,10 +147,10 @@ export const useCreateCollection = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.productCollection.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -167,13 +166,13 @@ export const useDeleteCollection = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.productCollection.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: collectionsQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: collectionsQueryKeys.detail(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

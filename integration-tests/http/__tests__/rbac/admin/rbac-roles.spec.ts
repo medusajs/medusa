@@ -1041,6 +1041,126 @@ medusaIntegrationTestRunner({
           })
         })
 
+        describe("DELETE /rbac/roles/:id/policies", () => {
+          beforeEach(async () => {
+            await api.post(
+              `/rbac/roles/${emptyTargetRoleId}/policies`,
+              { policies: [productReadPolicyId, customerReadPolicyId] },
+              adminHeaders
+            )
+          })
+
+          it("removes multiple policies in one request as super admin", async () => {
+            const response = await api.delete(
+              `/rbac/roles/${emptyTargetRoleId}/policies`,
+              {
+                ...adminHeaders,
+                data: { policies: [productReadPolicyId, customerReadPolicyId] },
+              }
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data).toEqual({
+              ids: [productReadPolicyId, customerReadPolicyId],
+              object: "rbac_role_policy",
+              deleted: true,
+            })
+
+            const rolePolicies = await container
+              .resolve(Modules.RBAC)
+              .listRbacRolePolicies({ role_id: emptyTargetRoleId })
+            expect(rolePolicies).toHaveLength(0)
+          })
+
+          it("allows an exact `resource:op` holder to remove that policy", async () => {
+            const response = await api.delete(
+              `/rbac/roles/${emptyTargetRoleId}/policies`,
+              {
+                ...productReaderHeaders,
+                data: { policies: [productReadPolicyId] },
+              }
+            )
+
+            expect(response.status).toEqual(200)
+
+            const rolePolicies = await container
+              .resolve(Modules.RBAC)
+              .listRbacRolePolicies({ role_id: emptyTargetRoleId })
+            expect(rolePolicies.map((rp) => rp.policy_id)).toEqual([
+              customerReadPolicyId,
+            ])
+          })
+
+          it("denies the whole batch when one policy is not held by the actor", async () => {
+            const error = await api
+              .delete(`/rbac/roles/${emptyTargetRoleId}/policies`, {
+                ...productReaderHeaders,
+                data: { policies: [productReadPolicyId, customerReadPolicyId] },
+              })
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(403)
+
+            const rolePolicies = await container
+              .resolve(Modules.RBAC)
+              .listRbacRolePolicies({ role_id: emptyTargetRoleId })
+            expect(rolePolicies.map((rp) => rp.policy_id)).toEqual(
+              expect.arrayContaining([
+                productReadPolicyId,
+                customerReadPolicyId,
+              ])
+            )
+            expect(rolePolicies).toHaveLength(2)
+          })
+
+          it("refuses a batch containing `*:*` on the super admin role, even for a super admin", async () => {
+            const error = await api
+              .delete(`/rbac/roles/role_super_admin/policies`, {
+                ...adminHeaders,
+                data: { policies: ["rpol_super_admin"] },
+              })
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(400)
+            expect(error.response.data.type).toEqual("not_allowed")
+
+            const response = await api.get("/admin/customers", adminHeaders)
+            expect(response.status).toEqual(200)
+          })
+
+          it("returns 404 when one policy is not attached to the role", async () => {
+            const error = await api
+              .delete(`/rbac/roles/${emptyTargetRoleId}/policies`, {
+                ...adminHeaders,
+                data: {
+                  policies: [productReadPolicyId, productUpdatePolicyId],
+                },
+              })
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(404)
+            expect(error.response.data.message).toContain(productUpdatePolicyId)
+
+            const rolePolicies = await container
+              .resolve(Modules.RBAC)
+              .listRbacRolePolicies({ role_id: emptyTargetRoleId })
+            expect(rolePolicies.map((rp) => rp.policy_id)).toContain(
+              productReadPolicyId
+            )
+          })
+
+          it("returns 400 for an empty policies array", async () => {
+            const error = await api
+              .delete(`/rbac/roles/${emptyTargetRoleId}/policies`, {
+                ...adminHeaders,
+                data: { policies: [] },
+              })
+              .catch((e) => e)
+
+            expect(error.response.status).toEqual(400)
+          })
+        })
+
         describe("workflows", () => {
           it("createRbacRolesWorkflow: super-admin can create a role with any policy_ids", async () => {
             const userModule = container.resolve(Modules.USER)

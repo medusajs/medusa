@@ -62,6 +62,10 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/admin/users/me",
+    audit: {
+      action: "user.update",
+      resource: (req) => ({ type: "user", id: req.auth_context?.actor_id }),
+    },
     middlewares: [
       validateAndTransformBody(AdminUpdateUser),
       validateAndTransformQuery(
@@ -163,6 +167,7 @@ export const adminUserRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["DELETE"],
     matcher: "/admin/users/:id/roles/:role_id",
+    audit: { action: "user.roles.remove" },
     middlewares: [
       authorize([
         {

@@ -7,19 +7,19 @@ import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export type CreateRoleAssignmentsStepInput = CreateRbacRoleAssignmentDTO[]
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const createRoleAssignmentsStepId = "create-role-assignments"
 
 /**
  * This step creates one or more RBAC role assignments.
  *
- * @ignore
+ * @since 2.22.4
  */
 export const createRoleAssignmentsStep = createStep(
   createRoleAssignmentsStepId,

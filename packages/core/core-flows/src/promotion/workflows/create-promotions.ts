@@ -2,12 +2,15 @@ import type {
   AdditionalData,
   CreatePromotionDTO,
 } from "@medusajs/framework/types"
+import { PromotionWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
   createHook,
   createWorkflow,
+  transform,
 } from "@medusajs/framework/workflows-sdk"
+import { emitEventStep } from "../../common"
 import { createPromotionsStep } from "../steps"
 
 /**
@@ -63,6 +66,17 @@ export const createPromotionsWorkflow = createWorkflow(
   createPromotionsWorkflowId,
   (input: WorkflowData<CreatePromotionsWorkflowInput>) => {
     const createdPromotions = createPromotionsStep(input.promotionsData)
+
+    const eventData = transform(
+      { createdPromotions },
+      ({ createdPromotions }) =>
+        createdPromotions.map((promotion) => ({ id: promotion.id }))
+    )
+
+    emitEventStep({
+      eventName: PromotionWorkflowEvents.CREATED,
+      data: eventData,
+    })
     const promotionsCreated = createHook("promotionsCreated", {
       promotions: createdPromotions,
       additional_data: input.additional_data,

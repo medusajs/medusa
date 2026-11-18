@@ -98,6 +98,7 @@ export const specsSitemapData = {
       "operationSectionIds": [
         "customers_getcustomers",
         "customers_postcustomers",
+        "customers_postcustomersexport",
         "customers_getcustomersid",
         "customers_postcustomersid",
         "customers_deletecustomersid",
@@ -248,6 +249,12 @@ export const specsSitemapData = {
       "operationSectionIds": [
         "locales_getlocales",
         "locales_getlocalescode"
+      ]
+    },
+    {
+      "tagSectionId": "modules",
+      "operationSectionIds": [
+        "modules_getmodules"
       ]
     },
     {
@@ -678,11 +685,16 @@ export const specsSitemapData = {
       "operationSectionIds": [
         "users_getusers",
         "users_getusersme",
+        "users_postusersme",
         "users_getusersid",
         "users_postusersid",
         "users_deleteusersid",
         "users_getusersidauthproviders",
-        "users_postusersidresetpassword"
+        "users_postusersidresetpassword",
+        "users_getusersidroles",
+        "users_postusersidroles",
+        "users_deleteusersidroles",
+        "users_deleteusersidrolesrole_id"
       ]
     },
     {
@@ -816,7 +828,8 @@ export const specsSitemapData = {
       "tagSectionId": "payment-collections",
       "operationSectionIds": [
         "payment-collections_postpaymentcollections",
-        "payment-collections_postpaymentcollectionsidpaymentsessions"
+        "payment-collections_postpaymentcollectionsidpaymentsessions",
+        "payment-collections_postpaymentcollectionsidpaymentsessionssession_id"
       ]
     },
     {

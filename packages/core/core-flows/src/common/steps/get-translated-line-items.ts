@@ -1,5 +1,5 @@
 import { ProductVariantDTO } from "@medusajs/framework/types"
-import { applyTranslations, FeatureFlag } from "@medusajs/framework/utils"
+import { applyTranslations } from "@medusajs/framework/utils"
 import {
   createStep,
   StepFunction,
@@ -18,9 +18,7 @@ export const getTranslatedLineItemsStepId = "get-translated-line-items"
 const step = createStep(
   getTranslatedLineItemsStepId,
   async (data: GetTranslatedLineItemsStepInput<any>, { container }) => {
-    const isTranslationEnabled = FeatureFlag.isFeatureEnabled("translation")
-
-    if (!isTranslationEnabled || !data.locale || !data.items?.length) {
+    if (!data.locale || !data.items?.length) {
       return new StepResponse(data.items ?? [])
     }
 

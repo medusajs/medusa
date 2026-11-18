@@ -4,6 +4,7 @@ import { getDocblock } from "react-docgen/dist/utils/docblock.js"
 import TypedocManager from "../classes/typedoc-manager.js"
 import emptyPropDescriptor from "../utils/empty-prop-descriptor.js"
 import { Node } from "@babel/core"
+import { ReflectionKind, ReflectionType } from "typedoc"
 import isEmptyPropDescriptor from "../utils/is-empty-prop-descriptor.js"
 
 function resolveDocumentation(
@@ -78,10 +79,19 @@ function resolveDocumentation(
         const typeReflection = typedocManager?.getReflectionByName(
           propDescriptor.tsType.name
         )
-        if (typeReflection && typeReflection.type) {
+        // TypeDoc 0.28 converts object type aliases like interfaces, with
+        // children instead of a type.
+        let type = typeReflection?.type
+        if (
+          !type &&
+          typeReflection?.kindOf(ReflectionKind.TypeAlias) &&
+          typeReflection.children
+        ) {
+          type = new ReflectionType(typeReflection)
+        }
+        if (type) {
           propDescriptor.tsType =
-            typedocManager?.getTsType(typeReflection.type) ||
-            propDescriptor.tsType
+            typedocManager?.getTsType(type) || propDescriptor.tsType
         }
       }
     }

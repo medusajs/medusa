@@ -3,6 +3,7 @@
 "@medusajs/admin-bundler": minor
 "@medusajs/draft-order": minor
 "@medusajs/loyalty-plugin": minor
+"@medusajs/cloud": minor
 ---
 
 chore: update to Tailwind CSS 4. The admin and admin extensions now compile with Tailwind CSS 4

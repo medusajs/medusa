@@ -8,7 +8,7 @@ import { deleteRbacPoliciesStep } from "../steps"
 import { validateActorPermissionsStep } from "../steps/validate-actor-permissions"
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export type DeleteRbacPoliciesWorkflowInput = {
   ids: string[]
@@ -25,14 +25,14 @@ export type DeleteRbacPoliciesWorkflowInput = {
 }
 
 /**
- * @ignore
+ * @since 2.22.3
  */
 export const deleteRbacPoliciesWorkflowId = "delete-rbac-policies"
 
 /**
  * This workflow deletes RBAC policies. When an actor is provided, it validates
  * that the actor holds every policy being deleted.
- * @ignore
+ * @since 2.22.3
  */
 export const deleteRbacPoliciesWorkflow = createWorkflow(
   deleteRbacPoliciesWorkflowId,

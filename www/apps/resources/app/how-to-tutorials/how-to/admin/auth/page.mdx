@@ -15,6 +15,14 @@ export const metadata = {
 
 # {metadata.title}
 
+<Note title="Looking for a built-in integration?">
+
+If your organization uses an identity provider that implements OpenID Connect, such as Okta or Microsoft Entra ID, use the [OIDC Auth Module Provider](../../../../enterprise/sso/page.mdx) instead. It handles the authentication, and the Medusa Admin dashboard renders its login button and creates the admin user for you. It's an [enterprise feature](../../../../enterprise/page.mdx), so it requires a license key.
+
+Follow this guide if you integrate a provider that doesn't implement OpenID Connect, or if you want to build and own the integration yourself.
+
+</Note>
+
 In this guide, you'll learn how to add custom authentication provider to the Medusa Admin.
 
 <Note>
@@ -58,9 +66,9 @@ Refer to the [Create Custom Authentication Module Provider](/references/auth/pro
 
 ### Enable Custom Authentication Provider for Admin Users
 
-By default, registered Authentication Module Providers can be used for all [actor types](../../../../commerce-modules/auth/auth-identity-and-actor-types/page.mdx). This means both admin users and customers can authenticate through the provider.
+Admin users, which are of the `user` [actor type](../../../../commerce-modules/auth/auth-identity-and-actor-types/page.mdx), can only authenticate with the `emailpass` provider by default. So, you must allow your custom provider for admin users before they can use it.
 
-It's recommended to restrict the custom authentication provider to admin users only. To do this, set the `http.authMethodsPerActor` configuration in `medusa-config.ts` to enable the custom authentication provider only for the `user` actor type:
+Set the `http.authMethodsPerActor` configuration in `medusa-config.ts` to enable the custom authentication provider for the `user` actor type. It's also recommended to enable it only for that actor type, since providers are otherwise available to every other actor type, such as customers:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -78,6 +86,12 @@ module.exports = defineConfig({
 ```
 
 Where `emailpass` is the identifier of the Emailpass Authentication Provider, and `custom` is the identifier of your custom Authentication Module Provider.
+
+<Note>
+
+Before [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1), admin users could authenticate with every registered provider by default, so this configuration was recommended rather than required.
+
+</Note>
 
 Refer to the [Authentication Module Providers](../../../../commerce-modules/auth/auth-providers/page.mdx#configure-allowed-auth-providers-of-actor-types) guide to learn more about configuring allowed authentication providers for actor types.
 

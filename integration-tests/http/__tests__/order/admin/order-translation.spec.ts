@@ -11,8 +11,6 @@ import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 
 jest.setTimeout(300000)
 
-process.env.MEDUSA_FF_TRANSLATION = "true"
-
 const shippingAddressData = {
   address_1: "test address 1",
   address_2: "test address 2",

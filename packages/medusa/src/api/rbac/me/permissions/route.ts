@@ -39,7 +39,7 @@ import {
  * for role-based UI guards: a super admin (`*:*`) covers every role without
  * being assigned any. Assigned roles are always covered.
  *
- * @ignore
+ * @since 2.22.3
  */
 export const GET = async (
   req: AuthenticatedMedusaRequest<
