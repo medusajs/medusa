@@ -18,9 +18,12 @@ export default async ({ app, container, plugins }: Options) => {
     const parsedUrl = req.url.split("?")
     parsedUrl.shift()
     const queryParamsStr = parsedUrl.join("?")
-    if (queryParamsStr) {
-      req.query = qs.parse(queryParamsStr, { arrayLimit: Infinity })
-    }
+    Object.defineProperty(req, "query", {
+      value: qs.parse(queryParamsStr, { arrayLimit: Infinity }),
+      writable: true,
+      enumerable: true,
+      configurable: true,
+    })
     next()
   })
 

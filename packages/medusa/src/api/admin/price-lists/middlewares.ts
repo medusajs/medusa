@@ -22,7 +22,7 @@ import {
 
 export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/price-lists/*",
+    matcher: "/admin/price-lists/{*splat}",
     middlewares: [
       authorize([
         {
@@ -33,7 +33,7 @@ export const adminPriceListsRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
-    matcher: "/admin/price-lists/*/prices/*",
+    matcher: "/admin/price-lists/{*splat}/prices/{*splat}",
     middlewares: [
       authorize([
         {
