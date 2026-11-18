@@ -101,7 +101,6 @@ export const sitemapUrls = [
   "/sign-up",
   "/status",
   "/storefront",
-  "/update-medusa",
   "/usage/compute",
   "/usage",
   "/user",
