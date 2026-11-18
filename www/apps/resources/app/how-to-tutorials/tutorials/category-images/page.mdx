@@ -29,10 +29,11 @@ Medusa doesn't natively support adding images to product categories. However, it
 
 By following this tutorial, you'll learn how to:
 
-- Install and set up Medusa with the Next.js Starter Storefront.
+- Create a Cloud project with the Next.js Starter Storefront and set it up locally.
 - Define data models for product category images and the logic to manage them.
 - Customize the Medusa Admin dashboard to manage category images.
 - Customize the Next.js Starter Storefront to add a megamenu that shows category thumbnails, and show a banner image on category pages.
+- Publish the customizations to Cloud.
 
 ![Diagram showing the relation between product categories and their images](https://res.cloudinary.com/dza7lstvk/image/upload/v1760522310/Medusa%20Resources/category-images-summary_l1duwj.jpg)
 
@@ -53,11 +54,15 @@ By following this tutorial, you'll learn how to:
 
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -70,23 +75,11 @@ By following this tutorial, you'll learn how to:
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose Yes.
-
-Afterward, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors?">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -3252,6 +3245,25 @@ Then, open the storefront at `http://localhost:8000` in your browser. You can na
 You'll see the banner image at the top of the category page. If you don't see a banner image, ensure that the category has an image of type "image" (not "thumbnail") in the Medusa Admin dashboard.
 
 ![Storefront showing category page with banner image](https://res.cloudinary.com/dza7lstvk/image/upload/v1760518495/Medusa%20Resources/CleanShot_2025-10-15_at_11.54.44_2x_muadjw.png)
+
+---
+
+## Step 9: Publish to Cloud
+
+After you test the category images feature locally, publish it to your Cloud project.
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/category-images
+git add .
+git commit -m "Add product category images"
+git push origin feat/category-images
+```
+
+Then, on GitHub, open a pull request from the `feat/category-images` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

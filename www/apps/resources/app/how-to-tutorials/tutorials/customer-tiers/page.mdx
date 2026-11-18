@@ -33,12 +33,13 @@ A customer tiers system allows you to segment customers based on their purchase 
 
 By following this tutorial, you will learn how to:
 
-- Install and set up Medusa.
+- Create a Cloud project and set it up locally.
 - Create a Tier Module to manage customer tiers and tier rules.
 - Customize the Medusa Admin to manage tiers.
 - Automatically assign customers to tiers based on their purchase history.
 - Automatically apply tier promotions to customer carts.
 - Customize the Next.js Starter Storefront to display tier information to customers.
+- Publish the customizations to Cloud.
 
 You can follow this tutorial whether you're new to Medusa or an advanced Medusa developer.
 
@@ -61,9 +62,13 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
+  {
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
   {
     text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
@@ -78,23 +83,11 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose Yes.
-
-Afterward, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -4147,6 +4140,27 @@ To test the customer tier component on the order confirmation page, make sure bo
 Then, on the storefront, place an order. The order confirmation page will display the customer's tier with a progress bar showing their progress toward the next tier.
 
 ![Customer tier component on order confirmation page](https://res.cloudinary.com/dza7lstvk/image/upload/v1764078663/Medusa%20Resources/CleanShot_2025-11-25_at_15.50.50_2x_liqi8r.png)
+
+---
+
+## Step 15: Publish to Cloud
+
+After you test the customer tiers feature locally, publish it to your Cloud project.
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/customer-tiers
+git add .
+git commit -m "Add customer tiers"
+git push origin feat/customer-tiers
+```
+
+Then, on GitHub, open a pull request from the `feat/customer-tiers` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+Your local database and the environment's database are separate, so after the deployment, create the tiers and their rules again from the deployed environment's Medusa Admin.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

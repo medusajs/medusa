@@ -37,10 +37,11 @@ Twilio is just one option to deliver the OTP to the customer. You can integrate 
 
 By following this tutorial, you will learn how to:
 
-- Install and set up Medusa.
+- Create a Cloud project and set it up locally.
 - Implement a custom phone authentication provider.
 - Integrate Twilio to send OTPs by SMS.
 - Customize the Next.js Starter Storefront to allow customers to log in with their phone numbers.
+- Publish the customizations to Cloud.
 
 You can follow this tutorial whether you're new to Medusa or an advanced Medusa developer.
 
@@ -69,9 +70,13 @@ While this tutorial focuses on supporting phone authentication for customers, yo
 
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
+  {
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
   {
     text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
@@ -86,23 +91,11 @@ While this tutorial focuses on supporting phone authentication for customers, yo
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose Yes.
-
-Afterward, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors?">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -1222,6 +1215,8 @@ You can retrieve these information from the Twilio Console homepage.
 
 ![Twilio console homepage showing the account SID, phone number, and auth token](https://res.cloudinary.com/dza7lstvk/image/upload/v1747736641/Medusa%20Resources/CleanShot_2025-05-20_at_13.22.55_2x_sztmfo.png)
 
+You only use the `.env` file locally. You'll add these variables to your Cloud project when you [publish your changes](#step-6-publish-to-cloud).
+
 ### i. Handle OTP Generated Event
 
 Now that you have integrated Twilio into Medusa, you can use it to send the OTP to the customer. To do that, you need to handle the `phone-auth.otp.generated` event that you emitted in the `authenticate` method of the Phone Authentication Module Provider.
@@ -2262,6 +2257,43 @@ Each object in `routes` has the following properties:
 - `middlewares`: An array of middlewares to apply on the route. You add a middleware that throws an error if the request body contains a `phone` property. This prevents customers from updating their phone number using the API.
 
 Any `POST` request to the `/store/customers/me` route will now be validated to ensure it's not updating the phone number.
+
+---
+
+## Step 6: Publish to Cloud
+
+After you test the phone authentication locally, publish it to your Cloud project.
+
+### Add Environment Variables to Cloud
+
+Create the environment variables that you added in `.env` in your Cloud project, along with `PHONE_AUTH_JWT_SECRET`:
+
+- `TWILIO_ACCOUNT_SID`: The Twilio account SID.
+- `TWILIO_AUTH_TOKEN`: The Twilio auth token.
+- `TWILIO_FROM`: The Twilio phone number to send the SMS from.
+- `PHONE_AUTH_JWT_SECRET`: A strong, random secret to sign and verify OTPs. Without it, the provider uses the insecure `supersecret` fallback.
+
+Add the variables in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variables in the environment variables section. Preview environments created afterward inherit them. Learn more in the [Preview Environments](!cloud!/environments/preview#manage-shared-previews-settings) guide.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variables and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
+
+In both places, enable each variable's **Build** toggle, since `medusa-config.ts` reads them during the build. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) guide.
+
+### Push Changes to Cloud
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/phone-auth
+git add .
+git commit -m "Add phone authentication"
+git push origin feat/phone-auth
+```
+
+Then, on GitHub, open a pull request from the `feat/phone-auth` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 
