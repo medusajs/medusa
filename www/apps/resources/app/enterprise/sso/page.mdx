@@ -51,17 +51,13 @@ To let customers log in to your storefront with a social account, use the [Googl
 
 ### 1. Configure an Enterprise License Key
 
-The OIDC Auth Module Provider is an [enterprise feature](!cloud!/enterprise), so it only loads when you configure a license key that covers the `auth-oidc` feature:
+The OIDC Auth Module Provider is an [enterprise feature](!cloud!/enterprise), so it only loads when you configure a license key that covers the `auth-oidc` feature.
 
-```shell
+On Cloud, Medusa injects the `MEDUSA_LICENSE_KEY` variable automatically, so you don't need to set it. For local development, add the license key to your `.env` file:
+
+```shell title=".env"
 MEDUSA_LICENSE_KEY=your_license_key
 ```
-
-<Note>
-
-If your application is deployed on Cloud, the `MEDUSA_LICENSE_KEY` variable is automatically injected.
-
-</Note>
 
 If the key is missing or doesn't cover the `auth-oidc` feature, the Medusa application exits at boot with an error. Learn how to obtain and configure a key in the [Enterprise Features](!cloud!/enterprise) documentation.
 
@@ -137,7 +133,12 @@ Find all the provider's options in the [Provider Options](./provider-options/pag
 
 ### 3. Add the Environment Variables
 
-Next, add the OIDC provider's option values as environment variables:
+Next, set the OIDC provider's option values as environment variables:
+
+1. In Cloud, add `OIDC_ISSUER`, `OIDC_CLIENT_ID`, `OIDC_CLIENT_SECRET`, and `OIDC_CALLBACK_URL` in your environment's [Environment variables settings](!cloud!/environments/environment-variables#add-environment-variables-on-cloud).
+    - Mark `OIDC_CLIENT_SECRET` as **Sensitive**, and enable the **Build** toggle for all variables, since `medusa-config.ts` reads them during the build.
+    - Set `OIDC_CALLBACK_URL` to your deployed application's URL, such as `https://example.com/app/login?auth_provider=okta`.
+2. For local development, add the variables to your `.env` file:
 
 ```bash title=".env"
 OIDC_ISSUER=https://your-org.okta.com
@@ -148,7 +149,7 @@ OIDC_CALLBACK_URL=http://localhost:9000/app/login?auth_provider=okta
 
 When using the OIDC provider with the Medusa Admin dashboard, the dashboard sends its own callback URL, which is its login page with the provider's ID as a query parameter. Learn more in the [Admin SSO](./admin-login/page.mdx#register-the-dashboards-callback-url) guide.
 
-The URL above is for local development. In production, use your application's public URL, such as `https://example.com/app/login?auth_provider=okta`.
+Register both the deployed and local callback URLs with your identity provider.
 
 ### 4. Enable the Provider for the Actor Types
 
@@ -173,11 +174,17 @@ module.exports = defineConfig({
 
 In this example, only admin users can authenticate with the `okta` provider. You can also allow customers or other custom actor types like `manager` to use it by adding them to the `authMethodsPerActor` configuration.
 
-### 5. Authenticate Users
+### 5. Deploy to Cloud
+
+Commit the changes to `medusa-config.ts` and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) that registers the OIDC Auth Module Provider. Add the environment variables in Cloud before you push, so the deployment uses them.
+
+### 6. Authenticate Users
 
 Once you allow the provider for admin users, the Medusa Admin dashboard renders a login button for it automatically. Learn more in the [Admin SSO](./admin-login/page.mdx) guide.
 
-To test it out, start the Medusa application:
+To test it on Cloud, open the deployed environment's Medusa Admin dashboard after the deployment finishes. You'll see a login button for the `okta` provider. Click on it to authenticate with the provider.
+
+To test it locally, start the Medusa application:
 
 ```bash npm2yarn
 npm run dev

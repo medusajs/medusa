@@ -78,6 +78,14 @@ When the Medusa application starts, it registers the Tax Module Providers define
 
 For each Tax Module Provider, the Medusa application finds all tax provider services defined in them to register.
 
+### Register Tax Providers on Cloud
+
+On Cloud, Medusa registers the `system` tax provider by default, the same as locally. To use other tax providers in a deployed environment:
+
+1. Add the provider to the `providers` option of the Tax Module in `medusa-config.ts`.
+2. Add the environment variables that the provider's options use in your Cloud environment's [Environment variables settings](!cloud!/environments/environment-variables#add-environment-variables-on-cloud). Mark secrets, such as API keys, as **Sensitive**, and enable the **Build** toggle, since `medusa-config.ts` reads them during the build. For local development, add the same variables to your `.env` file.
+3. Commit the changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created), and the Medusa application registers the provider when it starts.
+
 ### TaxProvider Data Model
 
 A registered tax provider is represented by the [TaxProvider data model](/references/tax/models/TaxProvider) in the Medusa application.

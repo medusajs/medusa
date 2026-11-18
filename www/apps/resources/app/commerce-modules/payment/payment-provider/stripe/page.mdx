@@ -22,6 +22,10 @@ Your technical team must install the Stripe Module Provider in your Medusa appli
 
 <Prerequisites items={[
   {
+    text: "Medusa application set up locally",
+    link: "!cloud!/setup-locally"
+  },
+  {
     text: "Stripe account",
     link: "https://stripe.com/"
   },
@@ -50,6 +54,8 @@ module.exports = defineConfig({
             id: "stripe",
             options: {
               apiKey: process.env.STRIPE_API_KEY,
+              webhookSecret:
+                process.env.STRIPE_WEBHOOK_SECRET,
             },
           },
         ],
@@ -61,11 +67,23 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the necessary environment variables for the above options in `.env`:
+Set the `STRIPE_API_KEY` and `STRIPE_WEBHOOK_SECRET` environment variables:
 
-```bash
+1. In Cloud, add the variables in your environment's [Environment variables settings](!cloud!/environments/environment-variables#add-environment-variables-on-cloud). Mark both variables as **Sensitive**, and enable the **Build** toggle for all variables, since `medusa-config.ts` reads them during the build.
+2. For local development, add the variables to your `.env` file:
+
+```bash title=".env"
 STRIPE_API_KEY=<YOUR_STRIPE_API_KEY>
+STRIPE_WEBHOOK_SECRET=<YOUR_STRIPE_WEBHOOK_SECRET>
 ```
+
+You receive the webhook secret after you [set up webhooks](#setup-stripe-webhooks) in Stripe for your deployed environment. You can leave `STRIPE_WEBHOOK_SECRET` empty in `.env`, since Stripe can't send webhooks to your local application.
+
+### Deploy to Cloud
+
+Commit the changes to `medusa-config.ts` and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) that registers the Stripe Module Provider. Add the environment variables in Cloud before you push, so the deployment uses them.
+
+Then, [enable the provider in a region](#enable-stripe-providers-in-a-region) and [set up webhooks](#setup-stripe-webhooks) for the deployed environment.
 
 ### Module Options
 
@@ -408,7 +426,7 @@ For production applications, you must set up webhooks in Stripe that inform Medu
 
 Medusa has a `{server_url}/hooks/payment/{provider_id}` API route that you can use to register webhooks in Stripe, where:
 
-- `{server_url}` is the URL to your deployed Medusa application in server mode.
+- `{server_url}` is the URL to your deployed Medusa application in server mode. On Cloud, it's the environment's Medusa Backend URL, which you can find below the environment's name in its dashboard.
 - `{provider_id}` is the ID of the provider as explained in the [Stripe Payment Provider IDs](#stripe-payment-provider-ids) section, without the `pp_` prefix.
 
 The Stripe Module Provider supports the following payment types, and the webhook endpoint URL is different for each:

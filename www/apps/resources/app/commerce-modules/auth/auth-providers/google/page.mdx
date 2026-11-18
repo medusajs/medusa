@@ -15,6 +15,10 @@ The Google Auth Module Provider allows you to authenticate users with their Goog
 <Prerequisites
   items={[
     {
+      text: "Medusa application set up locally",
+      link: "!cloud!/setup-locally",
+    },
+    {
       text: "Create a project in Google Cloud.",
       link: "https://cloud.google.com/resource-manager/docs/creating-managing-projects"
     },
@@ -67,13 +71,24 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the necessary environment variables for the above options in `.env`:
+Set the `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and `GOOGLE_CALLBACK_URL` environment variables:
 
-```plain
+1. In Cloud, add the variables in your environment's [Environment variables settings](!cloud!/environments/environment-variables#add-environment-variables-on-cloud).
+    - Mark `GOOGLE_CLIENT_SECRET` as **Sensitive**, and enable the **Build** toggle for all variables, since `medusa-config.ts` reads them during the build.
+    - Set `GOOGLE_CALLBACK_URL` to a page of your deployed frontend, such as your storefront.
+2. For local development, add the variables to your `.env` file, with `GOOGLE_CALLBACK_URL` set to a page of your local frontend:
+
+```bash title=".env"
 GOOGLE_CLIENT_ID=<YOUR_GOOGLE_CLIENT_ID>
 GOOGLE_CLIENT_SECRET=<YOUR_GOOGLE_CLIENT_SECRET>
 GOOGLE_CALLBACK_URL=<YOUR_GOOGLE_CALLBACK_URL>
 ```
+
+Make sure to add both callback URLs to the **Authorized redirect URIs** of your Google OAuth client.
+
+### Deploy to Cloud
+
+Commit the changes to `medusa-config.ts` and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) that registers the Google Auth Module Provider. Add the environment variables in Cloud before you push, so the deployment uses them.
 
 ### Module Options
 
