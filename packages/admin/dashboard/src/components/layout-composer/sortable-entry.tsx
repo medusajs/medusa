@@ -36,7 +36,7 @@ export function EntryContent({
       <div
         aria-hidden
         className={clx(
-          "hidden min-h-16 items-center justify-center px-2 text-center text-xs text-ui-fg-muted peer-[:empty]:flex",
+          "hidden min-h-16 items-center justify-center px-2 text-center text-xs text-ui-fg-muted peer-empty:flex",
           placeholderClassName
         )}
       >
@@ -111,12 +111,12 @@ export function SortableEntry({
           this, a child's bottom margin escapes through these plain wrapper
           divs and inflates this box past the content's background.
 
-          `h-full` + `[&>*]:h-full` let the content fill the wrapper when a
+          `h-full` + `*:h-full` let the content fill the wrapper when a
           layout stretches the entry to a fixed height (e.g. a grid section
           equalizing row heights). When the wrapper height is auto (list
           sections) these resolve to the content height, so they're inert. */}
       <EntryContent
-        className="h-full [&>*]:h-full"
+        className="h-full *:h-full"
         placeholderClassName="border-ui-border-strong h-full rounded-lg border border-dashed"
       >
         {children}
@@ -147,7 +147,7 @@ export function SortableEntry({
         <button
           type="button"
           className={clx(
-            "cursor-grab touch-none rounded text-ui-fg-muted focus:outline-none",
+            "cursor-grab touch-none rounded-sm text-ui-fg-muted focus:outline-hidden",
             xsmall && "p-0",
             small && "p-0.5",
             showLabel && "p-1"

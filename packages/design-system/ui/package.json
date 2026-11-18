@@ -50,12 +50,12 @@
   },
   "devDependencies": {
     "@medusajs/ui-preset": "2.22.7",
-    "@tailwindcss/node": "^4.3.3",
-    "@tailwindcss/oxide": "^4.3.3",
-    "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/node": "^4.3.5",
+    "@tailwindcss/oxide": "^4.3.5",
+    "@tailwindcss/postcss": "^4.3.5",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "tailwindcss": "^4.3.3",
+    "tailwindcss": "^4.3.5",
     "tailwindcss-v3": "npm:tailwindcss@3.4.19"
   },
   "dependencies": {

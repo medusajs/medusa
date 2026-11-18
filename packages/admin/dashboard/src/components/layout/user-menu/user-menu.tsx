@@ -48,7 +48,7 @@ export const UserMenu = () => {
     <div>
       <DropdownMenu dir={direction} open={openMenu} onOpenChange={setOpenMenu}>
         <UserBadge />
-        <DropdownMenu.Content className="min-w-[var(--radix-dropdown-menu-trigger-width)] max-w-[var(--radix-dropdown-menu-trigger-width)]">
+        <DropdownMenu.Content className="min-w-(--radix-dropdown-menu-trigger-width) max-w-(--radix-dropdown-menu-trigger-width)">
           <UserItem />
           <DropdownMenu.Separator />
           <DropdownMenu.Item asChild>
@@ -111,7 +111,7 @@ const UserBadge = () => {
       <DropdownMenu.Trigger
         disabled={!user}
         className={clx(
-          "grid w-full cursor-pointer grid-cols-[24px_1fr_15px] items-center gap-2 rounded-md bg-ui-bg-subtle py-1 pe-2 ps-0.5 outline-none",
+          "grid w-full cursor-pointer grid-cols-[24px_1fr_15px] items-center gap-2 rounded-md bg-ui-bg-subtle py-1 pe-2 ps-0.5 outline-hidden",
           "hover:bg-ui-bg-subtle-hover",
           "data-[state=open]:bg-ui-bg-subtle-hover",
           "focus-visible:shadow-borders-focus"

@@ -619,7 +619,7 @@ export const ProductOptionsManageForm = ({
                                 "productOptions.manage.exclusiveOption"
                               )}
                             >
-                              <InformationCircle className="pt-[1px] text-ui-fg-subtle" />
+                              <InformationCircle className="pt-px text-ui-fg-subtle" />
                             </Tooltip>
                           )}
                         </Label>

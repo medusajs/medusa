@@ -111,7 +111,7 @@ const OuterComponent = ({
       showTooltip={localValue.disabledToggle && tooltip}
       content={tooltip}
     >
-      <div className="absolute inset-y-0 left-4 z-[3] flex w-fit items-center justify-center">
+      <div className="absolute inset-y-0 left-4 z-3 flex w-fit items-center justify-center">
         <Switch
           dir="ltr"
           ref={buttonRef}
@@ -193,7 +193,7 @@ const Inner = ({
         {...attributes}
         {...props}
         ref={combinedRefs}
-        className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent pl-8 text-right outline-none"
+        className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent pl-8 text-right outline-hidden"
         value={localValue?.quantity}
         onValueChange={handleInputChange}
         formatValueOnBlur

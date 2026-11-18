@@ -1,6 +1,6 @@
 # @medusajs/admin-bundler
 
-Builds and serves the Medusa Admin for an application, and builds the admin extensions of a plugin. It wraps Vite with `@medusajs/admin-vite-plugin`, `@vitejs/plugin-react`, and an injected Tailwind config, and renders `@medusajs/dashboard` as the app shell.
+Builds and serves the Medusa Admin for an application, and builds the admin extensions of a plugin. It wraps Vite with `@medusajs/admin-vite-plugin`, `@vitejs/plugin-react`, and `@tailwindcss/vite` (Tailwind CSS 4), and renders `@medusajs/dashboard` as the app shell.
 
 ## Using this package
 
@@ -38,7 +38,7 @@ Docs: https://docs.medusajs.com/learn/fundamentals/admin/environment-variables.m
 
 - `src/utils/config.ts` (`getViteConfig`):
   - Vite root is `<cwd>/.medusa/client`. `writeStaticFiles` generates `index.html`, `index.css`, and an `entry.jsx` there that imports `@medusajs/dashboard` and each plugin, then renders `<App plugins={[...]} />`.
-  - Tailwind uses `@medusajs/ui-preset`, with content globs covering `.medusa/client`, the dashboard, `@medusajs/ui`, every admin source, and every plugin package. Extensions don't need their own Tailwind setup.
+  - The generated `index.css` imports `tailwindcss`, `@medusajs/ui-preset/theme.css`, and `@medusajs/dashboard/css`, then adds an `@source` line for `.medusa/client`, the dashboard, `@medusajs/ui`, every admin source, and every plugin package. Extensions don't need their own Tailwind setup, but their classes compile with Tailwind 4 (for example `outline-hidden`, not `outline-none`).
   - `resolvePlugins` is a fallback resolver for plugin admin imports that Vite can't resolve from the project root, e.g. a default plugin installed only as a dependency of `@medusajs/medusa` in a pnpm project. It re-resolves them from the plugin's own `package.json`.
   - `admin.vite` output is merged last with Vite's `mergeConfig`.
 - `src/commands/plugin.ts`:
@@ -65,4 +65,5 @@ No tests in this package. Exercise changes through a test app with `medusa devel
   - `HMR_PORT` (default: a free port), `HMR_PROTOCOL`, `HMR_HOST`, `HMR_CLIENT_PORT`.
   - `HMR_BIND_HOST` is ignored when the merged config already sets `server.hmr.server`.
 - `__MEDUSA_ADMIN_ADDITIONAL_ALLOWED_HOSTS` (comma-separated) sets Vite `server.allowedHosts`.
+- `css.postcss` is an inline config with no plugins, so Vite doesn't load a `postcss.config.*` from the project or a parent directory (e.g. a leftover Tailwind 3 `tailwindcss: {}` entry would break the build). Add PostCSS plugins through `admin.vite`.
 - `optimizeDeps.exclude` must list every `VIRTUAL_MODULES` id. Vite pre-bundling would otherwise try to resolve them.

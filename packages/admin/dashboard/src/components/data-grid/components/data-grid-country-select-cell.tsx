@@ -103,7 +103,7 @@
 //       />
 //       <div
 //         className={clx(
-//           "txt-compact-small w-full appearance-none bg-transparent px-4 py-2.5 outline-none"
+//           "txt-compact-small w-full appearance-none bg-transparent px-4 py-2.5 outline-hidden"
 //         )}
 //       >
 //         {country?.display_name}
@@ -130,7 +130,7 @@
 //         {...props}
 //         ref={ref}
 //         className={clx(
-//           "txt-compact-small w-full appearance-none bg-transparent px-4 py-2.5 outline-none",
+//           "txt-compact-small w-full appearance-none bg-transparent px-4 py-2.5 outline-hidden",
 //           className
 //         )}
 //       >

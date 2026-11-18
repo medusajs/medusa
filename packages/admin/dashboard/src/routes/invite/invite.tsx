@@ -154,7 +154,7 @@ const LoginLink = () => {
       <Link
         key="login-link"
         to="/login"
-        className="hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover txt-small font-medium text-ui-fg-base outline-none transition-fg"
+        className="hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover txt-small font-medium text-ui-fg-base outline-hidden transition-fg"
       >
         {t("invite.backToLogin")}
       </Link>
@@ -482,7 +482,7 @@ const SuccessView = () => {
       <Link
         key="login-link"
         to="/login"
-        className="hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover txt-small font-medium text-ui-fg-base outline-none transition-fg"
+        className="hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover txt-small font-medium text-ui-fg-base outline-hidden transition-fg"
       >
         {t("invite.backToLogin")}
       </Link>

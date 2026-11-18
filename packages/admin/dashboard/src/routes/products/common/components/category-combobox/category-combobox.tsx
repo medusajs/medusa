@@ -253,8 +253,8 @@ export const CategoryCombobox = forwardRef<
             "h-8 w-full rounded-md",
             "bg-ui-bg-field shadow-borders-base transition-fg",
             "has-[input:focus]:shadow-borders-interactive-with-active",
-            "has-[:invalid]:shadow-borders-error has-[[aria-invalid=true]]:shadow-borders-error",
-            "has-[:disabled]:cursor-not-allowed has-[:disabled]:bg-ui-bg-disabled has-[:disabled]:text-ui-fg-disabled",
+            "has-invalid:shadow-borders-error has-aria-invalid:shadow-borders-error",
+            "has-disabled:cursor-not-allowed has-disabled:bg-ui-bg-disabled has-disabled:text-ui-fg-disabled",
             {
               // Fake the focus state as long as the popover is open,
               // this prevents the styling from flickering when navigating
@@ -276,14 +276,14 @@ export const CategoryCombobox = forwardRef<
                 e.preventDefault()
                 onChange([])
               }}
-              className="txt-compact-small-plus absolute start-0.5 top-0.5 flex h-[28px] items-center rounded-[4px] border bg-ui-bg-base py-[3px] pe-1 ps-1.5 text-ui-fg-subtle outline-none transition-fg focus-within:border-ui-fg-interactive hover:bg-ui-bg-base-hover"
+              className="txt-compact-small-plus absolute inset-s-0.5 top-0.5 flex h-[28px] items-center rounded-[4px] border bg-ui-bg-base py-[3px] pe-1 ps-1.5 text-ui-fg-subtle outline-hidden transition-fg focus-within:border-ui-fg-interactive hover:bg-ui-bg-base-hover"
             >
               <span className="tabular-nums">{value.length}</span>
               <XMarkMini className="text-ui-fg-muted" />
             </button>
           )}
           {showSelected && (
-            <div className="pointer-events-none absolute inset-y-0 start-[calc(var(--tag-width)+8px)] flex size-full items-center">
+            <div className="pointer-events-none absolute inset-y-0 inset-s-[calc(var(--tag-width)+8px)] flex size-full items-center">
               <Text size="small" leading="compact">
                 {t("general.selected")}
               </Text>
@@ -296,7 +296,7 @@ export const CategoryCombobox = forwardRef<
               onSearchValueChange(e.target.value)
             }}
             className={clx(
-              "txt-compact-small size-full cursor-pointer appearance-none bg-transparent pe-8 outline-none",
+              "txt-compact-small size-full cursor-pointer appearance-none bg-transparent pe-8 outline-hidden",
               "hover:bg-ui-bg-field-hover",
               "focus:cursor-text",
               "placeholder:text-ui-fg-muted",
@@ -310,7 +310,7 @@ export const CategoryCombobox = forwardRef<
           <button
             type="button"
             onClick={() => handleOpenChange(true)}
-            className="absolute end-0 flex size-8 items-center justify-center rounded-r text-ui-fg-muted outline-none transition-fg hover:bg-ui-bg-field-hover"
+            className="absolute inset-e-0 flex size-8 items-center justify-center rounded-r text-ui-fg-muted outline-hidden transition-fg hover:bg-ui-bg-field-hover"
           >
             <TrianglesMini className="text-ui-fg-muted" />
           </button>
@@ -320,7 +320,7 @@ export const CategoryCombobox = forwardRef<
         sideOffset={4}
         role="listbox"
         className={clx(
-          "-start-2 z-50 w-[var(--radix-popper-anchor-width)] rounded-[8px] bg-ui-bg-base shadow-elevation-flyout",
+          "-inset-s-2 z-50 w-(--radix-popper-anchor-width) rounded-[8px] bg-ui-bg-base shadow-elevation-flyout",
           "max-h-[200px] overflow-y-auto",
           "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
           "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
@@ -345,7 +345,7 @@ export const CategoryCombobox = forwardRef<
                 data-active={focusedIndex === 0}
                 role="button"
                 className={clx(
-                  "grid w-full appearance-none grid-cols-[20px_1fr] items-center justify-center gap-2 rounded-md px-2 py-1.5 text-start outline-none transition-fg",
+                  "grid w-full appearance-none grid-cols-[20px_1fr] items-center justify-center gap-2 rounded-md px-2 py-1.5 text-start outline-hidden transition-fg",
                   "data-[active=true]:bg-ui-bg-field-hover"
                 )}
                 type="button"
@@ -385,7 +385,7 @@ export const CategoryCombobox = forwardRef<
                   type="button"
                   role="option"
                   className={clx(
-                    "grid h-full w-full appearance-none grid-cols-[20px_1fr] items-center gap-2 overflow-hidden rounded-md px-2 py-1.5 text-start outline-none",
+                    "grid h-full w-full appearance-none grid-cols-[20px_1fr] items-center gap-2 overflow-hidden rounded-md px-2 py-1.5 text-start outline-hidden",
                     "data-[active=true]:bg-ui-bg-field-hover"
                   )}
                   onClick={handleSelect(option)}
@@ -410,7 +410,7 @@ export const CategoryCombobox = forwardRef<
                 {option.has_children && !searchValue && (
                   <button
                     className={clx(
-                      "flex size-8 appearance-none items-center justify-center rounded-md text-ui-fg-muted outline-none",
+                      "flex size-8 appearance-none items-center justify-center rounded-md text-ui-fg-muted outline-hidden",
                       "hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed"
                     )}
                     type="button"
