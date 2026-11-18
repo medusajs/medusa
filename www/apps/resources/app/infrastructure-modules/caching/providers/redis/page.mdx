@@ -160,6 +160,24 @@ CACHE_REDIS_URL=redis://localhost:6379
 
 ---
 
+## Cache Tags and TTL
+
+The Redis Caching Module Provider stores a tag index in Redis for every [cache tag](../../concepts/page.mdx#cache-tags). The tag index is a set of the keys of all cache entries that use the tag. The provider uses it to find and remove the entries when the tag is invalidated.
+
+All entries that share a tag also share that tag's index. Every time you cache an entry, the provider resets the expiration of each of the entry's tag indexes to the entry's TTL plus 60 seconds.
+
+So, if you cache entries with different TTLs under the same tag, the most recently cached entry decides when the tag index expires. For example:
+
+1. You cache entry A with the `Product:list:*` tag and a TTL of one hour.
+2. You then cache entry B with the same tag and a TTL of one minute.
+3. The `Product:list:*` tag index expires after two minutes, while entry A remains cached for the rest of its hour.
+
+After the tag index expires, invalidating the `Product:list:*` tag no longer clears entry A, so the cache can serve stale data until entry A expires.
+
+To avoid this, use the same TTL for all cache entries that share a tag. If you need a shorter TTL for some data, cache it under different tags, or [clear](/references/caching-service#clear) it by its key.
+
+---
+
 ## Test the Redis Caching Module
 
 You can test the Redis Caching Module by caching data using the Query or Index Module, or by directly using the Caching Module's service, as described in the [Caching Module guide](../page.mdx#how-to-use-the-caching-module).

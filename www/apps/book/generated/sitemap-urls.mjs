@@ -8,6 +8,7 @@ export const sitemapUrls = [
   "/learn/configurations/medusa-config",
   "/learn/configurations/pnpm",
   "/learn/configurations/ts-aliases",
+  "/learn/configurations/typescript",
   "/learn/customization/custom-features/api-route",
   "/learn/customization/custom-features/module",
   "/learn/customization/custom-features",

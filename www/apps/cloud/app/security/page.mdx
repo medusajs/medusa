@@ -60,9 +60,17 @@ Until Medusa enables it automatically, you can disable security features at any 
 
 ---
 
+## Medusa Security on Default and Custom Domains
+
+Medusa Security is enabled by default for all [custom domains](../environments/custom-domains/page.mdx). For the default `medusajs.app` and `medusajs.site` [subdomains](../environments/subdomains/page.mdx), you can [manage which security features apply](#configurable-security-features-per-environment).
+
+So, if you disable a security feature for an environment, Medusa stops applying it to requests sent to the environment's default domains only. Requests sent to the environment's custom domains still receive the feature's protection.
+
+---
+
 ## Configurable Security Features Per Environment
 
-Each Medusa Security feature applies to the environments you select for it. For example, you can apply bot detection to your Production environment only, so that it doesn't interfere with automated tests that send requests to your [preview environments](../environments/preview/page.mdx).
+Each Medusa Security feature applies to the default domains of the environments you select for it. For example, you can apply bot detection to your Production environment only, so that it doesn't interfere with automated tests that send requests to your [preview environments](../environments/preview/page.mdx).
 
 For each feature, you can select:
 
@@ -70,6 +78,8 @@ For each feature, you can select:
 - **Specific environments**: Individual environments of your project. The feature applies to those environments only.
 
 You can combine both. For example, you can apply a feature to the Production environment type and to a specific [long-lived environment](../environments/long-lived/page.mdx), such as Staging.
+
+Your selection doesn't affect custom domains. Medusa always applies all security features to them, as explained in the [Medusa Security on Default and Custom Domains](#medusa-security-on-default-and-custom-domains) section.
 
 To manage the environments of a feature, check the steps below relevant to the feature you want to configure.
 
@@ -107,7 +117,7 @@ To configure which environments Medusa Instant Protection applies to:
 
 <Note type="warning">
 
-If you deselect all environments, the feature is turned off for your project. An environment that a feature doesn't apply to doesn't receive its protection.
+If you deselect all environments, the feature is turned off for your project's default domains. An environment that a feature doesn't apply to doesn't receive its protection on its default domains. [Custom domains](#medusa-security-on-default-and-custom-domains) always receive it.
 
 </Note>
 
@@ -133,7 +143,7 @@ To configure which environments the Basic Protection Ruleset applies to:
 
 <Note type="warning">
 
-If you deselect all environments, the feature is turned off for your project. An environment that a feature doesn't apply to doesn't receive its protection.
+If you deselect all environments, the feature is turned off for your project's default domains. An environment that a feature doesn't apply to doesn't receive its protection on its default domains. [Custom domains](#medusa-security-on-default-and-custom-domains) always receive it.
 
 </Note>
 
@@ -162,7 +172,7 @@ To configure which environments DDoS Protection applies to:
 
 <Note type="warning">
 
-If you deselect all environments, the feature is turned off for your project. An environment that a feature doesn't apply to doesn't receive its protection.
+If you deselect all environments, the feature is turned off for your project's default domains. An environment that a feature doesn't apply to doesn't receive its protection on its default domains. [Custom domains](#medusa-security-on-default-and-custom-domains) always receive it.
 
 </Note>
 
@@ -194,6 +204,6 @@ To configure which environments Bot Detection applies to:
 
 <Note type="warning">
 
-If you deselect all environments, the feature is turned off for your project. An environment that a feature doesn't apply to doesn't receive its protection.
+If you deselect all environments, the feature is turned off for your project's default domains. An environment that a feature doesn't apply to doesn't receive its protection on its default domains. [Custom domains](#medusa-security-on-default-and-custom-domains) always receive it.
 
 </Note>

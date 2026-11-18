@@ -1,14 +1,10 @@
 /**
- * Who performed the audited action.
- *
- * - `user`: an admin user.
- * - `api_key`: a secret API key.
- * - `customer`: a storefront customer.
- * - `system`: code that runs outside a request, such as a scheduled job.
- * - `anonymous`: an unauthenticated request, such as a failed login.
+ * Who performed the audited action. For a request, this is the actor type of
+ * its authentication (such as `user`, `customer`, `api-key`, or an
+ * application's own actor type), or `anonymous` when it is unauthenticated.
+ * `system` is for code that runs outside a request, such as a scheduled job.
  */
-export type AuditActorType =
-  "user" | "api_key" | "customer" | "system" | "anonymous"
+export type AuditActorType = string
 
 /**
  * How the audited action ended. `denied` is a 401 or 403 response, `failed`
@@ -201,6 +197,12 @@ export interface FilterableAuditLogProps {
    * Filter by when the action started.
    */
   started_at?: AuditLogDateRange
+
+  /**
+   * Filter by `metadata` values. An audit log matches when its `metadata` has
+   * every given top-level key set to exactly the given value.
+   */
+  metadata?: Record<string, string>
 
   /**
    * Search the action, resource type, resource ID, and actor ID for this text.

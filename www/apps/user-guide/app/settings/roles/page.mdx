@@ -50,6 +50,19 @@ To view the roles in your store, go to Settings → Roles. In the list, you can 
 
 To view a role's details, click on it in the list. The role's details page shows its general information, the users assigned to it, and the permissions it grants. To see the assigned policies, you also need the `rbac_policy:read` policy. To see the assigned users, you also need the `user:read` and `rbac_role_assignment:read` policies.
 
+### Permissions Section
+
+The **Permissions** section on the role's details page shows the total number of permissions the role grants, and lists the permission groups, such as **Orders**, **Products**, or **Store settings**. Each group has a badge that shows the role's access level in that group:
+
+- **No access**: The role grants no permissions in the group.
+- **View only**: The role can only view the resources in the group.
+- **Full access**: The role grants every permission in the group.
+- **Mixed**: The role grants some of the group's permissions. The badge is accompanied by the number of granted permissions out of the group's total.
+
+Click a group to expand it and see a table of its resources and their operations, such as **Read**, **Create**, **Update**, and **Delete**. A check mark indicates a granted permission, and `n/a` indicates that the resource doesn't support the operation. If a role can change a resource but can't view it, the resource shows a **No view access** warning.
+
+Permissions added by plugins or customizations appear in the **Custom** group. If the role has wildcard permissions that a developer assigned, a note at the bottom of the section lists them.
+
 ---
 
 ## Create a Role
@@ -62,15 +75,43 @@ To create a role:
 2. Click the **Create** button in the top-right corner.
 3. In the **Details** tab, enter a name and an optional description for the role.
 4. Click **Continue** to move to the **Permissions** tab.
-5. Select the permissions that this role should grant. Each permission allows an operation, such as read or create, on a resource, such as products or orders.
+5. Optionally, choose a template under **Start from a template** to pre-select permissions:
+    - **Full access**: Selects every permission you can grant.
+    - **Read only**: Selects the view permissions of everything you can grant.
+6. Select the permissions that this role should grant, as explained in the [Select Permissions](#select-permissions) section. Each permission allows an operation, such as read or create, on a resource, such as products or orders.
     - To learn which policies common roles need, refer to the [Common Roles](./common-roles/page.mdx) guide.
-6. Click **Create**.
+7. Review the **Role summary** on the side, which shows the role's name and the access level of each permission group.
+8. Click **Create**. You must select at least one permission to create the role.
 
 The role now appears in the list, and you can assign it to users.
 
 <Note>
 
-The **Permissions** tab only lists the policies that you hold yourself. So, you can't create a role that grants more access than you have.
+Applying a template replaces the permissions you already selected, so the dashboard asks you to confirm first. Templates only include the permissions that exist when you apply them. Permissions added later, such as by a new plugin, aren't added to the role automatically.
+
+</Note>
+
+### Select Permissions
+
+The **Permissions** tab, and the form to manage a role's permissions, show permissions in groups, such as **Orders**, **Products**, or **Team and access**. Each group shows the number of selected permissions out of its total.
+
+You can select permissions in the following ways:
+
+- **Set a group's access level**: Use the **No access**, **View only**, and **Full access** toggle next to a group to change all of its permissions at once. If you selected only some of a group's permissions, the group shows a **Mixed** badge.
+- **Select individual permissions**: Click a group to expand it and see a table of its resources and operations. Then, check or uncheck the box of each permission.
+- **Select a resource's permissions**: Check the box next to a resource's name to select or unselect all of its permissions.
+- **Select an operation for all resources**: Click an operation's name, such as **Create**, in the table's header to select or unselect it for every resource in the group.
+- **Clear all**: Click the **Clear all** button at the top of the list to unselect every permission you can change, then confirm in the pop-up.
+
+To find a permission, enter a group or resource name in the search field. To see the technical keys of the permissions, such as `product:read`, check the **Show permission keys** box.
+
+When you select an operation other than read for a resource, the read permission of that resource is selected too, since users need to view a resource to change it. You can't unselect the read permission while other permissions of the resource are selected.
+
+Permissions added by plugins or customizations appear in the **Custom** group.
+
+<Note>
+
+You can only grant the permissions that you hold yourself. So, you can't create a role that grants more access than you have. Permissions that you don't hold show a lock icon and can't be changed, and their group shows the number of locked permissions.
 
 </Note>
 
@@ -97,16 +138,16 @@ To edit a role's name or description:
 To change the permissions that a role grants:
 
 1. Go to the role's details page.
-2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top-right of the first section.
-3. Choose **Manage permissions** from the dropdown.
-4. In the form that opens, select or unselect the permissions for this role. You can use the search to find specific permissions.
+2. Click the **Manage permissions** button in the **Permissions** section. Alternatively, click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top-right of the first section and choose **Manage permissions** from the dropdown.
+3. In the form that opens, select or unselect the permissions for this role, as explained in the [Select Permissions](#select-permissions) section.
+4. Review the **Role summary** on the side, which shows the number of permissions you added and removed.
 5. Click **Save**.
 
 Users assigned this role gain or lose access based on the permissions you change.
 
 <Note>
 
-The form only lists the policies that you hold yourself, so you can't add or remove policies that you don't have. When you save, the role keeps any policies it has that you don't hold.
+You can't add or remove permissions that you don't hold yourself. These permissions show a lock icon in the form, and the role keeps them when you save.
 
 </Note>
 
@@ -184,6 +225,6 @@ To delete a role:
 1. Go to the role's details page.
 2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the top-right of the first section.
 3. Choose **Delete** from the dropdown.
-4. Confirm deleting the role in the pop-up.
+4. Confirm deleting the role in the pop-up. If you can view the role's users, the pop-up also shows how many users have the role and will lose the access it grants.
 
 You can also delete a role from the Settings → Roles list. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon at the end of the role's row and choose **Delete**.

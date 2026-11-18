@@ -1,5 +1,18 @@
 # @medusajs/product
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17758](https://github.com/medusajs/medusa/pull/17758) [`22e1999`](https://github.com/medusajs/medusa/commit/22e19995e9674be22f9eb1c150cdc12f94d46864) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(product): set a correct mpath when moving a product category to the top level
+
+- [#17773](https://github.com/medusajs/medusa/pull/17773) [`41e9e46`](https://github.com/medusajs/medusa/commit/41e9e46d5064fe2d27b340f2b27310803e9a487b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(index,promotion,product): handle `?` characters in filter and context values
+
+- [#17453](https://github.com/medusajs/medusa/pull/17453) [`1c41c09`](https://github.com/medusajs/medusa/commit/1c41c095f67ea6ad1e5ff869a629bf579d72363f) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(product): don't run parallel queries inside category and variant creation, and batch category sibling counts and parent lookups
+
+- Updated dependencies [[`3d9104d`](https://github.com/medusajs/medusa/commit/3d9104d131aa56e2490d14e3ed804d93592305fa), [`b810334`](https://github.com/medusajs/medusa/commit/b810334cbf0c0ba3a401d82182ef06f2432e2716), [`beca252`](https://github.com/medusajs/medusa/commit/beca2525ebb9298caa9d7ad2266c12961b3470af), [`48b6d2d`](https://github.com/medusajs/medusa/commit/48b6d2d42089f8f4ba846a30a84f2031eca34b0f), [`db78b61`](https://github.com/medusajs/medusa/commit/db78b61eb2e74218436fe96222f01b93d23dc895), [`beca252`](https://github.com/medusajs/medusa/commit/beca2525ebb9298caa9d7ad2266c12961b3470af), [`afd2820`](https://github.com/medusajs/medusa/commit/afd2820e0ff11193144a8de0e8ee7959784d157c)]:
+  - @medusajs/framework@2.22.7
+
 ## 2.22.6
 
 ### Patch Changes

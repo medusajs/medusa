@@ -1,13 +1,13 @@
 {
 	"schemaVersion": "2.0",
-	"id": 44771,
+	"id": 44993,
 	"name": "auth-provider",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 44772,
+			"id": 44994,
 			"name": "AbstractAuthModuleProvider",
 			"variant": "declaration",
 			"kind": 128,
@@ -28,7 +28,7 @@
 			},
 			"children": [
 				{
-					"id": 44773,
+					"id": 44995,
 					"name": "identifier",
 					"variant": "declaration",
 					"kind": 1024,
@@ -99,7 +99,7 @@
 							"fileName": "abstract-auth-provider.ts",
 							"line": 68,
 							"character": 9,
-							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/utils/src/auth/abstract-auth-provider.ts#L68"
+							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/utils/src/auth/abstract-auth-provider.ts#L68"
 						}
 					],
 					"type": {
@@ -108,7 +108,7 @@
 					}
 				},
 				{
-					"id": 44774,
+					"id": 44996,
 					"name": "DISPLAY_NAME",
 					"variant": "declaration",
 					"kind": 1024,
@@ -139,7 +139,7 @@
 							"fileName": "abstract-auth-provider.ts",
 							"line": 79,
 							"character": 9,
-							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/utils/src/auth/abstract-auth-provider.ts#L79"
+							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/utils/src/auth/abstract-auth-provider.ts#L79"
 						}
 					],
 					"type": {
@@ -148,7 +148,7 @@
 					}
 				},
 				{
-					"id": 44775,
+					"id": 44997,
 					"name": "validateOptions",
 					"variant": "declaration",
 					"kind": 2048,
@@ -160,12 +160,12 @@
 							"fileName": "abstract-auth-provider.ts",
 							"line": 129,
 							"character": 9,
-							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/utils/src/auth/abstract-auth-provider.ts#L129"
+							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/utils/src/auth/abstract-auth-provider.ts#L129"
 						}
 					],
 					"signatures": [
 						{
-							"id": 44776,
+							"id": 44998,
 							"name": "validateOptions",
 							"variant": "signature",
 							"kind": 4096,
@@ -202,12 +202,12 @@
 									"fileName": "abstract-auth-provider.ts",
 									"line": 129,
 									"character": 9,
-									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/utils/src/auth/abstract-auth-provider.ts#L129"
+									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/utils/src/auth/abstract-auth-provider.ts#L129"
 								}
 							],
 							"parameters": [
 								{
-									"id": 44777,
+									"id": 44999,
 									"name": "options",
 									"variant": "param",
 									"kind": 32768,
@@ -250,21 +250,21 @@
 					]
 				},
 				{
-					"id": 44778,
+					"id": 45000,
 					"name": "constructor",
 					"variant": "declaration",
 					"kind": 512,
 					"flags": {},
 					"signatures": [
 						{
-							"id": 44779,
+							"id": 45001,
 							"name": "AbstractAuthModuleProvider",
 							"variant": "signature",
 							"kind": 16384,
 							"flags": {},
 							"type": {
 								"type": "reference",
-								"target": 44772,
+								"target": 44994,
 								"name": "AbstractAuthModuleProvider",
 								"package": "@medusajs/utils"
 							}
@@ -272,7 +272,7 @@
 					]
 				},
 				{
-					"id": 44787,
+					"id": 45009,
 					"name": "authenticate",
 					"variant": "declaration",
 					"kind": 2048,
@@ -284,12 +284,12 @@
 							"fileName": "abstract-auth-provider.ts",
 							"line": 236,
 							"character": 11,
-							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/utils/src/auth/abstract-auth-provider.ts#L236"
+							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/utils/src/auth/abstract-auth-provider.ts#L236"
 						}
 					],
 					"signatures": [
 						{
-							"id": 44788,
+							"id": 45010,
 							"name": "authenticate",
 							"variant": "signature",
 							"kind": 4096,
@@ -339,12 +339,12 @@
 									"fileName": "abstract-auth-provider.ts",
 									"line": 236,
 									"character": 11,
-									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/utils/src/auth/abstract-auth-provider.ts#L236"
+									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/utils/src/auth/abstract-auth-provider.ts#L236"
 								}
 							],
 							"parameters": [
 								{
-									"id": 44789,
+									"id": 45011,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -369,7 +369,7 @@
 									}
 								},
 								{
-									"id": 44790,
+									"id": 45012,
 									"name": "authIdentityProviderService",
 									"variant": "param",
 									"kind": 32768,
@@ -446,7 +446,7 @@
 					}
 				},
 				{
-					"id": 44791,
+					"id": 45013,
 					"name": "register",
 					"variant": "declaration",
 					"kind": 2048,
@@ -456,12 +456,12 @@
 							"fileName": "abstract-auth-provider.ts",
 							"line": 305,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/utils/src/auth/abstract-auth-provider.ts#L305"
+							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/utils/src/auth/abstract-auth-provider.ts#L305"
 						}
 					],
 					"signatures": [
 						{
-							"id": 44792,
+							"id": 45014,
 							"name": "register",
 							"variant": "signature",
 							"kind": 4096,
@@ -507,12 +507,12 @@
 									"fileName": "abstract-auth-provider.ts",
 									"line": 305,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/utils/src/auth/abstract-auth-provider.ts#L305"
+									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/utils/src/auth/abstract-auth-provider.ts#L305"
 								}
 							],
 							"parameters": [
 								{
-									"id": 44793,
+									"id": 45015,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -537,7 +537,7 @@
 									}
 								},
 								{
-									"id": 44794,
+									"id": 45016,
 									"name": "authIdentityProviderService",
 									"variant": "param",
 									"kind": 32768,
@@ -614,7 +614,7 @@
 					}
 				},
 				{
-					"id": 44795,
+					"id": 45017,
 					"name": "update",
 					"variant": "declaration",
 					"kind": 2048,
@@ -624,12 +624,12 @@
 							"fileName": "abstract-auth-provider.ts",
 							"line": 357,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/utils/src/auth/abstract-auth-provider.ts#L357"
+							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/utils/src/auth/abstract-auth-provider.ts#L357"
 						}
 					],
 					"signatures": [
 						{
-							"id": 44796,
+							"id": 45018,
 							"name": "update",
 							"variant": "signature",
 							"kind": 4096,
@@ -675,12 +675,12 @@
 									"fileName": "abstract-auth-provider.ts",
 									"line": 357,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/utils/src/auth/abstract-auth-provider.ts#L357"
+									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/utils/src/auth/abstract-auth-provider.ts#L357"
 								}
 							],
 							"parameters": [
 								{
-									"id": 44797,
+									"id": 45019,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -739,7 +739,7 @@
 									}
 								},
 								{
-									"id": 44798,
+									"id": 45020,
 									"name": "authIdentityProviderService",
 									"variant": "param",
 									"kind": 32768,
@@ -816,7 +816,7 @@
 					}
 				},
 				{
-					"id": 44799,
+					"id": 45021,
 					"name": "validateCallback",
 					"variant": "declaration",
 					"kind": 2048,
@@ -826,12 +826,12 @@
 							"fileName": "abstract-auth-provider.ts",
 							"line": 460,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/utils/src/auth/abstract-auth-provider.ts#L460"
+							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/utils/src/auth/abstract-auth-provider.ts#L460"
 						}
 					],
 					"signatures": [
 						{
-							"id": 44800,
+							"id": 45022,
 							"name": "validateCallback",
 							"variant": "signature",
 							"kind": 4096,
@@ -846,7 +846,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "authenticate",
-										"target": 44787
+										"target": 45009
 									},
 									{
 										"kind": "text",
@@ -903,12 +903,12 @@
 									"fileName": "abstract-auth-provider.ts",
 									"line": 460,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/utils/src/auth/abstract-auth-provider.ts#L460"
+									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/utils/src/auth/abstract-auth-provider.ts#L460"
 								}
 							],
 							"parameters": [
 								{
-									"id": 44801,
+									"id": 45023,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -933,7 +933,7 @@
 									}
 								},
 								{
-									"id": 44802,
+									"id": 45024,
 									"name": "authIdentityProviderService",
 									"variant": "param",
 									"kind": 32768,
@@ -1014,24 +1014,24 @@
 				{
 					"title": "Constructors",
 					"children": [
-						44778
+						45000
 					]
 				},
 				{
 					"title": "Properties",
 					"children": [
-						44773,
-						44774
+						44995,
+						44996
 					]
 				},
 				{
 					"title": "Methods",
 					"children": [
-						44775,
-						44787,
-						44791,
-						44795,
-						44799
+						44997,
+						45009,
+						45013,
+						45017,
+						45021
 					]
 				}
 			],
@@ -1040,7 +1040,7 @@
 					"fileName": "abstract-auth-provider.ts",
 					"line": 56,
 					"character": 22,
-					"url": "https://github.com/medusajs/medusa/blob/95d7d9192f3ac1ba81c8fb9dceb9aa21e0056e31/packages/core/utils/src/auth/abstract-auth-provider.ts#L56"
+					"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/utils/src/auth/abstract-auth-provider.ts#L56"
 				}
 			],
 			"implementedTypes": [
@@ -1061,123 +1061,123 @@
 		{
 			"title": "Classes",
 			"children": [
-				44772
+				44994
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"44771": {
+		"44993": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": ""
 		},
-		"44772": {
+		"44994": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider"
 		},
-		"44773": {
+		"44995": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.identifier"
 		},
-		"44774": {
+		"44996": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.DISPLAY_NAME"
 		},
-		"44775": {
+		"44997": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.validateOptions"
 		},
-		"44776": {
+		"44998": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.validateOptions"
 		},
-		"44777": {
+		"44999": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "options"
 		},
-		"44787": {
+		"45009": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.authenticate"
 		},
-		"44788": {
+		"45010": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.authenticate"
 		},
-		"44789": {
+		"45011": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "data"
 		},
-		"44790": {
+		"45012": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "authIdentityProviderService"
 		},
-		"44791": {
+		"45013": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.register"
 		},
-		"44792": {
+		"45014": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.register"
 		},
-		"44793": {
+		"45015": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "data"
 		},
-		"44794": {
+		"45016": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "authIdentityProviderService"
 		},
-		"44795": {
+		"45017": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.update"
 		},
-		"44796": {
+		"45018": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.update"
 		},
-		"44797": {
+		"45019": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "data"
 		},
-		"44798": {
+		"45020": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "authIdentityProviderService"
 		},
-		"44799": {
+		"45021": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.validateCallback"
 		},
-		"44800": {
+		"45022": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "AbstractAuthModuleProvider.validateCallback"
 		},
-		"44801": {
+		"45023": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "data"
 		},
-		"44802": {
+		"45024": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/abstract-auth-provider.ts",
 			"qualifiedName": "authIdentityProviderService"
@@ -1188,7 +1188,7 @@
 			"1": "../../../../packages/core/utils/src/auth/abstract-auth-provider.ts"
 		},
 		"reflections": {
-			"1": 44771
+			"1": 44993
 		}
 	}
 }

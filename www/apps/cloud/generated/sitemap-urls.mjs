@@ -66,6 +66,7 @@ export const sitemapUrls = [
   "/ip-addresses",
   "/logs",
   "/mermaid-icon-test",
+  "/migrate-self-hosted",
   "/monitoring/http",
   "/monitoring",
   "/monitoring/servers",

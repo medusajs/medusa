@@ -56,6 +56,13 @@
  *     format: date-time
  *     title: deleted_at
  *     description: The date the user was deleted.
+ *   roles:
+ *     type: array
+ *     description: The user's roles.
+ *     items:
+ *       type: string
+ *       title: roles
+ *       description: The role's roles.
  * 
 */
 

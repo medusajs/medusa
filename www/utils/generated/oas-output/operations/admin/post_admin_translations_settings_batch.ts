@@ -76,7 +76,6 @@
  * x-workflow: batchTranslationSettingsWorkflow
  * x-events: []
  * x-since: 2.13.0
- * x-featureFlag: translation
  * 
 */
 

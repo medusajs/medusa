@@ -1,5 +1,33 @@
 # @medusajs/framework
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17795](https://github.com/medusajs/medusa/pull/17795) [`3d9104d`](https://github.com/medusajs/medusa/commit/3d9104d131aa56e2490d14e3ed804d93592305fa) Thanks [@sradevski](https://github.com/sradevski)! - feat(framework,medusa,types,js-sdk,audit): record admin, RBAC, and auth mutations as audit logs, add the `audit` middleware route setting, and add the `GET /admin/audit-logs` API routes
+
+- [#17787](https://github.com/medusajs/medusa/pull/17787) [`b810334`](https://github.com/medusajs/medusa/commit/b810334cbf0c0ba3a401d82182ef06f2432e2716) Thanks [@sradevski](https://github.com/sradevski)! - feat(audit,types,utils,modules-sdk,framework,medusa): add the licensed Audit Module with built-in PostgreSQL and Medusa Cloud storage
+
+- [#17576](https://github.com/medusajs/medusa/pull/17576) [`beca252`](https://github.com/medusajs/medusa/commit/beca2525ebb9298caa9d7ad2266c12961b3470af) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(framework,types): allow additional cors option in project config
+
+- [#17751](https://github.com/medusajs/medusa/pull/17751) [`48b6d2d`](https://github.com/medusajs/medusa/commit/48b6d2d42089f8f4ba846a30a84f2031eca34b0f) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(medusa,types,framework): use cross-module joins instead of the index module
+
+- [#17763](https://github.com/medusajs/medusa/pull/17763) [`db78b61`](https://github.com/medusajs/medusa/commit/db78b61eb2e74218436fe96222f01b93d23dc895) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(framework, types): set security headers and hide the X-Powered-By header on HTTP responses, configurable with `http.securityHeaders`
+
+- [#17576](https://github.com/medusajs/medusa/pull/17576) [`beca252`](https://github.com/medusajs/medusa/commit/beca2525ebb9298caa9d7ad2266c12961b3470af) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(framework,types): add `http.corsOptions` to configure `maxAge`, `exposedHeaders`, `allowedHeaders`, and `methods` for CORS
+
+- [#17046](https://github.com/medusajs/medusa/pull/17046) [`afd2820`](https://github.com/medusajs/medusa/commit/afd2820e0ff11193144a8de0e8ee7959784d157c) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(framework): only skip HTTP logging for the root `/health` endpoint, so requests like `/admin/health` are logged
+
+- Updated dependencies [[`3d9104d`](https://github.com/medusajs/medusa/commit/3d9104d131aa56e2490d14e3ed804d93592305fa), [`b810334`](https://github.com/medusajs/medusa/commit/b810334cbf0c0ba3a401d82182ef06f2432e2716), [`beca252`](https://github.com/medusajs/medusa/commit/beca2525ebb9298caa9d7ad2266c12961b3470af), [`48b6d2d`](https://github.com/medusajs/medusa/commit/48b6d2d42089f8f4ba846a30a84f2031eca34b0f), [`75d8121`](https://github.com/medusajs/medusa/commit/75d81218810f5c8a60951a917d2f899bf3967d2f), [`b89101c`](https://github.com/medusajs/medusa/commit/b89101ca53b1ab106549df31e0c38a50e755aefc), [`ce6b88a`](https://github.com/medusajs/medusa/commit/ce6b88a3f01f7537dfa734ebf31e650c114a761d), [`db78b61`](https://github.com/medusajs/medusa/commit/db78b61eb2e74218436fe96222f01b93d23dc895), [`9e0b69c`](https://github.com/medusajs/medusa/commit/9e0b69cf36b1e0f411728ed1c1de5b83dac68691), [`beca252`](https://github.com/medusajs/medusa/commit/beca2525ebb9298caa9d7ad2266c12961b3470af), [`1532c20`](https://github.com/medusajs/medusa/commit/1532c20d65386c4c0b535ec104c6ef309bc176ac), [`fd943bf`](https://github.com/medusajs/medusa/commit/fd943bf0ab1079947dd63758933b8adc5b22c114), [`b6c0df0`](https://github.com/medusajs/medusa/commit/b6c0df056e287d00589236b00d07b407817b9f6a), [`ea7bc2e`](https://github.com/medusajs/medusa/commit/ea7bc2e2068f1cb295dbf4a1c4f0553b4d364eca), [`1fbc0f2`](https://github.com/medusajs/medusa/commit/1fbc0f2bd117a4629d195c774b36e474248cbb14), [`93d4cc3`](https://github.com/medusajs/medusa/commit/93d4cc370e1b31be28c9b93b465c5dcf176616fb), [`c9c8038`](https://github.com/medusajs/medusa/commit/c9c803815766d00f6421edacb2631fa97b61eeb0), [`33af8f3`](https://github.com/medusajs/medusa/commit/33af8f3b4b581aabb4e655307b3055b7263908ef), [`32ead32`](https://github.com/medusajs/medusa/commit/32ead32128dc07be8301a54e85f79fd813946b67), [`9db3748`](https://github.com/medusajs/medusa/commit/9db37488d4be757b0139aac1e15fb79ed395fc6c), [`a645563`](https://github.com/medusajs/medusa/commit/a645563f7269549feef2265c436c5cdc69ffa1b1), [`08c9355`](https://github.com/medusajs/medusa/commit/08c9355d2008a9d04bd885a89d18a602a9d5e37c), [`90901f3`](https://github.com/medusajs/medusa/commit/90901f39c53ec1ee719dfda825ec576613bf5a1b)]:
+  - @medusajs/types@2.22.7
+  - @medusajs/utils@2.22.7
+  - @medusajs/modules-sdk@2.22.7
+  - @medusajs/workflows-sdk@2.22.7
+  - @medusajs/orchestration@2.22.7
+  - @medusajs/cli@2.22.7
+  - @medusajs/deps@2.22.7
+  - @medusajs/telemetry@2.22.7
+
 ## 2.22.6
 
 ### Patch Changes

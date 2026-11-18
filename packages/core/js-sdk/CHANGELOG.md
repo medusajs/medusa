@@ -1,5 +1,13 @@
 # @medusajs/js-sdk
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17795](https://github.com/medusajs/medusa/pull/17795) [`3d9104d`](https://github.com/medusajs/medusa/commit/3d9104d131aa56e2490d14e3ed804d93592305fa) Thanks [@sradevski](https://github.com/sradevski)! - feat(framework,medusa,types,js-sdk,audit): record admin, RBAC, and auth mutations as audit logs, add the `audit` middleware route setting, and add the `GET /admin/audit-logs` API routes
+
+- [#17778](https://github.com/medusajs/medusa/pull/17778) [`33af8f3`](https://github.com/medusajs/medusa/commit/33af8f3b4b581aabb4e655307b3055b7263908ef) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa,types,js-sdk): remove multiple policies from an RBAC role in one request
+
 ## 2.22.6
 
 ## 2.22.5

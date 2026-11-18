@@ -72,6 +72,7 @@
 - [IP Addresses](http://localhost:3000/cloud/ip-addresses)
 - [Logs](http://localhost:3000/cloud/logs)
 - [Mermaid Icon Test](http://localhost:3000/cloud/mermaid-icon-test)
+- [Migrate from Self-Hosting to Cloud](http://localhost:3000/cloud/migrate-self-hosted)
 - [Environment Performance Monitoring](http://localhost:3000/cloud/monitoring)
 - [HTTP Monitoring](http://localhost:3000/cloud/monitoring/http)
 - [Server Monitoring](http://localhost:3000/cloud/monitoring/servers)

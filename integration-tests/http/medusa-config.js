@@ -130,6 +130,10 @@ const modules = {
     resolve: "@medusajs/rbac",
     disable: process.env.ENABLE_RBAC_MODULE !== "true",
   },
+  [Modules.AUDIT]: {
+    resolve: "@medusajs/audit",
+    disable: process.env.ENABLE_AUDIT_MODULE !== "true",
+  },
   [Modules.AUTH]: {
     options: {
       mfa: {
