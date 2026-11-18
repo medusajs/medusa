@@ -28,7 +28,7 @@ export const ProductStock = () => {
    * the animation when the data is loaded, and the form is rendered.
    */
   const [isLoading, setIsLoading] = useState(false)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>()
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined)
 
   useEffect(() => {
     timeoutRef.current = setTimeout(() => {

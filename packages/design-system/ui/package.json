@@ -53,8 +53,8 @@
     "@tailwindcss/node": "^4.3.3",
     "@tailwindcss/oxide": "^4.3.3",
     "@tailwindcss/postcss": "^4.3.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "tailwindcss": "^4.3.3",
     "tailwindcss-v3": "npm:tailwindcss@3.4.19"
   },
@@ -81,8 +81,8 @@
     "tailwind-merge": "^3.7.0"
   },
   "peerDependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "browserslist": [
     "last 3 chrome versions",
