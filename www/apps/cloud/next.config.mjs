@@ -201,6 +201,12 @@ const nextConfig = {
       basePath: false,
       permanent: true,
     },
+    {
+      source: "/update-medusa",
+      destination: "/learn/update",
+      basePath: false,
+      permanent: true,
+    },
   ],
   rewrites: async () => {
     return {
