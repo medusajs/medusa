@@ -9442,6 +9442,10 @@ Since Medusa v2.23.0, the Medusa Admin and the Medusa UI package use React v19, 
 
 If your project or plugin installs `react`, `react-dom`, `@types/react`, or `@types/react-dom`, update them to v19. Then, make sure your admin customizations are compatible with React v19. For example, `useRef` now requires an initial value, and refs created with `useRef<HTMLDivElement>(null)` have the type `RefObject<HTMLDivElement | null>`. Learn more in the [React 19 Upgrade Guide](https://react.dev/blog/2024/04/25/react-19-upgrade-guide).
 
+Since Medusa v2.23.0, the Medusa Admin and your admin customizations compile with [Tailwind CSS v4](https://tailwindcss.com/). The admin build scans your project's and plugins' admin files for Tailwind classes, so you don't need a `tailwind.config` file in your project or plugin. The admin build also doesn't load PostCSS configuration files.
+
+Make sure your admin customizations use Tailwind CSS v4 class names. For example, use `outline-hidden` instead of `outline-none`, and `rounded-sm` instead of `rounded`. Learn more in the [Tailwind CSS v4 Upgrade Guide](https://tailwindcss.com/docs/upgrade-guide).
+
 ***
 
 ## How to Customize the Medusa Admin?
