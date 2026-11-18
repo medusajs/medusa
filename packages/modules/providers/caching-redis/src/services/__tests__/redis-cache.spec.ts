@@ -81,6 +81,24 @@ class FakeRedisClient {
     }
   )
 
+  // Mirrors PRUNE_EXPIRED_TAG_MEMBERS_SCRIPT, the only script the provider runs
+  public readonly eval = jest.fn(
+    async (
+      _script: string,
+      _numKeys: number,
+      tagKey: string,
+      ...keyNames: string[]
+    ) => {
+      return keyNames.filter((keyName) => {
+        const isLive = this.hashes.has(keyName)
+        if (!isLive) {
+          this.sremSync(tagKey, keyName)
+        }
+        return isLive
+      })
+    }
+  )
+
   setHash(key: string, fields: Record<string, RedisHashValue>) {
     this.hashes.set(key, new Map(Object.entries(fields)))
   }
