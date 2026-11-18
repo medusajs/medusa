@@ -276,15 +276,20 @@ If cloning fails because the user isn't authenticated with GitHub, point them to
 
 ### 7c. Install and run the project
 
-Fetch https://docs.medusajs.com/cloud/setup-locally.md and follow its steps from "Install Dependencies" to "Run the Storefront". In short:
+Resolve the two directories used below:
+
+- `<backend-dir>`: the `root_path` from Step 7b, without the leading `/`. If it's empty, the Medusa application is at the repository root. For starters, it's `apps/backend`.
+- `<storefront-dir>`: for starters, `apps/storefront`. For an imported application, use the storefront root directory the user set in Step 4b, or ask the user. Skip the storefront steps if the project has no storefront.
+
+Fetch https://docs.medusajs.com/cloud/setup-locally.md and follow its steps from "Install Dependencies" to "Run the Storefront", using these directories wherever the guide uses `apps/backend` and `apps/storefront`. In short:
 
 1. Install dependencies from the repository root. Starters use `pnpm`. For an imported application, use the package manager its lock file indicates.
-2. Create `apps/backend/.env` pointing to local resources (a local PostgreSQL database, random `JWT_SECRET` and `COOKIE_SECRET`, and local CORS URLs). Create the database if it doesn't exist. Don't reuse the Cloud environment's variables, since they point to the deployed database.
-3. Run `npx medusa db:migrate` in `apps/backend`.
-4. Create a local admin user in `apps/backend` with `npx medusa user -e admin@example.com -p supersecret`. These credentials are for local development only.
-5. Start the backend with the `dev` script in `apps/backend`, as a background process.
-6. If the project has a storefront, copy `apps/storefront/.env.template` to `apps/storefront/.env`. The storefront needs a publishable API key: ask the user to log in to the local admin at http://localhost:9000/app, go to **Settings → Publishable API Keys**, and paste the key, then set it with the local backend URL in `apps/storefront/.env`.
-7. Start the storefront with the `dev` script in `apps/storefront`, as a background process.
+2. Create `<backend-dir>/.env` pointing to local resources (a local PostgreSQL database, random `JWT_SECRET` and `COOKIE_SECRET`, and local CORS URLs). Create the database if it doesn't exist. Don't reuse the Cloud environment's variables, since they point to the deployed database.
+3. Run `npx medusa db:migrate` in `<backend-dir>`.
+4. Create a local admin user in `<backend-dir>` with `npx medusa user -e admin@example.com -p supersecret`. These credentials are for local development only.
+5. Start the backend with the `dev` script in `<backend-dir>`, as a background process.
+6. If the project has a storefront, copy `<storefront-dir>/.env.template` to `<storefront-dir>/.env`. The storefront needs a publishable API key: ask the user to log in to the local admin at http://localhost:9000/app, go to **Settings → Publishable API Keys**, and paste the key, then set it with the local backend URL in `<storefront-dir>/.env`. If the storefront has no `.env.template`, check its code for the variable names it expects.
+7. Start the storefront with the `dev` script in `<storefront-dir>`, as a background process.
 
 > DO NOT run the `dev` command from the repository root. Run it separately for the backend and storefront.
 

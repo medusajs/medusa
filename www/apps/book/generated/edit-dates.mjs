@@ -136,5 +136,5 @@ export const generatedEditDates = {
   "app/learn/resources/contribution-guidelines/code/page.mdx": "2026-11-16T08:09:02.031Z",
   "app/learn/fundamentals/framework/page.mdx": "2026-11-16T14:59:04.132Z",
   "app/learn/customization/publish/page.mdx": "2026-11-17T09:34:39.416Z",
-  "app/start/page.mdx": "2026-11-18T14:08:06.437Z"
+  "app/start/page.mdx": "2026-11-18T14:54:40.905Z"
 }

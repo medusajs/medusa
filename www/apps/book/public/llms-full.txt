@@ -32066,7 +32066,7 @@ If you're a human, copy this prompt and run it in your AI agent:
 Fetch https://docs.medusajs.com/start and create an ecommerce store with Medusa Cloud
 ```
 
-The AI agent will guide you through creating a store on [Cloud](https://docs.medusajs.com/cloud/index.html.md) from a starter, watch its deployment until it's live, then set it up on your machine so it can help you build your custom commerce features. New Cloud accounts start with a free trial, so you can go live without entering payment details.
+The AI agent will guide you through creating a store on [Cloud](https://docs.medusajs.com/cloud/index.html.md) from a starter or your existing Medusa application, and watch its deployment until it's live. Then, if you want to build custom commerce features, it can set up the project on your machine and help you build them.
 
 ## FAQ
 
@@ -32074,11 +32074,11 @@ The AI agent will guide you through creating a store on [Cloud](https://docs.med
 
 The prompt instructs the AI agent to fetch this page. When the agent fetches it, it receives step-by-step instructions to set up Medusa.
 
-The AI agent will then execute the instructions, which include signing you in to [Cloud](https://docs.medusajs.com/cloud/index.html.md), guiding you through creating and deploying your project, setting it up locally, and providing next steps to build custom commerce features.
+The AI agent will then execute the instructions, which include signing you in to [Cloud](https://docs.medusajs.com/cloud/index.html.md), guiding you through creating and deploying your project, optionally setting it up locally, and providing next steps to build custom commerce features.
 
 ### Do I need a Cloud account?
 
-Yes, your store is created and hosted on [Cloud](https://docs.medusajs.com/cloud/index.html.md). If you don't have an account, the AI agent helps you sign up, which starts a free trial.
+Yes, your store is created and hosted on [Cloud](https://docs.medusajs.com/cloud/index.html.md). If you don't have an account, the AI agent helps you sign up.
 
 ### What steps do I perform myself?
 
@@ -32089,10 +32089,6 @@ Some steps happen in your browser, such as signing in to Cloud and creating the 
 ### Can I deploy an existing Medusa application?
 
 Yes, tell the AI agent that you want to deploy an existing application instead of a starter. The application must be in a GitHub repository and meet the [project prerequisites](https://docs.medusajs.com/cloud/projects/prerequisites/index.html.md).
-
-### Is Cloud free to try?
-
-Yes, when you [sign up for Cloud](https://docs.medusajs.com/cloud/sign-up/index.html.md), Medusa starts a free trial for your organization. You don't need to enter payment details to start the trial. To keep your projects after the trial ends, add your billing details from the Cloud dashboard.
 
 ### Can my AI agent build custom features?
 
