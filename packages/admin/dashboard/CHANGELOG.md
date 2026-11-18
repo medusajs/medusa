@@ -1,5 +1,82 @@
 # @medusajs/dashboard
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17795](https://github.com/medusajs/medusa/pull/17795) [`3d9104d`](https://github.com/medusajs/medusa/commit/3d9104d131aa56e2490d14e3ed804d93592305fa) Thanks [@sradevski](https://github.com/sradevski)! - feat(framework,medusa,types,js-sdk,audit): record admin, RBAC, and auth mutations as audit logs, add the `audit` middleware route setting, and add the `GET /admin/audit-logs` API routes
+
+- [#17518](https://github.com/medusajs/medusa/pull/17518) [`b89101c`](https://github.com/medusajs/medusa/commit/b89101ca53b1ab106549df31e0c38a50e755aefc) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(cloud,utils,medusa,admin-shared,dashboard): add Medusa Cloud plugin that shows Cloud announcements in the admin, and a `sidebar.settings.before` injection zone
+
+- [#17778](https://github.com/medusajs/medusa/pull/17778) [`33af8f3`](https://github.com/medusajs/medusa/commit/33af8f3b4b581aabb4e655307b3055b7263908ef) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(dashboard): manage role permissions in a grouped matrix and show a per-group summary on the role page
+
+- [#17759](https://github.com/medusajs/medusa/pull/17759) [`4380483`](https://github.com/medusajs/medusa/commit/438048300ad25f741789ba06e03883c90233b6c5) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(ui,dashboard): stop DatePicker from calling onChange when its value prop changes and setSearchParams being called twice
+
+- [#17769](https://github.com/medusajs/medusa/pull/17769) [`1dd67d9`](https://github.com/medusajs/medusa/commit/1dd67d91267f97f7ca3185166dda12eb28291276) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): disable the product media Save button while media is uploading
+
+- [#17747](https://github.com/medusajs/medusa/pull/17747) [`17fca1a`](https://github.com/medusajs/medusa/commit/17fca1ab50bb4488496aecff52b5ac9f4421917d) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(dashboard): allow removing locales from the locales modal and label translation languages as locales
+
+- [#17756](https://github.com/medusajs/medusa/pull/17756) [`1711c4c`](https://github.com/medusajs/medusa/commit/1711c4c5ce1b654e03a05202851737d6c4f754d3) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): show an error toast when updating a user fails
+
+- [#17045](https://github.com/medusajs/medusa/pull/17045) [`b6f9805`](https://github.com/medusajs/medusa/commit/b6f980509a365319d14ddb4fcbde81b7c5db2aff) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(dashboard): add accessible title and description to the order edit modals
+
+- [#17772](https://github.com/medusajs/medusa/pull/17772) [`6cb4ea1`](https://github.com/medusajs/medusa/commit/6cb4ea13764237ea1ab85a6b6d864def45e9883b) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): show an error toast when updating product attributes fails
+
+- [#17741](https://github.com/medusajs/medusa/pull/17741) [`9db3748`](https://github.com/medusajs/medusa/commit/9db37488d4be757b0139aac1e15fb79ed395fc6c) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore: remove the translation feature flag and enable the Translation Module by default
+
+- Updated dependencies [[`3d9104d`](https://github.com/medusajs/medusa/commit/3d9104d131aa56e2490d14e3ed804d93592305fa), [`b89101c`](https://github.com/medusajs/medusa/commit/b89101ca53b1ab106549df31e0c38a50e755aefc), [`4380483`](https://github.com/medusajs/medusa/commit/438048300ad25f741789ba06e03883c90233b6c5), [`b89101c`](https://github.com/medusajs/medusa/commit/b89101ca53b1ab106549df31e0c38a50e755aefc), [`33af8f3`](https://github.com/medusajs/medusa/commit/33af8f3b4b581aabb4e655307b3055b7263908ef)]:
+  - @medusajs/js-sdk@2.22.7
+  - @medusajs/admin-shared@2.22.7
+  - @medusajs/ui@4.2.14
+  - @medusajs/icons@2.22.7
+
+## 2.22.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.22.6
+  - @medusajs/js-sdk@2.22.6
+  - @medusajs/icons@2.22.6
+  - @medusajs/ui@4.2.13
+
+## 2.22.5
+
+### Patch Changes
+
+- [#17563](https://github.com/medusajs/medusa/pull/17563) [`a639480`](https://github.com/medusajs/medusa/commit/a63948083a6281465d5cf8c66308a1325001b760) Thanks [@kristianjakschnltg](https://github.com/kristianjakschnltg)! - feat(promotion,utils,types,medusa,dashboard): add target selection strategy for buy-get promotions
+
+  Adds `application_method.target_selection_strategy` to choose which eligible items a Buy X Get Y promotion discounts. The default, `most_expensive_first`, keeps the current behaviour. `cheapest_first` discounts the cheapest eligible units across the cart: for "buy 3, get 1 free" with eight units priced 100 to 800, the 100 and 200 units are discounted instead of 100 and 500. The option is available in the admin promotion create and edit forms.
+
+- [#17702](https://github.com/medusajs/medusa/pull/17702) [`f0c6591`](https://github.com/medusajs/medusa/commit/f0c65918e3b619fdc498a577ec0eb52f6b02313b) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,ui,draft-order): replace deprecated lodash.isequal with dequal
+
+- [#17687](https://github.com/medusajs/medusa/pull/17687) [`cc17c71`](https://github.com/medusajs/medusa/commit/cc17c713185046f26bf00e3ba23ad6df5639db00) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard): lint with the root ESLint flat config and update eslint to 10.13.0 and eslint-plugin-react-refresh to 0.5.7
+- Updated dependencies [[`43ee8be`](https://github.com/medusajs/medusa/commit/43ee8be5405956a5bc1578b23e3725ef8b84f83e), [`f0c6591`](https://github.com/medusajs/medusa/commit/f0c65918e3b619fdc498a577ec0eb52f6b02313b)]:
+  - @medusajs/ui@4.2.12
+  - @medusajs/js-sdk@2.22.5
+  - @medusajs/admin-shared@2.22.5
+  - @medusajs/icons@2.22.5
+
+## 2.22.4
+
+### Patch Changes
+
+- [#17667](https://github.com/medusajs/medusa/pull/17667) [`74827c2`](https://github.com/medusajs/medusa/commit/74827c2a849a9a7fdbb943ca9ffce4b26b670391) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): show extension routes nested under Orders in the sidebar
+
+- [#17662](https://github.com/medusajs/medusa/pull/17662) [`43c5ec2`](https://github.com/medusajs/medusa/commit/43c5ec2d2c16623546573cf1a5abc92fb41442c9) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): ask signed-in users to sign out before accepting an invite
+
+- [#17674](https://github.com/medusajs/medusa/pull/17674) [`e3a2f38`](https://github.com/medusajs/medusa/commit/e3a2f3846c636f9df31bbc33af025896cb5e65b3) Thanks [@medusa-agents](https://github.com/apps/medusa-agents)! - fix(dashboard): keep list filters and page when going back through breadcrumbs
+
+- [#17665](https://github.com/medusajs/medusa/pull/17665) [`82d65fc`](https://github.com/medusajs/medusa/commit/82d65fc804627839c62b441737757609386841e3) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): show the order summary footer buttons again
+
+- [#17647](https://github.com/medusajs/medusa/pull/17647) [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: upgrade TypeScript to 6.0.3
+
+- Updated dependencies [[`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9)]:
+  - @medusajs/admin-shared@2.22.4
+  - @medusajs/icons@2.22.4
+  - @medusajs/js-sdk@2.22.4
+  - @medusajs/ui@4.2.11
+
 ## 2.22.3
 
 ### Patch Changes

@@ -3,6 +3,7 @@ import {
   ConfigModule,
   IAnalyticsModuleService,
   IApiKeyModuleService,
+  IAuditModuleService,
   IAuthModuleService,
   ICacheService,
   ICachingModuleService,
@@ -86,6 +87,7 @@ declare module "@medusajs/types" {
     [Modules.SEARCH]: ISearchModuleService
     [Modules.TRANSLATION]: ITranslationModuleService
     [Modules.RBAC]: IRbacModuleService
+    [Modules.AUDIT]: IAuditModuleService
   }
 }
 

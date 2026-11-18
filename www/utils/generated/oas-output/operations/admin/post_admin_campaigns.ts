@@ -157,7 +157,17 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: createCampaignsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: campaign.created
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the campaign
+ *       }
+ *       ```
+ *     description: Emitted when campaigns are created.
+ *     deprecated: false
+ *     since: 2.22.7
  * 
 */
 

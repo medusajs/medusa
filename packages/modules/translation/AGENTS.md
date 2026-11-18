@@ -4,7 +4,7 @@ Commerce module for multi-language content: locales, per-entity translations sto
 
 ## Using this package
 
-- Included in `defineConfig` (`@medusajs/medusa/translation`) but disabled unless the `translation` feature flag is on (`MEDUSA_FF_TRANSLATION=true`, default `false`). The read-only links to it are skipped without the flag too.
+- Included and enabled by default in `defineConfig` (`@medusajs/medusa/translation`), along with its read-only links to Product and Store.
 - No providers. `TranslationModuleOptions` declares an `entities` option, but the module source never reads it.
 - Make a field of a custom data model translatable with `.translatable()` in the DML; translatable entities are discovered from `DmlEntity.getTranslatableEntities()`:
 

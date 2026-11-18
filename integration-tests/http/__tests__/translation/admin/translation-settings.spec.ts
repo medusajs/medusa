@@ -7,8 +7,6 @@ import {
 
 jest.setTimeout(100000)
 
-process.env.MEDUSA_FF_TRANSLATION = "true"
-
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, getContainer, api, dbUtils }) => {
     describe("Admin Translation Settings Batch API", () => {
@@ -46,7 +44,6 @@ medusaIntegrationTestRunner({
       })
 
       afterAll(async () => {
-        delete process.env.MEDUSA_FF_TRANSLATION
         mockGetTranslatableEntities.mockRestore()
       })
 

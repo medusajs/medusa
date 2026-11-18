@@ -8,7 +8,7 @@ import { createStep } from "@medusajs/framework/workflows-sdk"
 import { canActorGrantPolicies } from "../utils/can-actor-grant-policies"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export type ValidateActorPermissionsStepInput = {
   actor_id: string
@@ -26,14 +26,14 @@ export type ValidateActorPermissionsStepInput = {
 }
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const validateActorPermissionsStepId = "validate-actor-permissions"
 
 /**
  * Validates that an actor has access to all the policies they are trying to assign.
  * An actor can only create roles and add policies that they themselves have access to.
- * @ignore
+ * @since 2.22.4
  */
 export const validateActorPermissionsStep = createStep(
   validateActorPermissionsStepId,

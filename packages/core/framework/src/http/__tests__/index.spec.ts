@@ -129,6 +129,24 @@ describe("RoutesLoader", function () {
       expect(res.headers["access-control-allow-origin"]).toBe(
         "http://localhost:8000"
       )
+      expect(res.headers["access-control-max-age"]).toBe("7200")
+      expect(res.headers["access-control-allow-methods"]).toBe(
+        "GET,HEAD,PUT,PATCH,POST,DELETE"
+      )
+    })
+
+    it("should apply the configured cors options on store requests", async function () {
+      const res = await request("GET", "/store/custom", {
+        headers: {
+          origin: "http://localhost:8000",
+        },
+      })
+
+      expect(res.headers["access-control-allow-origin"]).toBe(
+        "http://localhost:8000"
+      )
+      expect(res.headers["access-control-allow-credentials"]).toBe("true")
+      expect(res.headers["access-control-expose-headers"]).toBe("x-request-id")
     })
 
     it("should return a status 200 on GET admin/order/:id", async function () {

@@ -1,7 +1,10 @@
 import { validateAndTransformBody } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
-import { requireSuperAdmin } from "../../../utils/require-super-admin"
-import { AdminSetLayoutConfiguration } from "./validators"
+import { authorizeIfNecessary, MiddlewareRoute } from "@medusajs/framework/http"
+import { PolicyOperation } from "@medusajs/framework/utils"
+import {
+  AdminSetLayoutConfiguration,
+  AdminSetLayoutConfigurationType,
+} from "./validators"
 
 export const layoutConfigurationRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -10,9 +13,12 @@ export const layoutConfigurationRoutesMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       validateAndTransformBody(AdminSetLayoutConfiguration),
       // The default layout applies to every user.
-      requireSuperAdmin(
+      authorizeIfNecessary<AdminSetLayoutConfigurationType>(
         (req) => !!req.validatedBody.is_default,
-        "Only super admins can manage the default layout configuration"
+        {
+          resource: "layout_configuration",
+          operation: PolicyOperation.update,
+        }
       ),
     ],
   },

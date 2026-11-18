@@ -3,7 +3,7 @@ import { MedusaError, Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const validateAssignmentReferencesStepId =
   "validate-assignment-references-step"

@@ -3,19 +3,19 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { CreateRbacRolePolicyDTO, IRbacModuleService } from "@medusajs/types"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export type CreateRbacRolePoliciesStepInput = {
   policies: CreateRbacRolePolicyDTO[]
 }
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const createRbacRolePoliciesStepId = "create-rbac-role-policies"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const createRbacRolePoliciesStep = createStep(
   createRbacRolePoliciesStepId,

@@ -2,14 +2,13 @@ import { MedusaContainer } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { dynamicImport } from "@medusajs/utils"
 import compression from "compression"
-import createStore from "connect-redis"
 import cookieParser from "cookie-parser"
 import express, { Express, RequestHandler } from "express"
 import session from "express-session"
-import Redis from "ioredis"
 import morgan from "morgan"
 import path from "path"
-import { configManager } from "../config"
+import { createClient } from "redis"
+import { configManager, HttpSecurityHeadersOptions } from "../config"
 import { MedusaRequest, MedusaResponse } from "./types"
 import {
   compressionOptions,
@@ -18,7 +17,8 @@ import {
 
 const NOISY_ENDPOINTS_CHUNKS = ["@fs", "@id", "@vite", "@react", "node_modules"]
 
-const isHealthCheck = (req: MedusaRequest) => req.path === "/health"
+export const isHealthCheck = (req: MedusaRequest) =>
+  req.originalUrl.split("?")[0] === "/health"
 
 /**
  * Resolves the `sameSite` and `secure` flags used for the session cookie.
@@ -41,6 +41,29 @@ export function resolveSessionCookieSecurity({
   return { sameSite: false, secure: false }
 }
 
+export function applySecurityHeaders(
+  app: Express,
+  options: HttpSecurityHeadersOptions = {}
+) {
+  app.disable("x-powered-by")
+
+  if (options.enabled === false) {
+    return
+  }
+
+  const frameAncestors = options.frameAncestors ?? ["'self'"]
+  const contentSecurityPolicy = `frame-ancestors ${frameAncestors.join(" ")}`
+
+  app.use((_req, res, next) => {
+    res.setHeader("X-Content-Type-Options", "nosniff")
+    if (!options.frameAncestors) {
+      res.setHeader("X-Frame-Options", "SAMEORIGIN")
+    }
+    res.setHeader("Content-Security-Policy", contentSecurityPolicy)
+    next()
+  })
+}
+
 export async function expressLoader({
   app,
   container,
@@ -51,6 +74,12 @@ export async function expressLoader({
   app: Express
   shutdown: () => Promise<void>
 }> {
+  // Must run before the first await: other loaders register routes on `app` concurrently.
+  applySecurityHeaders(
+    app,
+    configManager.config.projectConfig.http?.securityHeaders
+  )
+
   const baseDir = configManager.baseDir
   const configModule = configManager.config
   const isProduction = configManager.isProduction
@@ -79,10 +108,10 @@ export async function expressLoader({
       maxAge: sessionOptions?.ttl ?? 10 * 60 * 60 * 1000,
       ...cookieOptions,
     },
-    store: null,
+    store: null as session.Store | null,
   }
 
-  let redisClient: Redis
+  let redisClient: ReturnType<typeof createClient> | undefined
 
   if (configModule?.projectConfig.sessionOptions?.dynamodbOptions) {
     const storeFactory = await dynamicImport("connect-dynamodb")
@@ -95,11 +124,20 @@ export async function expressLoader({
       ),
     })
   } else if (configModule?.projectConfig?.redisUrl) {
-    const RedisStore = createStore(session)
-    redisClient = new Redis(
-      configModule.projectConfig.redisUrl,
-      configModule.projectConfig.redisOptions ?? {}
-    )
+    // connect-redis is ESM-only, so it can't go through require() or dynamicImport
+    const { RedisStore } = await import("connect-redis")
+    redisClient = createClient({
+      ...configModule.projectConfig.redisOptions,
+      url: configModule.projectConfig.redisUrl,
+    })
+    redisClient.on("error", (error) => {
+      logger.error(`Redis session store error: ${error.message || error.code}`)
+    })
+    redisClient.connect().catch((error) => {
+      logger.error(
+        `Failed to connect to Redis session store: ${error.message || error.code}`
+      )
+    })
     sessionOpts.store = new RedisStore({
       client: redisClient,
       prefix: `${configModule?.projectConfig?.redisPrefix ?? ""}sess:`,
@@ -204,7 +242,7 @@ export async function expressLoader({
   app.use("/static", express.static(path.join(baseDir, "static")))
 
   const shutdown = async () => {
-    redisClient?.disconnect()
+    redisClient?.destroy()
   }
 
   return { app, shutdown }

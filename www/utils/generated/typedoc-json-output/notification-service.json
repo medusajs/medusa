@@ -1,20 +1,20 @@
 {
 	"schemaVersion": "2.0",
-	"id": 66372,
+	"id": 67250,
 	"name": "notification-service",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 66373,
+			"id": 67251,
 			"name": "INotificationModuleService",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 66374,
+					"id": 67252,
 					"name": "createNotifications",
 					"variant": "declaration",
 					"kind": 2048,
@@ -24,18 +24,18 @@
 							"fileName": "notification/service.ts",
 							"line": 29,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/core/types/src/notification/service.ts#L29"
+							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/notification/service.ts#L29"
 						},
 						{
 							"fileName": "notification/service.ts",
 							"line": 48,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/core/types/src/notification/service.ts#L48"
+							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/notification/service.ts#L48"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66375,
+							"id": 67253,
 							"name": "createNotifications",
 							"variant": "signature",
 							"kind": 4096,
@@ -73,12 +73,12 @@
 									"fileName": "notification/service.ts",
 									"line": 29,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/core/types/src/notification/service.ts#L29"
+									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/notification/service.ts#L29"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66376,
+									"id": 67254,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -106,7 +106,7 @@
 									}
 								},
 								{
-									"id": 66377,
+									"id": 67255,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -160,7 +160,7 @@
 							}
 						},
 						{
-							"id": 66378,
+							"id": 67256,
 							"name": "createNotifications",
 							"variant": "signature",
 							"kind": 4096,
@@ -198,12 +198,12 @@
 									"fileName": "notification/service.ts",
 									"line": 48,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/core/types/src/notification/service.ts#L48"
+									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/notification/service.ts#L48"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66379,
+									"id": 67257,
 									"name": "data",
 									"variant": "param",
 									"kind": 32768,
@@ -228,7 +228,7 @@
 									}
 								},
 								{
-									"id": 66380,
+									"id": 67258,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -281,7 +281,7 @@
 					]
 				},
 				{
-					"id": 66381,
+					"id": 67259,
 					"name": "retrieveNotification",
 					"variant": "declaration",
 					"kind": 2048,
@@ -291,12 +291,12 @@
 							"fileName": "notification/service.ts",
 							"line": 89,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/core/types/src/notification/service.ts#L89"
+							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/notification/service.ts#L89"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66382,
+							"id": 67260,
 							"name": "retrieveNotification",
 							"variant": "signature",
 							"kind": 4096,
@@ -346,12 +346,12 @@
 									"fileName": "notification/service.ts",
 									"line": 89,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/core/types/src/notification/service.ts#L89"
+									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/notification/service.ts#L89"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66383,
+									"id": 67261,
 									"name": "notificationId",
 									"variant": "param",
 									"kind": 32768,
@@ -370,7 +370,7 @@
 									}
 								},
 								{
-									"id": 66384,
+									"id": 67262,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -425,7 +425,7 @@
 									}
 								},
 								{
-									"id": 66385,
+									"id": 67263,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -478,7 +478,7 @@
 					]
 				},
 				{
-					"id": 66386,
+					"id": 67264,
 					"name": "listNotifications",
 					"variant": "declaration",
 					"kind": 2048,
@@ -488,12 +488,12 @@
 							"fileName": "notification/service.ts",
 							"line": 149,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/core/types/src/notification/service.ts#L149"
+							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/notification/service.ts#L149"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66387,
+							"id": 67265,
 							"name": "listNotifications",
 							"variant": "signature",
 							"kind": 4096,
@@ -583,12 +583,12 @@
 									"fileName": "notification/service.ts",
 									"line": 149,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/core/types/src/notification/service.ts#L149"
+									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/notification/service.ts#L149"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66388,
+									"id": 67266,
 									"name": "filters",
 									"variant": "param",
 									"kind": 32768,
@@ -615,7 +615,7 @@
 									}
 								},
 								{
-									"id": 66389,
+									"id": 67267,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -670,7 +670,7 @@
 									}
 								},
 								{
-									"id": 66390,
+									"id": 67268,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -726,7 +726,7 @@
 					]
 				},
 				{
-					"id": 66391,
+					"id": 67269,
 					"name": "listAndCountNotifications",
 					"variant": "declaration",
 					"kind": 2048,
@@ -736,12 +736,12 @@
 							"fileName": "notification/service.ts",
 							"line": 212,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/core/types/src/notification/service.ts#L212"
+							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/notification/service.ts#L212"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66392,
+							"id": 67270,
 							"name": "listAndCountNotifications",
 							"variant": "signature",
 							"kind": 4096,
@@ -831,12 +831,12 @@
 									"fileName": "notification/service.ts",
 									"line": 212,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/core/types/src/notification/service.ts#L212"
+									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/notification/service.ts#L212"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66393,
+									"id": 67271,
 									"name": "filters",
 									"variant": "param",
 									"kind": 32768,
@@ -863,7 +863,7 @@
 									}
 								},
 								{
-									"id": 66394,
+									"id": 67272,
 									"name": "config",
 									"variant": "param",
 									"kind": 32768,
@@ -918,7 +918,7 @@
 									}
 								},
 								{
-									"id": 66395,
+									"id": 67273,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -987,10 +987,10 @@
 				{
 					"title": "Methods",
 					"children": [
-						66374,
-						66381,
-						66386,
-						66391
+						67252,
+						67259,
+						67264,
+						67269
 					]
 				}
 			],
@@ -999,7 +999,7 @@
 					"fileName": "notification/service.ts",
 					"line": 7,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/2a44f151ce950fb52801793cc82da540750cf714/packages/core/types/src/notification/service.ts#L7"
+					"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/notification/service.ts#L7"
 				}
 			],
 			"extendedTypes": [
@@ -1020,128 +1020,128 @@
 		{
 			"title": "Interfaces",
 			"children": [
-				66373
+				67251
 			]
 		}
 	],
 	"packageName": "@medusajs/types",
 	"symbolIdMap": {
-		"66372": {
+		"67250": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": ""
 		},
-		"66373": {
+		"67251": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService"
 		},
-		"66374": {
+		"67252": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.createNotifications"
 		},
-		"66375": {
+		"67253": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.createNotifications"
 		},
-		"66376": {
+		"67254": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "data"
 		},
-		"66377": {
+		"67255": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "sharedContext"
 		},
-		"66378": {
+		"67256": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.createNotifications"
 		},
-		"66379": {
+		"67257": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "data"
 		},
-		"66380": {
+		"67258": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "sharedContext"
 		},
-		"66381": {
+		"67259": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.retrieveNotification"
 		},
-		"66382": {
+		"67260": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.retrieveNotification"
 		},
-		"66383": {
+		"67261": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "notificationId"
 		},
-		"66384": {
+		"67262": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "config"
 		},
-		"66385": {
+		"67263": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "sharedContext"
 		},
-		"66386": {
+		"67264": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.listNotifications"
 		},
-		"66387": {
+		"67265": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.listNotifications"
 		},
-		"66388": {
+		"67266": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "filters"
 		},
-		"66389": {
+		"67267": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "config"
 		},
-		"66390": {
+		"67268": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "sharedContext"
 		},
-		"66391": {
+		"67269": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.listAndCountNotifications"
 		},
-		"66392": {
+		"67270": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "INotificationModuleService.listAndCountNotifications"
 		},
-		"66393": {
+		"67271": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "filters"
 		},
-		"66394": {
+		"67272": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "config"
 		},
-		"66395": {
+		"67273": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/notification/service.ts",
 			"qualifiedName": "sharedContext"
@@ -1152,7 +1152,7 @@
 			"1": "../../../../packages/core/types/src/notification/service.ts"
 		},
 		"reflections": {
-			"1": 66372
+			"1": 67250
 		}
 	}
 }

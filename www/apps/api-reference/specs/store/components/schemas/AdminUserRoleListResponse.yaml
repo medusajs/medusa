@@ -26,6 +26,7 @@ properties:
       The estimated count retrieved from the PostgreSQL query planner, which may
       be inaccurate.
     x-featureFlag: index_engine
+    deprecated: true
   roles:
     type: array
     description: The list of roles.

@@ -3,6 +3,7 @@ import { ModuleResolution } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
   createMedusaContainer,
+  LicenseFeature,
   Modules,
 } from "@medusajs/utils"
 import { MODULE_SCOPE } from "../../types"
@@ -278,6 +279,53 @@ describe("license gated modules", () => {
 
     expect(container.resolve(Modules.RBAC)).toBeDefined()
   })
+
+  it.each([
+    [Modules.RBAC, LicenseFeature.RBAC],
+    [Modules.AUDIT, LicenseFeature.AUDIT],
+  ])(
+    "gates the %s module behind the %s license feature",
+    async (moduleKey, feature) => {
+      const gatedResolutions: Record<string, ModuleResolution> = {
+        [moduleKey]: {
+          resolutionPath: require.resolve("../__mocks__/@modules/default"),
+          definition: {
+            key: moduleKey,
+            defaultPackage: moduleKey,
+            label: moduleKey,
+            defaultModuleDeclaration: {
+              scope: MODULE_SCOPE.INTERNAL,
+            },
+          },
+          moduleDeclaration: {
+            scope: MODULE_SCOPE.INTERNAL,
+          },
+        },
+      }
+
+      const unlicensed = createMedusaContainer()
+      registerLicense(unlicensed, ["other-feature"])
+
+      await expect(
+        moduleLoader({
+          container: unlicensed,
+          moduleResolutions: gatedResolutions,
+          logger,
+        })
+      ).rejects.toThrow(`does not cover the "${feature}" feature`)
+
+      const licensed = createMedusaContainer()
+      registerLicense(licensed, [feature])
+
+      await moduleLoader({
+        container: licensed,
+        moduleResolutions: gatedResolutions,
+        logger,
+      })
+
+      expect(licensed.resolve(moduleKey)).toBeDefined()
+    }
+  )
 
   describe("license gated providers", () => {
     const providerResolutions = (

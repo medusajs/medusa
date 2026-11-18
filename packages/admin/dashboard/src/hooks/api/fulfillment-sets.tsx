@@ -31,7 +31,7 @@ export const useDeleteFulfillmentSet = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.fulfillmentSet.delete(id),
-    onSuccess: async (data, variables, context) => {
+    onSuccess: async (data, variables, onMutateResult, context) => {
       await queryClient.invalidateQueries({
         queryKey: fulfillmentSetsQueryKeys.detail(id),
       })
@@ -47,7 +47,7 @@ export const useDeleteFulfillmentSet = (
         queryKey: shippingOptionsQueryKeys.all,
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -96,7 +96,7 @@ export const useCreateFulfillmentSetServiceZone = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.fulfillmentSet.createServiceZone(fulfillmentSetId, payload),
-    onSuccess: async (data, variables, context) => {
+    onSuccess: async (data, variables, onMutateResult, context) => {
       await queryClient.invalidateQueries({
         queryKey: fulfillmentSetsQueryKeys.lists(),
       })
@@ -104,7 +104,7 @@ export const useCreateFulfillmentSetServiceZone = (
         queryKey: stockLocationsQueryKeys.all,
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -130,7 +130,7 @@ export const useUpdateFulfillmentSetServiceZone = (
         serviceZoneId,
         payload
       ),
-    onSuccess: async (data, variables, context) => {
+    onSuccess: async (data, variables, onMutateResult, context) => {
       await queryClient.invalidateQueries({
         queryKey: fulfillmentSetsQueryKeys.lists(),
       })
@@ -138,7 +138,7 @@ export const useUpdateFulfillmentSetServiceZone = (
         queryKey: stockLocationsQueryKeys.all,
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -162,7 +162,7 @@ export const useDeleteFulfillmentServiceZone = (
         fulfillmentSetId,
         serviceZoneId
       ),
-    onSuccess: async (data, variables, context) => {
+    onSuccess: async (data, variables, onMutateResult, context) => {
       await queryClient.invalidateQueries({
         queryKey: fulfillmentSetsQueryKeys.lists(),
       })
@@ -173,7 +173,7 @@ export const useDeleteFulfillmentServiceZone = (
         queryKey: stockLocationsQueryKeys.all,
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

@@ -265,7 +265,11 @@ If you chose the "Buy X Get Y" promotion type in the first section, fill out the
 
 ![Who can use this code section](https://res.cloudinary.com/dza7lstvk/image/upload/v1739898542/User%20Guide/Screenshot_2025-02-18_at_7.08.45_PM_nh5iw4.png)
 
-5. In the "What needs to be in the cart to unlock the promotion?" section, you'll specify the "Buy X" part (for example, "Buy 3 shirts"):
+5. In the Discounted Items field, choose which eligible items in the cart receive the discount:
+    - **Most expensive first**: The promotion discounts the most expensive eligible items in the cart. This is the default.
+    - **Cheapest first**: The promotion discounts the cheapest eligible items in the cart. For example, for "Buy 3 shirts get 1 for free", the customer gets the cheapest shirt for free.
+    - If this field isn't visible in your admin, contact your technical team to [update your Medusa version](!docs!/learn/update).
+6. In the "What needs to be in the cart to unlock the promotion?" section, you'll specify the "Buy X" part (for example, "Buy 3 shirts"):
     - You must set the minimum required quantity of the items in the cart. For example, for the "Buy 3 shirts get 1 for free", you set the minimum quantity to three.
     - You must set the product(s) that this promotion applies / doesn't apply to.
     - To add a custom condition, click on the "Add condition" button. For each custom condition:
@@ -282,7 +286,7 @@ If you chose the "Buy X Get Y" promotion type in the first section, fill out the
             - Set the Attribute to Product Category.
             - Set the Operator to "Not In".
             - Set the Value to the "Shirt" category.
-6. In the "What items will the promotion be applied to?" section, you'll specify the Get Y part (for example, "get 1 free shirt"):
+7. In the "What items will the promotion be applied to?" section, you'll specify the Get Y part (for example, "get 1 free shirt"):
     - You must set the quantity of items that the customer gets out of the promotion. For example, for the "Buy 3 shirts get 1 for free", you set the quantity to one.
     - You must set the products that the customer gets out of the promotion for free.
     - To add a custom condition, click on the "Add condition" button. For each custom condition:
@@ -299,11 +303,11 @@ If you chose the "Buy X Get Y" promotion type in the first section, fill out the
             - Set the Attribute to Product Category.
             - Set the Operator to "Not In".
             - Set the Value to the "Shirt" category.
-7. In the Usage Limit field, optionally set the maximum number of times this promotion can be used across all orders.
+8. In the Usage Limit field, optionally set the maximum number of times this promotion can be used across all orders.
     - For example, if you set this field to `10`, the promotion can be used a total of 10 times across all orders. After that, the promotion can't be used anymore.
     - If left empty, the promotion can be used an unlimited number of times, or until the campaign's usage limit is reached if the promotion is part of a campaign.
     - You can't update this field after creating the promotion.
-8. Once you're done, click Next and move on to the [next step](#step-3-campaign).
+9. Once you're done, click Next and move on to the [next step](#step-3-campaign).
 
 ### f. Free Shipping
 

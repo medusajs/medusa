@@ -36,6 +36,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            path: "/migrate-self-hosted",
+            title: "Migrate from Self Hosting",
+          },
+          {
+            type: "link",
             title: "Command Palette",
             path: "/command-palette",
           },

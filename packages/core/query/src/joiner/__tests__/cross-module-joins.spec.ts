@@ -720,6 +720,170 @@ describe("cross-module joins (stage 1 pushdown)", () => {
       })
     })
 
+    it("pushes link filters nested below several module-internal relations", () => {
+      const { plan } = compile({
+        entity: "variant",
+        fields: ["id"],
+        filters: {
+          product: {
+            variants: {
+              price_set: { currency_code: "usd" },
+            },
+          },
+        },
+      })
+
+      expect(plan.crossModuleJoins).toEqual([
+        {
+          link: {
+            table: "product_variant",
+            sourceKey: "id",
+            targetKey: "product_id",
+          },
+          target: {
+            table: "product",
+            primaryKey: "id",
+          },
+        },
+        {
+          parent: "product",
+          link: {
+            table: "product_variant",
+            sourceKey: "product_id",
+            targetKey: "id",
+          },
+          target: {
+            table: "product_variant",
+            primaryKey: "id",
+          },
+        },
+        {
+          parent: "product_variant",
+          link: {
+            table: "product_variant_price_set",
+            sourceKey: "variant_id",
+            targetKey: "price_set_id",
+          },
+          target: {
+            table: "price_set",
+            primaryKey: "id",
+            filters: { currency_code: "usd" },
+          },
+        },
+      ])
+      expect(plan.residualCrossModuleFilters).toEqual([])
+      expect(getArg(plan, "filters")?.value).toEqual({})
+    })
+
+    it("keeps hasMany sibling filters on the same row as the nested link filter", () => {
+      const { plan } = compile({
+        entity: "variant",
+        fields: ["id"],
+        filters: {
+          product: {
+            title: "Shirt",
+            variants: {
+              sku: "SHIRT-S",
+              price_set: { currency_code: "usd" },
+            },
+          },
+        },
+      })
+
+      expect(plan.crossModuleJoins).toEqual([
+        {
+          link: {
+            table: "product_variant",
+            sourceKey: "id",
+            targetKey: "product_id",
+          },
+          target: {
+            table: "product",
+            primaryKey: "id",
+          },
+        },
+        {
+          parent: "product",
+          link: {
+            table: "product_variant",
+            sourceKey: "product_id",
+            targetKey: "id",
+          },
+          target: {
+            table: "product_variant",
+            primaryKey: "id",
+            filters: { sku: "SHIRT-S" },
+          },
+        },
+        {
+          parent: "product_variant",
+          link: {
+            table: "product_variant_price_set",
+            sourceKey: "variant_id",
+            targetKey: "price_set_id",
+          },
+          target: {
+            table: "price_set",
+            primaryKey: "id",
+            filters: { currency_code: "usd" },
+          },
+        },
+      ])
+      expect(getArg(plan, "filters")?.value).toEqual({
+        product: { title: "Shirt" },
+      })
+    })
+
+    it("leaves hasMany filters in place when a sibling cannot be pushed down", () => {
+      const { plan } = compile({
+        entity: "variant",
+        fields: ["id"],
+        filters: {
+          product: {
+            variants: {
+              sku: { $exists: true },
+              price_set: { currency_code: "usd" },
+            },
+          },
+        },
+      })
+
+      expect(plan.crossModuleJoins).toEqual([])
+      expect(plan.residualCrossModuleFilters).toEqual([])
+      expect(getArg(plan, "filters")?.value).toEqual({
+        product: {
+          variants: {
+            sku: { $exists: true },
+            price_set: { currency_code: "usd" },
+          },
+        },
+      })
+    })
+
+    it("leaves nested link filters in place when they cannot be pushed down", () => {
+      const { plan } = compile({
+        entity: "variant",
+        fields: ["id"],
+        filters: {
+          product: {
+            variants: {
+              price_set: { calculated_price: 10 },
+            },
+          },
+        },
+      })
+
+      expect(plan.crossModuleJoins).toEqual([])
+      expect(plan.residualCrossModuleFilters).toEqual([])
+      expect(getArg(plan, "filters")?.value).toEqual({
+        product: {
+          variants: {
+            price_set: { calculated_price: 10 },
+          },
+        },
+      })
+    })
+
     it("supports inverse read-only links (join column on the target table)", () => {
       const { plan } = compile({
         entity: "sales_channel",
@@ -990,11 +1154,34 @@ describe("cross-module filtering (stage 2 in-memory residuals)", () => {
   // the pricing module; region_id mirrors a column missing from the
   // crossjoinable metadata (like belongsTo FK columns).
   const priceSets = [
-    { id: "ps1", currency_code: "usd", region_id: "reg_1", calculated_price: { calculated_amount: 50 } },
-    { id: "ps2", currency_code: "usd", region_id: "reg_2", calculated_price: { calculated_amount: 150 } },
-    { id: "ps3", currency_code: "eur", region_id: "reg_2", calculated_price: { calculated_amount: 250 } },
-    { id: "bps1", currency_code: "usd", calculated_price: { calculated_amount: 10 } },
-    { id: "bps2", currency_code: "usd", calculated_price: { calculated_amount: 20 } },
+    {
+      id: "ps1",
+      currency_code: "usd",
+      region_id: "reg_1",
+      calculated_price: { calculated_amount: 50 },
+    },
+    {
+      id: "ps2",
+      currency_code: "usd",
+      region_id: "reg_2",
+      calculated_price: { calculated_amount: 150 },
+    },
+    {
+      id: "ps3",
+      currency_code: "eur",
+      region_id: "reg_2",
+      calculated_price: { calculated_amount: 250 },
+    },
+    {
+      id: "bps1",
+      currency_code: "usd",
+      calculated_price: { calculated_amount: 10 },
+    },
+    {
+      id: "bps2",
+      currency_code: "usd",
+      calculated_price: { calculated_amount: 20 },
+    },
   ]
 
   const serviceData: Record<string, any[]> = {

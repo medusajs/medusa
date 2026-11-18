@@ -53,7 +53,6 @@ export const useReferenceTranslations = (
         pages: HttpTypes.AdminTranslationEntitiesResponse[]
         pageParams: number[]
       },
-      HttpTypes.AdminTranslationEntitiesResponse,
       QueryKey,
       number
     >,
@@ -185,14 +184,14 @@ export const useBatchTranslationSettings = (
   return useMutation({
     mutationFn: (payload: HttpTypes.AdminBatchTranslationSettings) =>
       sdk.admin.translation.batchSettings(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: translationSettingsQueryKeys.lists(),
       })
       queryClient.invalidateQueries({
         queryKey: translationStatisticsQueryKeys.lists(),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

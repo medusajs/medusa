@@ -43,7 +43,7 @@ const HeroPricing: React.FC<HeroPricingProps> = ({ data }) => {
                   <div className="flex flex-col items-start justify-start w-full">
                     <div className="flex flex-col justify-end w-full">
                       <H3
-                        className="!mb-0 txt-xlarge"
+                        className="!mb-0"
                         id={slugify(option.title, {
                           lower: true,
                         })}
@@ -52,7 +52,7 @@ const HeroPricing: React.FC<HeroPricingProps> = ({ data }) => {
                       </H3>
                     </div>
                     <div className="flex flex-col justify-end w-full">
-                      <p className="txt-xlarge text-medusa-fg-subtle">
+                      <p className="txt-medium text-medusa-fg-subtle">
                         {option.subtitle}
                       </p>
                     </div>
@@ -85,7 +85,7 @@ const HeroPricing: React.FC<HeroPricingProps> = ({ data }) => {
           >
             <div className="w-full flex items-start">
               {option.description && (
-                <p className="text-medusa-fg-base txt-small-plus text-balance">
+                <p className="text-medusa-fg-base txt-small text-balance">
                   {option.description}
                 </p>
               )}
@@ -98,7 +98,7 @@ const HeroPricing: React.FC<HeroPricingProps> = ({ data }) => {
           <div
             key={`features-${option._key}`}
             className={clsx(
-              `p-1 flex flex-col gap-0.75`,
+              `p-1 flex flex-col gap-0.5`,
               index !== data.options.length - 1 &&
                 "border-solid border-r border-medusa-border-base",
               index === data.options.length - 1 && "bg-medusa-bg-subtle"
@@ -115,12 +115,12 @@ const HeroPricing: React.FC<HeroPricingProps> = ({ data }) => {
             {option.features.map((feature, featureIndex) => (
               <div
                 key={featureIndex}
-                className="flex gap-0.75 items-center w-full text-medusa-fg-base"
+                className="flex gap-0.5 items-start w-full text-medusa-fg-base"
               >
-                <div className="flex gap-0.5 items-center">
+                <div className="flex items-center h-[1.3rem] shrink-0">
                   <CheckCircleSolid />
                 </div>
-                <span className="txt-medium-plus">{feature}</span>
+                <span className="txt-small">{feature}</span>
               </div>
             ))}
           </div>

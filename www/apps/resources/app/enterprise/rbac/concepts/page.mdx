@@ -80,6 +80,8 @@ When you install the RBAC Module, the Medusa application does the following:
 
 New users created with the [user CLI command](../../../medusa-cli/commands/user/page.mdx) are also assigned the Super Admin role by default while the RBAC Module is installed.
 
+In addition, if no admin user holds the Super Admin role without a scope, the [createUsersWorkflow](/references/medusa-workflows/createUsersWorkflow) assigns the Super Admin role to the users it creates, along with any roles passed in its input. This ensures that the first admin users of a new application aren't locked out. Once a user holds the Super Admin role, the workflow only assigns the roles passed in its input.
+
 Medusa's workflows and API routes also protect the Super Admin role:
 
 - You can't delete the Super Admin role or its `*:*` policy.

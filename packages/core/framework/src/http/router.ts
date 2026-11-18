@@ -1,8 +1,10 @@
+import { MedusaModule } from "@medusajs/modules-sdk"
 import {
   ContainerRegistrationKeys,
   DEFAULT_RBAC_ACTOR_TYPES,
   FeatureFlag,
   isFileDisabled,
+  Modules,
   parseCorsOrigins,
 } from "@medusajs/utils"
 import cors, { CorsOptions } from "cors"
@@ -14,6 +16,7 @@ import type {
 } from "express"
 import type {
   AdditionalDataValidatorRoute,
+  AuditConfigRoute,
   BodyParserConfigRoute,
   MedusaNextFunction,
   MedusaRequest,
@@ -25,15 +28,16 @@ import type {
   RouteHandler,
 } from "./types"
 
-import { Logger, MedusaContainer } from "@medusajs/types"
+import { IAuditModuleService, Logger, MedusaContainer } from "@medusajs/types"
 import { join } from "path"
 import { configManager } from "../config"
+import { createAuditMiddleware } from "./audit"
 import { MiddlewareFileLoader } from "./middleware-file-loader"
 import { applyLocale, authenticate, AuthType } from "./middlewares"
 import { createBodyParserMiddlewaresStack } from "./middlewares/bodyparser"
 import { ensurePublishableApiKeyMiddleware } from "./middlewares/ensure-publishable-api-key"
 import { errorHandler } from "./middlewares/error-handler"
-import { RoutesFinder } from "./routes-finder"
+import { preloadPathToRegexp, RoutesFinder } from "./routes-finder"
 import { RoutesLoader } from "./routes-loader"
 import { RoutesSorter } from "./routes-sorter"
 import { RestrictedFields } from "./utils/restricted-fields"
@@ -72,6 +76,8 @@ export class ApiLoader {
 
   readonly #logger: Logger
 
+  readonly #container: MedusaContainer
+
   readonly #baseRestrictedFields: string[]
 
   readonly #storeRelationsLimit?: number
@@ -94,6 +100,7 @@ export class ApiLoader {
     this.#baseRestrictedFields = baseRestrictedFields ?? []
     this.#storeRelationsLimit = storeRelationsLimit
     this.#logger = container.resolve(ContainerRegistrationKeys.LOGGER)
+    this.#container = container
   }
 
   /**
@@ -115,10 +122,13 @@ export class ApiLoader {
       routesFinder: new RoutesFinder<RouteDescriptor>(),
       middlewares: middlewareLoader.getMiddlewares(),
       errorHandler: middlewareLoader.getErrorHandler() as
-        ErrorRequestHandler | undefined,
+        | ErrorRequestHandler
+        | undefined,
       bodyParserConfigRoutes: middlewareLoader.getBodyParserConfigRoutes(),
       additionalDataValidatorRoutes:
         middlewareLoader.getAdditionalDataValidatorRoutes(),
+      auditConfigRoutes: middlewareLoader.getAuditConfigRoutes(),
+      auditNamespaces: middlewareLoader.getAuditNamespaces(),
     }
   }
 
@@ -272,7 +282,20 @@ export class ApiLoader {
    * Creates the options for the Cors middleware
    */
   #createCorsOptions(origin: string): CorsOptions {
+    const { maxAge, exposedHeaders, allowedHeaders, methods } =
+      configManager.config.projectConfig.http.corsOptions ?? {}
+
+    const additionalOptions = Object.fromEntries(
+      Object.entries({
+        maxAge,
+        exposedHeaders,
+        allowedHeaders,
+        methods,
+      }).filter(([, value]) => value !== undefined)
+    )
+
     return {
+      ...additionalOptions,
       origin: parseCorsOrigins(origin),
       credentials: true,
       preflightContinue: false,
@@ -458,15 +481,59 @@ export class ApiLoader {
     this.#app.use(namespace, middleware as RequestHandler)
   }
 
+  /**
+   * Registers the middleware recording audited requests. It must be the first
+   * middleware, so that requests rejected by authentication or validation are
+   * recorded too.
+   */
+  #applyAuditMiddleware(
+    routesFinder: RoutesFinder<RouteDescriptor>,
+    auditConfigRoutes: AuditConfigRoute[],
+    auditNamespaces: string[]
+  ) {
+    if (!MedusaModule.isInstalled(Modules.AUDIT)) {
+      return
+    }
+
+    this.#logger.debug("Registering audit middleware")
+
+    let auditService: IAuditModuleService | undefined
+    const auditMiddleware = createAuditMiddleware({
+      routesFinder,
+      auditNamespaces,
+      auditRoutesFinder: auditConfigRoutes.length
+        ? new RoutesFinder<AuditConfigRoute>(
+            new RoutesSorter(auditConfigRoutes).sort([
+              "static",
+              "params",
+              "regex",
+              "wildcard",
+              "global",
+            ])
+          )
+        : undefined,
+      getAuditService: () =>
+        (auditService ??= this.#container.resolve<IAuditModuleService>(
+          Modules.AUDIT
+        )),
+      logger: this.#logger,
+    })
+
+    this.#app.use(
+      ApiLoader.traceMiddleware
+        ? (ApiLoader.traceMiddleware(auditMiddleware, {
+            route: "/",
+          }) as RequestHandler)
+        : auditMiddleware
+    )
+  }
+
   async load() {
     if (FeatureFlag.isFeatureEnabled("backend_hmr")) {
       ;(global as any).__MEDUSA_HMR_API_LOADER__ = this
     }
 
-    this.#assignRestrictedFields(
-      this.#baseRestrictedFields,
-      this.#storeRelationsLimit
-    )
+    await preloadPathToRegexp()
 
     const {
       errorHandler: sourceErrorHandler,
@@ -475,7 +542,16 @@ export class ApiLoader {
       routesFinder,
       bodyParserConfigRoutes,
       additionalDataValidatorRoutes,
+      auditConfigRoutes,
+      auditNamespaces,
     } = await this.#loadHttpResources()
+
+    this.#applyAuditMiddleware(routesFinder, auditConfigRoutes, auditNamespaces)
+
+    this.#assignRestrictedFields(
+      this.#baseRestrictedFields,
+      this.#storeRelationsLimit
+    )
 
     /**
      * Parse request body on all the requests and use the routes finder

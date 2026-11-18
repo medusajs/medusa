@@ -7,7 +7,7 @@ interface SaveViewDropdownProps {
   isDefaultView: boolean
   currentViewId?: string
   currentViewName?: string
-  onSaveAsDefault: () => void
+  onSaveAsDefault?: () => void
   onUpdateExisting: () => void
   onSaveAsNew: () => void
 }
@@ -31,7 +31,7 @@ export const SaveViewDropdown: React.FC<SaveViewDropdownProps> = ({
     })
 
     if (result) {
-      onSaveAsDefault()
+      onSaveAsDefault?.()
     }
   }
 
@@ -61,9 +61,11 @@ export const SaveViewDropdown: React.FC<SaveViewDropdownProps> = ({
       <DropdownMenu.Content align="end">
         {isDefaultView ? (
           <>
-            <DropdownMenu.Item onClick={handleSaveAsDefault}>
-              {t("views.updateDefaultForEveryone")}
-            </DropdownMenu.Item>
+            {onSaveAsDefault && (
+              <DropdownMenu.Item onClick={handleSaveAsDefault}>
+                {t("views.updateDefaultForEveryone")}
+              </DropdownMenu.Item>
+            )}
             <DropdownMenu.Item onClick={onSaveAsNew}>
               {t("views.saveAsNew")}
             </DropdownMenu.Item>

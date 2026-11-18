@@ -1,5 +1,62 @@
 # @medusajs/utils
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17787](https://github.com/medusajs/medusa/pull/17787) [`b810334`](https://github.com/medusajs/medusa/commit/b810334cbf0c0ba3a401d82182ef06f2432e2716) Thanks [@sradevski](https://github.com/sradevski)! - feat(audit,types,utils,modules-sdk,framework,medusa): add the licensed Audit Module with built-in PostgreSQL and Medusa Cloud storage
+
+- [#17136](https://github.com/medusajs/medusa/pull/17136) [`75d8121`](https://github.com/medusajs/medusa/commit/75d81218810f5c8a60951a917d2f899bf3967d2f) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(core-flows,utils): emit events for promotion, promotion rule, and campaign changes
+
+- [#17518](https://github.com/medusajs/medusa/pull/17518) [`b89101c`](https://github.com/medusajs/medusa/commit/b89101ca53b1ab106549df31e0c38a50e755aefc) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(cloud,utils,medusa,admin-shared,dashboard): add Medusa Cloud plugin that shows Cloud announcements in the admin, and a `sidebar.settings.before` injection zone
+
+- [#17521](https://github.com/medusajs/medusa/pull/17521) [`ce6b88a`](https://github.com/medusajs/medusa/commit/ce6b88a3f01f7537dfa734ebf31e650c114a761d) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(utils,create-medusa-app): escape database names in database creation and existence queries
+
+- [#17488](https://github.com/medusajs/medusa/pull/17488) [`1532c20`](https://github.com/medusajs/medusa/commit/1532c20d65386c4c0b535ec104c6ef309bc176ac) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils): import the Variant Thumbnail column and ignore Variant Image columns in product import
+
+- [#17389](https://github.com/medusajs/medusa/pull/17389) [`fd943bf`](https://github.com/medusajs/medusa/commit/fd943bf0ab1079947dd63758933b8adc5b22c114) Thanks [@sradevski](https://github.com/sradevski)! - fix(core-flows): Replace account holders that the payment provider no longer has when creating payment sessions
+
+- [#17754](https://github.com/medusajs/medusa/pull/17754) [`93d4cc3`](https://github.com/medusajs/medusa/commit/93d4cc370e1b31be28c9b93b465c5dcf176616fb) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(index,query,medusa,types,utils): deprecate the Index Module
+
+- [#17741](https://github.com/medusajs/medusa/pull/17741) [`9db3748`](https://github.com/medusajs/medusa/commit/9db37488d4be757b0139aac1e15fb79ed395fc6c) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - chore: remove the translation feature flag and enable the Translation Module by default
+
+- [#17822](https://github.com/medusajs/medusa/pull/17822) [`a645563`](https://github.com/medusajs/medusa/commit/a645563f7269549feef2265c436c5cdc69ffa1b1) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(utils): resolve plugins installed as dependencies of `@medusajs/medusa` when they aren't direct project dependencies
+
+- [#16902](https://github.com/medusajs/medusa/pull/16902) [`08c9355`](https://github.com/medusajs/medusa/commit/08c9355d2008a9d04bd885a89d18a602a9d5e37c) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(utils,core-flows): invoke the deepFlatMap callback for an empty terminal array, fixing inventory check for carts and returns
+
+- [#17746](https://github.com/medusajs/medusa/pull/17746) [`90901f3`](https://github.com/medusajs/medusa/commit/90901f39c53ec1ee719dfda825ec576613bf5a1b) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(utils,medusa): invalidate cached localized reads and the admin translation list when a translation is created, updated or deleted
+
+- Updated dependencies []:
+  - @medusajs/deps@2.22.7
+
+## 2.22.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.22.6
+
+## 2.22.5
+
+### Patch Changes
+
+- [#17563](https://github.com/medusajs/medusa/pull/17563) [`a639480`](https://github.com/medusajs/medusa/commit/a63948083a6281465d5cf8c66308a1325001b760) Thanks [@kristianjakschnltg](https://github.com/kristianjakschnltg)! - feat(promotion,utils,types,medusa,dashboard): add target selection strategy for buy-get promotions
+
+  Adds `application_method.target_selection_strategy` to choose which eligible items a Buy X Get Y promotion discounts. The default, `most_expensive_first`, keeps the current behaviour. `cheapest_first` discounts the cheapest eligible units across the cart: for "buy 3, get 1 free" with eight units priced 100 to 800, the 100 and 200 units are discounted instead of 100 and 500. The option is available in the admin promotion create and edit forms.
+
+- [#17693](https://github.com/medusajs/medusa/pull/17693) [`9bee47a`](https://github.com/medusajs/medusa/commit/9bee47a20d9d2ee9e1c59f0bf5cf94e1dc745609) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(utils): update dotenv-expand to 13.0.0
+
+- [#17712](https://github.com/medusajs/medusa/pull/17712) [`7dd3c28`](https://github.com/medusajs/medusa/commit/7dd3c28fba6b74aaab84612b696cab597e12c667) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils, query, framework): harden dotted field/filter path handling when building queries
+- Updated dependencies []:
+  - @medusajs/deps@2.22.5
+
+## 2.22.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/deps@2.22.4
+
 ## 2.22.3
 
 ### Patch Changes

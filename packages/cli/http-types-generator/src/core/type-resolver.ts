@@ -20,6 +20,11 @@ export interface ResolvedSchemaType {
    * (e.g. `createOperatorMap()` returning `any` through `_output`).
    */
   zodShapeType?: ts.Type
+  /**
+   * The schema's `_input` type when `type` was resolved from `_output`. Used
+   * to emit fields the client may omit (e.g. ones with `.default()`) as optional.
+   */
+  zodInputType?: ts.Type
 }
 
 /** Property names that belong to `FindParams` (superset of SelectParams) */
@@ -151,6 +156,9 @@ export class TypeResolver {
       hasBaseFilterable,
       schemaName: httpTypeName,
       zodShapeType,
+      zodInputType: hasTransform
+        ? undefined
+        : TsHelpers.getZodInputType(this.checker, zodType),
     }
   }
 
@@ -165,7 +173,8 @@ export class TypeResolver {
     resolvedType: ts.Type,
     hasFindParams: boolean,
     hasSelectParams = false,
-    zodShapeType?: ts.Type
+    zodShapeType?: ts.Type,
+    zodInputType?: ts.Type
   ): PropertyInfo[] {
     const properties = resolvedType.getProperties()
     const result: PropertyInfo[] = []
@@ -196,6 +205,10 @@ export class TypeResolver {
           zodSymbolName === "ZodNullable" ||
           zodSymbolName === "ZodDefault" ||
           zodSymbolName === "ZodPipe" // transform/preprocess
+      }
+      const inputProp = zodInputType?.getProperty(propName)
+      if (inputProp && inputProp.flags & ts.SymbolFlags.Optional) {
+        isOptional = true
       }
 
       const nonNullableType = this.checker.getNonNullableType(propType)

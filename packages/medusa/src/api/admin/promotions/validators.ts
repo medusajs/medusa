@@ -1,5 +1,6 @@
 import {
   ApplicationMethodAllocation,
+  ApplicationMethodTargetSelectionStrategy,
   ApplicationMethodTargetType,
   ApplicationMethodType,
   PromotionRuleOperator,
@@ -126,6 +127,9 @@ export const AdminCreateApplicationMethod = z
     buy_rules: z.array(AdminCreatePromotionRule).optional(),
     apply_to_quantity: z.number().nullish(),
     buy_rules_min_quantity: z.number().nullish(),
+    target_selection_strategy: z
+      .nativeEnum(ApplicationMethodTargetSelectionStrategy)
+      .optional(),
   })
   .strict()
 
@@ -143,6 +147,9 @@ export const AdminUpdateApplicationMethod = z
     allocation: z.nativeEnum(ApplicationMethodAllocation).optional(),
     apply_to_quantity: z.number().nullish(),
     buy_rules_min_quantity: z.number().nullish(),
+    target_selection_strategy: z
+      .nativeEnum(ApplicationMethodTargetSelectionStrategy)
+      .optional(),
   })
   .strict()
 

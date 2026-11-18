@@ -133,7 +133,7 @@ export const useUpdateGiftCard = (
 
   return useMutation({
     mutationFn: async (payload) => updateGiftCard(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: giftCardQueryKey.detail(id),
       })
@@ -141,7 +141,7 @@ export const useUpdateGiftCard = (
         queryKey: giftCardQueryKey.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -160,10 +160,15 @@ export const useDeleteGiftCard = (
 
   return useMutation({
     mutationFn: () => deleteGiftCard(id),
-    onSuccess: (data: AdminGiftCardResponse, variables: any, context: any) => {
+    onSuccess: (
+      data: AdminGiftCardResponse,
+      variables: any,
+      onMutateResult: any,
+      context: any
+    ) => {
       queryClient.invalidateQueries({ queryKey: giftCardQueryKey.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })
 }
@@ -184,9 +189,9 @@ export const useCreateGiftCard = (
 
   return useMutation({
     mutationFn: (body: AdminCreateGiftCardType) => createGiftCard(body),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: giftCardQueryKey.lists() })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

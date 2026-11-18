@@ -75,6 +75,7 @@ export class PluginProjectCreator
       abortController: this.abortController,
       verbose: this.options.verbose,
       packageManager: this.packageManager,
+      version: this.options.version,
     })
   }
 
