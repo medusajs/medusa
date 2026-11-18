@@ -42,6 +42,7 @@ import { preloadPathToRegexp, RoutesFinder } from "./routes-finder"
 import { RoutesLoader } from "./routes-loader"
 import { RoutesSorter } from "./routes-sorter"
 import { RestrictedFields } from "./utils/restricted-fields"
+import { toExpressPath } from "./utils/to-express-path"
 import { wrapHandler } from "./utils/wrap-handler"
 
 export class ApiLoader {
@@ -198,7 +199,7 @@ export class ApiLoader {
         : route.handler
 
       this.#router[route.method.toLowerCase()](
-        route.matcher,
+        toExpressPath(route.matcher),
         wrapHandler(handler)
       )
 
@@ -214,7 +215,7 @@ export class ApiLoader {
           }) as RequestHandler)
         : (route.handler as RequestHandler)
 
-      this.#router.use(route.matcher, wrapHandler(handler))
+      this.#router.use(toExpressPath(route.matcher), wrapHandler(handler))
       return
     }
 
@@ -241,7 +242,7 @@ export class ApiLoader {
           }) as RequestHandler)
         : wrapHandler(route.handler)
 
-      this.#router[method.toLowerCase()](route.matcher, handler)
+      this.#router[method.toLowerCase()](toExpressPath(route.matcher), handler)
     })
   }
 

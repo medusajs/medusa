@@ -16,7 +16,7 @@ import {
 
 export const adminCustomerGroupRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/customer-groups/*",
+    matcher: "/admin/customer-groups/{*splat}",
     middlewares: [
       authorize([
         {

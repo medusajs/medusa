@@ -15,7 +15,7 @@ import {
 
 export const adminFulfillmentSetsRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/fulfillment-sets/*",
+    matcher: "/admin/fulfillment-sets/{*splat}",
     middlewares: [
       authorize([
         {
@@ -26,7 +26,7 @@ export const adminFulfillmentSetsRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
-    matcher: "/admin/fulfillment-sets/*/service-zones/*",
+    matcher: "/admin/fulfillment-sets/{*splat}/service-zones/{*splat}",
     middlewares: [
       authorize([
         {
