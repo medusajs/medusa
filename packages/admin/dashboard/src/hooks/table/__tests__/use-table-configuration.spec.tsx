@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
-import { renderHook, waitFor } from "@testing-library/react"
+import { cleanup, renderHook, waitFor } from "@testing-library/react"
 import { ReactNode } from "react"
 import { MemoryRouter, useLocation } from "react-router-dom"
-import { beforeEach, describe, expect, it, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { useTableConfiguration } from "../use-table-configuration"
 
@@ -87,6 +87,10 @@ const returningUrl =
 describe("useTableConfiguration", () => {
   beforeEach(() => {
     mocks.activeView = { isLoading: false }
+  })
+
+  afterEach(() => {
+    cleanup()
   })
 
   it("should keep the page, sorting, search and filters from the URL when returning to the list without a saved view", async () => {
