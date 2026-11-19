@@ -73,8 +73,8 @@ type SectionDropzoneProps = {
  *   box instead.
  * - `"horizontal-stretched"`: owns a single, non-wrapping flex row (like
  *   `"list"` owns a column), sorted with `horizontalListSortingStrategy`.
- *   `[&>*]:flex-1` gives each entry an equal share of the width and
- *   `[&>*]:min-w-0` lets them shrink so wide content truncates instead of
+ *   `*:flex-1` gives each entry an equal share of the width and
+ *   `*:min-w-0` lets them shrink so wide content truncates instead of
  *   forcing unequal widths. Owning the container (rather than delegating via
  *   `display: contents` like `"grid"`) is deliberate: the `[&>*]` utilities are
  *   applied by the entries' direct parent, so they actually reach them in edit
@@ -121,7 +121,7 @@ export function SectionDropzone({
         <div
           ref={setNodeRef}
           className={clx(
-            "flex min-h-10 flex-row items-stretch gap-x-3 rounded-md transition-colors [&>*]:min-w-0 [&>*]:flex-1",
+            "flex min-h-10 flex-row items-stretch gap-x-3 rounded-md transition-colors *:min-w-0 *:flex-1",
             isOver && items.length === 0 && "bg-ui-bg-highlight"
           )}
         >

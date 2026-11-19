@@ -80,7 +80,17 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: deleteCampaignsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: campaign.deleted
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the campaign
+ *       }
+ *       ```
+ *     description: Emitted when campaigns are deleted.
+ *     deprecated: false
+ *     since: 2.22.7
  * 
 */
 

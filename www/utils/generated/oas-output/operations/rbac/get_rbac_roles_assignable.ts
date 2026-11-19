@@ -4,7 +4,6 @@
  * summary: List Assignable Roles
  * description: Retrieve the roles that the logged-in actor can assign. Pass the `scope` and `scope_id` query parameters to retrieve the roles the actor can assign within that scope.
  * x-authenticated: false
- * parameters: []
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL

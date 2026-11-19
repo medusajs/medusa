@@ -4,7 +4,6 @@
  * summary: Create a Role
  * description: Create an RBAC role. You can only add policies to the role that you have.
  * x-authenticated: false
- * parameters: []
  * requestBody:
  *   content:
  *     application/json:

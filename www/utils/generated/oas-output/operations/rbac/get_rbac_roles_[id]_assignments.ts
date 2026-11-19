@@ -2,7 +2,8 @@
  * @oas [get] /rbac/roles/{id}/assignments
  * operationId: GetRolesIdAssignments
  * summary: List Role's Assignments
- * description: Retrieve a list of a role's assignments, such as the users or invites that the role is assigned to. The assignments can be filtered by fields like `reference`, `reference_id`, `scope`, and `scope_id`. The assignments can also be paginated.
+ * description: Retrieve a list of a role's assignments, such as the users or invites that the role is assigned to. The assignments can be filtered by fields like `reference`, `reference_id`, `scope`,
+ *   and `scope_id`. The assignments can also be paginated.
  * x-authenticated: false
  * parameters:
  *   - name: id

@@ -25,6 +25,8 @@ medusaIntegrationTestRunner({
     const priceListReaderHeaders = { headers: { ...adminHeaders.headers } }
     const apiKeyReaderHeaders = { headers: { ...adminHeaders.headers } }
     const noRolesHeaders = { headers: { ...adminHeaders.headers } }
+    const searchIndexManagerHeaders = { headers: { ...adminHeaders.headers } }
+    const searchIndexUpdaterHeaders = { headers: { ...adminHeaders.headers } }
 
     const ENTITIES_QUERY =
       "entity[]=order&entity[]=customer&entity[]=product&entity[]=price_list"
@@ -46,14 +48,17 @@ medusaIntegrationTestRunner({
 
       const rbacModule = container.resolve(Modules.RBAC)
 
-      const ensurePolicy = async (resource: string) => {
-        const key = `${resource}:${PolicyOperation.read}`
+      const ensurePolicy = async (
+        resource: string,
+        operation: string = PolicyOperation.read
+      ) => {
+        const key = `${resource}:${operation}`
         const [existing] = await rbacModule.listRbacPolicies({ key })
         if (existing) {
           return existing
         }
         const [created] = await rbacModule.createRbacPolicies([
-          { key, resource, operation: PolicyOperation.read, name: key },
+          { key, resource, operation, name: key },
         ])
         return created
       }
@@ -76,6 +81,52 @@ medusaIntegrationTestRunner({
           roles: [role.id],
         })
       }
+
+      const searchIndexManager = await rbacModule.createRbacRoles({
+        name: "search-index-manager",
+      })
+      await rbacModule.createRbacRolePolicies(
+        await Promise.all(
+          [
+            ["search_index", PolicyOperation.read],
+            ["search_index", PolicyOperation.delete],
+            ["search_index_sync", PolicyOperation.create],
+          ].map(async ([resource, operation]) => ({
+            role_id: searchIndexManager.id,
+            policy_id: (await ensurePolicy(resource, operation)).id,
+          }))
+        )
+      )
+      await createAdminUser(
+        dbConnection,
+        searchIndexManagerHeaders,
+        container,
+        {
+          email: "search-index-manager@medusa.js",
+          roles: [searchIndexManager.id],
+        }
+      )
+
+      const searchIndexUpdater = await rbacModule.createRbacRoles({
+        name: "search-index-updater",
+      })
+      await rbacModule.createRbacRolePolicies([
+        {
+          role_id: searchIndexUpdater.id,
+          policy_id: (
+            await ensurePolicy("search_index", PolicyOperation.update)
+          ).id,
+        },
+      ])
+      await createAdminUser(
+        dbConnection,
+        searchIndexUpdaterHeaders,
+        container,
+        {
+          email: "search-index-updater@medusa.js",
+          roles: [searchIndexUpdater.id],
+        }
+      )
 
       await createAdminUser(dbConnection, noRolesHeaders, container, {
         email: "search-no-roles@medusa.js",
@@ -158,6 +209,36 @@ medusaIntegrationTestRunner({
             productReaderHeaders
           )
         ).toEqual(["product"])
+      })
+    })
+
+    describe("/admin/search-indexes", () => {
+      const statusOf = (request: Promise<{ status: number }>) =>
+        request
+          .then((response) => response.status)
+          .catch((error) => error.response.status)
+
+      const statuses = async (headers: typeof adminHeaders) => [
+        await statusOf(api.get("/admin/search-indexes", headers)),
+        await statusOf(
+          api.post("/admin/search-indexes/nope/reindex", {}, headers)
+        ),
+        await statusOf(api.delete("/admin/search-indexes/nope", headers)),
+      ]
+
+      it("lets a role holding search_index:read/delete and search_index_sync:create list, delete and reindex", async () => {
+        // Reindex and delete get past the policy check: the index isn't registered.
+        expect(await statuses(searchIndexManagerHeaders)).toEqual([
+          200, 404, 404,
+        ])
+      })
+
+      it.each([
+        ["a role without the search index policies", productReaderHeaders],
+        ["a role holding only search_index:update", searchIndexUpdaterHeaders],
+        ["an actor with no roles", noRolesHeaders],
+      ])("returns a 403 to %s", async (_, headers) => {
+        expect(await statuses(headers)).toEqual([403, 403, 403])
       })
     })
   },

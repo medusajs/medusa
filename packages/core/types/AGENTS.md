@@ -21,8 +21,8 @@ function toCard(product: HttpTypes.StoreProduct) {
 ```
 
 - Storefronts and admin extensions that only need HTTP shapes can import `HttpTypes` from `@medusajs/types` directly (no runtime cost).
-- Namespaced bundles (`src/bundles.ts`): `HttpTypes`, `ProductTypes`, `OrderTypes`, `CartTypes`, `PricingTypes`, `ModulesSdkTypes`, `DAL`, `DmlTypes`, `SearchTypes`, `WorkflowsSdkTypes`, ...
-- Provider contracts to implement for custom providers live here (e.g. `IPaymentProvider` in `payment/provider.ts`, `ITaxProvider` in `tax/provider.ts`, `ILockingProvider` in `locking/index.ts`, `ICachingProviderService` in `caching/index.ts`, `AuthMfaProvider` in `auth/mfa-provider.ts`).
+- Namespaced bundles (`src/bundles.ts`): `HttpTypes`, `ProductTypes`, `OrderTypes`, `CartTypes`, `PricingTypes`, `ModulesSdkTypes`, `DAL`, `DmlTypes`, `SearchTypes`, `AuditTypes`, `WorkflowsSdkTypes`, ...
+- Provider contracts to implement for custom providers live here (e.g. `IPaymentProvider` in `payment/provider.ts`, `ITaxProvider` in `tax/provider.ts`, `ILockingProvider` in `locking/index.ts`, `ICachingProviderService` in `caching/index.ts`, `IAuditProvider` in `audit/provider.ts`, `AuthMfaProvider` in `auth/mfa-provider.ts`).
 - Typed module options in `defineConfig`: modules augment `ModuleOptions` keyed by their `resolve` string:
 
 ```ts
@@ -56,6 +56,6 @@ yarn watch
 ## Gotchas
 
 - Runtime dependency is only `bignumber.js`; `@medusajs/deps` is a dev dependency used with `import type`. Do not import from `@medusajs/utils`, `@medusajs/framework`, or any module package here (they depend on this package). The `@medusajs/framework/*` imports you see are inside TSDoc examples only.
-- `vite` and `ioredis` are peer dependencies used for type imports only. Vite's types are ESM-only, so `config-module.ts` imports `InlineConfig` with `with { "resolution-mode": "import" }`. Without the attribute, this CommonJS build can't resolve them and `admin.vite` silently becomes `any`.
+- `vite` and `redis` (node-redis, for `redisOptions`) are peer dependencies used for type imports only. Vite's types are ESM-only, so `config-module.ts` imports `InlineConfig` with `with { "resolution-mode": "import" }`. Without the attribute, this CommonJS build can't resolve them and `admin.vite` silently becomes `any`.
 - Interfaces meant to be augmented (`ModuleOptions`, `ModuleImplementations`, `RemoteQueryEntryPoints`) must stay `interface` (not `type`) and stay exported from the package root, or declaration merging silently stops working. `@medusajs/framework/types` re-declares `ModuleOptions` so augmentation also works through the framework path.
 - Changing an `I<Name>ModuleService` signature is a public API change: the module's service in `packages/modules/<name>` must still satisfy it, and `HttpTypes` changes ripple into `@medusajs/js-sdk` and the admin dashboard.

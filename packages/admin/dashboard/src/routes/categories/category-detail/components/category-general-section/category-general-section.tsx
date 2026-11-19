@@ -12,7 +12,6 @@ import {
   useProductCategoryPermissions,
   useCanOpenTranslations,
 } from "../../../../../hooks/use-resource-permissions"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
 type CategoryGeneralSectionProps = {
   category: HttpTypes.AdminProductCategory
@@ -22,11 +21,10 @@ export const CategoryGeneralSection = ({
   category,
 }: CategoryGeneralSectionProps) => {
   const { t } = useTranslation()
-  const isTranslationsEnabled = useFeatureFlag("translation")
   const { canUpdate, canDelete } = useProductCategoryPermissions()
   const canOpenTranslations = useCanOpenTranslations()
 
-  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
+  const canManageTranslations = canOpenTranslations
 
   const activeProps = getIsActiveProps(category.is_active, t)
   const internalProps = getIsInternalProps(category.is_internal, t)

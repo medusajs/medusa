@@ -107,5 +107,24 @@ describe("ModuleDataFetcher", () => {
         },
       })
     })
+
+    it("should not crash when the object prototype is polluted", () => {
+      ;(Object.prototype as any).polluted = { fields: ["x"] }
+
+      try {
+        const expand = {
+          fields: ["name"],
+          expands: {
+            friend: {
+              fields: ["name"],
+            },
+          },
+        }
+
+        expect(() => getAllFieldsAndRelations(expand)).not.toThrow()
+      } finally {
+        delete (Object.prototype as any).polluted
+      }
+    })
   })
 })

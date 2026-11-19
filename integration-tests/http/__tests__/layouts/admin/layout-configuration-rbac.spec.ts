@@ -1,3 +1,4 @@
+import { Modules, PolicyOperation } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -12,11 +13,12 @@ const configuration = { widgets: { "product.details": { hidden: true } } }
 
 /**
  * A user's layout is their own, but the default layout applies to every
- * user, so only super admins can write it.
+ * user, so writing it needs `layout_configuration:update`.
  */
 medusaIntegrationTestRunner({
   testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     const noRolesHeaders = { headers: { ...adminHeaders.headers } }
+    const layoutManagerHeaders = { headers: { ...adminHeaders.headers } }
 
     const statusOf = (request: Promise<{ status: number }>) =>
       request
@@ -29,6 +31,20 @@ medusaIntegrationTestRunner({
       await createAdminUser(dbConnection, noRolesHeaders, container, {
         email: "layouts-no-roles@medusa.js",
         roles: [],
+      })
+
+      const rbacModule = container.resolve(Modules.RBAC)
+      const [layoutUpdate] = await rbacModule.listRbacPolicies({
+        resource: "layout_configuration",
+        operation: PolicyOperation.update,
+      })
+      const role = await rbacModule.createRbacRoles({ name: "Layout Manager" })
+      await rbacModule.createRbacRolePolicies([
+        { role_id: role.id, policy_id: layoutUpdate.id },
+      ])
+      await createAdminUser(dbConnection, layoutManagerHeaders, container, {
+        email: "layouts-manager@medusa.js",
+        roles: [role.id],
       })
 
       await dbUtils.snapshot()
@@ -50,7 +66,7 @@ medusaIntegrationTestRunner({
         expect(response.data.personal_configuration).toBeTruthy()
       })
 
-      it("forbids a user that isn't a super admin from writing the default layout", async () => {
+      it("forbids a user without layout_configuration:update from writing the default layout", async () => {
         expect(
           await statusOf(
             api.post(
@@ -62,11 +78,14 @@ medusaIntegrationTestRunner({
         ).toEqual(403)
       })
 
-      it("lets a super admin write the default layout", async () => {
+      it.each([
+        ["a role holding layout_configuration:update", layoutManagerHeaders],
+        ["a super admin", adminHeaders],
+      ])("lets %s write the default layout", async (_, headers) => {
         const response = await api.post(
           "/admin/layouts/products/configuration",
           { is_default: true, configuration },
-          adminHeaders
+          headers
         )
 
         expect(response.status).toEqual(200)

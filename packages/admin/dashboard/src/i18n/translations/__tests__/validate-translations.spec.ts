@@ -124,6 +124,30 @@ describe("translation schema validation", () => {
     expect(extra).toEqual([])
   })
 
+  test.each([
+    "lib/table/cell-renderers.tsx",
+    "routes/property-labels/components/property-labels-edit-form.tsx",
+  ])("en.json should define every translation key used in %s", (file) => {
+    const enPath = path.join(translationsDir, "en.json")
+    const enTranslations = JSON.parse(fs.readFileSync(enPath, "utf-8"))
+    const translationKeys = getTranslationKeys(enTranslations).map((key) =>
+      key.replace(/_(zero|one|two|few|many|other)$/, "")
+    )
+
+    const source = fs.readFileSync(
+      path.join(translationsDir, "..", "..", file),
+      "utf-8"
+    )
+    const usedKeys = [...source.matchAll(/\bt\(\s*"([^"]+)"/g)].map(
+      ([, key]) => key
+    )
+
+    expect(usedKeys.length).toBeGreaterThan(0)
+    expect(usedKeys.filter((key) => !translationKeys.includes(key))).toEqual(
+      []
+    )
+  })
+
   test("en.json plural keys should match required forms", () => {
     const enPath = path.join(translationsDir, "en.json")
     const enTranslations = JSON.parse(fs.readFileSync(enPath, "utf-8"))

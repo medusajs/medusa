@@ -27,12 +27,12 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "yarn clean && tsc",
+    "build": "yarn clean && yarn run -T tsc",
     "clean": "rimraf dist",
-    "watch": "tsc --watch"
+    "watch": "yarn run -T tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/icons": "2.22.3",
+    "@medusajs/icons": "2.22.7",
     "@types/node": "^20.11.20",
     "rimraf": "^5.0.5",
     "tsconfig": "*",

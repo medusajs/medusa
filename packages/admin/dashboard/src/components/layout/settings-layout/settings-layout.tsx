@@ -28,6 +28,7 @@ import {
   useResourcePermissions,
   useReturnReasonPermissions,
   useSalesChannelPermissions,
+  useSearchIndexPermissions,
   useStockLocationPermissions,
   useStorePermissions,
   useTaxRegionPermissions,
@@ -45,7 +46,6 @@ export const SettingsLayout = () => {
 }
 
 const useSettingRoutes = (): INavItem[] => {
-  const isTranslationsEnabled = useFeatureFlag("translation")
   const { isInstalled: isRbacEnabled } = useIsModuleInstalled(RBAC_MODULE_KEY)
   const isViewConfigEnabled = useFeatureFlag("view_configurations")
   const { t } = useTranslation()
@@ -175,7 +175,7 @@ const useSettingRoutes = (): INavItem[] => {
             },
           ]
         : []),
-      ...(isTranslationsEnabled && canReadTranslations
+      ...(canReadTranslations
         ? [
             {
               label: t("translations.domain"),
@@ -186,7 +186,6 @@ const useSettingRoutes = (): INavItem[] => {
     ],
     [
       t,
-      isTranslationsEnabled,
       canReadTranslations,
       canReadRoles,
       canReadPolicies,
@@ -208,7 +207,10 @@ const useSettingRoutes = (): INavItem[] => {
 
 const useDeveloperRoutes = (): INavItem[] => {
   const { t } = useTranslation()
-  const { enabled: isSearchEnabled } = useSearchIndexes()
+  const { canRead: canReadSearchIndexes } = useSearchIndexPermissions()
+  const { enabled: isSearchEnabled } = useSearchIndexes({
+    enabled: canReadSearchIndexes,
+  })
 
   const { canRead: canReadApiKeys } = useApiKeyPermissions()
   const { canRead: canReadWorkflows } = useWorkflowExecutionPermissions()
@@ -340,7 +342,7 @@ const Header = () => {
         to={from}
         replace
         className={clx(
-          "flex items-center rounded-md bg-ui-bg-subtle outline-none transition-fg",
+          "flex items-center rounded-md bg-ui-bg-subtle outline-hidden transition-fg",
           "hover:bg-ui-bg-subtle-hover",
           "focus-visible:shadow-borders-focus"
         )}

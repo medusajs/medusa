@@ -523,6 +523,72 @@ describe("PackageManager", () => {
         const written = getWrittenPackageJson()
         expect(written.overrides).toBeUndefined()
       })
+
+      it("should not add resolutions when using yarn v2+", async () => {
+        const pm = new PackageManager(processManager)
+        pm["packageManager"] = "yarn"
+        pm["packageManagerVersion"] = "4.9.0"
+
+        await pm.transformWorkspaceConfig("/test/path")
+
+        const written = getWrittenPackageJson()
+        expect(written.resolutions).toBeUndefined()
+      })
+
+      it("should resolve @types/node to the backend's version when using yarn v1", async () => {
+        mockReadFileSync.mockReset()
+        mockReadFileSync
+          .mockReturnValueOnce(YAML_CONTENT)
+          .mockReturnValueOnce(
+            makePackageJson({ resolutions: { "some-pkg": "1.0.0" } })
+          )
+          .mockReturnValueOnce(
+            JSON.stringify({ devDependencies: { "@types/node": "^20.12.11" } })
+          )
+        const pm = new PackageManager(processManager)
+        pm["packageManager"] = "yarn"
+        pm["packageManagerVersion"] = "1.22.22"
+
+        await pm.transformWorkspaceConfig("/test/path")
+
+        expect(mockReadFileSync).toHaveBeenCalledWith(
+          "/test/path/apps/backend/package.json",
+          "utf-8"
+        )
+        const written = getWrittenPackageJson()
+        expect(written.resolutions).toEqual({
+          "some-pkg": "1.0.0",
+          "@types/node": "^20.12.11",
+        })
+      })
+
+      it("should not add resolutions when the backend has no @types/node", async () => {
+        const pm = new PackageManager(processManager)
+        pm["packageManager"] = "yarn"
+        pm["packageManagerVersion"] = "1.22.22"
+
+        await pm.transformWorkspaceConfig("/test/path")
+
+        const written = getWrittenPackageJson()
+        expect(written.resolutions).toBeUndefined()
+      })
+
+      it("should not create yarn.lock or .yarnrc.yml when using yarn v1", async () => {
+        const pm = new PackageManager(processManager)
+        pm["packageManager"] = "yarn"
+        pm["packageManagerVersion"] = "1.22.22"
+
+        await pm.transformWorkspaceConfig("/test/path")
+
+        expect(mockWriteFileSync).not.toHaveBeenCalledWith(
+          "/test/path/yarn.lock",
+          expect.anything()
+        )
+        expect(mockWriteFileSync).not.toHaveBeenCalledWith(
+          "/test/path/.yarnrc.yml",
+          expect.anything()
+        )
+      })
     })
 
     describe("npm-specific changes", () => {

@@ -476,7 +476,7 @@ All the properties are optional, so you only pass the ones you change. The route
   ]}
 />
 
-To change the role's policies, use the [Add Role Policies](#add-role-policies-route) and [Remove Role Policy](#remove-role-policy-route) routes instead.
+To change the role's policies, use the [Add Role Policies](#add-role-policies-route), [Remove Role Policy](#remove-role-policy-route), and [Remove Role Policies](#remove-role-policies-route) routes instead.
 
 #### Response Fields
 
@@ -682,6 +682,62 @@ The response body contains the details of the deleted role-policy link:
 ```json
 {
   "id": "rlpl_123",
+  "object": "rbac_role_policy",
+  "deleted": true
+}
+```
+
+### Remove Role Policies Route
+
+The Medusa application defines an API route at `/rbac/roles/{id}/policies` that removes multiple policies from a role in a single request. The policies themselves aren't deleted. This route is available since [Medusa v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+
+The authenticated actor must hold every policy it removes, the same as when granting them. Otherwise, the request fails with a `403` error. If any of the policies isn't granted by the role, the request fails with a `404` error and removes nothing.
+
+```bash
+curl -X DELETE \
+http://localhost:9000/rbac/roles/{id}/policies \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Bearer {token}' \
+--data-raw '{
+  "policies": ["rpol_123", "rpol_456"]
+}'
+```
+
+In the JS SDK, use the `rbacRole.removePolicies` method.
+
+#### Path Parameters
+
+<TypeList
+  types={[
+    {
+      name: "id",
+      type: "`string`",
+      optional: false,
+      description: "The role's ID."
+    }
+  ]}
+/>
+
+#### Request Body Parameters
+
+<TypeList
+  types={[
+    {
+      name: "policies",
+      type: "`string[]`",
+      optional: false,
+      description: "The IDs of the policies to remove. It must have at least one ID."
+    }
+  ]}
+/>
+
+#### Response Fields
+
+The response body contains the IDs of the removed policies:
+
+```json
+{
+  "ids": ["rpol_123", "rpol_456"],
   "object": "rbac_role_policy",
   "deleted": true
 }

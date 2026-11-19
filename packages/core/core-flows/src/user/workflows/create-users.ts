@@ -1,5 +1,10 @@
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import type { UserDTO, UserWorkflow } from "@medusajs/framework/types"
-import { UserWorkflowEvents } from "@medusajs/framework/utils"
+import {
+  Modules,
+  RBAC_SUPER_ADMIN_ROLE_ID,
+  UserWorkflowEvents,
+} from "@medusajs/framework/utils"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -8,7 +13,10 @@ import {
   when,
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep } from "../../common/steps/emit-event"
+import { useQueryGraphStep } from "../../common/steps/use-query-graph"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 import { createRoleAssignmentsStep } from "../../rbac/steps/create-role-assignments"
+import { SUPER_ADMIN_GUARD_LOCK_KEY } from "../../rbac/steps/ensure-super-admin-remains"
 import { validateActorRolePermissionsStep } from "../../rbac/steps/validate-actor-role-permissions"
 import { validateRolesExistStep } from "../../rbac/steps/validate-roles-exist"
 import {
@@ -30,6 +38,11 @@ export const createUsersWorkflowId = "create-users-workflow"
  * can be constrained to one or more scopes, creating one role assignment per
  * scope. When an `rbac_context` is provided, its actor can only assign roles
  * whose policies it holds itself.
+ *
+ * When RBAC is installed and no user holds the super admin role yet, the
+ * created users are also assigned the super admin role, so that the first
+ * users of a new deployment aren't locked out. Once a super admin exists,
+ * users only get the roles they're created with.
  *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * create users within your custom flows.
@@ -91,18 +104,74 @@ export const createUsersWorkflow = createWorkflow(
       })
     })
 
+    const shouldCheckSuperAdmin = transform(
+      { roleAssignments },
+      ({ roleAssignments }) =>
+        MedusaModule.isInstalled(Modules.RBAC) &&
+        !roleAssignments.some(
+          (assignment) =>
+            assignment.role_id === RBAC_SUPER_ADMIN_ROLE_ID && !assignment.scope
+        )
+    )
+
+    // Serializes the super admin check with the assignment it may lead to, so
+    // that concurrent first users can't all become super admins.
+    const shouldBootstrapSuperAdmin = when(
+      "should-bootstrap-super-admin",
+      { shouldCheckSuperAdmin },
+      ({ shouldCheckSuperAdmin }) => shouldCheckSuperAdmin
+    ).then(() => {
+      acquireLockStep({
+        key: SUPER_ADMIN_GUARD_LOCK_KEY,
+        timeout: 2,
+        ttl: 10,
+        executeOnSubWorkflow: true,
+      })
+
+      const { data } = useQueryGraphStep({
+        entity: "rbac_role_assignment",
+        fields: ["id"],
+        filters: {
+          role_id: RBAC_SUPER_ADMIN_ROLE_ID,
+          reference: "user",
+          scope: null,
+          scope_id: null,
+        },
+        pagination: { take: 1 },
+      }).config({ name: "query-super-admin-assignments" })
+
+      return transform({ data }, ({ data }) => !data.length)
+    })
+
     const createdUsers = createUsersStep(input.users)
 
     const userRoleAssignments = transform(
-      { input, createdUsers },
-      ({ input, createdUsers }) => {
+      { input, createdUsers, shouldBootstrapSuperAdmin },
+      ({ input, createdUsers, shouldBootstrapSuperAdmin }) => {
         return input.users.flatMap((user, index) =>
-          buildRoleAssignments(user.roles, "user", createdUsers[index].id)
+          buildRoleAssignments(
+            shouldBootstrapSuperAdmin
+              ? [...(user.roles ?? []), { role_id: RBAC_SUPER_ADMIN_ROLE_ID }]
+              : user.roles,
+            "user",
+            createdUsers[index].id
+          )
         )
       }
     )
 
     createRoleAssignmentsStep(userRoleAssignments)
+
+    when(
+      "release-super-admin-bootstrap-lock",
+      { shouldCheckSuperAdmin },
+      ({ shouldCheckSuperAdmin }) => shouldCheckSuperAdmin
+    ).then(() => {
+      releaseLockStep({
+        key: SUPER_ADMIN_GUARD_LOCK_KEY,
+        executeOnSubWorkflow: true,
+      })
+    })
 
     const userIdEvents = transform({ createdUsers }, ({ createdUsers }) => {
       return createdUsers.map((v) => {

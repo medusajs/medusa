@@ -37,6 +37,7 @@ export class TypeEmitter {
       hasSelectParams,
       hasBaseFilterable,
       zodShapeType,
+      zodInputType,
     } = resolved
 
     if (hasFindParams) {
@@ -54,7 +55,8 @@ export class TypeEmitter {
       type,
       hasFindParams,
       hasSelectParams,
-      zodShapeType
+      zodShapeType,
+      zodInputType
     )
 
     const hasOperatorMapProp = properties.some((p) => p.isOperatorMap)

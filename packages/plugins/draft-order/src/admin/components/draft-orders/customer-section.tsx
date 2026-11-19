@@ -100,7 +100,7 @@ const ID = ({ order }: CustomerSectionProps) => {
       </Text>
       <Link
         to={`/customers/${id}`}
-        className="focus:shadow-borders-focus rounded-[4px] outline-none transition-shadow"
+        className="focus:shadow-borders-focus rounded-[4px] outline-hidden transition-shadow"
       >
         <div className="flex items-center gap-x-2">
           <Avatar size="2xsmall" fallback={fallback} />
@@ -181,7 +181,7 @@ const AddressPrint = ({
           <Text size="small" leading="compact">
             {getFormattedAddress(address).map((line, i) => {
               return (
-                <span key={i} className="break-words">
+                <span key={i} className="wrap-break-word">
                   {line}
                   <br />
                 </span>

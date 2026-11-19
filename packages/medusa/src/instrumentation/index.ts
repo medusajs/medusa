@@ -7,7 +7,7 @@ import {
 import { ApiLoader, getHttpResponseFromError } from "@medusajs/framework/http"
 import { Span, SpanStatusCode } from "@medusajs/framework/opentelemetry/api"
 import type { NodeSDKConfiguration } from "@medusajs/framework/opentelemetry/sdk-node"
-import type { SpanExporter } from "@medusajs/framework/opentelemetry/sdk-trace-node"
+import type { SpanExporter } from "@medusajs/framework/opentelemetry/sdk-trace"
 import { TransactionOrchestrator } from "@medusajs/framework/orchestration"
 import { Tracer } from "@medusajs/framework/telemetry"
 import { ICachingModuleService } from "@medusajs/framework/types"
@@ -488,7 +488,7 @@ export function instrumentCache() {
  *
  * - @opentelemetry/sdk-node
  * - @opentelemetry/resources
- * - @opentelemetry/sdk-trace-node
+ * - @opentelemetry/sdk-trace
  * - @opentelemetry/instrumentation-pg
  * - @opentelemetry/instrumentation
  */
@@ -524,7 +524,7 @@ export function registerOtel(
   const { NodeSDK } = require("@medusajs/framework/opentelemetry/sdk-node")
   const {
     SimpleSpanProcessor,
-  } = require("@medusajs/framework/opentelemetry/sdk-trace-node")
+  } = require("@medusajs/framework/opentelemetry/sdk-trace")
 
   if (instrument.db) {
     const {
@@ -558,7 +558,7 @@ export function registerOtel(
           "service.name": serviceName,
         })
       : new Resource({ "service.name": serviceName }),
-    spanProcessor: new SimpleSpanProcessor(exporter),
+    spanProcessors: [new SimpleSpanProcessor({ exporter })],
     ...nodeSdkOptions,
     instrumentations: instrumentations,
   } satisfies Partial<NodeSDKConfiguration>)

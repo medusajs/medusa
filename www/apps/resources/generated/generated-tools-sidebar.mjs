@@ -138,13 +138,6 @@ const generatedgeneratedToolsSidebarSidebar = {
               ]
             }
           ]
-        },
-        {
-          "loaded": true,
-          "type": "link",
-          "path": "/medusa-oas-cli",
-          "title": "medusa-oas-cli",
-          "children": []
         }
       ]
     },
@@ -1005,6 +998,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "type": "link",
                   "path": "/references/js-sdk/admin/apiKey",
                   "title": "apiKey",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/js-sdk/admin/auditLog",
+                  "title": "auditLog",
                   "description": "",
                   "children": []
                 },

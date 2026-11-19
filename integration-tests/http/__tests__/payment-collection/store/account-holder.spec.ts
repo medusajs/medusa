@@ -1,4 +1,4 @@
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   adminHeaders,
@@ -190,6 +190,45 @@ medusaIntegrationTestRunner({
         const holdersAfterSuccess = await fetchAccountHolders()
         expect(holdersAfterSuccess).toHaveLength(1)
         expect(holdersAfterSuccess[0].id).toBe(holdersAfterFailure[0].id)
+      })
+
+      it("replaces an account holder the provider no longer has", async () => {
+        // An account holder for another provider customer, as if the database
+        // was copied from a setup that uses another provider account.
+        const container = getContainer()
+        const staleAccountHolder = await container
+          .resolve(Modules.PAYMENT)
+          .createAccountHolder({
+            provider_id: providerId,
+            context: { customer: { id: "cus_copied", email: customer.email } },
+          })
+        await container.resolve(ContainerRegistrationKeys.LINK).create({
+          [Modules.CUSTOMER]: { customer_id: customer.id },
+          [Modules.PAYMENT]: { account_holder_id: staleAccountHolder.id },
+        })
+
+        const paymentCollection = await createPaymentCollection()
+        const {
+          data: { payment_collection },
+        } = await api.post(
+          `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+          { provider_id: providerId },
+          storeHeadersWithCustomer
+        )
+
+        expect(payment_collection.payment_sessions).toEqual([
+          expect.objectContaining({
+            provider_id: providerId,
+            status: "pending",
+          }),
+        ])
+        expect(await fetchAccountHolders()).toEqual([
+          expect.objectContaining({
+            id: staleAccountHolder.id,
+            provider_id: providerId,
+            external_id: customer.id,
+          }),
+        ])
       })
     })
   },

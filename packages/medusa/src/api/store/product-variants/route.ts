@@ -6,6 +6,7 @@ import { HttpTypes, QueryContextType } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   QueryContext,
+  TRANSLATION_LIST_CACHE_TAG,
 } from "@medusajs/framework/utils"
 import {
   prepareInventoryQuantityFields,
@@ -48,6 +49,8 @@ export const GET = async (
     {
       cache: {
         enable: true,
+        tags: [TRANSLATION_LIST_CACHE_TAG],
+        computeAutomaticTags: true,
       },
       locale: req.locale,
     }

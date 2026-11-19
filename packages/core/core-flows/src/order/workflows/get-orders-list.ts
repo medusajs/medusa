@@ -151,6 +151,10 @@ export const getOrdersListWorkflow = createWorkflow(
         const requiredFulfillmentFields = fields.some((f) =>
           f.includes("fulfillments")
         )
+        const requiredItemFields = fields.some((f) => {
+          const field = f.replace(/^\*/, "")
+          return field === "items" || field.startsWith("items.")
+        })
 
         const orders_ = orders as any
         const data = orders_.rows ? orders_.rows : orders_
@@ -172,6 +176,10 @@ export const getOrdersListWorkflow = createWorkflow(
           if (!requiredFulfillmentFields) {
             // @ts-ignore
             delete order_.fulfillments
+          }
+          if (!requiredItemFields) {
+            // @ts-ignore
+            delete order_.items
           }
         }
 

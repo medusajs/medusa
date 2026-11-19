@@ -28,7 +28,7 @@ import {
 
 export const adminPromotionRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/promotions/*",
+    matcher: "/admin/promotions/{*splat}",
     middlewares: [
       authorize([
         {

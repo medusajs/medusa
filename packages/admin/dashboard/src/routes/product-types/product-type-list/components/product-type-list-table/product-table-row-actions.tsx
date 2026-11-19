@@ -6,7 +6,6 @@ import {
   ActionMenu,
 } from "../../../../../components/common/action-menu"
 import { useDeleteProductTypeAction } from "../../../common/hooks/use-delete-product-type-action"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import {
   useProductTypePermissions,
   useCanOpenTranslations,
@@ -24,11 +23,10 @@ export const ProductTypeRowActions = ({
     productType.id,
     productType.value
   )
-  const isTranslationsEnabled = useFeatureFlag("translation")
   const { canUpdate, canDelete } = useProductTypePermissions()
   const canOpenTranslations = useCanOpenTranslations()
 
-  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
+  const canManageTranslations = canOpenTranslations
 
   const groups: ActionGroup[] = []
 

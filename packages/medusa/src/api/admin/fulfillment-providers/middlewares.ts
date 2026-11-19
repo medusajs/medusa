@@ -1,7 +1,7 @@
 import { validateAndTransformQuery } from "@medusajs/framework"
 import {
+  applyCrossModuleFilter,
   authorize,
-  maybeApplyLinkFilter,
   MiddlewareRoute,
 } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
@@ -11,7 +11,7 @@ import { AdminFulfillmentProvidersParams } from "./validators"
 
 export const adminFulfillmentProvidersRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/fulfillment-providers/*",
+    matcher: "/admin/fulfillment-providers/{*splat}",
     middlewares: [
       authorize([
         {
@@ -35,10 +35,9 @@ export const adminFulfillmentProvidersRoutesMiddlewares: MiddlewareRoute[] = [
         AdminFulfillmentProvidersParams,
         QueryConfig.listTransformQueryConfig
       ),
-      maybeApplyLinkFilter({
-        entryPoint: "location_fulfillment_provider",
-        resourceId: "fulfillment_provider_id",
+      applyCrossModuleFilter({
         filterableField: "stock_location_id",
+        relationPath: "locations.id",
       }),
     ],
   },

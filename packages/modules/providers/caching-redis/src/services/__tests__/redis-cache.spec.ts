@@ -29,6 +29,7 @@ class FakePipeline {
   }
 
   exec = jest.fn(async () => {
+    this.redis.pipelineSizes.push(this.commands.length)
     return this.commands.map((command) => [null, command()] as [null, unknown])
   })
 }
@@ -38,6 +39,9 @@ class FakeRedisClient {
   public readonly hashes = new Map<string, Map<string, RedisHashValue>>()
   public readonly strings = new Map<string, RedisHashValue>()
   public readonly sets = new Map<string, Set<string>>()
+  public readonly pipelineSizes: number[] = []
+  private readonly scanSnapshots = new Map<string, string[]>()
+  private nextScanId = 1
 
   public readonly keys = jest.fn(() => {
     throw new Error("KEYS should not be called")
@@ -52,6 +56,30 @@ class FakeRedisClient {
   public readonly unlink = jest.fn(async (...keys: string[]) => {
     return this.unlinkSync(...keys)
   })
+
+  public readonly sscan = jest.fn(
+    async (key: string, cursor: string, _countArg: string, count: number) => {
+      let snapshotId = cursor.split(":")[0]
+      let offset = Number(cursor.split(":")[1] ?? 0)
+
+      if (cursor === "0") {
+        snapshotId = String(this.nextScanId++)
+        offset = 0
+        this.scanSnapshots.set(snapshotId, this.smembersSync(key))
+      }
+
+      const snapshot = this.scanSnapshots.get(snapshotId)!
+      const members = snapshot.slice(offset, offset + count)
+      const nextOffset = offset + count
+
+      if (nextOffset >= snapshot.length) {
+        this.scanSnapshots.delete(snapshotId)
+        return ["0", members] as [string, string[]]
+      }
+
+      return [`${snapshotId}:${nextOffset}`, members] as [string, string[]]
+    }
+  )
 
   setHash(key: string, fields: Record<string, RedisHashValue>) {
     this.hashes.set(key, new Map(Object.entries(fields)))
@@ -164,6 +192,58 @@ describe("RedisCachingProvider clear", () => {
     expect(redisClient.sets.get("mc:tag:hash:tag-a")).toEqual(
       new Set(["mc:entry-2"])
     )
+  })
+
+  describe("with large tag sets", () => {
+    const seedTaggedEntries = (
+      redisClient: FakeRedisClient,
+      count: number,
+      autoInvalidate: (index: number) => boolean = () => true
+    ) => {
+      const keyNames: string[] = []
+
+      for (let i = 0; i < count; i++) {
+        const keyName = `mc:entry-${i}`
+        keyNames.push(keyName)
+        redisClient.setHash(keyName, {
+          options: JSON.stringify({ autoInvalidate: autoInvalidate(i) }),
+        })
+        redisClient.setMembers(`mc:tags:entry-${i}`, ["hash:tag-a"])
+      }
+
+      redisClient.setMembers("mc:tag:hash:tag-a", keyNames)
+    }
+
+    it("clears a tag in bounded batches instead of loading every key at once", async () => {
+      const redisClient = new FakeRedisClient()
+      const provider = createProvider(redisClient)
+
+      seedTaggedEntries(redisClient, 5000)
+
+      await provider.clear({ tags: ["tag-a"] })
+
+      expect(redisClient.hashes.size).toBe(0)
+      expect(redisClient.sets.size).toBe(0)
+      expect(Math.max(...redisClient.pipelineSizes)).toBeLessThanOrEqual(2000)
+    })
+
+    it("auto-invalidates a tag in bounded batches and keeps non auto-invalidated entries", async () => {
+      const redisClient = new FakeRedisClient()
+      const provider = createProvider(redisClient)
+
+      seedTaggedEntries(redisClient, 5000, (i) => i % 2 === 0)
+
+      await provider.clear({
+        tags: ["tag-a"],
+        options: { autoInvalidate: true },
+      })
+
+      expect(redisClient.hashes.size).toBe(2500)
+      expect(redisClient.hashes.has("mc:entry-0")).toBe(false)
+      expect(redisClient.hashes.has("mc:entry-1")).toBe(true)
+      expect(redisClient.sets.get("mc:tag:hash:tag-a")?.size).toBe(2500)
+      expect(Math.max(...redisClient.pipelineSizes)).toBeLessThanOrEqual(2000)
+    })
   })
 
   it("clears by key using the reverse tag index", async () => {

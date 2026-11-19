@@ -11,7 +11,6 @@ import {
 import { SectionRow } from "../../../../../components/common/section"
 import { useDeleteProduct } from "../../../../../hooks/api/products"
 import { useExtension } from "../../../../../providers/extension-provider"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 import {
   useProductPermissions,
   useCanOpenTranslations,
@@ -43,7 +42,6 @@ export const ProductGeneralSection = ({
   const prompt = usePrompt()
   const navigate = useNavigate()
   const { getDisplays } = useExtension()
-  const isTranslationsEnabled = useFeatureFlag("translation")
   const { canUpdate, canDelete } = useProductPermissions()
   const canOpenTranslations = useCanOpenTranslations()
 
@@ -77,7 +75,7 @@ export const ProductGeneralSection = ({
     })
   }
 
-  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
+  const canManageTranslations = canOpenTranslations
 
   const groups: ActionGroup[] = []
 

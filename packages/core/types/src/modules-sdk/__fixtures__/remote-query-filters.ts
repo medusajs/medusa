@@ -31,8 +31,11 @@ type GeneratedOrganization = {
   id: string
   name: string
   status: string
+  metadata: Maybe<Record<string, unknown>>
+  app_metadata: Record<string, unknown>
   subscription: Maybe<GeneratedSubscription>
   subscriptions: Array<GeneratedSubscription>
+  optional_subscriptions: Maybe<Array<GeneratedSubscription>>
 }
 
 type EntryPoints = {
@@ -92,5 +95,58 @@ export const rejectsWrongNestedValueTypes: OrganizationFilters = {
       // @ts-expect-error - handle is a string field
       handle: 123,
     },
+  },
+}
+
+/**
+ * Nullable `json` columns must stay filterable: the generator emits them as
+ * `Record<string, unknown> | null`, and a union with `null` does not extend
+ * `object`.
+ */
+export const nullableJsonFields: OrganizationFilters = {
+  metadata: { tier: "gold" },
+  app_metadata: { tier: "gold" },
+  subscription: {
+    plan: {
+      metadata: { legacy: true },
+    },
+  },
+}
+
+/**
+ * Nullable to-many relations resolve to a relation filter, not to the array's
+ * own members.
+ */
+export const nullableToManyRelations: OrganizationFilters = {
+  optional_subscriptions: {
+    is_active: true,
+    plan: {
+      handle: { $ne: "free" },
+    },
+  },
+}
+
+// eslint-disable-next-line max-len
+export const rejectsUnknownPropertiesOnNullableToManyRelations: OrganizationFilters =
+  {
+    optional_subscriptions: {
+      // @ts-expect-error - unknown property on the relation filter
+      unknown_property: true,
+    },
+  }
+
+/**
+ * The `q` free-text filter is accepted at the top level, where the entry
+ * point's module handles it, but not on nested relation filters.
+ */
+export const freeTextSearch: OrganizationFilters = {
+  q: "acme",
+  status: "active",
+}
+
+export const rejectsFreeTextSearchOnRelations: OrganizationFilters = {
+  subscription: {
+    // @ts-expect-error - q is only handled at the top level
+    q: "pro",
   },
 }

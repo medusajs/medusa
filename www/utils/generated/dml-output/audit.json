@@ -1,0 +1,24 @@
+{
+	"AuditLog": {
+		"filePath": "packages/modules/audit/src/models/audit-log.ts",
+		"properties": {
+			"id": "The ID of the audit log.",
+			"started_at": "The started at of the audit log",
+			"ended_at": "The ended at of the audit log",
+			"actor_type": "The actor type of the audit log",
+			"actor_id": "The actor id of the audit log",
+			"impersonator_id": "The impersonator id of the audit log",
+			"action": "The action of the audit log",
+			"resource_type": "The resource type of the audit log",
+			"resource_id": "The resource id of the audit log",
+			"outcome": "The outcome of the audit log",
+			"request": "The request of the audit log",
+			"request_data": "The request data of the audit log",
+			"response_data": "The response data of the audit log",
+			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
+		}
+	}
+}

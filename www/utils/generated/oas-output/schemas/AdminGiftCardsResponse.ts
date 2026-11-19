@@ -31,6 +31,7 @@
  *     title: estimate_count
  *     description: The gift card's estimate count.
  *     x-featureFlag: index_engine
+ *     deprecated: true
  * 
 */
 

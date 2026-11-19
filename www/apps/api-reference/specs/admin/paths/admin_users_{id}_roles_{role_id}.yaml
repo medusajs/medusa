@@ -54,3 +54,4 @@ delete:
       $ref: ../components/responses/500_error.yaml
   x-workflow: unassignRolesWorkflow
   x-events: []
+  x-since: 2.22.3

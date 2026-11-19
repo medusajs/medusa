@@ -15,6 +15,7 @@ import {
   remarkAttachFrontmatterDataPlugin,
   recmaInjectMdxDataPlugin,
   validateHighlightsPlugin,
+  mdContentOverrideRehypePlugin,
 } from "remark-rehype-plugins"
 import bundleAnalyzer from "@next/bundle-analyzer"
 import { withMdxWebpackLayers } from "build-scripts"
@@ -112,6 +113,7 @@ const withMDX = mdx({
         },
       ],
       [withExtractedTableOfContents],
+      [mdContentOverrideRehypePlugin],
     ],
     remarkPlugins: [
       [remarkFrontmatter],

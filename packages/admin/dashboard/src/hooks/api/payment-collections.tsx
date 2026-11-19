@@ -21,7 +21,7 @@ export const useCreatePaymentCollection = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.paymentCollection.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
@@ -34,7 +34,7 @@ export const useCreatePaymentCollection = (
         queryKey: paymentCollectionQueryKeys.all,
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -52,7 +52,7 @@ export const useMarkPaymentCollectionAsPaid = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.paymentCollection.markAsPaid(paymentCollectionId, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
@@ -65,7 +65,7 @@ export const useMarkPaymentCollectionAsPaid = (
         queryKey: paymentCollectionQueryKeys.all,
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -84,7 +84,7 @@ export const useDeletePaymentCollection = (
 ) => {
   return useMutation({
     mutationFn: (id: string) => sdk.admin.paymentCollection.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
@@ -97,7 +97,7 @@ export const useDeletePaymentCollection = (
         queryKey: paymentCollectionQueryKeys.all,
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

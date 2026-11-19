@@ -20,7 +20,7 @@ import { asValue } from "@medusajs/framework/awilix"
 - `src/<name>.ts` is a one-line `export * from "<upstream>"`. There is no `src/index.ts`; consumers must use a subpath.
 - Subpath map (in `package.json` `exports`):
   - `./mikro-orm/{cli,core,knex,migrations,postgresql}` -> `src/mikro-orm-*.ts`
-  - `./opentelemetry/{api,instrumentation-pg,resources,sdk-node,sdk-trace-node}` -> `src/opentelemetry-*.ts`
+  - `./opentelemetry/{api,instrumentation-pg,resources,sdk-node,sdk-trace}` -> `src/opentelemetry-*.ts`
   - `./awilix`, `./pg`, `./zod`
 - `packages/core/framework/src/deps/*.ts` re-exports each of these (`export * from "@medusajs/deps/zod"`), and `packages/core/framework/package.json` exposes them as `@medusajs/framework/<same subpath>`.
 

@@ -40,7 +40,7 @@
     "@medusajs/workflow-engine-inmemory": "workspace:*",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.23.1",
-    "scrypt-kdf": "^2.0.1"
+    "scrypt-kdf": "^4.0.0"
   },
   "devDependencies": {
     "@medusajs/types": "workspace:^",

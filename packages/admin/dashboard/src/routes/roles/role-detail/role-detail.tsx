@@ -5,11 +5,15 @@ import { PermissionGuard } from "../../../components/common/permission-guard"
 import { useRbacRole } from "../../../hooks/api/rbac-roles"
 import { useRequireRbacFeature } from "../../../hooks/use-require-rbac-feature"
 import { RoleGeneralSection } from "./components/role-general-section"
+import { RolePermissionsSection } from "./components/role-permissions-section"
 import { RoleUsersSection } from "./components/role-users-section"
 import { roleLoader } from "./loader"
 
 import { SingleColumnPageSkeleton } from "../../../components/common/skeleton"
-import { LayoutComposer, detailPageDefaultEntries } from "../../../components/layout-composer"
+import {
+  LayoutComposer,
+  detailPageDefaultEntries,
+} from "../../../components/layout-composer"
 import { ROLE_DETAIL_FIELDS } from "./constants"
 
 export const RoleDetail = () => {
@@ -53,6 +57,11 @@ export const RoleDetail = () => {
           <>
             <LayoutComposer.Entry id="RoleGeneralSection">
               <RoleGeneralSection role={role} />
+            </LayoutComposer.Entry>
+            <LayoutComposer.Entry id="permissions">
+              <PermissionGuard permission="rbac_policy:read">
+                <RolePermissionsSection role={role} />
+              </PermissionGuard>
             </LayoutComposer.Entry>
             <LayoutComposer.Entry id="RoleUsersSection">
               <PermissionGuard

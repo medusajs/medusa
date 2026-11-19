@@ -78,7 +78,7 @@ const Inner = ({
   return (
     <textarea
       className={clx(
-        "txt-compact-small flex w-full cursor-pointer bg-transparent text-ui-fg-subtle outline-none",
+        "txt-compact-small flex w-full cursor-pointer bg-transparent text-ui-fg-subtle outline-hidden",
         "focus:cursor-text",
         "resize-none overflow-hidden py-2"
       )}

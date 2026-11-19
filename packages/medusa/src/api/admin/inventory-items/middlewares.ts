@@ -24,10 +24,11 @@ import {
   AdminUpdateInventoryItem,
   AdminUpdateInventoryLocationLevel,
 } from "./validators"
+import { batchAuditResource } from "../../utils/audit"
 
 export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/inventory-items/*",
+    matcher: "/admin/inventory-items/{*splat}",
     middlewares: [
       authorize([
         {
@@ -38,7 +39,7 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
-    matcher: "/admin/inventory-items/*/location-levels/*",
+    matcher: "/admin/inventory-items/{*splat}/location-levels/{*splat}",
     middlewares: [
       authorize([
         {
@@ -133,6 +134,10 @@ export const adminInventoryRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/inventory-items/location-levels/batch",
     bodyParser: {
       sizeLimit: DEFAULT_BATCH_ENDPOINTS_SIZE_LIMIT,
+    },
+    audit: {
+      action: "inventory_level.batch",
+      resource: batchAuditResource("inventory_level"),
     },
     middlewares: [
       authorize([

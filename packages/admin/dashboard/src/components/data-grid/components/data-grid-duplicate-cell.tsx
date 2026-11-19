@@ -12,7 +12,7 @@ export const DataGridDuplicateCell = <TValue,>({
   const { watchedValue } = useDataGridDuplicateCell({ duplicateOf })
 
   return (
-    <div className="txt-compact-small flex size-full cursor-not-allowed items-center justify-between overflow-hidden bg-ui-bg-base px-4 py-2.5 text-ui-fg-subtle outline-none">
+    <div className="txt-compact-small flex size-full cursor-not-allowed items-center justify-between overflow-hidden bg-ui-bg-base px-4 py-2.5 text-ui-fg-subtle outline-hidden">
       {typeof children === "function"
         ? children({ value: watchedValue })
         : children}
