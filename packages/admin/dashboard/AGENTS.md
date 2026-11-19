@@ -57,6 +57,8 @@ Docs:
   - Mutation hooks invalidate the affected `lists()` / `detail(id)` keys in `onSuccess`, then call `options?.onSuccess?.(...)`.
 - Detail-page loaders prefetch with `queryClient.getQueryData(key) ?? queryClient.fetchQuery(...)` using the same key and `fields` as the page's hook, which then receives the result as `initialData`. Keep loader and hook `fields` identical or the cache misses.
 - Detail and list pages render `LayoutComposer` with `widgetsZonePrefix` set to the page's injection zone and wrap each core section in `<LayoutComposer.Entry id="...">`.
+- `src/hooks/api/modules.tsx`: `useIsModuleInstalled(key)` / `isModuleInstalled(modules, key)` read `GET /admin/modules`, which lists only modules that loaded (a licensed module doesn't load without its license). Keys: `RBAC_MODULE_KEY` (`"rbac"`), `AUDIT_MODULE_KEY` (`"audit"`).
+- `src/routes/audit-logs/`: read-only audit log pages at `/settings/audit-logs` and `/settings/audit-logs/:id`, behind `audit_log:read`. The Settings item shows only when `AUDIT_MODULE_KEY` is installed and the user can read `audit_log`; `common/audit-module-loader.ts` on the parent route throws a 404 so a direct URL without the module renders the not-found screen.
 - `src/lib/client/client.ts`: JS SDK instance built from bundler defines `__BACKEND_URL__`, `__AUTH_TYPE__` (default `"session"`), `__JWT_TOKEN_STORAGE_KEY__`.
 - `src/i18n/translations/`: `en.json` is the source of truth; `$schema.json` is generated from it.
 
