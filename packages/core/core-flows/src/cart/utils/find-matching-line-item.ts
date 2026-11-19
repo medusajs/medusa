@@ -35,6 +35,7 @@ export const lineItemFieldsForMerging = [
   "unit_price",
   "compare_at_unit_price",
   "is_custom_price",
+  "is_tax_inclusive",
 ]
 
 /**
