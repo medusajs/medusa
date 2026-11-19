@@ -335,7 +335,79 @@ class SearchableEntity2 {
   entity1: Rel<SearchableEntity1>
 }
 
+// Three levels of cascading soft deletion, persisted to the database
+@Entity()
+class CascadeParentEntity {
+  constructor(props: { id: string; deleted_at: Date | null }) {
+    this.id = props.id
+    this.deleted_at = props.deleted_at
+  }
+
+  @PrimaryKey()
+  id: string
+
+  @Property({ nullable: true })
+  deleted_at: Date | null
+
+  @OneToMany(() => CascadeChildEntity, (child) => child.parent, {
+    cascade: ["soft-remove"] as any,
+  })
+  children = new Collection<CascadeChildEntity>(this)
+}
+
+@Entity()
+class CascadeChildEntity {
+  constructor(props: {
+    id: string
+    deleted_at: Date | null
+    parent: CascadeParentEntity
+  }) {
+    this.id = props.id
+    this.deleted_at = props.deleted_at
+    this.parent = props.parent
+  }
+
+  @PrimaryKey()
+  id: string
+
+  @Property({ nullable: true })
+  deleted_at: Date | null
+
+  @ManyToOne(() => CascadeParentEntity)
+  parent: Rel<CascadeParentEntity>
+
+  @OneToMany(() => CascadeGrandChildEntity, (grandChild) => grandChild.parent, {
+    cascade: ["soft-remove"] as any,
+  })
+  grandChildren = new Collection<CascadeGrandChildEntity>(this)
+}
+
+@Entity()
+class CascadeGrandChildEntity {
+  constructor(props: {
+    id: string
+    deleted_at: Date | null
+    parent: CascadeChildEntity
+  }) {
+    this.id = props.id
+    this.deleted_at = props.deleted_at
+    this.parent = props.parent
+  }
+
+  @PrimaryKey()
+  id: string
+
+  @Property({ nullable: true })
+  deleted_at: Date | null
+
+  @ManyToOne(() => CascadeChildEntity)
+  parent: Rel<CascadeChildEntity>
+}
+
 export {
+  CascadeChildEntity,
+  CascadeGrandChildEntity,
+  CascadeParentEntity,
   DeepRecursiveEntity1,
   DeepRecursiveEntity2,
   DeepRecursiveEntity3,
