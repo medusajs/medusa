@@ -126,5 +126,35 @@ describe("ModuleDataFetcher", () => {
         delete (Object.prototype as any).polluted
       }
     })
+
+    it("should clone the expand only once regardless of nesting depth", () => {
+      const parseSpy = jest.spyOn(JSON, "parse")
+
+      try {
+        const filters = { id: "ball_1" }
+        const expand = {
+          fields: ["name"],
+          expands: {
+            friend: {
+              fields: ["name"],
+              expands: {
+                ball: {
+                  fields: ["id"],
+                  args: [{ name: "filters", value: filters }],
+                },
+              },
+            },
+          },
+        }
+
+        const result = getAllFieldsAndRelations(expand as any)
+
+        expect(parseSpy).toHaveBeenCalledTimes(1)
+        expect(result.args["friend.ball"]).toEqual(filters)
+        expect(result.args["friend.ball"]).not.toBe(filters)
+      } finally {
+        parseSpy.mockRestore()
+      }
+    })
   })
 })

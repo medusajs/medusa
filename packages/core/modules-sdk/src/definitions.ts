@@ -103,7 +103,11 @@ export const ModulesDefinition: {
     label: upperCaseFirst(Modules.AUTH),
     isRequired: false,
     isQueryable: true,
-    dependencies: [ContainerRegistrationKeys.LOGGER, Modules.CACHE],
+    dependencies: [
+      ContainerRegistrationKeys.LOGGER,
+      Modules.CACHE,
+      Modules.LOCKING,
+    ],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
     },
