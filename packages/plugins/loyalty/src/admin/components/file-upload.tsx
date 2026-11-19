@@ -105,7 +105,7 @@ export const FileUpload = ({
         className={clx(
           "bg-ui-bg-component border-ui-border-strong transition-fg group flex w-full flex-col items-center gap-y-2 rounded-lg border border-dashed p-8",
           "hover:border-ui-border-interactive focus:border-ui-border-interactive",
-          "focus:shadow-borders-focus outline-none focus:border-solid",
+          "focus:shadow-borders-focus outline-hidden focus:border-solid",
           {
             "!border-ui-border-error": hasError,
             "!border-ui-border-interactive": isDragOver,

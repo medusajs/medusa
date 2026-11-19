@@ -42,6 +42,7 @@ import {
   MediaSchema,
 } from "../../../product-create/constants"
 import { EditProductMediaSchemaType } from "../../../product-create/types"
+import { PermissionGuard } from "../../../../../components/common/permission-guard"
 
 type ProductMediaViewProps = {
   product: HttpTypes.AdminProduct
@@ -257,9 +258,11 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
                 </div>
               </div>
             </DndContext>
-            <div className="overflow-auto border-b bg-ui-bg-base px-6 py-4 lg:border-b-0 lg:border-l">
-              <UploadMediaFormItem form={form} append={append} />
-            </div>
+            <PermissionGuard permission="file:create">
+              <div className="overflow-auto border-b bg-ui-bg-base px-6 py-4 lg:border-b-0 lg:border-l">
+                <UploadMediaFormItem form={form} append={append} />
+              </div>
+            </PermissionGuard>
           </div>
         </RouteFocusModal.Body>
         <CommandBar open={!!selectionCount}>
@@ -294,7 +297,11 @@ export const EditProductMediaForm = ({ product }: ProductMediaViewProps) => {
                 {t("actions.cancel")}
               </Button>
             </RouteFocusModal.Close>
-            <Button size="small" type="submit" isLoading={isPending}>
+            <Button
+              size="small"
+              type="submit"
+              isLoading={isPending || form.formState.isSubmitting}
+            >
               {t("actions.save")}
             </Button>
           </div>
@@ -386,7 +393,7 @@ const MediaGridItem = ({
   return (
     <div
       className={clx(
-        "group relative aspect-square h-auto max-w-full overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-none hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus"
+        "group relative aspect-square h-auto max-w-full overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-hidden hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus"
       )}
       style={style}
       ref={setNodeRef}
@@ -399,7 +406,7 @@ const MediaGridItem = ({
         </div>
       )}
       <div
-        className={clx("absolute inset-0 cursor-grab touch-none outline-none", {
+        className={clx("absolute inset-0 cursor-grab touch-none outline-hidden", {
           "cursor-grabbing": isDragging,
         })}
         ref={setActivatorNodeRef}
@@ -438,7 +445,7 @@ export const MediaGridItemOverlay = ({
   checked: boolean
 }) => {
   return (
-    <div className="group relative aspect-square h-auto max-w-full cursor-grabbing overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-none hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus">
+    <div className="group relative aspect-square h-auto max-w-full cursor-grabbing overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-hidden hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus">
       {media.isThumbnail && (
         <div className="absolute left-2 top-2">
           <ThumbnailBadge />

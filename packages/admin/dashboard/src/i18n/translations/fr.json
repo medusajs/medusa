@@ -143,6 +143,7 @@
     "reset": "Réinitialiser",
     "confirm": "Confirmer",
     "edit": "Modifier",
+    "view": "Voir",
     "addItems": "Ajouter des éléments",
     "download": "Télécharger",
     "clear": "Effacer",
@@ -2273,6 +2274,8 @@
       "method": "Méthode",
       "allocation": "Allocation",
       "allocationTooltip": "Each applique la limite de quantité par article, tandis que Once applique la limite de quantité sur l'ensemble du panier",
+      "targetSelectionStrategy": "Articles remisés",
+      "targetSelectionStrategyTooltip": "Quels articles éligibles dans le panier reçoivent la remise",
       "addCondition": "Ajouter une condition",
       "clearAll": "Effacer tout",
       "taxInclusive": "Taxes incluses",
@@ -2423,6 +2426,16 @@
         "once": {
           "title": "Une fois",
           "description": "Applique la valeur à un nombre limité d'articles"
+        }
+      },
+      "target_selection_strategy": {
+        "most_expensive_first": {
+          "title": "Les plus chers en premier",
+          "description": "Applique la remise aux articles éligibles les plus chers du panier"
+        },
+        "cheapest_first": {
+          "title": "Les moins chers en premier",
+          "description": "Applique la remise aux articles éligibles les moins chers du panier"
         }
       },
       "code": {
@@ -2787,7 +2800,7 @@
     "editUser": "Modifier l'utilisateur",
     "inviteUser": "Inviter un utilisateur",
     "inviteUserHint": "Inviter un nouvel utilisateur à votre boutique.",
-    "inviteRolesTooltip": "Si aucun rôle n'est sélectionné, l'utilisateur sera invité avec un rôle de super-utilisateur.",
+    "inviteRolesTooltip": "Si aucun rôle n'est sélectionné, l'utilisateur sera invité sans aucune permission. Vous pourrez lui attribuer des rôles ultérieurement.",
     "sendInvite": "Envoyer l'invitation",
     "pendingInvites": "Invitations en attente",
     "deleteInviteWarning": "Vous êtes sur le point de supprimer l'invitation pour {{email}}. Cette action ne peut être annulée.",
@@ -2852,6 +2865,8 @@
     "delete": {
       "title": "Supprimer le rôle",
       "description": "Vous êtes sur le point de supprimer le rôle {{name}}. Cette action ne peut être annulée.",
+      "descriptionWithUsers_one": "Vous êtes sur le point de supprimer le rôle {{name}}. {{count}} utilisateur possède ce rôle et perdra les accès qu'il confère. Cette action ne peut être annulée.",
+      "descriptionWithUsers_other": "Vous êtes sur le point de supprimer le rôle {{name}}. {{count}} utilisateurs possèdent ce rôle et perdront les accès qu'il confère. Cette action ne peut être annulée.",
       "successToast": "Rôle {{name}} supprimé"
     },
     "fields": {
@@ -2862,7 +2877,6 @@
     },
     "users": {
       "alreadyAddedTooltip": "L'utilisateur a déjà ce rôle.",
-      "unassignableRoleTooltip": "Vous n'avez pas accès à l'attribution de ce rôle — vos permissions ne couvrent pas toutes ses politiques.",
       "add": {
         "successToast_one": "L'utilisateur a été ajouté au rôle avec succès.",
         "successToast_other": "Les utilisateurs ont été ajoutés au rôle avec succès.",
@@ -2890,6 +2904,140 @@
       "filtered": {
         "heading": "Aucun résultat",
         "description": "Aucune permission ne correspond aux critères de filtrage."
+      },
+      "manage": {
+        "successToast": "Les permissions ont été mises à jour avec succès."
+      },
+      "matrix": {
+        "groups": {
+          "orders": {
+            "label": "Commandes",
+            "description": "Commandes, modifications de commande, réclamations, échanges et retours"
+          },
+          "payments": {
+            "label": "Paiements",
+            "description": "Paiements, collections de paiement, remboursements et captures"
+          },
+          "products": {
+            "label": "Produits",
+            "description": "Produits, variantes, options, catégories, collections, types et étiquettes"
+          },
+          "inventory": {
+            "label": "Inventaire",
+            "description": "Articles d'inventaire, niveaux de stock, réservations et emplacements"
+          },
+          "customers": {
+            "label": "Clients",
+            "description": "Clients, adresses et groupes de clients"
+          },
+          "pricing": {
+            "label": "Tarification et promotions",
+            "description": "Listes de prix, prix, promotions et campagnes"
+          },
+          "shipping": {
+            "label": "Livraison et exécution",
+            "description": "Options et profils de livraison, exécutions et zones de service"
+          },
+          "store": {
+            "label": "Paramètres de la boutique",
+            "description": "Détails de la boutique, régions, canaux de vente, devises, taxes et traductions"
+          },
+          "team": {
+            "label": "Équipe et accès",
+            "description": "Utilisateurs, invitations, rôles et clés API"
+          },
+          "system": {
+            "label": "Système",
+            "description": "Fichiers, notifications et exécutions de workflow"
+          },
+          "custom": {
+            "label": "Personnalisé",
+            "description": "Permissions ajoutées par vos plugins et modules personnalisés"
+          }
+        },
+        "levels": {
+          "none": "Aucun accès",
+          "view": "Lecture seule",
+          "full": "Accès complet",
+          "mixed": "Mixte"
+        },
+        "levelControlLabel": "Niveau d'accès pour {{group}}",
+        "resourceColumn": "Ressource",
+        "notAvailable": "n/a",
+        "notAvailableTooltip": "Cette ressource ne définit pas cette permission",
+        "rowToggle": "Toutes les permissions {{resource}}",
+        "columnToggle": {
+          "on": "Activer {{operation}} pour tous les {{group}}",
+          "off": "Désactiver {{operation}} pour tous les {{group}}"
+        },
+        "search": {
+          "placeholder": "Rechercher des permissions",
+          "emptyHeading": "Aucune permission ne correspond à votre recherche",
+          "emptyDescription": "Essayez un nom de ressource comme commandes ou inventaire."
+        },
+        "showKeys": "Afficher les clés de permission",
+        "clearAll": "Tout effacer",
+        "lockedBadge_one": "{{count}} verrouillé",
+        "lockedBadge_other": "{{count}} verrouillés",
+        "lockedNote_one": "{{count}} permission de ce groupe ne peut pas être modifiée depuis votre compte, car vous ne la possédez pas. Aucun accès, Lecture seule et Accès complet s'appliquent au reste.",
+        "lockedNote_other": "{{count}} permissions de ce groupe ne peuvent pas être modifiées depuis votre compte, car vous ne les possédez pas. Aucun accès, Lecture seule et Accès complet s'appliquent au reste.",
+        "tooltips": {
+          "cannotGrant": "Vous ne pouvez pas accorder cela car votre compte ne le possède pas.",
+          "cannotRemove": "Ce rôle possède cette permission. Vous ne pouvez pas la modifier car votre compte ne la possède pas.",
+          "viewRequired": "D'autres permissions sur cette ressource nécessitent la lecture. Supprimez-les d'abord."
+        },
+        "noViewAccess": "Aucun accès en lecture",
+        "templates": {
+          "heading": "Commencer depuis un modèle",
+          "hint": "Facultatif. L'application d'un modèle remplace la sélection actuelle.",
+          "full": {
+            "label": "Accès complet",
+            "description": "Tout ce que vous pouvez accorder aujourd'hui, y compris les paramètres d'équipe et les permissions personnalisées."
+          },
+          "readonly": {
+            "label": "Lecture seule",
+            "description": "Consulter tout ce que vous pouvez accorder aujourd'hui. Ne rien modifier."
+          },
+          "snapshotNote": "Les modèles utilisent les permissions qui existent aujourd'hui. Les permissions ajoutées ultérieurement, par exemple par un nouveau plugin, ne sont pas incluses automatiquement."
+        },
+        "confirm": {
+          "template": {
+            "title": "Remplacer votre sélection ?",
+            "description": "L'application du modèle {{template}} remplace les permissions que vous avez sélectionnées.",
+            "confirm": "Appliquer le modèle"
+          },
+          "clear": {
+            "title": "Effacer toutes les permissions ?",
+            "descriptionCreate": "Cela supprime toutes les permissions que vous avez sélectionnées.",
+            "descriptionEdit": "Cela supprime toutes les permissions que vous pouvez modifier pour ce rôle. Rien n'est enregistré tant que vous ne sélectionnez pas Enregistrer."
+          }
+        },
+        "summary": {
+          "heading": "Résumé du rôle",
+          "name": "Nom",
+          "permissions": "Permissions",
+          "selectedOfTotal": "{{selected}} sur {{total}} sélectionnés",
+          "unsavedChanges": "Modifications non enregistrées",
+          "noChanges": "Aucune modification pour l'instant",
+          "changes": "{{added}} ajouté(s), {{removed}} supprimé(s)",
+          "footnote": "Les zones définies sur Aucun accès sont masquées pour les membres ayant ce rôle. L'accès complet couvre les permissions qui existent aujourd'hui. Les permissions ajoutées ultérieurement doivent être accordées ici.",
+          "wildcards": "Ce rôle possède également des permissions génériques ({{keys}}). Elles sont gérées via l'API et ne sont pas affichées ici."
+        },
+        "createHint": "Sélectionnez au moins une permission pour créer le rôle.",
+        "custom": {
+          "calloutHeading": "Ajoutez vos propres permissions",
+          "calloutDescription": "Les plugins et modules personnalisés peuvent définir leurs propres permissions. Une fois créées, elles apparaissent dans ce groupe, prêtes à être attribuées à n'importe quel rôle.",
+          "calloutAction": "Lire le guide"
+        },
+        "detail": {
+          "heading": "Permissions",
+          "count": "{{selected}} sur {{total}} permissions",
+          "countOnly_one": "{{count}} permission",
+          "countOnly_other": "{{count}} permissions",
+          "granted": "Accordée",
+          "notGranted": "Non accordée",
+          "wildcards": "Ce rôle possède des permissions génériques ({{keys}}). Elles accordent toutes les permissions qu'elles correspondent, y compris celles ajoutées ultérieurement, et sont gérées via l'API."
+        }
       }
     },
     "list": {
@@ -2913,6 +3061,7 @@
     },
     "edit": {
       "header": "Modifier la politique",
+      "identityHint": "La clé, la ressource et l'opération identifient la politique et ne peuvent pas être modifiées. Créez plutôt une nouvelle politique.",
       "successToast": "Politique {{key}} mise à jour"
     },
     "delete": {
@@ -3374,6 +3523,9 @@
     "invalidTokenTitle": "Votre lien d'invitation est invalide",
     "invalidTokenHint": "Essayez de demander un nouveau lien d'invitation.",
     "passwordMismatch": "Les mots de passe ne correspondent pas",
+    "signedInTitle": "Vous êtes déjà connecté(e)",
+    "signedInHint": "Vous êtes connecté(e) en tant que {{email}}. Déconnectez-vous pour accepter cette invitation.",
+    "signOut": "Se déconnecter",
     "toast": {
       "accepted": "Invitation acceptée avec succès"
     }
@@ -3541,6 +3693,10 @@
     "domain": "Libellés de propriété",
     "title": "Libellés de propriété",
     "subtitle": "Gérer les libellés de propriété personnalisés pour les tableaux configurables de vos entités.",
+    "editTitle": "Modifier les libellés de propriété",
+    "editDescription": "Personnalisez la façon dont les noms de propriété sont affichés pour {{entity}}",
+    "customLabel": "Libellé personnalisé",
+    "updateSuccess": "Libellés de propriété mis à jour avec succès",
     "fields": {
       "module": "Module",
       "model": "Modèle",
@@ -3588,6 +3744,9 @@
   "fields": {
     "actions": "Actions",
     "amount": "Montant",
+    "yes": "Oui",
+    "no": "Non",
+    "field": "Champ",
     "reference": "Référence",
     "reference_id": "ID de référence",
     "refundAmount": "Montant de remboursement",
@@ -3807,6 +3966,10 @@
       "requiredPermission": "Permission requise : {{permission}}",
       "action": "Vous n'avez pas la permission d'effectuer cette action."
     },
+    "noPermissions": {
+      "title": "Aucune permission pour l'instant",
+      "description": "Aucune permission ne vous a encore été attribuée. Contactez votre administrateur pour demander l'accès aux sections dont vous avez besoin."
+    },
     "requiredPermissions": {
       "title": "Permissions requises",
       "none": "Aucune permission déclarée dans cette vue.",
@@ -3842,7 +4005,54 @@
       "return_reason": "Motif de retour",
       "refund_reason": "Motif de remboursement",
       "workflow": "Workflow",
-      "translation": "Traduction"
+      "translation": "Traduction",
+      "customer_address": "Adresses client",
+      "inventory_item": "Articles d'inventaire",
+      "inventory_level": "Niveaux d'inventaire",
+      "reservation_item": "Réservations",
+      "order_item": "Articles de commande",
+      "order_change": "Modifications de commande",
+      "order_address": "Adresses de commande",
+      "order_claim": "Réclamations",
+      "order_claim_item": "Articles de réclamation",
+      "order_exchange": "Échanges",
+      "order_credit_line": "Lignes de crédit de commande",
+      "return": "Retours",
+      "payment": "Paiements",
+      "payment_collection": "Collections de paiement",
+      "payment_method": "Méthodes de paiement",
+      "payment_session": "Sessions de paiement",
+      "refund": "Remboursements",
+      "capture": "Captures",
+      "price_preference": "Préférences de prix",
+      "price": "Prix",
+      "currency": "Devises",
+      "product_variant": "Variantes de produit",
+      "product_option": "Options de produit",
+      "product_option_value": "Valeurs d'options de produit",
+      "property_label": "Étiquettes de propriété",
+      "shipping_option_type": "Types d'options de livraison",
+      "fulfillment": "Exécutions",
+      "fulfillment_provider": "Fournisseurs d'exécution",
+      "fulfillment_set": "Ensembles d'exécution",
+      "service_zone": "Zones de service",
+      "file": "Fichiers",
+      "audit_log": "Journaux d'audit",
+      "notification": "Notifications",
+      "workflow_execution": "Exécutions de workflow",
+      "search_index": "Index de recherche",
+      "search_index_sync": "Synchronisations d'index de recherche",
+      "index_engine": "Module d'indexation",
+      "view_configuration": "Vues de tableau par défaut",
+      "layout_configuration": "Mises en page par défaut",
+      "store_locale": "Paramètres régionaux de la boutique",
+      "tax_provider": "Fournisseurs de taxes",
+      "tax_rate": "Taux de taxes",
+      "translation_setting": "Paramètres de traduction",
+      "invite": "Invitations",
+      "rbac_role": "Rôles",
+      "rbac_policy": "Permissions",
+      "rbac_role_assignment": "Attributions de rôle"
     },
     "actions": {
       "read": "Voir",

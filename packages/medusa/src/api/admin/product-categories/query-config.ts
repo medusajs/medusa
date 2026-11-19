@@ -1,5 +1,6 @@
 export enum Entities {
   product_category = "product_category",
+  product = "product",
 }
 
 export const defaults = [

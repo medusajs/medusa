@@ -9,11 +9,14 @@ import { useDataTableDateColumns } from "../../../../../components/data-table/he
 import { useDataTableDateFilters } from "../../../../../components/data-table/helpers/general/use-data-table-date-filters"
 import { useUsers } from "../../../../../hooks/api/users"
 import { useQueryParams } from "../../../../../hooks/use-query-params"
+import { useInvitePermissions } from "../../../../../hooks/use-resource-permissions"
 import { UserListTableActions } from "./user-list-table-actions"
 
 const PAGE_SIZE = 20
 
 export const UserListTable = () => {
+  const { canCreate: canCreateInvite, canRead: canReadInvite } =
+    useInvitePermissions()
   const { q, order, offset } = useQueryParams(["q", "order", "offset"])
   const { users, count, isPending, isError, error } = useUsers(
     {
@@ -32,6 +35,8 @@ export const UserListTable = () => {
 
   const { t } = useTranslation()
 
+  const canInvite = canCreateInvite && canReadInvite
+
   if (isError) {
     throw error
   }
@@ -48,10 +53,14 @@ export const UserListTable = () => {
         heading={t("users.domain")}
         rowHref={(row) => `${row.id}`}
         isLoading={isPending}
-        action={{
-          label: t("users.invite"),
-          to: "invite",
-        }}
+        action={
+          canInvite
+            ? {
+                label: t("users.invite"),
+                to: "invite",
+              }
+            : undefined
+        }
         emptyState={{
           empty: {
             heading: t("users.list.empty.heading"),

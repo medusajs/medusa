@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteProductOptionLazy } from "../../../../../hooks/api/product-options"
+import { useResourcePermissions } from "../../../../../hooks/use-resource-permissions"
 
 export const ProductOptionListTableActions = ({
   productOption,
@@ -17,6 +18,7 @@ export const ProductOptionListTableActions = ({
   const prompt = usePrompt()
 
   const { mutateAsync } = useDeleteProductOptionLazy()
+  const { canUpdate, canDelete } = useResourcePermissions("product_option")
 
   const handleDelete = async () => {
     const confirm = await prompt({
@@ -42,28 +44,40 @@ export const ProductOptionListTableActions = ({
     })
   }
 
+  if (!canUpdate && !canDelete) {
+    return null
+  }
+
   return (
     <ActionMenu
       groups={[
-        {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              onClick: () =>
-                navigate(`/product-options/${productOption.id}/edit`),
-            },
-          ],
-        },
-        {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: handleDelete,
-            },
-          ],
-        },
+        ...(canUpdate
+          ? [
+              {
+                actions: [
+                  {
+                    icon: <PencilSquare />,
+                    label: t("actions.edit"),
+                    onClick: () =>
+                      navigate(`/product-options/${productOption.id}/edit`),
+                  },
+                ],
+              },
+            ]
+          : []),
+        ...(canDelete
+          ? [
+              {
+                actions: [
+                  {
+                    icon: <Trash />,
+                    label: t("actions.delete"),
+                    onClick: handleDelete,
+                  },
+                ],
+              },
+            ]
+          : []),
       ]}
     />
   )

@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 2.21.2
+  version: 2.22.7
   title: Medusa Storefront API
   license:
     name: MIT
@@ -8781,7 +8781,6 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-since: 2.12.3
-      x-featureFlag: translation
   /store/orders:
     get:
       operationId: GetOrders
@@ -11022,6 +11021,144 @@ paths:
         '500':
           $ref: '#/components/responses/500_error'
       x-workflow: createPaymentSessionsWorkflow
+      x-events: []
+      x-allowed:
+        - id
+        - currency_code
+        - amount
+        - payment_sessions
+        - status
+        - payment_providers
+        - payment_providers.id
+        - payment_sessions.id
+        - payment_sessions.amount
+        - payment_sessions.currency_code
+        - payment_sessions.provider_id
+        - payment_sessions.data
+        - payment_sessions.status
+  /store/payment-collections/{id}/payment-sessions/{session_id}:
+    post:
+      operationId: PostPaymentCollectionsIdPaymentSessionsSession_id
+      summary: Update Payment Session
+      description: Update a payment session's client data, such as payment details collected by the payment provider's checkout component. The data is merged into the session's `data.client`.
+      x-authenticated: false
+      parameters:
+        - name: id
+          in: path
+          description: The payment collection's ID.
+          required: true
+          schema:
+            type: string
+        - name: session_id
+          in: path
+          description: The payment session's ID.
+          required: true
+          schema:
+            type: string
+        - name: x-publishable-api-key
+          in: header
+          description: Publishable API Key created in the Medusa Admin.
+          required: true
+          schema:
+            type: string
+            externalDocs:
+              url: https://docs.medusajs.com/api/store/publishable-api-key
+        - name: x-medusa-locale
+          in: header
+          description: The locale in BCP 47 format to retrieve localized content.
+          required: false
+          schema:
+            type: string
+            example: en-US
+            externalDocs:
+              url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+              description: Learn more in the Serve Translations in Storefront guide.
+        - name: locale
+          in: query
+          description: The locale in BCP 47 format to retrieve localized content.
+          required: false
+          schema:
+            type: string
+            example: en-US
+            externalDocs:
+              url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+              description: Learn more in the Serve Translations in Storefront guide.
+        - name: fields
+          in: query
+          description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+          required: false
+          schema:
+            type: string
+            title: fields
+            description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. Without prefix it will replace the entire default fields.
+            externalDocs:
+              url: '#select-fields-and-relations'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreUpdatePaymentSession'
+      x-codeSamples:
+        - lang: JavaScript
+          label: JS SDK
+          source: |-
+            import Medusa from "@medusajs/js-sdk"
+
+            let MEDUSA_BACKEND_URL = "http://localhost:9000"
+
+            if (process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL) {
+              MEDUSA_BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
+            }
+
+            export const sdk = new Medusa({
+              baseUrl: MEDUSA_BACKEND_URL,
+              debug: process.env.NODE_ENV === "development",
+              publishableKey: process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY,
+            })
+
+            sdk.store.payment.updatePaymentSession(
+              "paycol_123",
+              "payses_123",
+              {
+                client_data: {
+                  // any data relevant for the provider.
+                }
+              }
+            )
+            .then(({ payment_collection }) => {
+              console.log(payment_collection)
+            })
+        - lang: Shell
+          label: cURL
+          source: |-
+            curl -X POST '{backend_url}/store/payment-collections/{id}/payment-sessions/{session_id}' \
+            -H 'x-publishable-api-key: {your_publishable_api_key}' \
+            -H 'Content-Type: application/json' \
+            --data-raw '{
+              "client_data": {}
+            }'
+      tags:
+        - Payment Collections
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorePaymentCollectionResponse'
+        '400':
+          $ref: '#/components/responses/400_error'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '404':
+          $ref: '#/components/responses/not_found_error'
+        '409':
+          $ref: '#/components/responses/invalid_state_error'
+        '422':
+          $ref: '#/components/responses/invalid_request_error'
+        '500':
+          $ref: '#/components/responses/500_error'
+      x-workflow: updatePaymentSessionClientDataWorkflow
       x-events: []
       x-allowed:
         - id
@@ -19760,6 +19897,38 @@ components:
           type: number
           title: apply_to_quantity
           description: The quantity that results from matching the `buyget` promotion's condition. For example, if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is `1`.
+        target_selection_strategy:
+          type: string
+          description: The application method's target selection strategy.
+          enum:
+            - most_expensive_first
+            - cheapest_first
+    AdminAssignUserRoles:
+      type: object
+      description: The RBAC roles to assign to a user.
+      x-schemaName: AdminAssignUserRoles
+      properties:
+        assignments:
+          type: array
+          description: The roles to assign to the user.
+          items:
+            type: object
+            description: A role to assign to the user.
+            required:
+              - role_id
+            properties:
+              role_id:
+                type: string
+                title: role_id
+                description: The ID of the role to assign to the user.
+              scope:
+                type: string
+                title: scope
+                description: The type of the scope's entity, such as `organization`. Must be passed with `scope_id`.
+              scope_id:
+                type: string
+                title: scope_id
+                description: The ID of the scope's entity, such as `org_123`. Must be passed with `scope`.
     AdminAuthorizeOrderPaymentSession:
       type: object
       description: The details for authorizing a payment session for an order.
@@ -20440,7 +20609,7 @@ components:
                 description: The tag's ID.
         variants:
           type: array
-          description: The product's variants. You can add new variants or update existing ones, passing their IDs in the object.
+          description: The product's variants. This replaces the product's full variant list, so existing variants that aren't included are deleted. Pass a variant's `id` to update it, or omit the `id` to create a new variant.
           items:
             oneOf:
               - $ref: '#/components/schemas/AdminCreateProductVariant'
@@ -21003,6 +21172,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminClaimOrderResponse:
       type: object
       description: The created claim's details.
@@ -21215,6 +21385,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminCollectionResponse:
       type: object
       description: The collection's details.
@@ -23482,6 +23653,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminCurrencyResponse:
       type: object
       description: The currency's details.
@@ -24676,6 +24848,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminDraftOrderParams:
       type: object
       description: The parameters for retrieving draft orders.
@@ -25287,6 +25460,36 @@ components:
           externalDocs:
             url: https://docs.medusajs.com/api/admin#manage-metadata
             description: Learn how to manage metadata
+    AdminExportCustomerRequest:
+      type: object
+      description: The details of the customer export.
+      x-schemaName: AdminExportCustomerRequest
+      properties:
+        format:
+          type: string
+          description: The format of the exported file. Defaults to `json`.
+          enum:
+            - csv
+            - json
+        batch_size:
+          oneOf:
+            - type: string
+              title: batch_size
+              description: The number of customers to retrieve in each batch while generating the export.
+            - type: number
+              title: batch_size
+              description: The number of customers to retrieve in each batch while generating the export.
+    AdminExportCustomerResponse:
+      type: object
+      description: The details of the customer export's workflow execution.
+      x-schemaName: AdminExportCustomerResponse
+      required:
+        - transaction_id
+      properties:
+        transaction_id:
+          type: string
+          title: transaction_id
+          description: The ID of the export customer workflow's transaction.
     AdminExportInventoryItemResponse:
       type: object
       description: The response for initiating an export inventory items workflow.
@@ -25763,6 +25966,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminFulfillmentProviderOption:
       type: object
       description: The fulfillment option's details.
@@ -25811,6 +26015,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminFulfillmentResponse:
       type: object
       description: A fulfillment's details.
@@ -26096,6 +26301,7 @@ components:
           title: estimate_count
           description: The gift card's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminImportProductRequest:
       type: object
       description: The import's details.
@@ -26437,7 +26643,6 @@ components:
         - id
         - email
         - accepted
-        - token
         - expires_at
         - created_at
         - updated_at
@@ -26483,7 +26688,6 @@ components:
         rbac_roles:
           type: array
           description: The roles of the invited user.
-          x-featureFlag: rbac
           items:
             $ref: '#/components/schemas/AdminRbacRole'
     AdminInviteResponse:
@@ -26697,6 +26901,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         locales:
           type: array
           description: The list of locales.
@@ -26735,6 +26940,29 @@ components:
           title: provider_id
           description: The ID of the payment provider to use for marking the payment collection as paid. If not provided, the `system` provider will be used.
       x-schemaName: AdminMarkPaymentCollectionAsPaid
+    AdminModule:
+      type: object
+      description: A module installed in the Medusa application.
+      x-schemaName: AdminModule
+      required:
+        - key
+      properties:
+        key:
+          type: string
+          title: key
+          description: The module's key, such as `rbac` or a custom module's name.
+    AdminModulesListResponse:
+      type: object
+      description: The list of installed modules.
+      x-schemaName: AdminModulesListResponse
+      required:
+        - modules
+      properties:
+        modules:
+          type: array
+          description: The modules installed in the Medusa application.
+          items:
+            $ref: '#/components/schemas/AdminModule'
     AdminNotification:
       type: object
       description: The notification's details.
@@ -26834,6 +27062,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminNotificationResponse:
       type: object
       description: The notification's details.
@@ -29372,6 +29601,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminPriceListPrice:
       type: object
       description: The details of a price list's price.
@@ -29472,6 +29702,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         prices:
           type: array
           description: The list of prices associated with the price list.
@@ -29586,6 +29817,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminPricePreferenceResponse:
       type: object
       description: The price preference's details.
@@ -29912,6 +30144,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductCategoryResponse:
       type: object
       description: The product category's details.
@@ -30268,6 +30501,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductTagResponse:
       type: object
       description: The product tag's details.
@@ -30379,6 +30613,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminProductTypeResponse:
       type: object
       description: The product type's details.
@@ -30960,10 +31195,6 @@ components:
         metadata:
           type: object
           description: Key-value pairs that hold additional information about the policy.
-        inherited_from_role_id:
-          type: string
-          title: inherited_from_role_id
-          description: The ID of the role from which the policy is inherited.
         created_at:
           type: string
           format: date-time
@@ -30987,7 +31218,6 @@ components:
         - id
         - name
         - description
-        - parent_id
         - metadata
         - created_at
         - updated_at
@@ -31005,10 +31235,6 @@ components:
           type: string
           title: description
           description: The description of the RBAC role.
-        parent_id:
-          type: string
-          title: parent_id
-          description: The ID of the parent RBAC role.
         metadata:
           type: object
           description: Key-value pairs that hold additional information about the RBAC role.
@@ -31032,6 +31258,79 @@ components:
           format: date-time
           title: deleted_at
           description: The date the RBAC role was deleted.
+        scope:
+          type: object
+          description: The scope the role is constrained to, if any.
+          required:
+            - type
+            - id
+          properties:
+            type:
+              type: string
+              title: type
+              description: The type of the scope's entity, such as `organization`.
+            id:
+              type: string
+              title: id
+              description: The ID of the scope's entity, such as `org_123`.
+    AdminRbacRoleAssignment:
+      type: object
+      description: The assignment of an RBAC role to an entity, such as a user.
+      x-schemaName: AdminRbacRoleAssignment
+      required:
+        - id
+        - role_id
+        - reference
+        - reference_id
+        - scope
+        - scope_id
+        - metadata
+        - created_at
+        - updated_at
+        - deleted_at
+      properties:
+        id:
+          type: string
+          title: id
+          description: The assignment's ID.
+        role_id:
+          type: string
+          title: role_id
+          description: The ID of the role the assignment is for.
+        reference:
+          type: string
+          title: reference
+          description: The type of entity the role is assigned to (e.g. `user`, `invite`).
+        reference_id:
+          type: string
+          title: reference_id
+          description: The ID of the entity the role is assigned to.
+        scope:
+          type: string
+          title: scope
+          description: The type of the scope's entity that the assignment is constrained to, such as `organization`.
+        scope_id:
+          type: string
+          title: scope_id
+          description: The ID of the scope's entity that the assignment is constrained to, such as `org_123`.
+        metadata:
+          type: object
+          description: The assignment's metadata.
+        created_at:
+          type: string
+          format: date-time
+          title: created_at
+          description: The date the assignment was created.
+        updated_at:
+          type: string
+          format: date-time
+          title: updated_at
+          description: The date the assignment was updated.
+        deleted_at:
+          type: string
+          format: date-time
+          title: deleted_at
+          description: The date the assignment was deleted.
     AdminReceiveItems:
       type: object
       description: The items details.
@@ -31102,6 +31401,10 @@ components:
           $ref: '#/components/schemas/BasePayment'
         refund_reason:
           $ref: '#/components/schemas/BaseRefundReason'
+        idempotency_key:
+          type: string
+          title: idempotency_key
+          description: The refund's idempotency key.
     AdminRefundPayment:
       type: object
       description: The refund's details.
@@ -31118,6 +31421,10 @@ components:
           type: string
           title: note
           description: A note to attach to the refund.
+        idempotency_key:
+          type: string
+          title: idempotency_key
+          description: The payment's idempotency key.
       x-schemaName: AdminRefundPayment
     AdminRefundReason:
       type: object
@@ -31672,6 +31979,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminReturnReasonResponse:
       type: object
       description: The return reason's details.
@@ -32542,6 +32850,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
         shipping_option_types:
           type: array
           description: The list of shipping option types.
@@ -32789,6 +33098,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStockLocationResponse:
       type: object
       description: The stock location's details.
@@ -32963,6 +33273,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStoreCurrency:
       type: object
       description: The details of a store's currency.
@@ -33043,6 +33354,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminStoreLocale:
       type: object
       description: The details of a store's locale.
@@ -33450,6 +33762,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     AdminTransferOrderToGuest:
       type: object
       description: The details of the order transfer to a guest.
@@ -33732,6 +34045,45 @@ components:
               type: boolean
               title: deleted
               description: Whether the translations were successfully deleted.
+    AdminUnassignUserRole:
+      type: object
+      description: The scope to unassign the role from the user in.
+      x-schemaName: AdminUnassignUserRole
+      properties:
+        scope:
+          type: string
+          title: scope
+          description: The type of the scope's entity, such as `organization`. Must be passed with `scope_id`.
+        scope_id:
+          type: string
+          title: scope_id
+          description: The ID of the scope's entity, such as `org_123`. Must be passed with `scope`.
+    AdminUnassignUserRoles:
+      type: object
+      description: The RBAC roles to unassign from a user.
+      x-schemaName: AdminUnassignUserRoles
+      properties:
+        assignments:
+          type: array
+          description: The roles to unassign from the user.
+          items:
+            type: object
+            description: A role to unassign from the user.
+            required:
+              - role_id
+            properties:
+              role_id:
+                type: string
+                title: role_id
+                description: The ID of the role to unassign from the user.
+              scope:
+                type: string
+                title: scope
+                description: The type of the scope's entity, such as `organization`. Must be passed with `scope_id`.
+              scope_id:
+                type: string
+                title: scope_id
+                description: The ID of the scope's entity, such as `org_123`. Must be passed with `scope`.
     AdminUpdateApiKey:
       type: object
       description: The details to update in an API key.
@@ -34404,7 +34756,7 @@ components:
             $ref: '#/components/schemas/AdminUpdateProductOption'
         variants:
           type: array
-          description: The product's variants. You can add new variants or update existing ones, passing their IDs in the object.
+          description: The product's variants. This replaces the product's full variant list, so existing variants that aren't included are deleted. Pass a variant's `id` to update it, or omit the `id` to create a new variant.
           items:
             oneOf:
               - $ref: '#/components/schemas/AdminCreateProductVariant'
@@ -35632,6 +35984,13 @@ components:
           format: date-time
           title: deleted_at
           description: The date the user was deleted.
+        roles:
+          type: array
+          description: The user's roles.
+          items:
+            type: string
+            title: roles
+            description: The role's roles.
     AdminUserAuthProvidersResponse:
       type: object
       description: The list of auth providers that a user can authenticate with. These represent the auth providers that the user has previously used to log in or register with the system.
@@ -35703,6 +36062,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     AdminUserResetPasswordTokenResponse:
       type: object
       description: The response for the reset password token generation for a user. This response contains the generated reset password token that can be used to reset the user's password.
@@ -35729,6 +36089,39 @@ components:
       properties:
         user:
           $ref: '#/components/schemas/AdminUser'
+    AdminUserRoleListResponse:
+      type: object
+      description: The paginated list of roles assigned to the user.
+      x-schemaName: AdminUserRoleListResponse
+      required:
+        - limit
+        - offset
+        - count
+        - roles
+      properties:
+        limit:
+          type: number
+          title: limit
+          description: The maximum number of items retrieved.
+        offset:
+          type: number
+          title: offset
+          description: The number of items to skip before retrieving the returned items.
+        count:
+          type: number
+          title: count
+          description: The total number of items.
+        estimate_count:
+          type: number
+          title: estimate_count
+          description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
+          x-featureFlag: index_engine
+          deprecated: true
+        roles:
+          type: array
+          description: The list of roles.
+          items:
+            $ref: '#/components/schemas/AdminRbacRole'
     AdminViewConfiguration:
       type: object
       description: The details of a view configuration.
@@ -39124,6 +39517,10 @@ components:
           type: object
         refund_reason:
           $ref: '#/components/schemas/BaseRefundReason'
+        idempotency_key:
+          type: string
+          title: idempotency_key
+          description: The refund's idempotency key.
     BaseRefundReason:
       type: object
       description: The refund reason's details.
@@ -41065,6 +41462,7 @@ components:
         - is_discountable
         - is_giftcard
         - is_tax_inclusive
+        - is_custom_price
         - unit_price
         - quantity
         - detail
@@ -41264,6 +41662,10 @@ components:
         line_item_metadata:
           type: object
           description: Custom key-value pairs on the order's line items.
+        is_custom_price:
+          type: boolean
+          title: is_custom_price
+          description: Indicates whether the line item's unit price is a custom price.
     OrderLineItemAdjustment:
       type: object
       description: The line item adjustment's details.
@@ -43602,6 +44004,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreCurrencyResponse:
       type: object
       description: The currency's details.
@@ -43821,6 +44224,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreCustomerAddressResponse:
       type: object
       description: The address's details.
@@ -45374,6 +45778,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductCategoryResponse:
       type: object
       description: The product category's details.
@@ -45658,6 +46063,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductTagResponse:
       type: object
       description: The product tag's details.
@@ -45742,6 +46148,7 @@ components:
           title: estimate_count
           description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
           x-featureFlag: index_engine
+          deprecated: true
     StoreProductTypeResponse:
       type: object
       description: The product type's details.
@@ -46496,6 +46903,7 @@ components:
           title: estimate_count
           description: The store credit account's estimate count.
           x-featureFlag: index_engine
+          deprecated: true
     StoreUpdateCustomer:
       type: object
       description: The details to update in the customer.
@@ -46587,6 +46995,18 @@ components:
           type: object
           description: Holds custom key-value pairs.
       x-schemaName: StoreUpdateCustomerAddress
+    StoreUpdatePaymentSession:
+      type: object
+      description: The client data to merge into the payment session.
+      x-schemaName: StoreUpdatePaymentSession
+      required:
+        - client_data
+      properties:
+        client_data:
+          type: object
+          description: |-
+            Data to merge into the session's `data.client`, such as payment details
+            collected by the provider's checkout component. Set a property to `null` to remove it.
     UpdateAddress:
       type: object
       description: The details to update in the address.

@@ -26,7 +26,7 @@ module.exports = defineConfig({
 })
 ```
 
-- Options (`StripeOptions` in `src/types/index.ts`): `apiKey` (required), `webhookSecret`, `capture` (auto-capture, default `false` = manual capture), `automaticPaymentMethods`, `paymentMethodConfiguration` (PMC ID), `paymentDescription`, `oxxoExpiresDays` (default 3), `asyncPaymentMethodTypes`.
+- Options (`StripeOptions` in `src/types/index.ts`): `apiKey` (required), `apiVersion` (default `2024-04-10`), `webhookSecret`, `capture` (auto-capture, default `false` = manual capture), `automaticPaymentMethods`, `paymentMethodConfiguration` (PMC ID), `paymentDescription`, `oxxoExpiresDays` (default 3), `asyncPaymentMethodTypes`.
 - Provider IDs are `pp_{identifier}_{id}`: `pp_stripe_stripe`, `pp_stripe-bancontact_stripe`, `pp_stripe-blik_stripe`, `pp_stripe-giropay_stripe`, `pp_stripe-ideal_stripe`, `pp_stripe-przelewy24_stripe`, `pp_stripe-promptpay_stripe`, `pp_stripe-oxxo_stripe`. Enable them per region.
 - Webhooks: point Stripe at `{server_url}/hooks/payment/{identifier}_{id}`, e.g. `/hooks/payment/stripe_stripe` (one endpoint per variant you use).
 - Per-session overrides go in the payment session `data` (e.g. `payment_method_types`, `capture_method`, `setup_future_usage`, `payment_method_options`, `payment_description`, `return_url`); see `normalizePaymentIntentParameters`.
@@ -49,6 +49,7 @@ module.exports = defineConfig({
 - Missing `webhookSecret` only warns once at boot, but webhook verification then fails, so async flows (3DS, redirects, async capture) leave orders pending.
 - Webhook events for intents without `metadata.session_id` return `NOT_SUPPORTED`; intents created outside Medusa on the same Stripe account are ignored.
 - `initiatePayment` sets the Stripe `customer` from `context.account_holder.data.id`, so saved cards require the customer's account holder to exist first.
+- Requests use `apiVersion` (default `2024-04-10`), not the SDK's pinned version, and the SDK types describe the pinned version, not the one in use. Payment method types (session `data`, `savePaymentMethod` data, or a variant's defaults) go out as `payment_method_types` before `2026-07-29` and as `allowed_payment_method_types` from then on, because `2026-09-30.endive` rejects `payment_method_types`. Stripe silently drops incompatible `allowed_payment_method_types` instead of erroring.
 - `paymentMethodConfiguration` is ignored whenever `payment_method_types` is set, so it never applies to the fixed-method variants (iDEAL, OXXO, ...).
 - Methods in `asyncPaymentMethodTypes` turn `payment_intent.processing` into `PENDING_AUTHORIZATION`, letting orders be placed while Stripe is still `pending`.
 - `deletePayment` tolerates already-succeeded intents; `cancelPayment` throws for them.

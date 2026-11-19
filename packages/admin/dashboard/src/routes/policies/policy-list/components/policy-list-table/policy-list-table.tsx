@@ -1,5 +1,5 @@
-// TODO: V1 policies are read-only in the dashboard. They're defined in code via
-// `definePolicies()`. The Create button and per-row Edit / Delete
+// TODO: [rbac] V1 policies are read-only in the dashboard. Core policies are defined in
+// code, in the RBAC module's core policies loader. The Create button and per-row Edit / Delete
 // actions are commented out below — uncomment to re-enable the full CRUD UI
 // once policy management is opened to admins.
 
@@ -49,7 +49,8 @@ export const PolicyListTable = () => {
   const { policies, count, isPending, isError, error } = useRbacPolicies(
     {
       q,
-      order,
+      // Sorted by key by default, so a resource's policies sit together.
+      order: order ?? "key",
       offset: offset ? parseInt(offset) : undefined,
       limit: PAGE_SIZE,
       created_at: parseFilterParam(created_at),

@@ -6,8 +6,7 @@ get:
     such as `handle`. The collections can also be sorted or paginated.
   x-authenticated: false
   externalDocs:
-    url: >-
-      https://docs.medusajs.com/resources/storefront-development/products/collections/list
+    url: https://docs.medusajs.com/resources/storefront-development/products/collections/list
     description: 'Storefront guide: How to retrieve a list of collections.'
   parameters:
     - name: x-publishable-api-key
@@ -26,8 +25,7 @@ get:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
     - name: fields
       in: query
@@ -714,8 +712,7 @@ get:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
     - name: external_id
       in: query

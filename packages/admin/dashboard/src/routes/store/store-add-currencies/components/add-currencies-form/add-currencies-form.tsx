@@ -4,6 +4,7 @@ import {
   OnChangeFn,
   RowSelectionState,
 } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useCallback, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -29,6 +30,7 @@ import { useCurrenciesTableQuery } from "../../../common/hooks/use-currencies-ta
 type AddCurrenciesFormProps = {
   store: HttpTypes.AdminStore
   pricePreferences: HttpTypes.AdminPricePreference[]
+  canReadPricePreferences: boolean
 }
 
 const AddCurrenciesSchema = zod.object({
@@ -42,6 +44,7 @@ const PREFIX = "ac"
 export const AddCurrenciesForm = ({
   store,
   pricePreferences,
+  canReadPricePreferences,
 }: AddCurrenciesFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
@@ -111,14 +114,19 @@ export const AddCurrenciesForm = ({
           shouldTouch: true,
         })
       }
-      setRowSelection((prev) =>
-        prev[code] ? prev : { ...prev, [code]: true }
-      )
+      setRowSelection((prev) => {
+        return prev[code] ? prev : { ...prev, [code]: true }
+      })
     },
     [getValues, setValue]
   )
 
-  const columns = useColumns(pricePreferenceValues, setPricePreferences, selectRow)
+  const columns = useColumns(
+    canReadPricePreferences,
+    pricePreferenceValues,
+    setPricePreferences,
+    selectRow
+  )
 
   const { table } = useDataTable({
     data: currencies ?? [],
@@ -233,9 +241,13 @@ export const AddCurrenciesForm = ({
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminCurrency>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminCurrency
+>()
 
 const useColumns = (
+  canReadPricePreferences: boolean,
   pricePreferences: Record<string, boolean>,
   setPricePreferences: any,
   selectRow: (code: string) => void
@@ -251,6 +263,7 @@ const useColumns = (
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()
@@ -288,38 +301,49 @@ const useColumns = (
         },
       }),
       ...base,
-      columnHelper.display({
-        id: "is_tax_inclusive",
-        header: () => (
-          <div className="whitespace-nowrap">
-            {t("fields.taxInclusivePricing")}
-          </div>
-        ),
-        cell: ({ row }) => {
-          const isPreSelected = !row.getCanSelect()
-          const isTaxInclusive = pricePreferences[row.original.code]
-          return (
-            <div className="flex items-center justify-end">
-              <Switch
-                dir="ltr"
-                className="rtl:rotate-180"
-                disabled={isPreSelected}
-                checked={isTaxInclusive ?? false}
-                onCheckedChange={(val) => {
-                  setPricePreferences({
-                    ...pricePreferences,
-                    [row.original.code]: val,
-                  })
-                  if (val && !row.getIsSelected()) {
-                    selectRow(row.original.code)
-                  }
-                }}
-              />
-            </div>
-          )
-        },
-      }),
+      ...(canReadPricePreferences
+        ? [
+            columnHelper.display({
+              id: "is_tax_inclusive",
+              header: () => (
+                <div className="whitespace-nowrap">
+                  {t("fields.taxInclusivePricing")}
+                </div>
+              ),
+              cell: ({ row }) => {
+                const isPreSelected = !row.getCanSelect()
+                const isTaxInclusive = pricePreferences[row.original.code]
+                return (
+                  <div className="flex items-center justify-end">
+                    <Switch
+                      dir="ltr"
+                      className="rtl:rotate-180"
+                      disabled={isPreSelected}
+                      checked={isTaxInclusive ?? false}
+                      onCheckedChange={(val) => {
+                        setPricePreferences({
+                          ...pricePreferences,
+                          [row.original.code]: val,
+                        })
+                        if (val && !row.getIsSelected()) {
+                          selectRow(row.original.code)
+                        }
+                      }}
+                    />
+                  </div>
+                )
+              },
+            }),
+          ]
+        : []),
     ],
-    [t, base, pricePreferences, setPricePreferences, selectRow]
+    [
+      t,
+      base,
+      pricePreferences,
+      setPricePreferences,
+      selectRow,
+      canReadPricePreferences,
+    ]
   )
 }

@@ -3,6 +3,7 @@ import {
   ConfigModule,
   IAnalyticsModuleService,
   IApiKeyModuleService,
+  IAuditModuleService,
   IAuthModuleService,
   ICacheService,
   ICachingModuleService,
@@ -86,11 +87,12 @@ declare module "@medusajs/types" {
     [Modules.SEARCH]: ISearchModuleService
     [Modules.TRANSLATION]: ITranslationModuleService
     [Modules.RBAC]: IRbacModuleService
+    [Modules.AUDIT]: IAuditModuleService
   }
 }
 
 export type MedusaContainer<Cradle extends object = ModuleImplementations> =
-  Omit<AwilixContainer, "resolve"> & {
+  Omit<AwilixContainer<any>, "resolve" | "createScope"> & {
     resolve<K extends keyof Cradle>(
       key: K,
       resolveOptions?: ResolveOptions

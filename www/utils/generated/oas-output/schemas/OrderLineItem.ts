@@ -10,6 +10,7 @@
  *   - is_discountable
  *   - is_giftcard
  *   - is_tax_inclusive
+ *   - is_custom_price
  *   - unit_price
  *   - quantity
  *   - detail
@@ -209,6 +210,10 @@
  *   line_item_metadata:
  *     type: object
  *     description: Custom key-value pairs on the order's line items.
+ *   is_custom_price:
+ *     type: boolean
+ *     title: is_custom_price
+ *     description: Indicates whether the line item's unit price is a custom price.
  * 
 */
 

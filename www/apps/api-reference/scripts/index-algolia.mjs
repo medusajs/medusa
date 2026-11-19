@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import OpenAPIParser from "@readme/openapi-parser"
+import $RefParser from "@apidevtools/json-schema-ref-parser"
 import algoliasearch from "algoliasearch"
 import { JSDOM } from "jsdom"
 import path from "path"
@@ -142,7 +142,7 @@ async function main() {
     // generated page path (and stable objectID) via name/operationId.
     const specPath = path.join(appDir, `specs/${area}/openapi.full.yaml`)
     console.log(`Parsing spec at ${specPath}...`)
-    const baseSpecs = await OpenAPIParser.parse(specPath)
+    const baseSpecs = await $RefParser.parse(specPath)
 
     baseSpecs.tags?.forEach((tag) => {
       const tagEntry = tagsByName.get(tag.name.trim().toLowerCase())

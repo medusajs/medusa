@@ -1,5 +1,4 @@
-import { codegen } from "@graphql-codegen/core"
-import * as typescriptPlugin from "@graphql-codegen/typescript"
+import type { codegen as Codegen } from "@graphql-codegen/core"
 import { ModuleJoinerConfig } from "@medusajs/types"
 import {
   EnumTypeDefinitionNode,
@@ -56,9 +55,11 @@ async function generateTypes({
   outputDir: string
   filename: string
   interfaceName: string
-  config: Parameters<typeof codegen>[0]
+  config: Parameters<typeof Codegen>[0]
   joinerConfigs: ModuleJoinerConfig[]
 }) {
+  const { codegen } =
+    require("@graphql-codegen/core") as typeof import("@graphql-codegen/core")
   const fileSystem = new FileSystem(outputDir)
 
   let output = 'import "@medusajs/framework/types"\n'
@@ -137,9 +138,13 @@ export async function gqlSchemaToTypes({
   joinerConfigs: ModuleJoinerConfig[]
   interfaceName: string
 }) {
+  // ESM-only transitive deps: a top-level import breaks Jest suites that load @medusajs/utils
+  const typescriptPlugin =
+    require("@graphql-codegen/typescript") as typeof import("@graphql-codegen/typescript")
   const config = {
     documents: [],
     config: {
+      defaultScalarType: "any",
       scalars: {
         DateTime: { input: "Date | string", output: "Date | string" },
         JSON: {

@@ -69,11 +69,11 @@ export const useCreateCustomerGroup = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.customerGroup.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: customerGroupsQueryKeys.lists(),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -89,7 +89,7 @@ export const useUpdateCustomerGroup = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.customerGroup.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: customerGroupsQueryKeys.lists(),
       })
@@ -97,7 +97,7 @@ export const useUpdateCustomerGroup = (
         queryKey: customerGroupsQueryKeys.detail(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -113,7 +113,7 @@ export const useDeleteCustomerGroup = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.customerGroup.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: customerGroupsQueryKeys.lists(),
       })
@@ -121,7 +121,7 @@ export const useDeleteCustomerGroup = (
         queryKey: customerGroupsQueryKeys.detail(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -136,7 +136,7 @@ export const useDeleteCustomerGroupLazy = (
 ) => {
   return useMutation({
     mutationFn: ({ id }) => sdk.admin.customerGroup.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: customerGroupsQueryKeys.lists(),
       })
@@ -144,7 +144,7 @@ export const useDeleteCustomerGroupLazy = (
         queryKey: customerGroupsQueryKeys.detail(variables.id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -161,7 +161,7 @@ export const useAddCustomersToGroup = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.customerGroup.batchCustomers(id, { add: payload }),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: customerGroupsQueryKeys.lists(),
       })
@@ -172,7 +172,7 @@ export const useAddCustomersToGroup = (
         queryKey: customersQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -189,7 +189,7 @@ export const useRemoveCustomersFromGroup = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.customerGroup.batchCustomers(id, { remove: payload }),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: customerGroupsQueryKeys.lists(),
       })
@@ -200,7 +200,7 @@ export const useRemoveCustomersFromGroup = (
         queryKey: customersQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

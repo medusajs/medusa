@@ -2,6 +2,18 @@ import { resolve } from "path"
 import { MiddlewareFileLoader } from "../middleware-file-loader"
 
 describe("Middleware file loader", () => {
+  it("collects the audit namespaces", async () => {
+    const loader = new MiddlewareFileLoader()
+    await loader.scanDir(
+      resolve(__dirname, "../__fixtures__/routers-audit-namespaces")
+    )
+
+    expect(loader.getAuditNamespaces()).toEqual(["/v1", "/v1/admin"])
+    expect(loader.getAuditConfigRoutes()).toEqual([
+      { matcher: "/v1*", methods: ["POST"], config: true },
+    ])
+  })
+
   it("should load routes from the filesystem", async () => {
     const BASE_DIR = resolve(__dirname, "../__fixtures__/routers-middleware")
     const loader = new MiddlewareFileLoader()
@@ -55,7 +67,6 @@ describe("Middleware file loader", () => {
           "handler": [Function],
           "matcher": "/customers",
           "methods": undefined,
-          "policies": undefined,
         },
         {
           "handler": [Function],
@@ -63,19 +74,16 @@ describe("Middleware file loader", () => {
           "methods": [
             "POST",
           ],
-          "policies": undefined,
         },
         {
           "handler": [Function],
           "matcher": "/store/*",
           "methods": undefined,
-          "policies": undefined,
         },
         {
           "handler": [Function],
           "matcher": /\\^\\\\/admin\\(\\\\/\\.\\*\\)\\?\\$/,
           "methods": undefined,
-          "policies": undefined,
         },
         {
           "handler": [Function],
@@ -83,7 +91,6 @@ describe("Middleware file loader", () => {
           "methods": [
             "POST",
           ],
-          "policies": undefined,
         },
       ]
     `)

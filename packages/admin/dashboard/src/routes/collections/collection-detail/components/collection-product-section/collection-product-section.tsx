@@ -3,6 +3,7 @@ import { HttpTypes } from "@medusajs/types"
 import { Checkbox, Container, Heading, toast, usePrompt } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
@@ -13,6 +14,8 @@ import { useProductTableColumns } from "../../../../../hooks/table/columns/use-p
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useProductPermissions } from "../../../../../hooks/use-resource-permissions"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 import { CollectionProductRowActions } from "./collection-product-row-actions"
 
 type CollectionProductSectionProps = {
@@ -25,6 +28,13 @@ export const CollectionProductSection = ({
   collection,
 }: CollectionProductSectionProps) => {
   const { t } = useTranslation()
+  const { hasAllPermissions } = usePermissions()
+  const { canUpdate: canUpdateProducts } = useProductPermissions()
+
+  const canManageCollectionProducts = hasAllPermissions([
+    "product:update",
+    "product_collection:update",
+  ])
 
   const { searchParams, raw } = useProductTableQuery({ pageSize: PAGE_SIZE })
   const { products, count, isLoading, isError, error } = useProducts(
@@ -39,7 +49,7 @@ export const CollectionProductSection = ({
   )
 
   const filters = useProductTableFilters(["collections"])
-  const columns = useColumns()
+  const columns = useColumns({ canManageCollectionProducts })
 
   const { table } = useDataTable({
     data: products ?? [],
@@ -47,7 +57,7 @@ export const CollectionProductSection = ({
     getRowId: (row) => row.id,
     count,
     enablePagination: true,
-    enableRowSelection: true,
+    enableRowSelection: canUpdateProducts,
     pageSize: PAGE_SIZE,
     meta: {
       collectionId: collection.id,
@@ -101,19 +111,21 @@ export const CollectionProductSection = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.domain")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  icon: <Plus />,
-                  label: t("actions.add"),
-                  to: "products",
-                },
-              ],
-            },
-          ]}
-        />
+        {canManageCollectionProducts && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    icon: <Plus />,
+                    label: t("actions.add"),
+                    to: "products",
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       <_DataTable
         table={table}
@@ -131,13 +143,17 @@ export const CollectionProductSection = ({
           { key: "updated_at", label: t("fields.updatedAt") },
         ]}
         queryObject={raw}
-        commands={[
-          {
-            action: handleRemove,
-            label: t("actions.remove"),
-            shortcut: "r",
-          },
-        ]}
+        commands={
+          canManageCollectionProducts
+            ? [
+                {
+                  action: handleRemove,
+                  label: t("actions.remove"),
+                  shortcut: "r",
+                },
+              ]
+            : []
+        }
         noRecords={{
           message: t("collections.products.list.noRecordsMessage"),
         }}
@@ -146,41 +162,53 @@ export const CollectionProductSection = ({
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminProduct
+>()
 
-const useColumns = () => {
+const useColumns = ({
+  canManageCollectionProducts,
+}: {
+  canManageCollectionProducts: boolean
+}) => {
   const columns = useProductTableColumns()
 
   return useMemo(
     () => [
-      columnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
-            />
-          )
-        },
-        cell: ({ row }) => {
-          return (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-        },
-      }),
+      ...(canManageCollectionProducts
+        ? [
+            columnHelper.display({
+              id: "select",
+              header: ({ table }) => {
+                return (
+                  <Checkbox
+                    checked={
+                      !table.getIsAllPageRowsSelected() &&
+                      table.getIsSomePageRowsSelected()
+                        ? "indeterminate"
+                        : table.getIsAllPageRowsSelected()
+                    }
+                    onCheckedChange={(value) =>
+                      table.toggleAllPageRowsSelected(!!value)
+                    }
+                  />
+                )
+              },
+              cell: ({ row }) => {
+                return (
+                  <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                  />
+                )
+              },
+            }),
+          ]
+        : []),
       ...columns,
       columnHelper.display({
         id: "actions",
@@ -198,6 +226,6 @@ const useColumns = () => {
         },
       }),
     ],
-    [columns]
+    [columns, canManageCollectionProducts]
   )
 }

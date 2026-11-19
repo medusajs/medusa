@@ -83,12 +83,11 @@ export const StringFilter = ({
       {!readonly && (
         <RadixPopover.Portal>
           <RadixPopover.Content
-            hideWhenDetached
             align="start"
             sideOffset={8}
             collisionPadding={8}
             className={clx(
-              "z-[1] h-full max-h-[200px] w-[300px] overflow-hidden rounded-lg bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout outline-none"
+              "z-1 h-full max-h-[200px] w-[300px] overflow-hidden rounded-lg bg-ui-bg-base text-ui-fg-base shadow-elevation-flyout outline-hidden"
             )}
             onInteractOutside={(e) => {
               if (e.target instanceof HTMLElement) {

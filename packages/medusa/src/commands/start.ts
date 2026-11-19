@@ -9,11 +9,9 @@ import path from "path"
 import {
   ContainerRegistrationKeys,
   dynamicImport,
-  FeatureFlag,
   FileSystem,
   generateContainerTypes,
   generateAugmentationRefs,
-  generatePolicyTypes,
   getResolvedPlugins,
   gqlSchemaToTypes,
   GracefulShutdownServer,
@@ -26,7 +24,6 @@ import {
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import { Logger, MedusaContainer } from "@medusajs/framework/types"
 import { parse } from "url"
-import RbacFeatureFlag from "../feature-flags/rbac"
 import loaders, { initializeContainer } from "../loaders"
 import { reloadResources } from "./utils/dev-server"
 import { startLicenseRemoteCheck } from "./utils/license-check"
@@ -134,7 +131,7 @@ function displayAdminUrl({
 type ExpressStack = {
   name: string
   match: (url: string) => boolean
-  route: { path: string }
+  route?: { path: string }
   handle: { stack: ExpressStack[] }
 }
 
@@ -156,7 +153,7 @@ function findExpressRoutePath({
   while (stackToProcess.length > 0) {
     const layer = stackToProcess.pop()!
 
-    if (layer.name === "bound dispatch" && layer.match(url)) {
+    if (layer.route && layer.match(url)) {
       return layer.route.path
     }
 
@@ -247,7 +244,7 @@ async function start(args: {
     const app = express()
 
     const http_ = http.createServer(async (req, res) => {
-      const stack = app._router.stack
+      const stack = app.router.stack as unknown as ExpressStack[]
       await new Promise((resolve) => {
         res.on("finish", resolve)
         if (traceRequestHandler) {
@@ -299,14 +296,6 @@ async function start(args: {
           )
         }
 
-        if (FeatureFlag.isFeatureEnabled(RbacFeatureFlag.key)) {
-          fileGenPromises.push(
-            generatePolicyTypes({
-              outputDir: typesDirectory,
-            })
-          )
-        }
-
         const configModule = container.resolve(
           ContainerRegistrationKeys.CONFIG_MODULE
         )
@@ -316,7 +305,7 @@ async function start(args: {
         )
 
         await promiseAll(fileGenPromises)
-        logger.debug("Generated policy types")
+        logger.debug("Generated types")
       }
 
       // Register a health check endpoint. Ideally this also checks the readiness of the service, rather than just returning a static response.

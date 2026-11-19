@@ -1,5 +1,6 @@
 export enum Entities {
   campaign = "campaign",
+  promotion = "promotion",
 }
 
 export const defaultAdminCampaignFields = [

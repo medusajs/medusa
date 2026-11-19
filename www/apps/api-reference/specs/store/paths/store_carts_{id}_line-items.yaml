@@ -4,8 +4,7 @@ post:
   x-sidebar-summary: Add Line Item
   description: Add a product variant as a line item in the cart.
   externalDocs:
-    url: >-
-      https://docs.medusajs.com/resources/storefront-development/cart/manage-items#add-product-variant-to-cart
+    url: https://docs.medusajs.com/resources/storefront-development/cart/manage-items#add-product-variant-to-cart
     description: 'Storefront guide: How to add a product variant to the cart.'
   x-authenticated: false
   parameters:
@@ -31,8 +30,7 @@ post:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
     - name: fields
       in: query
@@ -60,8 +58,7 @@ post:
         type: string
         example: en-US
         externalDocs:
-          url: >-
-            https://docs.medusajs.com/resources/commerce-modules/translation/storefront
+          url: https://docs.medusajs.com/resources/commerce-modules/translation/storefront
           description: Learn more in the Serve Translations in Storefront guide.
   requestBody:
     content:

@@ -987,6 +987,136 @@ export const parseSplitList: ComponentParser = (
   return [SKIP, index]
 }
 
+export const parsePermissionsBadge: ComponentParser = (
+  node: UnistNodeWithData,
+  index: number,
+  parent: UnistTree
+): VisitorResult => {
+  const permissionsAttr = node.attributes?.find(
+    (attr) => attr.name === "permissions"
+  )
+  if (
+    !permissionsAttr ||
+    typeof permissionsAttr.value === "string" ||
+    !permissionsAttr.value.data?.estree
+  ) {
+    return
+  }
+
+  const permissionsJsVar = estreeToJs(permissionsAttr.value.data.estree)
+
+  if (!permissionsJsVar || !Array.isArray(permissionsJsVar)) {
+    return
+  }
+
+  const permissions = permissionsJsVar
+    .map((item) =>
+      isExpressionJsVarLiteral(item) ? (item.data as string) : ""
+    )
+    .filter((permission) => permission.length > 0)
+
+  if (!permissions.length) {
+    return
+  }
+
+  let requireAll = true
+  const requireAllAttr = node.attributes?.find(
+    (attr) => attr.name === "requireAll"
+  )
+  if (requireAllAttr) {
+    if (typeof requireAllAttr.value === "string") {
+      requireAll = requireAllAttr.value !== "false"
+    } else if (requireAllAttr.value?.data?.estree) {
+      const requireAllJsVar = estreeToJs(requireAllAttr.value.data.estree)
+      if (isExpressionJsVarLiteral(requireAllJsVar)) {
+        requireAll = requireAllJsVar.data !== false
+      }
+    }
+  }
+
+  const labelText =
+    permissions.length > 1
+      ? `Required policies (${requireAll ? "all of" : "any of"}): `
+      : `Required policy: `
+
+  const children: UnistNode[] = [
+    {
+      type: "text",
+      value: labelText,
+    },
+  ]
+
+  permissions.forEach((permission, permissionIndex) => {
+    if (permissionIndex > 0) {
+      children.push({
+        type: "text",
+        value: ", ",
+      })
+    }
+    children.push({
+      type: "inlineCode",
+      value: permission,
+    })
+  })
+
+  parent?.children.splice(index, 1, {
+    type: "paragraph",
+    children,
+  })
+  return [SKIP, index]
+}
+
+export const parseEnterpriseNotice: ComponentParser = (
+  node: UnistNodeWithData,
+  index: number,
+  parent: UnistTree
+): VisitorResult => {
+  const featureName =
+    (node.attributes?.find((attr) => attr.name === "featureName")
+      ?.value as string) || "feature"
+  const featureFlag = node.attributes?.find(
+    (attr) => attr.name === "featureFlag"
+  )?.value as string | undefined
+  const beta = node.attributes?.some((attr) => attr.name === "beta")
+
+  const children: UnistNode[] = [
+    {
+      type: "text",
+      value: `This ${featureName} requires an enterprise license.`,
+    },
+  ]
+
+  if (featureFlag) {
+    children.push(
+      {
+        type: "text",
+        value: ` You must also enable its feature flag: `,
+      },
+      {
+        type: "inlineCode",
+        value: featureFlag,
+      },
+      {
+        type: "text",
+        value: `.`,
+      }
+    )
+  }
+
+  if (beta) {
+    children.push({
+      type: "text",
+      value: ` This ${featureName} is in beta. Its API and behavior may change in future releases.`,
+    })
+  }
+
+  parent?.children.splice(index, 1, {
+    type: "paragraph",
+    children,
+  })
+  return [SKIP, index]
+}
+
 export const parseEventHeader: ComponentParser = (
   node: UnistNodeWithData,
   index: number,

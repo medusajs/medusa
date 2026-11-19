@@ -14,7 +14,7 @@ What it picks up, relative to each source:
 | Path | Requirement |
 | --- | --- |
 | `widgets/**` | default export + `export const config = defineWidgetConfig({ zone })` |
-| `routes/**/page.{tsx,jsx,ts,js}` (depth >= 1) | default export; optional `config`, `handle`, `loader` |
+| `routes/**/page.{tsx,jsx,ts,js}` (depth >= 1) | default export; optional `config`, `handle`, `loader`. `config.label`, `translationNs` and `permissions` are copied onto the route handle (an exported `handle` overrides them); `config.permissions` is also emitted on the menu item |
 | `layouts/**` | default export + `config` named export |
 | `i18n/index.*` (top level only) | default export; multiple sources are `deepMerge`d |
 | `custom-fields/**` | experimental custom-fields config |

@@ -2,6 +2,7 @@ import { HttpTypes } from "@medusajs/types"
 import { Button, Container, Heading } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, useLoaderData } from "react-router-dom"
@@ -13,12 +14,14 @@ import { useProductTagTableFilters } from "../../../../../hooks/table/filters"
 import { useProductTagTableQuery } from "../../../../../hooks/table/query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { productTagListLoader } from "../../loader"
+import { useProductTagPermissions } from "../../../../../hooks/use-resource-permissions"
 import { ProductTagListTableActions } from "./product-tag-list-table-actions"
 
 const PAGE_SIZE = 20
 
 export const ProductTagListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = useProductTagPermissions()
   const { searchParams, raw } = useProductTagTableQuery({
     pageSize: PAGE_SIZE,
   })
@@ -54,9 +57,11 @@ export const ProductTagListTable = () => {
     <Container className="divide-y px-0 py-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{t("productTags.domain")}</Heading>
-        <Button variant="secondary" size="small" asChild>
-          <Link to="create">{t("actions.create")}</Link>
-        </Button>
+        {canCreate && (
+          <Button variant="secondary" size="small" asChild>
+            <Link to="create">{t("actions.create")}</Link>
+          </Button>
+        )}
       </div>
       <_DataTable
         table={table}
@@ -79,7 +84,10 @@ export const ProductTagListTable = () => {
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminProductTag>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminProductTag
+>()
 
 const useColumns = () => {
   const base = useProductTagTableColumns()

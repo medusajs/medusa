@@ -10,7 +10,7 @@ import {
 import { sdk } from "../../lib/client"
 import { queryClient } from "../../lib/query-client"
 import { queryKeysFactory } from "../../lib/query-key-factory"
-import { rbacRolesQueryKeys } from "./rbac-roles"
+import { invalidateMePermissions, rbacRolesQueryKeys } from "./rbac-roles"
 
 const RBAC_POLICIES_QUERY_KEY = "rbac_policies" as const
 const _rbacPoliciesQueryKeys = queryKeysFactory(
@@ -77,12 +77,13 @@ export const useCreateRbacPolicy = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.rbacPolicy.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: rbacPoliciesQueryKeys.lists(),
       })
+      invalidateMePermissions()
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -98,15 +99,16 @@ export const useUpdateRbacPolicy = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.rbacPolicy.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: rbacPoliciesQueryKeys.lists(),
       })
       queryClient.invalidateQueries({
         queryKey: rbacPoliciesQueryKeys.detail(id),
       })
+      invalidateMePermissions()
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -122,7 +124,7 @@ export const useDeleteRbacPolicy = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.rbacPolicy.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: rbacPoliciesQueryKeys.lists(),
       })
@@ -131,8 +133,9 @@ export const useDeleteRbacPolicy = (
       })
       // Cross-invalidate roles since they may reference this policy
       queryClient.invalidateQueries({ queryKey: rbacRolesQueryKeys.all })
+      invalidateMePermissions()
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

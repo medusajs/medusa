@@ -6,12 +6,12 @@
     "access": "public"
   },
   "peerDependencies": {
-    "typedoc": "0.27.x"
+    "typedoc": "0.28.x"
   },
   "main": "_base.js",
   "version": "0.0.0",
   "dependencies": {
-    "glob": "13.0.6"
+    "glob": "14.0.2"
   },
   "devDependencies": {
     "types": "*"

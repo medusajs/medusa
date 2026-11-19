@@ -115,6 +115,18 @@ If your backend receives more storefront requests than expected, check that your
 
 </Note>
 
+#### Fetch Requests in Middleware Aren't Cached
+
+The shared cache only stores `fetch` responses made while Next.js renders a page or runs a route handler. Next.js runs middleware in `middleware.ts` before rendering, outside of its data cache. So, Next.js ignores caching options like `next: { revalidate }` on `fetch` requests in middleware, and Medusa never stores their responses in the shared cache.
+
+As a result, every request that runs your middleware sends its `fetch` requests again. This applies to custom routing setups, such as middleware that retrieves regions from your Medusa backend to resolve the country code in the URL.
+
+To reduce the requests your middleware sends:
+
+- Keep middleware `fetch` requests to the minimum your routing logic needs, and limit the paths your middleware runs on with the [matcher](https://nextjs.org/docs/app/api-reference/file-conventions/middleware#matcher) configuration.
+- Move data that doesn't affect routing out of middleware and into your pages or route handlers, where Medusa caches it.
+- Store values your middleware needs on later requests in a cookie, so your middleware only retrieves them on the first request.
+
 ### Next.js Image Optimization
 
 Cloud currently does not support Next.js image optimization for storefronts. The image optimization feature that uses the Next.js Image component's automatic optimization capabilities will not function as expected when deployed on Cloud.

@@ -100,9 +100,9 @@ jobs:
           echo "tag=$PREVIOUS_TAG" >> "$GITHUB_OUTPUT"
           echo "Previous release tag: $PREVIOUS_TAG"
 
-      # Draft notes carry a `release-notes-sha` marker with the commit they were
+      # Release notes carry a `release-notes-sha` marker with the commit they were
       # written up to, so a later run only feeds Claude the commits merged since.
-      - name: Find existing draft release notes
+      - name: Find existing release notes
         id: existing
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
@@ -116,26 +116,37 @@ jobs:
           HEAD_SHA=$(git rev-parse "$RANGE_END")
           echo "notes_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
 
-          RELEASE=$(gh api "repos/$REPO/releases?per_page=30" \
-            --jq '[.[] | select(.draft and ((.body // "") | contains("<!-- release-notes-sha: ")))][0] // empty')
+          # Prefer a release (draft or published) already created for this tag,
+          # then fall back to a generated draft written for an earlier version.
+          RELEASE=$(gh api "repos/$REPO/releases?per_page=100" --jq \
+            '([.[] | select(.tag_name == env.TAG)][0]) //([.[] | select(.draft and ((.body // "") | contains("<!-- release-notes-sha: ")))][0]) // empty')
           if [ -z "$RELEASE" ]; then
-            echo "No existing draft release notes; generating them from scratch."
+            echo "No existing release notes; generating them from scratch."
             echo "mode=create" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           echo "id=$(jq -r '.id' <<< "$RELEASE")" >> "$GITHUB_OUTPUT"
+          echo "published=$(jq -r '(.draft | not)' <<< "$RELEASE")" >> "$GITHUB_OUTPUT"
           DRAFT_TAG=$(jq -r '.tag_name' <<< "$RELEASE")
+
+          if [ -z "$(jq -r '.body // "" | gsub("\\s"; "")' <<< "$RELEASE")" ]; then
+            echo "Release $DRAFT_TAG exists with empty notes; generating them from scratch."
+            echo "mode=create" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           jq -r '.body' <<< "$RELEASE" | grep -v '^<!-- release-notes-sha: ' > /tmp/existing-notes.md
           NOTES_SHA=$(jq -r '.body' <<< "$RELEASE" | sed -nE 's/^<!-- release-notes-sha: ([0-9a-f]{40}) -->$/\1/p' | tail -1)
 
           if [ -n "$NOTES_SHA" ] && git merge-base --is-ancestor "$NOTES_SHA" "$HEAD_SHA" 2>/dev/null; then
             git rev-list "$NOTES_SHA..$HEAD_SHA" > /tmp/new-shas.txt
+            echo "tracked=true" >> "$GITHUB_OUTPUT"
           else
             git rev-list "$PREVIOUS_TAG..$HEAD_SHA" > /tmp/new-shas.txt
+            echo "tracked=false" >> "$GITHUB_OUTPUT"
           fi
           NEW_COMMITS=$(wc -l < /tmp/new-shas.txt | tr -d ' ')
-          echo "Found draft $DRAFT_TAG written up to ${NOTES_SHA:0:7}; $NEW_COMMITS new commit(s)."
+          echo "Found release notes for $DRAFT_TAG written up to ${NOTES_SHA:0:7}; $NEW_COMMITS commit(s) to check."
 
           if [ "$NEW_COMMITS" = "0" ] && [ "$DRAFT_TAG" = "$TAG" ]; then
             cp /tmp/existing-notes.md /tmp/release-notes.md
@@ -300,6 +311,10 @@ jobs:
             COMMITS=$(jq --rawfile shas /tmp/new-shas.txt '[.[] | select(.hash as $h | $shas | contains($h))]' /tmp/commits.json)
             TASK="Release notes for this release were already drafted, and maintainers may have edited them since. Read them from /tmp/existing-notes.md. Update them for Medusa ${TAG} using the commits below, which were merged after the notes were written: add, change, or remove entries as those commits require, and update the tag and highlights in the title block if needed. Keep all other existing content, including manual edits, exactly as it is. Follow every rule in those files for anything you add or change."
             COMMITS_HEADING="Commits merged since the notes were written (JSON):"
+            if [ "${{ steps.existing.outputs.tracked }}" != "true" ]; then
+              TASK="Release notes for this release were already written by a maintainer. Read them from /tmp/existing-notes.md. Update them for Medusa ${TAG} using the commits below. The notes may already cover some of these commits, so only add entries for commits they don't mention yet, and only change existing content when a commit makes it wrong. If the notes don't start with the title and subtitle block from Step 3, add it. Keep all other existing content, including the maintainer's wording, exactly as it is. Follow every rule in those files for anything you add or change."
+              COMMITS_HEADING="Commits in this release (JSON):"
+            fi
           else
             COMMITS=$(cat /tmp/commits.json)
             TASK="Write GitHub release notes for Medusa ${TAG} by strictly following every rule in those files."
@@ -371,6 +386,9 @@ jobs:
       - name: Generate release notes with Claude
         if: steps.existing.outputs.mode != 'unchanged'
         uses: anthropics/claude-code-base-action@132be24009ca6f292db66a3d1d5a17249cf68a5d # main, installs Claude Code 2.1.282
+        env:
+          # The action runs its own setup-node, defaulting to 18.x
+          NODE_VERSION: 22
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_CODE_API_TOKEN }}
           # `_temp` holds the runner's GITHUB_ENV/GITHUB_PATH files, which would let the model set env vars for later steps.
@@ -446,9 +464,14 @@ jobs:
           RELEASE_ID: ${{ steps.existing.outputs.id }}
           NOTES_SHA: ${{ steps.existing.outputs.notes_sha }}
           DRAFT: ${{ inputs.draft && 'true' || 'false' }}
+          PUBLISHED: ${{ steps.existing.outputs.published }}
         run: |
           set -euo pipefail
           TAG="${{ steps.version.outputs.tag }}"
+
+          if [ "$PUBLISHED" = "true" ]; then
+            DRAFT=false
+          fi
 
           if [ ! -f /tmp/release-notes.md ]; then
             echo "ERROR: /tmp/release-notes.md was not created by Claude"
@@ -464,9 +487,7 @@ jobs:
           fi
           echo "Release title: $RELEASE_TITLE"
 
-          if [ "$DRAFT" = "true" ]; then
-            printf '\n<!-- release-notes-sha: %s -->\n' "$NOTES_SHA" >> /tmp/release-notes.md
-          fi
+          printf '\n<!-- release-notes-sha: %s -->\n' "$NOTES_SHA" >> /tmp/release-notes.md
 
           PAYLOAD=$(jq -n \
             --arg tag "$TAG" \
@@ -477,10 +498,58 @@ jobs:
             '{tag_name: $tag, name: $name, target_commitish: $target, body: $body, draft: $draft}')
 
           if [ -n "$RELEASE_ID" ]; then
-            URL=$(gh api -X PATCH "repos/$REPO/releases/$RELEASE_ID" --input - --jq '.html_url' <<< "$PAYLOAD")
+            SAVED=$(gh api -X PATCH "repos/$REPO/releases/$RELEASE_ID" --input - --jq '"\(.id) \(.html_url)"' <<< "$PAYLOAD")
           else
-            URL=$(gh api -X POST "repos/$REPO/releases" --input - --jq '.html_url' <<< "$PAYLOAD")
+            SAVED=$(gh api -X POST "repos/$REPO/releases" --input - --jq '"\(.id) \(.html_url)"' <<< "$PAYLOAD")
           fi
+          read -r RELEASE_ID URL <<< "$SAVED"
 
+          echo "id=$RELEASE_ID" >> "$GITHUB_OUTPUT"
           echo "url=$URL" >> "$GITHUB_OUTPUT"
           echo "Release $TAG saved (draft: $DRAFT): $URL"
+
+      - name: Generate medusa-mcp GitHub App token
+        id: mcp-token
+        if: steps.existing.outputs.mode != 'unchanged'
+        continue-on-error: true
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.MEDUSA_APP_ID }}
+          private-key: ${{ secrets.MEDUSA_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: medusa-mcp
+
+      # medusa-mcp writes the version's upgrade prompt from these notes. A failed
+      # dispatch only warns, since the release itself is already saved.
+      - name: Dispatch medusa-release-drafted to medusa-mcp
+        id: dispatch
+        if: steps.mcp-token.outputs.token != ''
+        continue-on-error: true
+        env:
+          # Needs the `Contents: write` repository permission.
+          GH_TOKEN: ${{ steps.mcp-token.outputs.token }}
+          TARGET_REPO: ${{ github.repository_owner }}/medusa-mcp
+          VERSION: ${{ steps.version.outputs.version }}
+          RELEASE_ID: ${{ steps.release.outputs.id }}
+        run: |
+          set -euo pipefail
+
+          jq -n \
+            --arg version "$VERSION" \
+            --arg release_id "$RELEASE_ID" \
+            '{
+              event_type: "medusa-release-drafted",
+              client_payload: { version: $version, release_id: $release_id }
+            }' \
+            | gh api "repos/$TARGET_REPO/dispatches" --method POST --input -
+
+          echo "Dispatched medusa-release-drafted (v$VERSION, release $RELEASE_ID) to $TARGET_REPO"
+
+      # A re-run with no new commits skips the dispatch, so a failed one is retried by hand.
+      - name: Warn about failed medusa-mcp dispatch
+        if: steps.mcp-token.outcome == 'failure' || steps.dispatch.outcome == 'failure'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          RELEASE_ID: ${{ steps.release.outputs.id }}
+        run: |
+          echo "::warning::Couldn't dispatch medusa-release-drafted to medusa-mcp. Retry with: gh workflow run write-upgrade-prompt.yml --repo ${{ github.repository_owner }}/medusa-mcp -f version=$VERSION -f release_id=$RELEASE_ID"

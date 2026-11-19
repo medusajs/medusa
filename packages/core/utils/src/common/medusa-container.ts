@@ -4,6 +4,7 @@ import {
   asValue,
   AwilixContainer,
   ClassOrFunctionReturning,
+  ContainerOptions,
   createContainer,
   Resolver,
 } from "@medusajs/deps/awilix"
@@ -39,8 +40,12 @@ function registerAdd(
   return this
 }
 
-export function createMedusaContainer(...args): MedusaContainer {
-  const container = createContainer.apply(null, args) as MedusaContainer
+export function createMedusaContainer(
+  options?: ContainerOptions,
+  parentContainer?: AwilixContainer | MedusaContainer
+): MedusaContainer {
+  const container = (parentContainer?.createScope() ??
+    createContainer(options)) as MedusaContainer
 
   container.registerAdd = registerAdd.bind(container)
 

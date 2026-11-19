@@ -2,7 +2,7 @@ import Handlebars from "handlebars"
 import { PageEvent } from "typedoc"
 import { MarkdownTheme } from "../../theme.js"
 import { getDisplayName } from "../../utils.js"
-import { escapeChars } from "utils"
+import { escapeChars, getReflectionUrl } from "utils"
 
 export default function (theme: MarkdownTheme) {
   Handlebars.registerHelper("breadcrumbs", function (this: PageEvent) {
@@ -24,7 +24,7 @@ export default function (theme: MarkdownTheme) {
     )
     if (hasReadmeFile) {
       breadcrumbs.push(
-        this.url === project.url
+        this.url === getReflectionUrl(project)
           ? globalsName
           : `[${globalsName}](${Handlebars.helpers.relativeURL("modules.md")})`
       )
@@ -38,12 +38,13 @@ export default function (theme: MarkdownTheme) {
 function breadcrumb(page: PageEvent, model: any, md: string[]) {
   if (model && model.parent) {
     breadcrumb(page, model.parent, md)
-    if (model.url) {
+    const modelUrl = getReflectionUrl(model)
+    if (modelUrl) {
       md.push(
-        page.url === model.url
+        page.url === modelUrl
           ? `${escapeChars(model.name)}`
           : `[${escapeChars(model.name)}](${Handlebars.helpers.relativeURL(
-              model.url
+              modelUrl
             )})`
       )
     }

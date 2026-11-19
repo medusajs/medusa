@@ -6,6 +6,7 @@ import {
   RowSelectionState,
   createColumnHelper,
 } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -217,7 +218,7 @@ const PAGE_SIZE = 50
 //   )
 // }
 
-// const cgColumnHelper = createColumnHelper<HttpTypes.AdminCustomerGroup>()
+// const cgColumnHelper = createColumnHelper<DataTableFeatures, HttpTypes.AdminCustomerGroup>()
 
 // const useGroupColumns = () => {
 //   const base = useCustomerGroupTableColumns()
@@ -353,7 +354,10 @@ const ProductTable = ({
   )
 }
 
-const pColumnHelper = createColumnHelper<HttpTypes.AdminProduct>()
+const pColumnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminProduct
+>()
 
 const useProductColumns = () => {
   const base = useProductTableColumns()
@@ -366,6 +370,7 @@ const useProductColumns = () => {
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()
@@ -489,7 +494,7 @@ const useProductColumns = () => {
 //   )
 // }
 
-// const pcColumnHelper = createColumnHelper<HttpTypes.AdminCollection>()
+// const pcColumnHelper = createColumnHelper<DataTableFeatures, HttpTypes.AdminCollection>()
 
 // const useCollectionColumns = () => {
 //   const base = useCollectionTableColumns()
@@ -625,7 +630,10 @@ const ProductTypeTable = ({
   )
 }
 
-const ptColumnHelper = createColumnHelper<HttpTypes.AdminProductType>()
+const ptColumnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminProductType
+>()
 
 const useProductTypeColumns = () => {
   const base = useProductTypeTableColumns()
@@ -638,6 +646,7 @@ const useProductTypeColumns = () => {
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()
@@ -769,7 +778,10 @@ const ShippingOptionTable = ({
   )
 }
 
-const soColumnHelper = createColumnHelper<HttpTypes.AdminShippingOption>()
+const soColumnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminShippingOption
+>()
 
 const useShippingOptionColumns = () => {
   const base = useShippingOptionTableColumns()
@@ -782,6 +794,7 @@ const useShippingOptionColumns = () => {
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()
@@ -905,7 +918,7 @@ const useShippingOptionColumns = () => {
 //   )
 // }
 
-// const ptagColumnHelper = createColumnHelper<HttpTypes.AdminProductTag>()
+// const ptagColumnHelper = createColumnHelper<DataTableFeatures, HttpTypes.AdminProductTag>()
 
 // const useProductTagColumns = () => {
 //   const base = useProductTagTableColumns()

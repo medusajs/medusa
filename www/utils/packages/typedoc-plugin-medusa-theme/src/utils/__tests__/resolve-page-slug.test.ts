@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest"
 import type { ProjectReflection, Reflection } from "typedoc"
+import { setReflectionRoute } from "utils"
 import type { MarkdownTheme } from "../../theme.js"
 import {
   buildSlugMap,
@@ -76,20 +77,17 @@ describe("resolvePageSlug", () => {
 describe("buildSlugMap", () => {
   it("maps own-document pages to final slugs, skipping external + undocumented", () => {
     const theme = makeTheme(undefined)
-    const leaf = (url: string, hasOwnDocument: boolean) =>
-      ({
-        url,
-        hasOwnDocument,
-        traverse: () => {},
-      }) as unknown as Reflection
+    const leaf = (url: string, hasOwnDocument: boolean) => {
+      const reflection = { traverse: () => {} } as unknown as Reflection
+      setReflectionRoute(reflection, { url, hasOwnDocument })
+      return reflection
+    }
 
     const owned = leaf("cart/create/page.mdx", true)
     const undocumented = leaf("cart/internal/page.mdx", false)
     const external = leaf("https://external.com/x", true)
 
     const project = {
-      url: undefined,
-      hasOwnDocument: false,
       traverse: (cb: (child: Reflection) => boolean) => {
         ;[owned, undocumented, external].forEach((child) => cb(child))
       },

@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { useDeleteProductOptionValueLazy } from "../../../../../hooks/api"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 export const ProductOptionValueRowActions = ({
   optionId,
@@ -17,6 +18,11 @@ export const ProductOptionValueRowActions = ({
   const prompt = usePrompt()
 
   const { mutateAsync } = useDeleteProductOptionValueLazy(optionId)
+  const { hasAllPermissions } = usePermissions()
+  const canDelete = hasAllPermissions([
+    "product_option:update",
+    "product_option_value:delete",
+  ])
 
   const handleDelete = async () => {
     const confirm = await prompt({
@@ -40,6 +46,10 @@ export const ProductOptionValueRowActions = ({
         toast.error(e.message)
       },
     })
+  }
+
+  if (!canDelete) {
+    return null
   }
 
   return (

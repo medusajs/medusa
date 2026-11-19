@@ -5,6 +5,7 @@ import {
   RowSelectionState,
   createColumnHelper,
 } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -42,7 +43,10 @@ export const AddUsersForm = ({ roleId }: AddUsersFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const { hasAllPermissions } = usePermissions()
-  const canManageRole = hasAllPermissions(["user:update", "rbac_role:update"])
+  const canManageRole = hasAllPermissions([
+    "user:update",
+    "rbac_role_assignment:create",
+  ])
 
   const form = useForm<zod.infer<typeof AddUsersSchema>>({
     defaultValues: {
@@ -209,7 +213,10 @@ export const AddUsersForm = ({ roleId }: AddUsersFormProps) => {
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminUser>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminUser
+>()
 
 const useColumns = ({ roleId }: { roleId: string }) => {
   const { t } = useTranslation()
@@ -223,6 +230,7 @@ const useColumns = ({ roleId }: { roleId: string }) => {
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()

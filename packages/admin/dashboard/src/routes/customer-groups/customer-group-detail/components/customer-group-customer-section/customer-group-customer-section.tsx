@@ -2,11 +2,15 @@ import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 
-import { ActionMenu } from "../../../../../components/common/action-menu"
+import {
+  ActionGroup,
+  ActionMenu,
+} from "../../../../../components/common/action-menu"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useRemoveCustomersFromGroup } from "../../../../../hooks/api/customer-groups"
 import { useCustomers } from "../../../../../hooks/api/customers"
@@ -14,6 +18,10 @@ import { useCustomerTableColumns } from "../../../../../hooks/table/columns/use-
 import { useCustomerTableFilters } from "../../../../../hooks/table/filters/use-customer-table-filters"
 import { useCustomerTableQuery } from "../../../../../hooks/table/query/use-customer-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import {
+  useCustomerGroupPermissions,
+  useCustomerPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type CustomerGroupCustomerSectionProps = {
   group: HttpTypes.AdminCustomerGroup
@@ -27,6 +35,10 @@ export const CustomerGroupCustomerSection = ({
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { canUpdate: canUpdateCustomers } = useCustomerPermissions()
+  const { canUpdate: canUpdateCustomerGroups } = useCustomerGroupPermissions()
+
+  const canManageMembers = canUpdateCustomers && canUpdateCustomerGroups
 
   const { searchParams, raw } = useCustomerTableQuery({ pageSize: PAGE_SIZE })
   const { customers, count, isLoading, isError, error } = useCustomers({
@@ -34,7 +46,7 @@ export const CustomerGroupCustomerSection = ({
     groups: group.id,
   })
 
-  const columns = useColumns()
+  const columns = useColumns({ canManageMembers })
   const filters = useCustomerTableFilters(["groups"])
 
   const { table } = useDataTable({
@@ -43,7 +55,7 @@ export const CustomerGroupCustomerSection = ({
     count,
     getRowId: (row) => row.id,
     enablePagination: true,
-    enableRowSelection: true,
+    enableRowSelection: canManageMembers,
     pageSize: PAGE_SIZE,
     rowSelection: {
       state: rowSelection,
@@ -89,11 +101,13 @@ export const CustomerGroupCustomerSection = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("customers.domain")}</Heading>
-        <Link to={`/customer-groups/${group.id}/add-customers`}>
-          <Button variant="secondary" size="small">
-            {t("general.add")}
-          </Button>
-        </Link>
+        {canManageMembers && (
+          <Link to={`/customer-groups/${group.id}/add-customers`}>
+            <Button variant="secondary" size="small">
+              {t("general.add")}
+            </Button>
+          </Link>
+        )}
       </div>
       <_DataTable
         table={table}
@@ -114,13 +128,17 @@ export const CustomerGroupCustomerSection = ({
           { key: "updated_at", label: t("fields.updatedAt") },
         ]}
         queryObject={raw}
-        commands={[
-          {
-            action: handleRemove,
-            label: t("actions.remove"),
-            shortcut: "r",
-          },
-        ]}
+        commands={
+          canManageMembers
+            ? [
+                {
+                  action: handleRemove,
+                  label: t("actions.remove"),
+                  shortcut: "r",
+                },
+              ]
+            : []
+        }
         noRecords={{
           message: t("customerGroups.customers.list.noRecordsMessage"),
         }}
@@ -138,6 +156,10 @@ export const CustomerActions = ({
 }) => {
   const { t } = useTranslation()
   const { mutateAsync } = useRemoveCustomersFromGroup(customerGroupId)
+  const { canUpdate: canEditCustomer } = useCustomerPermissions()
+  const { canUpdate: canUpdateCustomerGroup } = useCustomerGroupPermissions()
+
+  const canManageMembers = canUpdateCustomerGroup && canEditCustomer
 
   const prompt = usePrompt()
 
@@ -160,67 +182,82 @@ export const CustomerActions = ({
     await mutateAsync([customer.id])
   }
 
-  return (
-    <ActionMenu
-      groups={[
+  const groups: ActionGroup[] = []
+
+  if (canEditCustomer) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <PencilSquare />,
-              label: t("actions.edit"),
-              to: `/customers/${customer.id}/edit`,
-            },
-          ],
+          icon: <PencilSquare />,
+          label: t("actions.edit"),
+          to: `/customers/${customer.id}/edit`,
         },
+      ],
+    })
+  }
+
+  if (canManageMembers) {
+    groups.push({
+      actions: [
         {
-          actions: [
-            {
-              icon: <Trash />,
-              label: t("actions.remove"),
-              onClick: handleRemove,
-            },
-          ],
+          icon: <Trash />,
+          label: t("actions.remove"),
+          onClick: handleRemove,
         },
-      ]}
-    />
-  )
+      ],
+    })
+  }
+
+  if (!groups.length) {
+    return null
+  }
+
+  return <ActionMenu groups={groups} />
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminCustomer>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminCustomer
+>()
 
-const useColumns = () => {
+const useColumns = ({ canManageMembers }: { canManageMembers: boolean }) => {
   const columns = useCustomerTableColumns()
 
   return useMemo(
     () => [
-      columnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
-            />
-          )
-        },
-        cell: ({ row }) => {
-          return (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-        },
-      }),
+      ...(canManageMembers
+        ? [
+            columnHelper.display({
+              id: "select",
+              header: ({ table }) => {
+                return (
+                  <Checkbox
+                    checked={
+                      !table.getIsAllPageRowsSelected() &&
+                      table.getIsSomePageRowsSelected()
+                        ? "indeterminate"
+                        : table.getIsAllPageRowsSelected()
+                    }
+                    onCheckedChange={(value) =>
+                      table.toggleAllPageRowsSelected(!!value)
+                    }
+                  />
+                )
+              },
+              cell: ({ row }) => {
+                return (
+                  <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                  />
+                )
+              },
+            }),
+          ]
+        : []),
       ...columns,
       columnHelper.display({
         id: "actions",
@@ -238,6 +275,6 @@ const useColumns = () => {
         },
       }),
     ],
-    [columns]
+    [columns, canManageMembers]
   )
 }

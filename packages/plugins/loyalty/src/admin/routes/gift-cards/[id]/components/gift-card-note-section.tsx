@@ -1,9 +1,13 @@
+import { usePermissions } from "@medusajs/dashboard/hooks";
 import { Container, Text } from "@medusajs/ui";
 import { Link } from "react-router-dom";
 import { AdminGiftCard } from "../../../../../types";
 import { Header } from "../../../../components/header";
 
 const GiftCardNoteSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
+  const { hasPermission } = usePermissions();
+  const canUpdate = hasPermission("gift_card:update");
+
   if (!giftCard) {
     return;
   }
@@ -13,9 +17,11 @@ const GiftCardNoteSection = ({ giftCard }: { giftCard: AdminGiftCard }) => {
       <div className="flex items-center justify-between">
         <Header title="Note" />
 
-        <Link to="note" className="text-ui-fg-muted text-sm px-6">
-          Edit note
-        </Link>
+        {canUpdate && (
+          <Link to="note" className="text-ui-fg-muted text-sm px-6">
+            Edit note
+          </Link>
+        )}
       </div>
 
       {giftCard.note && (

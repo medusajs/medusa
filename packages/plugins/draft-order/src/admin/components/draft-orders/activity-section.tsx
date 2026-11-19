@@ -1,3 +1,4 @@
+import { usePermissions } from "@medusajs/dashboard/hooks"
 import { HttpTypes } from "@medusajs/types"
 import {
   Avatar,
@@ -85,7 +86,7 @@ const CollapsibleActivityItemList = ({
           <div className="flex size-full flex-col items-center">
             <div className="border-ui-border-strong w-px flex-1 bg-[linear-gradient(var(--border-strong)_33%,rgba(255,255,255,0)_0%)] bg-[length:1px_3px] bg-clip-content bg-right bg-repeat-y" />
           </div>
-          <Collapsible.Trigger className="text-ui-fg-muted hover:text-ui-fg-base focus:text-ui-fg-base m-0 p-0 pb-4 text-left outline-none transition-colors">
+          <Collapsible.Trigger className="text-ui-fg-muted hover:text-ui-fg-base focus:text-ui-fg-base m-0 p-0 pb-4 text-left outline-hidden transition-colors">
             <Text size="small" leading="compact" weight="plus">
               {`Show ${items.length} more ${
                 items.length === 1 ? "activity" : "activities"
@@ -118,8 +119,11 @@ interface ActivityItemProps {
 }
 
 const ActivityItem = ({ item, isFirst = false }: ActivityItemProps) => {
+  const { hasPermission } = usePermissions()
+  const showUser = !!item.userId && hasPermission("user:read")
+
   const { user, isPending, isError, error } = useUser(item.userId!, undefined, {
-    enabled: !!item.userId,
+    enabled: showUser,
   })
 
   if (isError) {
@@ -158,7 +162,7 @@ const ActivityItem = ({ item, isFirst = false }: ActivityItemProps) => {
           </Tooltip>
         </div>
         {item.content && renderContent(item.content)}
-        {item.userId && (
+        {showUser && (
           <div className="text-ui-fg-muted pt-2">
             {isUserLoaded ? (
               <Link to={`/settings/users/${user.id}`} className="w-fit">

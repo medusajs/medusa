@@ -2,6 +2,7 @@ import { Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
@@ -28,17 +29,26 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const { offset, order } = useQueryParams(["offset", "order"])
+  const { offset } = useQueryParams(["offset"])
   const { hasAllPermissions } = usePermissions()
 
-  const canManageRole = hasAllPermissions(["user:update", "rbac_role:update"])
+  const canAddUsers = hasAllPermissions([
+    "user:update",
+    "rbac_role_assignment:create",
+  ])
+  const canRemoveUsers = hasAllPermissions([
+    "user:update",
+    "rbac_role_assignment:delete",
+  ])
 
   const { data: assignableData } = useRbacAssignableRoles(undefined, {
-    enabled: canManageRole,
+    enabled: canAddUsers || canRemoveUsers,
   })
-  const isRoleAssignable = (assignableData?.roles ?? []).some(
+  const isAssignable = (assignableData?.roles ?? []).some(
     (r) => r.id === role.id
   )
+  const canAdd = isAssignable && canAddUsers
+  const isRoleAssignable = isAssignable && canRemoveUsers
 
   useEffect(() => {
     if (!isRoleAssignable && Object.keys(rowSelection).length) {
@@ -55,7 +65,6 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
   } = useRbacRoleUsers(role.id, {
     limit: PAGE_SIZE,
     offset: offset ? parseInt(offset) : 0,
-    order,
   })
 
   const columns = useColumns(isRoleAssignable)
@@ -121,7 +130,7 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("users.domain")}</Heading>
-        {isRoleAssignable && (
+        {canAdd && (
           <Link to="add-users">
             <Button variant="secondary" size="small">
               {t("general.add")}
@@ -136,13 +145,6 @@ export const RoleUsersSection = ({ role }: RoleUsersSectionProps) => {
         isLoading={isLoading}
         count={count}
         navigateTo={(row) => `/settings/users/${row.original.id}`}
-        orderBy={[
-          { key: "email", label: t("fields.email") },
-          { key: "first_name", label: t("fields.firstName") },
-          { key: "last_name", label: t("fields.lastName") },
-          { key: "created_at", label: t("fields.createdAt") },
-          { key: "updated_at", label: t("fields.updatedAt") },
-        ]}
         commands={
           isRoleAssignable
             ? [
@@ -216,7 +218,10 @@ const RoleUserActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminUser>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminUser
+>()
 
 const useColumns = (isRoleAssignable: boolean) => {
   const { t } = useTranslation()
@@ -230,6 +235,7 @@ const useColumns = (isRoleAssignable: boolean) => {
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()

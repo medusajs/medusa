@@ -1,6 +1,11 @@
 import { useMemo, useState } from "react"
 import { HttpTypes } from "@medusajs/types"
-import { Container, Button, DataTableRowSelectionState } from "@medusajs/ui"
+import {
+  Container,
+  Button,
+  DataTableRowData,
+  DataTableRowSelectionState,
+} from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { DataTable } from "../../data-table"
 import { SaveViewDialog } from "../save-view-dialog"
@@ -8,6 +13,7 @@ import { SaveViewDropdown } from "./save-view-dropdown"
 import { useTableConfiguration } from "../../../hooks/table/use-table-configuration"
 import { useConfigurableTableColumns } from "../../../hooks/table/columns/use-configurable-table-columns"
 import { expandDottedKeys, parseFilterParam } from "../../../hooks/table/query"
+import { useViewConfigurationPermissions } from "../../../hooks/use-resource-permissions"
 import {
   createActionsColumn,
   createSelectColumn,
@@ -26,7 +32,7 @@ type DataTableActionProps = {
     }
 )
 
-export interface ConfigurableDataTableProps<TData> {
+export interface ConfigurableDataTableProps<TData extends DataTableRowData> {
   adapter: TableAdapter<TData>
   heading?: string
   subHeading?: string
@@ -36,7 +42,7 @@ export interface ConfigurableDataTableProps<TData> {
   actions?: DataTableActionProps[]
 }
 
-export function ConfigurableDataTable<TData>({
+export function ConfigurableDataTable<TData extends DataTableRowData>({
   adapter,
   heading,
   subHeading,
@@ -46,6 +52,7 @@ export function ConfigurableDataTable<TData>({
   actions,
 }: ConfigurableDataTableProps<TData>) {
   const { t } = useTranslation()
+  const { can: canManageSystemDefault } = useViewConfigurationPermissions()
   const [saveDialogOpen, setSaveDialogOpen] = useState(false)
   const [editingView, setEditingView] = useState<any>(null)
   const [rowSelection, setRowSelection] = useState<DataTableRowSelectionState>(
@@ -196,6 +203,10 @@ export function ConfigurableDataTable<TData>({
     setEditingView(null)
   }
 
+  const canSaveAsDefault = canManageSystemDefault(
+    activeView?.is_system_default ? "update" : "create"
+  )
+
   // Filter bar content with save controls
   const filterBarContent = hasConfigurationChanged ? (
     <>
@@ -211,7 +222,7 @@ export function ConfigurableDataTable<TData>({
         isDefaultView={activeView?.is_system_default || !activeView}
         currentViewId={activeView?.id}
         currentViewName={activeView?.name}
-        onSaveAsDefault={handleSaveAsDefault}
+        onSaveAsDefault={canSaveAsDefault ? handleSaveAsDefault : undefined}
         onUpdateExisting={handleUpdateExisting}
         onSaveAsNew={handleSaveAsNew}
       />

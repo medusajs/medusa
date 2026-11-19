@@ -10,6 +10,7 @@ import {
 } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -21,6 +22,7 @@ import { useProductTableColumns } from "../../../../../hooks/table/columns/use-p
 import { useProductTableFilters } from "../../../../../hooks/table/filters/use-product-table-filters"
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { usePermissions } from "../../../../../providers/permissions-provider"
 
 type CategoryProductSectionProps = {
   category: HttpTypes.AdminProductCategory
@@ -33,6 +35,12 @@ export const CategoryProductSection = ({
 }: CategoryProductSectionProps) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { hasAllPermissions } = usePermissions()
+
+  const canManageProducts = hasAllPermissions([
+    "product:update",
+    "product_category:update",
+  ])
 
   const [selection, setSelection] = useState<RowSelectionState>({})
 
@@ -47,7 +55,7 @@ export const CategoryProductSection = ({
     }
   )
 
-  const columns = useColumns()
+  const columns = useColumns({ canManageProducts })
   const filters = useProductTableFilters(["categories"])
 
   const { table } = useDataTable({
@@ -56,7 +64,7 @@ export const CategoryProductSection = ({
     count,
     getRowId: (original) => original.id,
     pageSize: PAGE_SIZE,
-    enableRowSelection: true,
+    enableRowSelection: canManageProducts,
     enablePagination: true,
     rowSelection: {
       state: selection,
@@ -111,19 +119,21 @@ export const CategoryProductSection = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("products.domain")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("actions.add"),
-                  icon: <PlusMini />,
-                  to: "products",
-                },
-              ],
-            },
-          ]}
-        />
+        {canManageProducts && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("actions.add"),
+                    icon: <PlusMini />,
+                    to: "products",
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       <_DataTable
         table={table}
@@ -143,62 +153,72 @@ export const CategoryProductSection = ({
           message: t("categories.products.list.noRecordsMessage"),
         }}
       />
-      <CommandBar open={!!Object.keys(selection).length}>
-        <CommandBar.Bar>
-          <CommandBar.Value>
-            {t("general.countSelected", {
-              count: Object.keys(selection).length,
-            })}
-          </CommandBar.Value>
-          <CommandBar.Seperator />
-          <CommandBar.Command
-            action={handleRemove}
-            label={t("actions.remove")}
-            shortcut="r"
-          />
-        </CommandBar.Bar>
-      </CommandBar>
+      {canManageProducts && (
+        <CommandBar open={!!Object.keys(selection).length}>
+          <CommandBar.Bar>
+            <CommandBar.Value>
+              {t("general.countSelected", {
+                count: Object.keys(selection).length,
+              })}
+            </CommandBar.Value>
+            <CommandBar.Seperator />
+            <CommandBar.Command
+              action={handleRemove}
+              label={t("actions.remove")}
+              shortcut="r"
+            />
+          </CommandBar.Bar>
+        </CommandBar>
+      )}
     </Container>
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminProduct
+>()
 
-const useColumns = () => {
+const useColumns = ({ canManageProducts }: { canManageProducts: boolean }) => {
   const base = useProductTableColumns()
 
   return useMemo(
     () => [
-      columnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
-            />
-          )
-        },
-        cell: ({ row }) => {
-          return (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-        },
-      }),
+      ...(canManageProducts
+        ? [
+            columnHelper.display({
+              id: "select",
+              header: ({ table }) => {
+                return (
+                  <Checkbox
+                    checked={
+                      !table.getIsAllPageRowsSelected() &&
+                      table.getIsSomePageRowsSelected()
+                        ? "indeterminate"
+                        : table.getIsAllPageRowsSelected()
+                    }
+                    onCheckedChange={(value) =>
+                      table.toggleAllPageRowsSelected(!!value)
+                    }
+                  />
+                )
+              },
+              cell: ({ row }) => {
+                return (
+                  <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                  />
+                )
+              },
+            }),
+          ]
+        : []),
       ...base,
     ],
-    [base]
+    [base, canManageProducts]
   )
 }

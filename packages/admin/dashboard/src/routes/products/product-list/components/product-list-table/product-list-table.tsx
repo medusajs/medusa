@@ -1,6 +1,7 @@
 import { Button, Container, Heading } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link, Outlet, useLoaderData, useLocation } from "react-router-dom"
@@ -14,12 +15,14 @@ import { useProductTableFilters } from "../../../../../hooks/table/filters/use-p
 import { useProductTableQuery } from "../../../../../hooks/table/query/use-product-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { productsLoader } from "../../loader"
+import { useProductPermissions } from "../../../../../hooks/use-resource-permissions"
 
 const PAGE_SIZE = 20
 
 export const ProductListTable = () => {
   const { t } = useTranslation()
   const location = useLocation()
+  const { canCreate } = useProductPermissions()
 
   const initialData = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof productsLoader>>
@@ -61,12 +64,18 @@ export const ProductListTable = () => {
           <Button size="small" variant="secondary" asChild>
             <Link to={`export${location.search}`}>{t("actions.export")}</Link>
           </Button>
-          <Button size="small" variant="secondary" asChild>
-            <Link to={`import${location.search}`}>{t("actions.import")}</Link>
-          </Button>
-          <Button size="small" variant="secondary" asChild>
-            <Link to="create">{t("actions.create")}</Link>
-          </Button>
+          {canCreate && (
+            <>
+              <Button size="small" variant="secondary" asChild>
+                <Link to={`import${location.search}`}>
+                  {t("actions.import")}
+                </Link>
+              </Button>
+              <Button size="small" variant="secondary" asChild>
+                <Link to="create">{t("actions.create")}</Link>
+              </Button>
+            </>
+          )}
         </div>
       </div>
       <_DataTable
@@ -94,7 +103,10 @@ export const ProductListTable = () => {
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminProduct
+>()
 
 const useColumns = () => {
   const base = useProductTableColumns()

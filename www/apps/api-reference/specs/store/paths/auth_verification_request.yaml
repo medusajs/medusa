@@ -10,8 +10,7 @@ post:
     `auth.verification_requested` event will be emitted. You can listen to this
     event and decide how to deliver the code to the customer.
   externalDocs:
-    url: >-
-      https://docs.medusajs.com/resources/storefront-development/customers/verify-account
+    url: https://docs.medusajs.com/resources/storefront-development/customers/verify-account
     description: 'Storefront guide: Register Customer with Email Verification.'
   x-authenticated: false
   parameters: []

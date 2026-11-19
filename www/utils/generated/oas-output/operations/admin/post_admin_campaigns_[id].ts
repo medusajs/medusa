@@ -144,7 +144,17 @@
  *   "500":
  *     $ref: "#/components/responses/500_error"
  * x-workflow: updateCampaignsWorkflow
- * x-events: []
+ * x-events:
+ *   - name: campaign.updated
+ *     payload: |-
+ *       ```ts
+ *       {
+ *         id, // The ID of the campaign
+ *       }
+ *       ```
+ *     description: Emitted when campaigns are updated.
+ *     deprecated: false
+ *     since: 2.22.7
  * 
 */
 

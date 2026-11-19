@@ -6,6 +6,7 @@ import {
   RowSelectionState,
   createColumnHelper,
 } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo, useState } from "react"
 import { UseFormReturn, useWatch } from "react-hook-form"
 
@@ -144,7 +145,10 @@ export const PriceListProductsForm = ({ form }: PriceListProductsFormProps) => {
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminProduct
+>()
 
 const useColumns = () => {
   const base = useProductTableColumns()
@@ -157,6 +161,7 @@ const useColumns = () => {
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()

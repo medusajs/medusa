@@ -1,5 +1,67 @@
 # @medusajs/admin-bundler
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17820](https://github.com/medusajs/medusa/pull/17820) [`af5f602`](https://github.com/medusajs/medusa/commit/af5f6021a41fd7ec7afff0a43f0b917bfbc806e6) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(admin-bundler): resolve admin extensions of plugins that aren't direct dependencies of the project
+
+- Updated dependencies [[`3d9104d`](https://github.com/medusajs/medusa/commit/3d9104d131aa56e2490d14e3ed804d93592305fa), [`b89101c`](https://github.com/medusajs/medusa/commit/b89101ca53b1ab106549df31e0c38a50e755aefc), [`33af8f3`](https://github.com/medusajs/medusa/commit/33af8f3b4b581aabb4e655307b3055b7263908ef), [`4380483`](https://github.com/medusajs/medusa/commit/438048300ad25f741789ba06e03883c90233b6c5), [`1dd67d9`](https://github.com/medusajs/medusa/commit/1dd67d91267f97f7ca3185166dda12eb28291276), [`17fca1a`](https://github.com/medusajs/medusa/commit/17fca1ab50bb4488496aecff52b5ac9f4421917d), [`1711c4c`](https://github.com/medusajs/medusa/commit/1711c4c5ce1b654e03a05202851737d6c4f754d3), [`b6f9805`](https://github.com/medusajs/medusa/commit/b6f980509a365319d14ddb4fcbde81b7c5db2aff), [`6cb4ea1`](https://github.com/medusajs/medusa/commit/6cb4ea13764237ea1ab85a6b6d864def45e9883b), [`9db3748`](https://github.com/medusajs/medusa/commit/9db37488d4be757b0139aac1e15fb79ed395fc6c)]:
+  - @medusajs/dashboard@2.22.7
+  - @medusajs/admin-shared@2.22.7
+  - @medusajs/admin-vite-plugin@2.22.7
+
+## 2.22.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/admin-shared@2.22.6
+  - @medusajs/admin-vite-plugin@2.22.6
+  - @medusajs/dashboard@2.22.6
+
+## 2.22.5
+
+### Patch Changes
+
+- Updated dependencies [[`a639480`](https://github.com/medusajs/medusa/commit/a63948083a6281465d5cf8c66308a1325001b760), [`f0c6591`](https://github.com/medusajs/medusa/commit/f0c65918e3b619fdc498a577ec0eb52f6b02313b), [`cc17c71`](https://github.com/medusajs/medusa/commit/cc17c713185046f26bf00e3ba23ad6df5639db00)]:
+  - @medusajs/dashboard@2.22.5
+  - @medusajs/admin-shared@2.22.5
+  - @medusajs/admin-vite-plugin@2.22.5
+
+## 2.22.4
+
+### Patch Changes
+
+- Updated dependencies [[`74827c2`](https://github.com/medusajs/medusa/commit/74827c2a849a9a7fdbb943ca9ffce4b26b670391), [`43c5ec2`](https://github.com/medusajs/medusa/commit/43c5ec2d2c16623546573cf1a5abc92fb41442c9), [`e3a2f38`](https://github.com/medusajs/medusa/commit/e3a2f3846c636f9df31bbc33af025896cb5e65b3), [`82d65fc`](https://github.com/medusajs/medusa/commit/82d65fc804627839c62b441737757609386841e3), [`199c263`](https://github.com/medusajs/medusa/commit/199c2635d3662e9a73c1949ef3d7974a6428d7f9)]:
+  - @medusajs/dashboard@2.22.4
+  - @medusajs/admin-shared@2.22.4
+  - @medusajs/admin-vite-plugin@2.22.4
+
+## 2.22.3
+
+### Patch Changes
+
+- Updated dependencies [[`f0697e1`](https://github.com/medusajs/medusa/commit/f0697e19c8705dd4390a5484abc2bbba2cf516e7), [`da4480a`](https://github.com/medusajs/medusa/commit/da4480ae9a01276104047166b639d43db3a4638e), [`ae1da4d`](https://github.com/medusajs/medusa/commit/ae1da4d88ac1ae9cbe345585426a29fac8790e59), [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8)]:
+  - @medusajs/dashboard@2.22.3
+  - @medusajs/admin-vite-plugin@2.22.3
+  - @medusajs/admin-shared@2.22.3
+
+## 2.22.2
+
+### Patch Changes
+
+- [#17487](https://github.com/medusajs/medusa/pull/17487) [`1b554a9`](https://github.com/medusajs/medusa/commit/1b554a9431d1845153976543898df358f8e1fa3f) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - chore(admin-bundler): require vite ^7.3.7 for dev server security fixes
+
+- [#17528](https://github.com/medusajs/medusa/pull/17528) [`6d38bc8`](https://github.com/medusajs/medusa/commit/6d38bc8773d8db0b928872f6376c3ee9196970ae) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(admin-bundler): update autoprefixer to ^10.6.1
+
+- [#17567](https://github.com/medusajs/medusa/pull/17567) [`52caddd`](https://github.com/medusajs/medusa/commit/52cadddcf34fdbbc70be34aecd036d6885e8fa5d) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps): update development and test tooling (cross-env 10.1.0, esbuild 0.28.2, tsup 9.0.0, expect-type 1.4.0, @faker-js/faker 10.6.0, jsdom 30.1.3, @types/jsonwebtoken 9.0.10, msw 3.0.3, rimraf 6.1.3, Testing Library, turbo 2.11.10, @types/node 22, boxen 9.0.0, chalk 6.0.1, ci-info 4.4.0, commander 15.0.0, configstore 8.0.0, dotenv 18.0.9, execa 10.2.1, get-port 7.2.0, inquirer 14.2.4, @inquirer/checkbox 5.2.7, @inquirer/confirm 6.3.4, @inquirer/input 5.1.8, is-docker 4.0.0, meant 2.0.1, open 11.0.4, openapi3-ts 4.6.2, ora 9.4.1, @readme/openapi-parser 10.0.0, @redocly/cli 2.71.0, stack-trace 1.0.0, swagger-inline 8.1.0, yargs 18.2.0) and remove unused development dependencies; drop hosted-git-info from @medusajs/cli; fix the medusa-oas-cli circular patch recommendation crashing on references nested in inline schemas; `medusa-oas docs --preview` now serves a static Redoc 3 build since Redocly removed `preview-docs`; replace chalk with Node's built-in `util.styleText` in CommonJS packages; replace uuid with Node's built-in `crypto.randomUUID`; replace get-port with a built-in free-port helper in @medusajs/test-utils
+
+- Updated dependencies [[`6d38bc8`](https://github.com/medusajs/medusa/commit/6d38bc8773d8db0b928872f6376c3ee9196970ae), [`9d55082`](https://github.com/medusajs/medusa/commit/9d55082bf9706e45b148100808f4d4550b9105bc), [`6d38bc8`](https://github.com/medusajs/medusa/commit/6d38bc8773d8db0b928872f6376c3ee9196970ae), [`7b34df3`](https://github.com/medusajs/medusa/commit/7b34df35bf8e57ce0d2ab2373a624dc2cc573ca5), [`2f0b2e9`](https://github.com/medusajs/medusa/commit/2f0b2e94d6fa7193386d83b1e72bb0fc65caeddf), [`842d781`](https://github.com/medusajs/medusa/commit/842d781152debf6cd6d4daafcd57cb1af295a841), [`52caddd`](https://github.com/medusajs/medusa/commit/52cadddcf34fdbbc70be34aecd036d6885e8fa5d)]:
+  - @medusajs/dashboard@2.22.2
+  - @medusajs/admin-shared@2.22.2
+  - @medusajs/admin-vite-plugin@2.22.2
+
 ## 2.22.1
 
 ### Patch Changes

@@ -52,6 +52,19 @@ npm install @medusajs/ui-preset --save-dev
 
 ## Usage
 
+The preset supports Tailwind CSS v3 and v4.
+
+With Tailwind CSS v4, import the CSS-first theme and add the `@medusajs/ui` files as a source:
+
+```css title="app.css"
+@import "tailwindcss";
+@import "@medusajs/ui-preset/theme.css";
+
+@source "../node_modules/@medusajs/ui/dist";
+```
+
+The theme turns on class-based dark mode: add the `dark` class or `data-mode="dark"` to an ancestor element.
+
 With Tailwind CSS v3, add the preset and the `@medusajs/ui` files to your config:
 
 ```js title="tailwind.config.js"

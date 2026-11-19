@@ -27,7 +27,7 @@ type ExtractFiltersOperators<
       ? never
       : NonNullable<T[Key]> extends string | number | boolean | Date
         ? T[Key] | T[Key][] | OperatorMap<T[Key] | T[Key][]>
-        : T[Key] extends Array<infer R>
+        : NonNullable<T[Key]> extends Array<infer R>
           ? TypeOnly<R> extends { __typename: string }
             ? RemoteQueryFilters<
                 Key & string,
@@ -48,8 +48,8 @@ type ExtractFiltersOperators<
                 [Key & string, ...Exclusion],
                 Depth[Lim]
               >
-            : T[Key] extends object
-              ? CleanupObject<T[Key]>
+            : NonNullable<T[Key]> extends object
+              ? CleanupObject<NonNullable<T[Key]>>
               : never
 }
 
@@ -107,4 +107,17 @@ export type RemoteQueryFilters<
       Exclusion,
       Lim
     >
-  >
+  > &
+  // Only the entry point's module handles `q`, so nested relation filters
+  // (called with a non-empty Exclusion) don't accept it.
+  (Exclusion extends []
+    ? {
+        /**
+         * A free-text term searched in the entry point data model's
+         * searchable properties.
+         *
+         * Prefer using `query.search` with the Search Module for better search capabilities.
+         */
+        q?: string
+      }
+    : {})

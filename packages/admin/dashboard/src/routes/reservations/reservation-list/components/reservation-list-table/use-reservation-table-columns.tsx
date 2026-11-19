@@ -1,4 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { DateCell } from "../../../../../components/table/table-cells/common/date-cell"
@@ -7,7 +8,10 @@ import { formatQuantity } from "../../../../../lib/format-quantity"
 import { ReservationActions } from "./reservation-actions"
 import { ExtendedReservationItem } from "../../../../inventory/inventory-detail/components/reservations-table/use-reservation-list-table-columns"
 
-const columnHelper = createColumnHelper<ExtendedReservationItem>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  ExtendedReservationItem
+>()
 
 export const useReservationTableColumns = () => {
   const { t } = useTranslation()

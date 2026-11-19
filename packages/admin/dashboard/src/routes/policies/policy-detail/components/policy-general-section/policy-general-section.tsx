@@ -1,5 +1,6 @@
-// TODO: V1 policies are read-only in the dashboard (defined in code via
-// `definePolicies()``). The Edit / Delete action menu is commented out
+// TODO: [rbac] V1 policies are read-only in the dashboard (core policies are defined
+// in code, in the RBAC module's core policies loader). The Edit / Delete action
+// menu is commented out
 // below — uncomment to re-enable when policy management is opened to admins.
 
 // import { PencilSquare, Trash } from "@medusajs/icons"

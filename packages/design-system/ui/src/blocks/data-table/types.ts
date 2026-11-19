@@ -16,38 +16,40 @@ import type {
   PaginationState,
   Row,
   RowData,
-  RowSelectionState,
   SortDirection,
   StringHeaderIdentifier,
   StringOrTemplateHeader,
 } from "@tanstack/react-table"
+import type { DataTableFeatures } from "./data-table-features"
 
 export type DataTableRowData = RowData
 
-export type DataTableRow<TData extends DataTableRowData> = Row<TData>
+export type DataTableRow<TData extends DataTableRowData> = Row<
+  DataTableFeatures,
+  TData
+>
 
-export type DataTableAction<TData> = {
+export type DataTableAction<TData extends DataTableRowData> = {
   label: string
-  onClick: (ctx: CellContext<TData, unknown>) => void
+  onClick: (ctx: CellContext<DataTableFeatures, TData, unknown>) => void
   icon?: React.ReactNode
 }
 
 export interface DataTableCellContext<
   TData extends DataTableRowData,
   TValue,
-> extends CellContext<TData, TValue> {}
+> extends CellContext<DataTableFeatures, TData, TValue> {}
 
 export interface DataTableHeaderContext<
   TData extends DataTableRowData,
   TValue,
-> extends HeaderContext<TData, TValue> {}
+> extends HeaderContext<DataTableFeatures, TData, TValue> {}
 
 export type DataTableSortDirection = SortDirection
 
-export interface DataTableActionColumnDef<TData> extends Pick<
-  DisplayColumnDef<TData>,
-  "meta"
-> {
+export interface DataTableActionColumnDef<
+  TData extends DataTableRowData,
+> extends Pick<DisplayColumnDef<DataTableFeatures, TData>, "meta"> {
   actions:
     | DataTableAction<TData>[]
     | DataTableAction<TData>[][]
@@ -56,10 +58,9 @@ export interface DataTableActionColumnDef<TData> extends Pick<
       ) => DataTableAction<TData>[] | DataTableAction<TData>[][])
 }
 
-export interface DataTableSelectColumnDef<TData> extends Pick<
-  DisplayColumnDef<TData>,
-  "cell" | "header"
-> {}
+export interface DataTableSelectColumnDef<
+  TData extends DataTableRowData,
+> extends Pick<DisplayColumnDef<DataTableFeatures, TData>, "cell" | "header"> {}
 
 export type DataTableSortableColumnDef = {
   /**
@@ -124,7 +125,7 @@ export type DataTableTruncatableColumnDefMeta = {
   ___truncateTooltip?: boolean
 }
 
-export type DataTableActionColumnDefMeta<TData> = {
+export type DataTableActionColumnDefMeta<TData extends DataTableRowData> = {
   ___actions?:
     | DataTableAction<TData>[]
     | DataTableAction<TData>[][]
@@ -134,12 +135,12 @@ export type DataTableActionColumnDefMeta<TData> = {
 export interface DataTableColumn<
   TData extends DataTableRowData,
   TValue = unknown,
-> extends Column<TData, TValue> {}
+> extends Column<DataTableFeatures, TData, TValue> {}
 
 export type DataTableColumnDef<
   TData extends DataTableRowData,
   TValue = unknown,
-> = ColumnDef<TData, TValue>
+> = ColumnDef<DataTableFeatures, TData, TValue>
 
 export type DataTableColumnSizing = {
   /**
@@ -157,13 +158,13 @@ export type DataTableColumnSizing = {
 }
 
 type DataTableColumnIdentifiers<TData extends DataTableRowData, TValue> =
-  IdIdentifier<TData, TValue> | StringHeaderIdentifier
+  IdIdentifier<DataTableFeatures, TData, TValue> | StringHeaderIdentifier
 
 export type DataTableDisplayColumnDef<
   TData extends DataTableRowData,
   TValue = unknown,
 > = Pick<
-  DisplayColumnDef<TData, TValue>,
+  DisplayColumnDef<DataTableFeatures, TData, TValue>,
   "meta" | "header" | "cell" | "minSize" | "maxSize" | "size"
 > &
   DataTableColumnIdentifiers<TData, TValue>
@@ -172,14 +173,14 @@ export interface DataTableIdentifiedColumnDef<
   TData extends DataTableRowData,
   TValue,
 > extends Pick<
-  IdentifiedColumnDef<TData, TValue>,
+  IdentifiedColumnDef<DataTableFeatures, TData, TValue>,
   "meta" | "header" | "cell" | "minSize" | "maxSize" | "size"
 > {
   id?: string
-  header?: StringOrTemplateHeader<TData, TValue>
+  header?: StringOrTemplateHeader<DataTableFeatures, TData, TValue>
 }
 
-export interface DataTableColumnHelper<TData> {
+export interface DataTableColumnHelper<TData extends DataTableRowData> {
   /**
    * Create a accessor column.
    *
@@ -206,15 +207,17 @@ export interface DataTableColumnHelper<TData> {
           DataTableAlignableColumnDef &
           DataTableTruncatableColumnDef
   ) => TAccessor extends AccessorFn<TData>
-    ? AccessorFnColumnDef<TData, TValue>
-    : AccessorKeyColumnDef<TData, TValue>
+    ? AccessorFnColumnDef<DataTableFeatures, TData, TValue>
+    : AccessorKeyColumnDef<DataTableFeatures, TData, TValue>
   /**
    * Create a display column.
    *
    * @param column The column to create the display for.
    * @returns The created display column.
    */
-  display: (column: DataTableDisplayColumnDef<TData>) => DisplayColumnDef<TData>
+  display: (
+    column: DataTableDisplayColumnDef<TData>
+  ) => DisplayColumnDef<DataTableFeatures, TData>
   /**
    * Create an action column.
    *
@@ -223,7 +226,7 @@ export interface DataTableColumnHelper<TData> {
    */
   action: (
     props: DataTableActionColumnDef<TData>
-  ) => DisplayColumnDef<TData, unknown>
+  ) => DisplayColumnDef<DataTableFeatures, TData, unknown>
   /**
    * Create a select column.
    *
@@ -232,11 +235,13 @@ export interface DataTableColumnHelper<TData> {
    */
   select: (
     props?: DataTableSelectColumnDef<TData>
-  ) => DisplayColumnDef<TData, unknown>
+  ) => DisplayColumnDef<DataTableFeatures, TData, unknown>
 }
 
 export interface DataTableSortingState extends ColumnSort {}
-export interface DataTableRowSelectionState extends RowSelectionState {}
+export interface DataTableRowSelectionState {
+  [rowId: string]: boolean
+}
 export interface DataTablePaginationState extends PaginationState {}
 export type DataTableFilteringState<
   T extends Record<string, unknown> = Record<string, unknown>,

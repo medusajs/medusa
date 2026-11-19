@@ -5,10 +5,10 @@ import {
   IUserModuleService,
   MedusaContainer,
 } from "@medusajs/framework/types"
+import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   ApiKeyType,
   ContainerRegistrationKeys,
-  FeatureFlag,
   generateJwtToken,
   Modules,
   PUBLISHABLE_KEY_HEADER,
@@ -32,7 +32,7 @@ export const createAdminUser = async (
   const userModule: IUserModuleService = appContainer.resolve(Modules.USER)
   const authModule: IAuthModuleService = appContainer.resolve(Modules.AUTH)
 
-  const rbacEnabled = FeatureFlag.isFeatureEnabled("rbac")
+  const rbacEnabled = MedusaModule.isInstalled(Modules.RBAC)
 
   let userRoles = options?.roles
 
@@ -72,24 +72,21 @@ export const createAdminUser = async (
       email,
     })
 
-    // Link user to RBAC roles
+    // Assign RBAC roles to the user
     if (rbacEnabled && userRoles?.length) {
-      const link = appContainer.resolve(ContainerRegistrationKeys.LINK)
+      const rbacModule = appContainer.resolve(Modules.RBAC)
 
-      const links = userRoles.map((role_id) => ({
-        [Modules.USER]: {
-          user_id: user.id,
-        },
-        [Modules.RBAC]: {
-          rbac_role_id: role_id,
-        },
-      }))
-
-      await link.create(links)
+      await rbacModule.createRbacRoleAssignments(
+        userRoles.map((role_id) => ({
+          role_id,
+          reference: "user",
+          reference_id: user.id,
+        }))
+      )
     }
 
     const hashConfig = { logN: 15, r: 8, p: 1 }
-    const passwordHash = await Scrypt.kdf("somepassword", hashConfig)
+    const passwordHash = Buffer.from(await Scrypt.kdf("somepassword", hashConfig))
 
     authIdentity = await authModule.createAuthIdentities({
       provider_identities: [

@@ -1,0 +1,151 @@
+import { asFunction, asValue } from "@medusajs/framework/awilix"
+import { moduleProviderLoader } from "@medusajs/framework/modules-sdk"
+import {
+  LoaderOptions,
+  Logger,
+  MedusaContainer,
+} from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
+import {
+  AuditDefaultProviderRegistrationName,
+  AuditModuleOptions,
+  AuditProviderRegistrationPrefix,
+  MEDUSA_CLOUD_AUDIT_PROVIDER_ID,
+  POSTGRES_AUDIT_PROVIDER_ID,
+} from "@types"
+import { MedusaAuditService, PostgresAuditService } from "../providers"
+import { AuditProviderService } from "../services/audit-provider"
+
+function register(
+  container: MedusaContainer,
+  ids: string[],
+  klass: any,
+  id: string | undefined,
+  options: Record<string, unknown> = {}
+) {
+  if (!id) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `The audit provider "${klass.identifier}" has no "id"`
+    )
+  }
+
+  if (ids.includes(id)) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `The audit provider id "${id}" is registered twice. ${
+        id === MEDUSA_CLOUD_AUDIT_PROVIDER_ID
+          ? `"${id}" is reserved for Medusa Cloud audit storage.`
+          : "Give each provider its own id."
+      }`
+    )
+  }
+
+  // Instantiated here rather than aliased to the module loader's own provider
+  // registration, which is constructed with the module options instead of the
+  // provider's.
+  container.register({
+    [AuditProviderRegistrationPrefix + id]: asFunction(
+      (cradle) => new klass(cradle, options)
+    ).singleton(),
+  })
+
+  ids.push(id)
+}
+
+export default async ({
+  container,
+  options,
+}: LoaderOptions<AuditModuleOptions>): Promise<void> => {
+  const logger = container.resolve<Logger>("logger")
+  const ids: string[] = []
+  const cloud = options?.cloud
+
+  if (cloud?.endpoint) {
+    register(
+      container,
+      ids,
+      MedusaAuditService,
+      MEDUSA_CLOUD_AUDIT_PROVIDER_ID,
+      cloud
+    )
+    // Constructed now so that missing credentials fail the boot.
+    container.resolve(
+      AuditProviderRegistrationPrefix + MEDUSA_CLOUD_AUDIT_PROVIDER_ID
+    )
+  }
+
+  await moduleProviderLoader({
+    container,
+    providers: options?.providers ?? [],
+    registerServiceFn: async (klass, container, { id, options }) =>
+      register(container, ids, klass, id, options),
+  })
+
+  // Without other storage, audit logs go to the application's database.
+  if (!ids.length) {
+    register(container, ids, PostgresAuditService, POSTGRES_AUDIT_PROVIDER_ID, {
+      retention_days: options?.retention_days,
+    })
+    // Constructed now so that an invalid retention fails the boot.
+    container.resolve(
+      AuditProviderRegistrationPrefix + POSTGRES_AUDIT_PROVIDER_ID
+    )
+  } else if (options?.retention_days !== undefined) {
+    logger.warn(
+      'Audit: "retention_days" only applies to the built-in Postgres storage and is ignored, because audit logs are stored by another provider.'
+    )
+  }
+
+  const defaultProvider = resolveDefaultProvider(
+    ids,
+    options ?? {},
+    !!cloud?.endpoint
+  )
+
+  if (!options?.default_provider) {
+    logger.info(`Audit module: Using "${defaultProvider}" as default.`)
+  }
+
+  container.register({
+    [AuditDefaultProviderRegistrationName]: asValue(defaultProvider),
+    auditProviderService: asFunction(
+      (cradle) => new AuditProviderService(cradle)
+    ).singleton(),
+  })
+}
+
+function resolveDefaultProvider(
+  ids: string[],
+  options: AuditModuleOptions,
+  hasCloud: boolean
+): string {
+  if (options.default_provider) {
+    if (!ids.includes(options.default_provider)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `The audit "default_provider" "${
+          options.default_provider
+        }" is not registered. Registered providers: ${
+          ids.join(", ") || "(none)"
+        }`
+      )
+    }
+    return options.default_provider
+  }
+
+  if (hasCloud) {
+    return MEDUSA_CLOUD_AUDIT_PROVIDER_ID
+  }
+
+  if (ids.length === 1) {
+    return ids[0]
+  }
+
+  throw new MedusaError(
+    MedusaError.Types.INVALID_DATA,
+    `Several audit providers are registered (${ids.join(
+      ", "
+    )}), so "default_provider" must be set`
+  )
+}

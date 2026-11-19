@@ -1,5 +1,71 @@
 # @medusajs/types
 
+## 2.22.7
+
+### Patch Changes
+
+- [#17795](https://github.com/medusajs/medusa/pull/17795) [`3d9104d`](https://github.com/medusajs/medusa/commit/3d9104d131aa56e2490d14e3ed804d93592305fa) Thanks [@sradevski](https://github.com/sradevski)! - feat(framework,medusa,types,js-sdk,audit): record admin, RBAC, and auth mutations as audit logs, add the `audit` middleware route setting, and add the `GET /admin/audit-logs` API routes
+
+- [#17787](https://github.com/medusajs/medusa/pull/17787) [`b810334`](https://github.com/medusajs/medusa/commit/b810334cbf0c0ba3a401d82182ef06f2432e2716) Thanks [@sradevski](https://github.com/sradevski)! - feat(audit,types,utils,modules-sdk,framework,medusa): add the licensed Audit Module with built-in PostgreSQL and Medusa Cloud storage
+
+- [#17576](https://github.com/medusajs/medusa/pull/17576) [`beca252`](https://github.com/medusajs/medusa/commit/beca2525ebb9298caa9d7ad2266c12961b3470af) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(framework,types): allow additional cors option in project config
+
+- [#17751](https://github.com/medusajs/medusa/pull/17751) [`48b6d2d`](https://github.com/medusajs/medusa/commit/48b6d2d42089f8f4ba846a30a84f2031eca34b0f) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(medusa,types,framework): use cross-module joins instead of the index module
+
+- [#17763](https://github.com/medusajs/medusa/pull/17763) [`db78b61`](https://github.com/medusajs/medusa/commit/db78b61eb2e74218436fe96222f01b93d23dc895) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(framework, types): set security headers and hide the X-Powered-By header on HTTP responses, configurable with `http.securityHeaders`
+
+- [#17576](https://github.com/medusajs/medusa/pull/17576) [`beca252`](https://github.com/medusajs/medusa/commit/beca2525ebb9298caa9d7ad2266c12961b3470af) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(framework,types): add `http.corsOptions` to configure `maxAge`, `exposedHeaders`, `allowedHeaders`, and `methods` for CORS
+
+- [#17389](https://github.com/medusajs/medusa/pull/17389) [`fd943bf`](https://github.com/medusajs/medusa/commit/fd943bf0ab1079947dd63758933b8adc5b22c114) Thanks [@sradevski](https://github.com/sradevski)! - fix(core-flows): Replace account holders that the payment provider no longer has when creating payment sessions
+
+- [#16892](https://github.com/medusajs/medusa/pull/16892) [`b6c0df0`](https://github.com/medusajs/medusa/commit/b6c0df056e287d00589236b00d07b407817b9f6a) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(types): allow filtering nullable `json` columns and nullable to-many relations in `query.graph`
+
+- [#16960](https://github.com/medusajs/medusa/pull/16960) [`ea7bc2e`](https://github.com/medusajs/medusa/commit/ea7bc2e2068f1cb295dbf4a1c4f0553b4d364eca) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(core-flows, types): add is_custom_price to order mutation types, and set the property on cart completion
+
+- [#17792](https://github.com/medusajs/medusa/pull/17792) [`1fbc0f2`](https://github.com/medusajs/medusa/commit/1fbc0f2bd117a4629d195c774b36e474248cbb14) Thanks [@shahednasser](https://github.com/shahednasser)! - docs(core-flows, types): document that updating a product's variants replaces its full variant list
+
+- [#17754](https://github.com/medusajs/medusa/pull/17754) [`93d4cc3`](https://github.com/medusajs/medusa/commit/93d4cc370e1b31be28c9b93b465c5dcf176616fb) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(index,query,medusa,types,utils): deprecate the Index Module
+
+- [#16999](https://github.com/medusajs/medusa/pull/16999) [`c9c8038`](https://github.com/medusajs/medusa/commit/c9c803815766d00f6421edacb2631fa97b61eeb0) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(types): align `Pluralize` type with runtime pluralization for words ending in "o"
+
+- [#17778](https://github.com/medusajs/medusa/pull/17778) [`33af8f3`](https://github.com/medusajs/medusa/commit/33af8f3b4b581aabb4e655307b3055b7263908ef) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa,types,js-sdk): remove multiple policies from an RBAC role in one request
+
+- [#17775](https://github.com/medusajs/medusa/pull/17775) [`32ead32`](https://github.com/medusajs/medusa/commit/32ead32128dc07be8301a54e85f79fd813946b67) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(types): allow the `q` free-text filter in `query.graph` filters
+
+## 2.22.6
+
+## 2.22.5
+
+### Patch Changes
+
+- [#17563](https://github.com/medusajs/medusa/pull/17563) [`a639480`](https://github.com/medusajs/medusa/commit/a63948083a6281465d5cf8c66308a1325001b760) Thanks [@kristianjakschnltg](https://github.com/kristianjakschnltg)! - feat(promotion,utils,types,medusa,dashboard): add target selection strategy for buy-get promotions
+
+  Adds `application_method.target_selection_strategy` to choose which eligible items a Buy X Get Y promotion discounts. The default, `most_expensive_first`, keeps the current behaviour. `cheapest_first` discounts the cheapest eligible units across the cart: for "buy 3, get 1 free" with eight units priced 100 to 800, the 100 and 200 units are discounted instead of 100 and 500. The option is available in the admin promotion create and edit forms.
+
+## 2.22.4
+
+## 2.22.3
+
+### Patch Changes
+
+- [#17619](https://github.com/medusajs/medusa/pull/17619) [`4df78b3`](https://github.com/medusajs/medusa/commit/4df78b31e1367874e264e7888117f18250cf6828) Thanks [@sradevski](https://github.com/sradevski)! - feat(auth,types,utils): read the Medusa Cloud OAuth client secret from MEDUSA_CLOUD_OAUTH_CLIENT_SECRET, falling back to the API key
+
+- [#17574](https://github.com/medusajs/medusa/pull/17574) [`9692b99`](https://github.com/medusajs/medusa/commit/9692b996485e6fc6e7cb7f6d18ab730962b9727e) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps,caching,framework,types,utils): update awilix to 13.0.5
+
+- [#15620](https://github.com/medusajs/medusa/pull/15620) [`a6a4254`](https://github.com/medusajs/medusa/commit/a6a4254fb804ae671b778df15c1a5977826930b8) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - feat(dashboard,medusa,core-flows,framework,js-sdk,modules-sdk,types,utils,link-modules,rbac): end to end RBAC implementation
+
+- [#17619](https://github.com/medusajs/medusa/pull/17619) [`4df78b3`](https://github.com/medusajs/medusa/commit/4df78b31e1367874e264e7888117f18250cf6828) Thanks [@sradevski](https://github.com/sradevski)! - chore(auth,notification,payment,types,utils): remove the unused Medusa Cloud sandbox handle
+
+## 2.22.2
+
+### Patch Changes
+
+- [#17533](https://github.com/medusajs/medusa/pull/17533) [`26e5807`](https://github.com/medusajs/medusa/commit/26e58070c1661c14aedc02ee6cfb0b2bb28d497b) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update ioredis to ^5.11.1
+
+- [#17503](https://github.com/medusajs/medusa/pull/17503) [`c78a95a`](https://github.com/medusajs/medusa/commit/c78a95a6e1fdf3967efbcddca9fa195d0e8c5817) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(caching): close the in-memory cache provider's client on application shutdown
+
+- [#17575](https://github.com/medusajs/medusa/pull/17575) [`2f0b2e9`](https://github.com/medusajs/medusa/commit/2f0b2e94d6fa7193386d83b1e72bb0fc65caeddf) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(types,utils,dashboard): update bignumber.js to 11.1.5
+
 ## 2.22.1
 
 ### Patch Changes

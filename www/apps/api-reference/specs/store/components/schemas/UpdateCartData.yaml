@@ -24,8 +24,7 @@ properties:
       product isn't available in the cart's sales channel. Refer to the guide in
       the external documentation to learn how to enforce that validation.
     externalDocs:
-      url: >-
-        https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability
+      url: https://docs.medusajs.com/resources/commerce-modules/cart/sales-channel-availability
   email:
     type: string
     title: email

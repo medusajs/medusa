@@ -1,6 +1,25 @@
-import { pathToRegexp } from "path-to-regexp"
 import type { MiddlewareVerb, RouteVerb } from "./types"
-import { isString } from "@medusajs/utils"
+import { toExpressPath } from "./utils/to-express-path"
+
+type PathToRegexp = typeof import("path-to-regexp", {
+  with: { "resolution-mode": "import" },
+})
+
+let pathToRegexpModule: PathToRegexp | undefined
+
+/**
+ * Loads the ESM-only path-to-regexp with `import()`. Jest run with
+ * `--experimental-vm-modules` rejects `require()` of ESM, so call this
+ * before creating a {@link RoutesFinder}.
+ */
+export async function preloadPathToRegexp(): Promise<void> {
+  pathToRegexpModule ??= await import("path-to-regexp")
+}
+
+function loadPathToRegexp(): PathToRegexp {
+  pathToRegexpModule ??= require("path-to-regexp") as PathToRegexp
+  return pathToRegexpModule
+}
 
 export class RoutesFinder<
   T extends
@@ -48,17 +67,10 @@ export class RoutesFinder<
       return
     }
 
-    // Doing a replacement for backwards compatibility with the old path-to-regexp with express 4
-    let normalizedPath = route.matcher
-    if (isString(route.matcher)) {
-      // Replace /* with {*splat} (wildcard matches zero or more path segments)
-      normalizedPath = normalizedPath.replace(/\/\*/g, "{*splat}")
-      // Replace /path* (no slash before asterisk) with /path{*splat}
-      normalizedPath = normalizedPath.replace(/(\w)\*/g, "$1{*splat}")
-    }
     this.#routes.push({
       ...route,
-      matchRegex: pathToRegexp(normalizedPath).regexp,
+      matchRegex: loadPathToRegexp().pathToRegexp(toExpressPath(route.matcher))
+        .regexp,
     })
   }
 

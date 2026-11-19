@@ -2,6 +2,7 @@ import type { HttpTypes } from "@medusajs/types"
 import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
@@ -12,12 +13,14 @@ import { useRegionTableColumns } from "../../../../../hooks/table/columns/use-re
 import { useRegionTableFilters } from "../../../../../hooks/table/filters/use-region-table-filters"
 import { useRegionTableQuery } from "../../../../../hooks/table/query/use-region-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useRegionPermissions } from "../../../../../hooks/use-resource-permissions"
 import { RegionListTableActions } from "./region-list-table-actions"
 
 const PAGE_SIZE = 20
 
 export const RegionListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = useRegionPermissions()
 
   const { searchParams, raw } = useRegionTableQuery({ pageSize: PAGE_SIZE })
   const {
@@ -61,11 +64,13 @@ export const RegionListTable = () => {
             {t("regions.subtitle")}
           </Text>
         </div>
-        <Link to="/settings/regions/create">
-          <Button size="small" variant="secondary">
-            {t("actions.create")}
-          </Button>
-        </Link>
+        {canCreate && (
+          <Link to="/settings/regions/create">
+            <Button size="small" variant="secondary">
+              {t("actions.create")}
+            </Button>
+          </Link>
+        )}
       </div>
 
       <_DataTable
@@ -92,7 +97,10 @@ export const RegionListTable = () => {
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminRegion>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminRegion
+>()
 
 const useColumns = () => {
   const base = useRegionTableColumns()

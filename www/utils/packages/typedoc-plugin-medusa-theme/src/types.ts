@@ -1,7 +1,5 @@
 import {
-  ContainerReflection,
   DeclarationReflection,
-  PageEvent,
   ParameterReflection,
   ReflectionKind,
   TypeParameterReflection,
@@ -22,8 +20,10 @@ export type Mapping = {
   }
   isLeaf: boolean
   directory: string
-  template: (pageEvent: PageEvent<ContainerReflection>) => string
+  pageKind: MedusaPageKind
 }
+
+export type MedusaPageKind = "reflection" | "member" | "index"
 
 export type Parameter = {
   name: string

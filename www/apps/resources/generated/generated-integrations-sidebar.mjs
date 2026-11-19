@@ -232,6 +232,13 @@ const generatedgeneratedIntegrationsSidebarSidebar = {
         },
         {
           "loaded": true,
+          "type": "ref",
+          "path": "/commerce-modules/payment/payment-provider/adyen",
+          "title": "Adyen",
+          "children": []
+        },
+        {
+          "loaded": true,
           "type": "link",
           "path": "/integrations/guides/paypal",
           "title": "PayPal",

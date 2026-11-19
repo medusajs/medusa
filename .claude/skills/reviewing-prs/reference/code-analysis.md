@@ -9,12 +9,36 @@ Steps 10–12 run as one pass over the changed code, not three skims:
 1. Order the changed non-test files by risk: API routes and middlewares,
    workflows and steps, module services and repositories, data models and
    migrations, subscribers and jobs, admin UI, then utilities.
-2. For each file, read the full file and its diff hunks. When behavior
-   depends on code outside the diff (a caller, a validator, a middleware,
-   the service a route calls), find it with Grep/Glob and read it.
-3. Run the security, performance, and bug checks below against the file's
+2. For each file, read the **PR's version** of the full file and its diff
+   hunks. With scripts, the checkout is the base branch, so `Read` returns
+   the file as it was before the PR (or nothing for an added file): use
+   `get_pr_file.sh <pr> <path>` for the PR's version, and
+   `get_pr_diff.sh <pr> <path>` for its hunks.
+3. When behavior depends on code outside the diff (a caller, a validator, a
+   middleware, the service a route calls), find it with Grep/Glob and read
+   it. Grep/Glob search the base checkout: if that code is also changed in
+   the PR, read it with `get_pr_file.sh` instead.
+4. Run the security, performance, and bug checks below against the file's
    added lines, and note each candidate finding with its `path:line`.
-4. Verify every candidate (Step 12b) before it reaches the decision.
+5. **Cross-file pass**, once every file is done. Most serious findings live
+   between files, not inside one:
+   - **Bypass paths:** for each guard, permission check, validation, or
+     invariant the PR adds, Grep for every other route, workflow, or step
+     that performs the same operation (delete, assign, update, read) and
+     confirm it goes through the guard too.
+   - **Check-then-act:** a count or existence check followed by a write in
+     separate queries, with no lock (`acquireLockStep`) or transaction, so
+     two concurrent requests both pass the check.
+   - **Config and contract changes:** a new option, renamed type, moved
+     export, or migration: Grep for its readers and confirm each handles the
+     new shape, empty values, and old data.
+   - **Caches:** a value cached and invalidated in different places, where an
+     invalidation can land between the read and the cache write.
+6. Verify every candidate (Step 12b) before it reaches the decision.
+
+For a large PR, review files riskiest first and keep going until every
+non-test, non-generated file is reviewed. If some are left unreviewed, name
+them in `summary` (see **Report Format**) rather than implying a full review.
 
 ## Step 11 — Performance Analysis (ALL PRs)
 
@@ -128,6 +152,9 @@ that passes them is still a required change.
 ## Common Mistakes
 
 - [ ] Reporting a finding that didn't pass Step 12b (not on an added line, no concrete input, already handled elsewhere)
+- [ ] Reading a changed file with `Read` (the base version) instead of `get_pr_file.sh`, then flagging or clearing code the PR changed
+- [ ] Checking a new guard only where the PR adds it, without searching for other paths that perform the same operation
+- [ ] Stopping after the first files of a large PR without saying which files weren't reviewed
 - [ ] Missing a store route that returns data without an `allowed` fields list
 - [ ] Missing plain JS logic (`if`, `.map`, `await`) inside a `createWorkflow` body instead of `transform()`/`when()`
 - [ ] Skipping performance analysis — always check for N+1 queries and unbounded queries

@@ -343,9 +343,9 @@ describe("command docs", () => {
 
     it("should recommend which schemas to patch to resolve circular references", async () => {
       /**
-       * The recommendation is heavily influenced but the dereference operation
-       * from @readme/json-schema-ref-parser. It's not an exact science and the
-       * results may vary between versions.
+       * The recommendation is heavily influenced by the order the spec's refs
+       * are crawled in. It's not an exact science and the results may vary
+       * between versions.
        */
       const { circularRefs, oas } = await getCircularReferences(srcFile)
       const recommendation = getCircularPatchRecommendation(circularRefs, oas)

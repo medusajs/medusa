@@ -1,0 +1,1 @@
+{"slug":"/references/loyalty/types/loyalty.Constructor","title":"Constructor","frontmatter":{"displayed_sidebar":"loyaltyReference"},"toc":[],"blocks":[{"kind":"typeList","types":[{"name":"Constructor","type":"(...`args`: `any`[]) => T \\| () => T","description":"","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]}

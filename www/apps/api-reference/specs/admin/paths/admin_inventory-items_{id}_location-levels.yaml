@@ -94,13 +94,11 @@ get:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_inventory-items_{id}_location-levels/get.js
+        $ref: ../code_samples/JavaScript/admin_inventory-items_{id}_location-levels/get.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_inventory-items_{id}_location-levels/get.sh
+        $ref: ../code_samples/Shell/admin_inventory-items_{id}_location-levels/get.sh
   tags:
     - Inventory Items
   responses:
@@ -192,14 +190,12 @@ post:
     content:
       application/json:
         schema:
-          $ref: >-
-            ../components/schemas/AdminBatchCreateInventoryItemLocationLevels.yaml
+          $ref: ../components/schemas/AdminBatchCreateInventoryItemLocationLevels.yaml
   x-codeSamples:
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_inventory-items_{id}_location-levels/post.sh
+        $ref: ../code_samples/Shell/admin_inventory-items_{id}_location-levels/post.sh
   tags:
     - Inventory Items
   responses:

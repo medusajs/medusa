@@ -1,5 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { CreatedAtCell } from "../../../../../components/table/table-cells/common/created-at-cell"
@@ -10,6 +11,7 @@ import {
 } from "../../../../../components/table/table-cells/common/text-cell"
 import { formatQuantity } from "../../../../../lib/format-quantity"
 import { ReservationActions } from "./reservation-actions"
+import { useStockLocationPermissions } from "../../../../../hooks/use-resource-permissions"
 
 /**
  * Adds missing properties to the InventoryItemDTO type.
@@ -19,7 +21,10 @@ export interface ExtendedReservationItem extends HttpTypes.AdminReservation {
   location?: HttpTypes.AdminStockLocation
 }
 
-const columnHelper = createColumnHelper<ExtendedReservationItem>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  ExtendedReservationItem
+>()
 
 export const useReservationTableColumn = ({
   sku,
@@ -29,6 +34,7 @@ export const useReservationTableColumn = ({
   unitOfMeasure?: string | null
 }) => {
   const { t } = useTranslation()
+  const { canRead: canReadStockLocations } = useStockLocationPermissions()
 
   return useMemo(
     () => [
@@ -63,18 +69,24 @@ export const useReservationTableColumn = ({
           return <TextCell text={description} />
         },
       }),
-      columnHelper.accessor("location.name", {
-        header: () => <TextHeader text={t("inventory.reservation.location")} />,
-        cell: ({ getValue }) => {
-          const location = getValue()
+      ...(canReadStockLocations
+        ? [
+            columnHelper.accessor("location.name", {
+              header: () => (
+                <TextHeader text={t("inventory.reservation.location")} />
+              ),
+              cell: ({ getValue }) => {
+                const location = getValue()
 
-          if (!location) {
-            return <PlaceholderCell />
-          }
+                if (!location) {
+                  return <PlaceholderCell />
+                }
 
-          return <TextCell text={location} />
-        },
-      }),
+                return <TextCell text={location} />
+              },
+            }),
+          ]
+        : []),
       columnHelper.accessor("created_at", {
         header: () => <TextHeader text={t("fields.createdAt")} />,
         cell: ({ getValue }) => <CreatedAtCell date={getValue()} />,
@@ -95,6 +107,6 @@ export const useReservationTableColumn = ({
         cell: ({ row }) => <ReservationActions reservation={row.original} />,
       }),
     ],
-    [t, sku, unitOfMeasure]
+    [t, canReadStockLocations, sku, unitOfMeasure]
   )
 }

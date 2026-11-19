@@ -2,7 +2,7 @@ import {
   validateAndTransformBody,
   validateAndTransformQuery,
 } from "@medusajs/framework"
-import { MiddlewareRoute } from "@medusajs/framework/http"
+import { authorize, MiddlewareRoute } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
 import * as QueryConfig from "./query-config"
 import { Entities } from "./query-config"
@@ -15,28 +15,30 @@ import {
 
 export const adminReturnReasonRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/return-reasons/*",
-    policies: [
-      {
-        resource: Entities.return_reason,
-        operation: PolicyOperation.read,
-      },
+    matcher: "/admin/return-reasons/{*splat}",
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.return_reason,
+          operation: PolicyOperation.read,
+        },
+      ]),
     ],
   },
   {
     method: ["GET"],
     matcher: "/admin/return-reasons",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.return_reason,
+          operation: PolicyOperation.read,
+        },
+      ]),
       validateAndTransformQuery(
         AdminGetReturnReasonsParams,
         QueryConfig.listTransformQueryConfig
       ),
-    ],
-    policies: [
-      {
-        resource: Entities.return_reason,
-        operation: PolicyOperation.read,
-      },
     ],
   },
   {
@@ -53,44 +55,46 @@ export const adminReturnReasonRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/return-reasons",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.return_reason,
+          operation: PolicyOperation.create,
+        },
+      ]),
       validateAndTransformBody(AdminCreateReturnReason),
       validateAndTransformQuery(
         AdminGetReturnReasonsReturnReasonParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.return_reason,
-        operation: PolicyOperation.create,
-      },
-    ],
   },
   {
     method: ["POST"],
     matcher: "/admin/return-reasons/:id",
     middlewares: [
+      authorize([
+        {
+          resource: Entities.return_reason,
+          operation: PolicyOperation.update,
+        },
+      ]),
       validateAndTransformBody(AdminUpdateReturnReason),
       validateAndTransformQuery(
         AdminGetReturnReasonsReturnReasonParams,
         QueryConfig.retrieveTransformQueryConfig
       ),
     ],
-    policies: [
-      {
-        resource: Entities.return_reason,
-        operation: PolicyOperation.update,
-      },
-    ],
   },
   {
     method: ["DELETE"],
     matcher: "/admin/return-reasons/:id",
-    policies: [
-      {
-        resource: Entities.return_reason,
-        operation: PolicyOperation.delete,
-      },
+    middlewares: [
+      authorize([
+        {
+          resource: Entities.return_reason,
+          operation: PolicyOperation.delete,
+        },
+      ]),
     ],
   },
 ]

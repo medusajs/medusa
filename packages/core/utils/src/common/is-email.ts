@@ -7,8 +7,8 @@ const EMAIL_REGEX =
  * Check whether provided string is an email.
  * @param email - string to check
  */
-function isEmail(email: string) {
-  return email.toLowerCase().match(EMAIL_REGEX)
+export function isEmail(email: string): boolean {
+  return EMAIL_REGEX.test(email.toLowerCase())
 }
 
 /**

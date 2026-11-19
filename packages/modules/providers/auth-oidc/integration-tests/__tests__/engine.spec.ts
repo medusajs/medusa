@@ -1,5 +1,4 @@
 import { MedusaError } from "@medusajs/framework/utils"
-import { Issuer } from "openid-client"
 import { OidcEngine } from "../../src/engine/engine"
 import { OidcEngineOptions } from "../../src/engine/types"
 
@@ -8,6 +7,28 @@ const AUTHORIZATION_ENDPOINT = "https://idp.example.com/authorize"
 const TOKEN_ENDPOINT = "https://idp.example.com/token"
 const JWKS_URI = "https://idp.example.com/jwks"
 const CALLBACK_URL = "https://app.example.com/callback"
+const DISCOVERY_URL = `${ISSUER}/.well-known/openid-configuration`
+
+const discoveryDocument = {
+  issuer: ISSUER,
+  authorization_endpoint: AUTHORIZATION_ENDPOINT,
+  token_endpoint: TOKEN_ENDPOINT,
+  jwks_uri: JWKS_URI,
+}
+
+const jsonResponse = (body: unknown) =>
+  new Response(JSON.stringify(body), {
+    status: 200,
+    headers: { "content-type": "application/json" },
+  })
+
+const requestUrl = (input: RequestInfo | URL) =>
+  input instanceof Request ? input.url : input.toString()
+
+const mockFetch = () => jest.spyOn(globalThis, "fetch")
+
+const discoveryCalls = (fetchSpy: jest.SpyInstance) =>
+  fetchSpy.mock.calls.filter(([input]) => requestUrl(input) === DISCOVERY_URL)
 
 const baseOptions = (
   overrides: Partial<OidcEngineOptions> = {}
@@ -99,12 +120,12 @@ describe("OidcEngine", () => {
 
   describe("buildAuthorizationUrl", () => {
     it("builds an authorization URL with PKCE, nonce, and state (no discovery when endpoints are set)", async () => {
-      const discoverSpy = jest.spyOn(Issuer, "discover")
+      const fetchSpy = mockFetch()
       const engine = new OidcEngine(baseOptions())
 
       const result = await engine.buildAuthorizationUrl({ state: "state-key" })
 
-      expect(discoverSpy).not.toHaveBeenCalled()
+      expect(fetchSpy).not.toHaveBeenCalled()
 
       const url = new URL(result.url)
       expect(`${url.origin}${url.pathname}`).toBe(AUTHORIZATION_ENDPOINT)
@@ -175,12 +196,9 @@ describe("OidcEngine", () => {
 
       // Simulate a token endpoint response without an id_token, which happens
       // when the 'openid' scope isn't requested.
-      jest.spyOn(engine as any, "getClient_").mockResolvedValue({
-        callback: jest.fn().mockResolvedValue({
-          access_token: "access-token",
-          token_type: "Bearer",
-        }),
-      })
+      mockFetch().mockResolvedValue(
+        jsonResponse({ access_token: "access-token", token_type: "Bearer" })
+      )
 
       const error = await engine
         .exchangeCode({
@@ -193,8 +211,54 @@ describe("OidcEngine", () => {
       expect(error).toBeInstanceOf(MedusaError)
       expect(error.type).toBe(MedusaError.Types.UNAUTHORIZED)
       expect(error.message).toMatch(
-        /did not return an ID token.*'openid' scope/
+        /Could not validate the identity provider's response: .*"id_token"/
       )
+    })
+
+    it("sends the callback URL's query string in the token request's redirect_uri", async () => {
+      const engine = new OidcEngine(baseOptions())
+      const callbackUrl = `${CALLBACK_URL}?auth_provider=oidc-google`
+
+      const fetchSpy = mockFetch().mockResolvedValue(
+        jsonResponse({ access_token: "access-token", token_type: "Bearer" })
+      )
+
+      await engine
+        .exchangeCode({
+          params: { code: "code-123" },
+          nonce: "nonce",
+          codeVerifier: "verifier",
+          callbackUrl,
+        })
+        .catch(() => undefined)
+
+      const [, init] = fetchSpy.mock.calls[0]
+      const body = new URLSearchParams(String(init?.body))
+      expect(body.get("redirect_uri")).toBe(callbackUrl)
+    })
+
+    it("includes the OAuth error and description when the token endpoint rejects the request", async () => {
+      const engine = new OidcEngine(baseOptions())
+
+      mockFetch().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            error: "redirect_uri_mismatch",
+            error_description: "Bad Request",
+          }),
+          { status: 400, headers: { "content-type": "application/json" } }
+        )
+      )
+
+      const error = await engine
+        .exchangeCode({
+          params: { code: "code-123" },
+          nonce: "nonce",
+          codeVerifier: "verifier",
+        })
+        .catch((e) => e)
+
+      expect(error.message).toMatch(/\(redirect_uri_mismatch: Bad Request\)/)
     })
   })
 
@@ -227,15 +291,9 @@ describe("OidcEngine", () => {
     })
 
     it("rebuilds the client after the discovery TTL lapses", async () => {
-      const discoveredIssuer = new Issuer({
-        issuer: ISSUER,
-        authorization_endpoint: AUTHORIZATION_ENDPOINT,
-        token_endpoint: TOKEN_ENDPOINT,
-        jwks_uri: JWKS_URI,
-      })
-      const discoverSpy = jest
-        .spyOn(Issuer, "discover")
-        .mockResolvedValue(discoveredIssuer)
+      const fetchSpy = mockFetch().mockImplementation(async () =>
+        jsonResponse(discoveryDocument)
+      )
 
       const ttlMs = 1000
 
@@ -257,7 +315,7 @@ describe("OidcEngine", () => {
       const cachedClient = await (engine as any).getClient_()
       expect(cachedClient).toBe(firstClient)
       expect(buildSpy).toHaveBeenCalledTimes(1)
-      expect(discoverSpy).toHaveBeenCalledTimes(1)
+      expect(discoveryCalls(fetchSpy)).toHaveLength(1)
 
       // Advance past the TTL: both the client and discovery caches expire.
       nowSpy.mockReturnValue(start + ttlMs + 1)
@@ -265,21 +323,13 @@ describe("OidcEngine", () => {
       const rebuiltClient = await (engine as any).getClient_()
       expect(rebuiltClient).not.toBe(firstClient)
       expect(buildSpy).toHaveBeenCalledTimes(2)
-      expect(discoverSpy).toHaveBeenCalledTimes(2)
+      expect(discoveryCalls(fetchSpy)).toHaveLength(2)
     })
 
     it("does not cache a failed client build", async () => {
-      jest
-        .spyOn(Issuer, "discover")
+      mockFetch()
         .mockRejectedValueOnce(new Error("network down"))
-        .mockResolvedValueOnce(
-          new Issuer({
-            issuer: ISSUER,
-            authorization_endpoint: AUTHORIZATION_ENDPOINT,
-            token_endpoint: TOKEN_ENDPOINT,
-            jwks_uri: JWKS_URI,
-          })
-        )
+        .mockResolvedValueOnce(jsonResponse(discoveryDocument))
 
       const engine = new OidcEngine({
         issuer: ISSUER,
@@ -296,14 +346,6 @@ describe("OidcEngine", () => {
   })
 
   describe("discovery caching via the cache module", () => {
-    const discoveredIssuer = () =>
-      new Issuer({
-        issuer: ISSUER,
-        authorization_endpoint: AUTHORIZATION_ENDPOINT,
-        token_endpoint: TOKEN_ENDPOINT,
-        jwks_uri: JWKS_URI,
-      })
-
     const options: OidcEngineOptions = {
       issuer: ISSUER,
       client_id: "client-123",
@@ -312,9 +354,9 @@ describe("OidcEngine", () => {
     }
 
     it("stores the discovery document in the cache module on a miss", async () => {
-      const discoverSpy = jest
-        .spyOn(Issuer, "discover")
-        .mockResolvedValue(discoveredIssuer())
+      const fetchSpy = mockFetch().mockResolvedValue(
+        jsonResponse(discoveryDocument)
+      )
 
       const cache = {
         get: jest.fn().mockResolvedValue(null),
@@ -326,7 +368,7 @@ describe("OidcEngine", () => {
       await engine.buildAuthorizationUrl({ state: "one" })
 
       expect(cache.get).toHaveBeenCalledWith(`oidc:discovery:${ISSUER}`)
-      expect(discoverSpy).toHaveBeenCalledTimes(1)
+      expect(discoveryCalls(fetchSpy)).toHaveLength(1)
       // TTL is passed to the cache module in seconds.
       expect(cache.set).toHaveBeenCalledWith(
         `oidc:discovery:${ISSUER}`,
@@ -336,10 +378,10 @@ describe("OidcEngine", () => {
     })
 
     it("uses the cached discovery document and skips network discovery on a hit", async () => {
-      const discoverSpy = jest.spyOn(Issuer, "discover")
+      const fetchSpy = mockFetch()
 
       const cache = {
-        get: jest.fn().mockResolvedValue(discoveredIssuer().metadata),
+        get: jest.fn().mockResolvedValue(discoveryDocument),
         set: jest.fn().mockResolvedValue(undefined),
         invalidate: jest.fn().mockResolvedValue(undefined),
       }
@@ -348,7 +390,7 @@ describe("OidcEngine", () => {
       await engine.buildAuthorizationUrl({ state: "one" })
 
       expect(cache.get).toHaveBeenCalledWith(`oidc:discovery:${ISSUER}`)
-      expect(discoverSpy).not.toHaveBeenCalled()
+      expect(fetchSpy).not.toHaveBeenCalled()
       expect(cache.set).not.toHaveBeenCalled()
     })
   })

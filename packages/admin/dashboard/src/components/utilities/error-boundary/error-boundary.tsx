@@ -4,7 +4,9 @@ import copy from "copy-to-clipboard"
 import { useTranslation } from "react-i18next"
 import { Navigate, useLocation, useRouteError } from "react-router-dom"
 
+import { isPermissionError } from "../../../lib/permissions"
 import { isFetchError } from "../../../lib/is-fetch-error"
+import { AccessDenied } from "../../authentication/route-permission-guard"
 
 export const ErrorBoundary = () => {
   const error = useRouteError()
@@ -13,9 +15,28 @@ export const ErrorBoundary = () => {
 
   let code: number | null = null
 
+  // A guarded loader throws this before fetching when the user lacks the
+  // required permission, carrying the permission so we can name it.
+  if (isPermissionError(error)) {
+    return (
+      <AccessDenied
+        requirement={{
+          permissions: error.permissions,
+          requireAll: error.requireAll,
+        }}
+      />
+    )
+  }
+
   if (isFetchError(error)) {
     if (error.status === 401) {
       return <Navigate to="/login" state={{ from: location }} replace />
+    }
+
+    // Fallback for a 403 that escaped a guarded loader (e.g. a sub-resource
+    // fetch); the required permission isn't known here.
+    if (error.status === 403) {
+      return <AccessDenied />
     }
 
     code = error.status ?? null
@@ -126,7 +147,7 @@ export const ErrorBoundary = () => {
               <div>
                 <Text
                   size="xsmall"
-                  className="break-words font-mono text-ui-fg-subtle"
+                  className="wrap-break-word font-mono text-ui-fg-subtle"
                 >
                   {errorMessage}
                 </Text>
@@ -140,7 +161,7 @@ export const ErrorBoundary = () => {
                   >
                     Stack Trace
                   </Text>
-                  <pre className="overflow-auto whitespace-pre-wrap break-words text-xs text-ui-fg-subtle">
+                  <pre className="overflow-auto whitespace-pre-wrap wrap-break-word text-xs text-ui-fg-subtle">
                     {errorStack}
                   </pre>
                 </div>

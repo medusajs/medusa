@@ -56,7 +56,7 @@ export const refundPaymentsStep = createStep(
       promises.push(
         paymentModule.refundPayment(refundInput).catch((e) => {
           logger.error(
-            `Error was thrown trying to cancel payment - ${refundInput.payment_id} - ${e}`
+            `Error was thrown trying to refund payment - ${refundInput.payment_id} - ${e}`
           )
         })
       )

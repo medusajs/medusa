@@ -1,6 +1,6 @@
 /* eslint-disable @medusajs/widget-must-have-default-export, @medusajs/widget-must-export-config */
 import { HttpTypes } from "@medusajs/types";
-import { createColumnHelper } from "@tanstack/react-table";
+import { createDataTableColumnHelper } from "@medusajs/ui";
 import { useMemo } from "react";
 import {
   ProductCell,
@@ -19,7 +19,7 @@ import {
   VariantHeader,
 } from "../../components/product/variant-cell";
 
-const columnHelper = createColumnHelper<HttpTypes.AdminProduct>();
+const columnHelper = createDataTableColumnHelper<HttpTypes.AdminProduct>();
 
 export const useProductTableColumns = () => {
   return useMemo(

@@ -3,6 +3,7 @@ import { writeStaticFiles as writeStaticFilesUtils } from "../utils/write-static
 
 interface WriteStaticFilesPluginOptions {
   plugins?: string[]
+  sources?: string[]
 }
 
 export const writeStaticFiles = (
@@ -11,7 +12,7 @@ export const writeStaticFiles = (
   return {
     name: "medusa:write-static-files",
     buildStart: async (ctx) => {
-      await writeStaticFilesUtils(options.plugins)
+      await writeStaticFilesUtils(options.plugins, options.sources)
     },
   }
 }

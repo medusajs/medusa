@@ -28,6 +28,7 @@ module.exports = defineConfig({
 - Store-credit service extras: `creditAccounts`, `debitAccounts`, `retrieveAccountStats({ account_id })` (returns `balance`, `credits`, `debits`). `listStoreCreditAccounts` also fills these fields on each account.
 - Routes:
   - Admin: `/admin/gift-cards`, `/admin/store-credit-accounts` (with `/:id/credit`, `/:id/debit`, `/:id/transactions`).
+  - With the RBAC module installed, admin routes are guarded by the `gift_card` and `store_credit_account` resources (`read` for GETs, `create` / `update` for writes; credit and debit are `store_credit_account:update`; `GET /admin/gift-cards/:id/orders` also needs `order:read`). `src/types/rbac.ts` declares the resources and `src/migration-scripts/create-loyalty-rbac-policies.ts` creates their policies on `db:migrate` (skipped, and retried later, while RBAC isn't installed).
   - Store: `GET /store/gift-cards/:idOrCode`, `POST|DELETE /store/carts/:id/gift-cards` (`{ code }`), `POST /store/carts/:id/store-credits` (`{ amount? }`, customer auth; the cart must belong to the authenticated customer), `/store/store-credit-accounts` (customer auth) and its `/claim`.
 - Docs: https://docs.medusajs.com/resources/commerce-modules/loyalty.md, https://docs.medusajs.com/resources/commerce-modules/loyalty/module-options.md, https://docs.medusajs.com/resources/commerce-modules/loyalty/gift-cards.md, https://docs.medusajs.com/resources/commerce-modules/loyalty/workflows.md
 

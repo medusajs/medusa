@@ -70,7 +70,6 @@ export const useInfiniteCategories = (
       HttpTypes.AdminProductCategoryListResponse,
       FetchError,
       InfiniteData<HttpTypes.AdminProductCategoryListResponse, number>,
-      HttpTypes.AdminProductCategoryListResponse,
       QueryKey,
       number
     >,
@@ -99,10 +98,10 @@ export const useCreateProductCategory = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.productCategory.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: categoriesQueryKeys.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -118,13 +117,13 @@ export const useUpdateProductCategory = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.productCategory.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: categoriesQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: categoriesQueryKeys.detail(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -140,13 +139,13 @@ export const useDeleteProductCategory = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.productCategory.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: categoriesQueryKeys.detail(id),
       })
       queryClient.invalidateQueries({ queryKey: categoriesQueryKeys.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -163,7 +162,7 @@ export const useUpdateProductCategoryProducts = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.productCategory.updateProducts(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: categoriesQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: categoriesQueryKeys.details(),
@@ -179,7 +178,7 @@ export const useUpdateProductCategoryProducts = (
         queryKey: productsQueryKeys.details(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

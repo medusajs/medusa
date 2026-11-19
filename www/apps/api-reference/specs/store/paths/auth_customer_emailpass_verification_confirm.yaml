@@ -26,8 +26,7 @@ post:
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/auth_customer_emailpass_verification_confirm/post.sh
+        $ref: ../code_samples/Shell/auth_customer_emailpass_verification_confirm/post.sh
   tags:
     - Auth
   responses:

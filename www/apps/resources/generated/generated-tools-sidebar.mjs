@@ -138,13 +138,6 @@ const generatedgeneratedToolsSidebarSidebar = {
               ]
             }
           ]
-        },
-        {
-          "loaded": true,
-          "type": "link",
-          "path": "/medusa-oas-cli",
-          "title": "medusa-oas-cli",
-          "children": []
         }
       ]
     },
@@ -1011,6 +1004,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/js-sdk/admin/auditLog",
+                  "title": "auditLog",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/js-sdk/admin/campaign",
                   "title": "campaign",
                   "description": "",
@@ -1117,6 +1118,14 @@ const generatedgeneratedToolsSidebarSidebar = {
                   "type": "link",
                   "path": "/references/js-sdk/admin/locale",
                   "title": "locale",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/js-sdk/admin/module",
+                  "title": "module",
                   "description": "",
                   "children": []
                 },

@@ -9,7 +9,6 @@ import {
   usePrompt,
 } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
-import { RowSelectionState } from "@tanstack/react-table"
 import { useCallback, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
@@ -17,6 +16,10 @@ import { DataTable } from "../../../../../components/data-table"
 import * as hooks from "../../../../../components/data-table/helpers/sales-channels"
 import { useBatchRemoveSalesChannelsFromApiKey } from "../../../../../hooks/api/api-keys"
 import { useSalesChannels } from "../../../../../hooks/api/sales-channels"
+import {
+  useApiKeyPermissions,
+  useSalesChannelPermissions,
+} from "../../../../../hooks/use-resource-permissions"
 
 type ApiKeySalesChannelSectionProps = {
   apiKey: AdminApiKeyResponse["api_key"]
@@ -28,8 +31,14 @@ const PREFIX = "sc"
 export const ApiKeySalesChannelSection = ({
   apiKey,
 }: ApiKeySalesChannelSectionProps) => {
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const [rowSelection, setRowSelection] = useState<DataTableRowSelectionState>(
+    {}
+  )
   const { t } = useTranslation()
+  const { canUpdate: canUpdateApiKey } = useApiKeyPermissions()
+  const { canUpdate: canUpdateSalesChannels } = useSalesChannelPermissions()
+
+  const canUpdate = canUpdateApiKey && canUpdateSalesChannels
 
   const searchParams = hooks.useSalesChannelTableQuery({
     pageSize: PAGE_SIZE,
@@ -43,9 +52,9 @@ export const ApiKeySalesChannelSection = ({
     }
   )
 
-  const columns = useColumns(apiKey.id)
+  const columns = useColumns(apiKey.id, canUpdate)
   const filters = hooks.useSalesChannelTableFilters()
-  const commands = useCommands(apiKey.id, setRowSelection)
+  const commands = useCommands(apiKey.id, setRowSelection, canUpdate)
   const emptyState = hooks.useSalesChannelTableEmptyState()
 
   return (
@@ -66,10 +75,14 @@ export const ApiKeySalesChannelSection = ({
           onRowSelectionChange: setRowSelection,
         }}
         rowHref={(row) => `/settings/sales-channels/${row.id}`}
-        action={{
-          label: t("actions.add"),
-          to: "sales-channels",
-        }}
+        action={
+          canUpdate
+            ? {
+                label: t("actions.add"),
+                to: "sales-channels",
+              }
+            : undefined
+        }
         prefix={PREFIX}
         pageSize={PAGE_SIZE}
       />
@@ -79,7 +92,7 @@ export const ApiKeySalesChannelSection = ({
 
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminSalesChannel>()
 
-const useColumns = (id: string) => {
+const useColumns = (id: string, canUpdate: boolean) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const prompt = usePrompt()
@@ -121,30 +134,36 @@ const useColumns = (id: string) => {
 
   return useMemo(
     () => [
-      columnHelper.select(),
+      ...(canUpdate ? [columnHelper.select()] : []),
       ...base,
-      columnHelper.action({
-        actions: (ctx) => [
-          [
-            {
-              label: t("actions.edit"),
-              icon: <PencilSquare />,
-              onClick: () => {
-                navigate(`/settings/sales-channels/${ctx.row.original.id}/edit`)
-              },
-            },
-          ],
-          [
-            {
-              icon: <Trash />,
-              label: t("actions.delete"),
-              onClick: () => handleDelete(ctx.row.original),
-            },
-          ],
-        ],
-      }),
+      ...(canUpdate
+        ? [
+            columnHelper.action({
+              actions: (ctx) => [
+                [
+                  {
+                    label: t("actions.edit"),
+                    icon: <PencilSquare />,
+                    onClick: () => {
+                      navigate(
+                        `/settings/sales-channels/${ctx.row.original.id}/edit`
+                      )
+                    },
+                  },
+                ],
+                [
+                  {
+                    icon: <Trash />,
+                    label: t("actions.delete"),
+                    onClick: () => handleDelete(ctx.row.original),
+                  },
+                ],
+              ],
+            }),
+          ]
+        : []),
     ],
-    [base, handleDelete, navigate, t]
+    [base, handleDelete, navigate, t, canUpdate]
   )
 }
 
@@ -152,7 +171,8 @@ const commandHelper = createDataTableCommandHelper()
 
 const useCommands = (
   id: string,
-  setRowSelection: (state: DataTableRowSelectionState) => void
+  setRowSelection: (state: DataTableRowSelectionState) => void,
+  canUpdate: boolean
 ) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
@@ -193,14 +213,17 @@ const useCommands = (
     [mutateAsync, prompt, t, setRowSelection]
   )
 
-  return useMemo(
-    () => [
+  return useMemo(() => {
+    if (!canUpdate) {
+      return []
+    }
+
+    return [
       commandHelper.command({
         action: handleRemove,
         label: t("actions.remove"),
         shortcut: "r",
       }),
-    ],
-    [handleRemove, t]
-  )
+    ]
+  }, [handleRemove, t, canUpdate])
 }

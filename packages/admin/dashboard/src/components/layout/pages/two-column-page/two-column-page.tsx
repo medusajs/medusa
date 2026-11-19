@@ -38,6 +38,10 @@ const Root = <TData,>({
    */
   showMetadata = false,
   /**
+   * Whether to show required permissions section. Defaults to true.
+   */
+  showRequiredPermissions = false,
+  /**
    * Optional section rendered under the JSON section.
    */
   requiredPermissionsSection = <RequiredPermissionsSection />,
@@ -76,14 +80,14 @@ const Root = <TData,>({
   }
 
   const [main, sidebar] = childrenArray
-  const showExtraData = showJSON || showMetadata
+  const showExtraData = showJSON || showMetadata || showRequiredPermissions
 
   return (
     <div className="flex w-full flex-col gap-y-3">
       {before.map((Component, i) => {
         return <Component {...widgetProps} key={i} />
       })}
-      <div className="flex w-full flex-col items-start gap-x-4 gap-y-3 xl:grid xl:grid-cols-[minmax(0,_1fr)_440px]">
+      <div className="flex w-full flex-col items-start gap-x-4 gap-y-3 xl:grid xl:grid-cols-[minmax(0,1fr)_440px]">
         <div className="flex w-full min-w-0 flex-col gap-y-3">
           {main}
           {after.map((Component, i) => {
@@ -93,7 +97,7 @@ const Root = <TData,>({
             <div className="hidden flex-col gap-y-3 xl:flex">
               {showMetadata && <MetadataSection data={data!} />}
               {showJSON && <JsonViewSection data={data!} />}
-              {showJSON && requiredPermissionsSection}
+              {showRequiredPermissions && requiredPermissionsSection}
             </div>
           )}
         </div>
@@ -139,7 +143,7 @@ const Sidebar = ({
   return (
     <div
       className={clx(
-        "flex w-full max-w-[100%] flex-col gap-y-3 xl:mt-0 xl:max-w-[440px]",
+        "flex w-full max-w-full flex-col gap-y-3 xl:mt-0 xl:max-w-[440px]",
         className
       )}
       {...props}

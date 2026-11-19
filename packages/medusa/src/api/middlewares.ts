@@ -1,5 +1,6 @@
 import { defineMiddlewares } from "../utils/define-middlewares"
 import { adminApiKeyRoutesMiddlewares } from "./admin/api-keys/middlewares"
+import { adminAuditLogRoutesMiddlewares } from "./admin/audit-logs/middlewares"
 import { adminCampaignRoutesMiddlewares } from "./admin/campaigns/middlewares"
 import { adminClaimRoutesMiddlewares } from "./admin/claims/middlewares"
 import { adminCollectionRoutesMiddlewares } from "./admin/collections/middlewares"
@@ -29,7 +30,7 @@ import { adminProductVariantRoutesMiddlewares } from "./admin/product-variants/m
 import { adminProductRoutesMiddlewares } from "./admin/products/middlewares"
 import { adminPromotionRoutesMiddlewares } from "./admin/promotions/middlewares"
 import { adminPropertyLabelsMiddlewares } from "./admin/property-labels/middlewares"
-import { adminRbacRoutesMiddlewares } from "./admin/rbac/middlewares"
+import { rbacRoutesMiddlewares } from "./rbac/middlewares"
 import { adminRefundReasonsRoutesMiddlewares } from "./admin/refund-reasons/middlewares"
 import { adminRegionRoutesMiddlewares } from "./admin/regions/middlewares"
 import { adminReservationRoutesMiddlewares } from "./admin/reservations/middlewares"
@@ -82,7 +83,7 @@ import { adminTranslationsRoutesMiddlewares } from "./admin/translations/middlew
 export default defineMiddlewares([
   ...storeRoutesMiddlewares,
   {
-    matcher: "/admin*",
+    matcher: "/admin{*splat}",
     middlewares: [setSecretApiKeyContext],
   },
   ...adminCustomerGroupRoutesMiddlewares,
@@ -106,13 +107,14 @@ export default defineMiddlewares([
   ...adminReturnRoutesMiddlewares,
   ...storeRegionRoutesMiddlewares,
   ...adminRegionRoutesMiddlewares,
-  ...adminRbacRoutesMiddlewares,
+  ...rbacRoutesMiddlewares,
   ...adminUserRoutesMiddlewares,
   ...adminInviteRoutesMiddlewares,
   ...adminTaxRateRoutesMiddlewares,
   ...adminTaxRegionRoutesMiddlewares,
   ...adminTranslationsRoutesMiddlewares,
   ...adminApiKeyRoutesMiddlewares,
+  ...adminAuditLogRoutesMiddlewares,
   ...hooksRoutesMiddlewares,
   ...adminStoreRoutesMiddlewares,
   ...adminCurrencyRoutesMiddlewares,

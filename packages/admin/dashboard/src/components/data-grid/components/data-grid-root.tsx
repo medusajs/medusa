@@ -10,11 +10,12 @@ import {
   Column,
   ColumnDef,
   Row,
-  VisibilityState,
+  ColumnVisibilityState,
   flexRender,
-  getCoreRowModel,
-  useReactTable,
+  useTable,
+  RowData,
 } from "@tanstack/react-table"
+import { DataGridFeatures, dataGridFeatures } from "../data-grid-features"
 import {
   VirtualItem,
   Virtualizer,
@@ -54,11 +55,11 @@ import { DataGridCoordinates, GridColumnOption } from "../types"
 import { isCellMatch, isSpecialFocusKey } from "../utils"
 import { DataGridKeyboardShortcutModal } from "./data-grid-keyboard-shortcut-modal"
 export interface DataGridRootProps<
-  TData,
+  TData extends RowData,
   TFieldValues extends FieldValues = FieldValues,
 > {
   data?: TData[]
-  columns: ColumnDef<TData>[]
+  columns: ColumnDef<DataGridFeatures, TData>[]
   state: UseFormReturn<TFieldValues>
   getSubRows?: (row: TData) => TData[] | undefined
   onEditingChange?: (isEditing: boolean) => void
@@ -87,8 +88,8 @@ export interface DataGridRootProps<
 
 const ROW_HEIGHT = 40
 
-const getCommonPinningStyles = <TData,>(
-  column: Column<TData>
+const getCommonPinningStyles = <TData extends RowData>(
+  column: Column<DataGridFeatures, TData>
 ): CSSProperties => {
   const isPinned = column.getIsPinned()
 
@@ -108,8 +109,8 @@ const getCommonPinningStyles = <TData,>(
     zIndex: isPinned ? 1 : 0,
     borderBottom: isPinned ? `1px solid ${BORDER_COLOR}` : undefined,
     borderRight: isPinned ? `1px solid ${BORDER_COLOR}` : undefined,
-    left: isPinned === "left" ? `${column.getStart("left")}px` : undefined,
-    right: isPinned === "right" ? `${column.getAfter("right")}px` : undefined,
+    left: isPinned === "start" ? `${column.getStart("start")}px` : undefined,
+    right: isPinned === "end" ? `${column.getAfter("end")}px` : undefined,
   }
 }
 
@@ -119,7 +120,7 @@ const getCommonPinningStyles = <TData,>(
  */
 
 export const DataGridRoot = <
-  TData,
+  TData extends RowData,
   TFieldValues extends FieldValues = FieldValues,
 >({
   data = [],
@@ -162,15 +163,18 @@ export const DataGridRoot = <
 
   const [isEditing, setIsEditing] = useState(false)
 
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-  const [rowVisibility, setRowVisibility] = useState<VisibilityState>({})
+  const [columnVisibility, setColumnVisibility] =
+    useState<ColumnVisibilityState>({})
+  const [rowVisibility, setRowVisibility] = useState<ColumnVisibilityState>({})
 
-  const grid = useReactTable({
+  const grid = useTable({
+    features: dataGridFeatures,
     data: data,
     columns,
     initialState: {
       columnPinning: {
-        left: [columns[0].id!],
+        start: [columns[0].id!],
+        end: [],
       },
     },
     state: {
@@ -178,7 +182,6 @@ export const DataGridRoot = <
     },
     onColumnVisibilityChange: setColumnVisibility,
     getSubRows,
-    getCoreRowModel: getCoreRowModel(),
     columnResizeMode: "onChange",
     defaultColumn: {
       size: 200,
@@ -333,7 +336,7 @@ export const DataGridRoot = <
   const virtualColumns = columnVirtualizer.getVirtualItems()
 
   // The column virtualizer caches sizes from getSize(); re-measure when a resize changes them.
-  const columnSizing = grid.getState().columnSizing
+  const columnSizing = grid.state.columnSizing
   useEffect(() => {
     columnVirtualizer.measure()
   }, [columnSizing, columnVirtualizer])
@@ -679,13 +682,14 @@ export const DataGridRoot = <
           isHighlighted={isHighlighted}
           onHeaderInteractionChange={handleHeaderInteractionChange}
           headerContent={headerContent}
+          showShortcuts={!disableInteractions}
         />
         <div className="size-full overflow-hidden">
           <div
             ref={containerRef}
             autoFocus
             tabIndex={0}
-            className="relative h-full select-none overflow-auto outline-none"
+            className="relative h-full select-none overflow-auto outline-hidden"
             onFocus={handleRestoreGridFocus}
             onClick={handleRestoreGridFocus}
             data-container={true}
@@ -694,7 +698,7 @@ export const DataGridRoot = <
             <div role="grid" className="grid text-ui-fg-subtle">
               <div
                 role="rowgroup"
-                className="txt-compact-small-plus sticky top-0 z-[1] grid bg-ui-bg-subtle"
+                className="txt-compact-small-plus sticky top-0 z-1 grid bg-ui-bg-subtle"
               >
                 {grid.getHeaderGroups().map((headerGroup) => (
                   <div
@@ -749,7 +753,7 @@ export const DataGridRoot = <
                               onTouchStart={header.getResizeHandler()}
                               onClick={(e) => e.stopPropagation()}
                               className={clx(
-                                "absolute right-0 top-0 z-[2] h-full w-1 cursor-col-resize touch-none select-none hover:bg-ui-fg-interactive",
+                                "absolute right-0 top-0 z-2 h-full w-1 cursor-col-resize touch-none select-none hover:bg-ui-fg-interactive",
                                 {
                                   "bg-ui-fg-interactive":
                                     header.column.getIsResizing(),
@@ -782,7 +786,10 @@ export const DataGridRoot = <
                 }}
               >
                 {virtualRows.map((virtualRow) => {
-                  const row = visibleRows[virtualRow.index] as Row<TData>
+                  const row = visibleRows[virtualRow.index] as Row<
+                    DataGridFeatures,
+                    TData
+                  >
 
                   // In lazy mode, rows beyond loaded data show as skeleton
                   if (!row) {
@@ -836,6 +843,7 @@ type DataGridHeaderProps = {
   onToggleErrorHighlighting: () => void
   onHeaderInteractionChange: (isActive: boolean) => void
   headerContent?: ReactNode
+  showShortcuts?: boolean
 }
 
 const DataGridHeader = ({
@@ -849,6 +857,7 @@ const DataGridHeader = ({
   onHeaderInteractionChange,
   showColumnsDropdown,
   headerContent,
+  showShortcuts = true,
 }: DataGridHeaderProps) => {
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const [columnsOpen, setColumnsOpen] = useState(false)
@@ -942,17 +951,19 @@ const DataGridHeader = ({
             </span>
           </Button>
         )}
-        <DataGridKeyboardShortcutModal
-          open={shortcutsOpen}
-          onOpenChange={handleShortcutsOpenChange}
-        />
+        {showShortcuts && (
+          <DataGridKeyboardShortcutModal
+            open={shortcutsOpen}
+            onOpenChange={handleShortcutsOpenChange}
+          />
+        )}
       </div>
     </div>
   )
 }
 
-type DataGridCellProps<TData> = {
-  cell: Cell<TData, unknown>
+type DataGridCellProps<TData extends RowData> = {
+  cell: Cell<DataGridFeatures, TData, unknown>
   columnIndex: number
   rowIndex: number
   anchor: DataGridCoordinates | null
@@ -960,7 +971,7 @@ type DataGridCellProps<TData> = {
   multiColumnSelection: boolean
 }
 
-const DataGridCell = <TData,>({
+const DataGridCell = <TData extends RowData>({
   cell,
   columnIndex,
   rowIndex,
@@ -987,7 +998,7 @@ const DataGridCell = <TData,>({
       data-row-index={rowIndex}
       data-column-index={columnIndex}
       className={clx(
-        "relative flex items-stretch border-b border-r p-0 outline-none"
+        "relative flex items-stretch border-b border-r p-0 outline-hidden"
       )}
       tabIndex={-1}
     >
@@ -996,12 +1007,12 @@ const DataGridCell = <TData,>({
           ...cell.getContext(),
           columnIndex,
           rowIndex: rowIndex,
-        } as CellContext<TData, any>)}
+        } as CellContext<DataGridFeatures, TData, any>)}
         {isAnchor && (
           <div
             onMouseDown={onDragToFillStart}
             className={clx(
-              "absolute bottom-0 right-0 z-[3] size-1.5 cursor-ns-resize bg-ui-fg-interactive",
+              "absolute bottom-0 right-0 z-3 size-1.5 cursor-ns-resize bg-ui-fg-interactive",
               {
                 "cursor-nwse-resize": multiColumnSelection,
               }
@@ -1013,21 +1024,21 @@ const DataGridCell = <TData,>({
   )
 }
 
-type DataGridRowProps<TData> = {
-  row: Row<TData>
+type DataGridRowProps<TData extends RowData> = {
+  row: Row<DataGridFeatures, TData>
   rowIndex: number
   virtualRow: VirtualItem
   rowVirtualizer: Virtualizer<HTMLDivElement, Element>
   virtualPaddingLeft?: number
   virtualPaddingRight?: number
   virtualColumns: VirtualItem[]
-  flatColumns: Column<TData, unknown>[]
+  flatColumns: Column<DataGridFeatures, TData, unknown>[]
   anchor: DataGridCoordinates | null
   onDragToFillStart: (e: React.MouseEvent<HTMLElement>) => void
   multiColumnSelection: boolean
 }
 
-const DataGridRow = <TData,>({
+const DataGridRow = <TData extends RowData>({
   row,
   rowIndex,
   virtualRow,
@@ -1157,10 +1168,10 @@ const DataGridRowSkeleton = ({
             key={`skeleton-cell-${vc.index}`}
             role="gridcell"
             style={{ width: vc.size }}
-            className="relative flex items-center border-b border-r p-0 outline-none"
+            className="relative flex items-center border-b border-r p-0 outline-hidden"
           >
             <div className="flex h-full w-full items-center px-4">
-              <div className="h-4 w-3/4 animate-pulse rounded bg-ui-bg-component" />
+              <div className="h-4 w-3/4 animate-pulse rounded-sm bg-ui-bg-component" />
             </div>
           </div>
         )

@@ -6,6 +6,7 @@ import {
   OnChangeFn,
   RowSelectionState,
 } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { keepPreviousData } from "@tanstack/react-query"
@@ -34,8 +35,10 @@ const BatchImageVariantsSchema = zod.object({
   variants: zod.array(zod.string()),
 })
 
-const variantColumnHelper =
-  createColumnHelper<NonNullable<AdminProduct["variants"]>[0]>()
+const variantColumnHelper = createColumnHelper<
+  DataTableFeatures,
+  NonNullable<AdminProduct["variants"]>[0]
+>()
 
 export const VariantsTableForm = ({
   productId,
@@ -114,6 +117,7 @@ export const VariantsTableForm = ({
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()

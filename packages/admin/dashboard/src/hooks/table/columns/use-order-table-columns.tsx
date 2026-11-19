@@ -4,6 +4,7 @@ import {
   ColumnDefBase,
   createColumnHelper,
 } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import {
   DateCell,
@@ -35,15 +36,25 @@ import {
   TotalCell,
   TotalHeader,
 } from "../../../components/table/table-cells/order/total-cell"
+import {
+  useCustomerPermissions,
+  useSalesChannelPermissions,
+} from "../../use-resource-permissions"
 
 // We have to use any here, as the type of Order is so complex that it lags the TS server
-const columnHelper = createColumnHelper<HttpTypes.AdminOrder>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminOrder
+>()
 
 type UseOrderTableColumnsProps = {
   exclude?: string[]
 }
 
 export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
+  const { canRead: canReadCustomers } = useCustomerPermissions()
+  const { canRead: canReadSalesChannels } = useSalesChannelPermissions()
+
   const { exclude = [] } = props ?? {}
 
   const columns = useMemo(
@@ -64,22 +75,30 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
           return <DateCell date={date} />
         },
       }),
-      columnHelper.accessor("customer", {
-        header: () => <CustomerHeader />,
-        cell: ({ getValue }) => {
-          const customer = getValue()
+      ...(canReadCustomers
+        ? [
+            columnHelper.accessor("customer", {
+              header: () => <CustomerHeader />,
+              cell: ({ getValue }) => {
+                const customer = getValue()
 
-          return <CustomerCell customer={customer} />
-        },
-      }),
-      columnHelper.accessor("sales_channel", {
-        header: () => <SalesChannelHeader />,
-        cell: ({ getValue }) => {
-          const channel = getValue()
+                return <CustomerCell customer={customer} />
+              },
+            }),
+          ]
+        : []),
+      ...(canReadSalesChannels
+        ? [
+            columnHelper.accessor("sales_channel", {
+              header: () => <SalesChannelHeader />,
+              cell: ({ getValue }) => {
+                const channel = getValue()
 
-          return <SalesChannelCell channel={channel} />
-        },
-      }),
+                return <SalesChannelCell channel={channel} />
+              },
+            }),
+          ]
+        : []),
       columnHelper.accessor("payment_status", {
         header: () => <PaymentStatusHeader />,
         cell: ({ getValue }) => {
@@ -132,17 +151,23 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
 
   const isAccessorColumnDef = (
     c: any
-  ): c is ColumnDef<HttpTypes.AdminOrder> & { accessorKey: string } => {
+  ): c is ColumnDef<DataTableFeatures, HttpTypes.AdminOrder> & {
+    accessorKey: string
+  } => {
     return c.accessorKey !== undefined
   }
 
   const isDisplayColumnDef = (
     c: any
-  ): c is ColumnDef<HttpTypes.AdminOrder> & { id: string } => {
+  ): c is ColumnDef<DataTableFeatures, HttpTypes.AdminOrder> & {
+    id: string
+  } => {
     return c.id !== undefined
   }
 
-  const shouldExclude = <TDef extends ColumnDefBase<HttpTypes.AdminOrder, any>>(
+  const shouldExclude = <
+    TDef extends ColumnDefBase<DataTableFeatures, HttpTypes.AdminOrder, any>,
+  >(
     c: TDef
   ) => {
     if (isAccessorColumnDef(c)) {
@@ -154,7 +179,8 @@ export const useOrderTableColumns = (props: UseOrderTableColumnsProps) => {
     return false
   }
 
-  return columns.filter(
-    (c) => !shouldExclude(c)
-  ) as ColumnDef<HttpTypes.AdminOrder>[]
+  return columns.filter((c) => !shouldExclude(c)) as ColumnDef<
+    DataTableFeatures,
+    HttpTypes.AdminOrder
+  >[]
 }

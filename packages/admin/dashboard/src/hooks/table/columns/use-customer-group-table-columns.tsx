@@ -1,4 +1,5 @@
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 
 import { useTranslation } from "react-i18next"
@@ -8,7 +9,10 @@ import {
 } from "../../../components/table/table-cells/common/text-cell"
 import { HttpTypes } from "@medusajs/types"
 
-const columnHelper = createColumnHelper<HttpTypes.AdminCustomerGroup>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminCustomerGroup
+>()
 
 export const useCustomerGroupTableColumns = () => {
   const { t } = useTranslation()

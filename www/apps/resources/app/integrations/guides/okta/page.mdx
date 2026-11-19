@@ -17,6 +17,14 @@ export const metadata = {
 
 # {metadata.title}
 
+<Note title="Looking for a built-in integration?">
+
+Medusa has an [OIDC Auth Module Provider](../../../enterprise/sso/page.mdx) that authenticates users with Okta, and any other identity provider that implements OpenID Connect, without writing a custom provider. The Medusa Admin dashboard also renders its login button for you. It's an [enterprise feature](../../../enterprise/page.mdx), so it requires a license key.
+
+Follow this tutorial instead if you want to build and own the integration yourself.
+
+</Note>
+
 In this tutorial, you'll learn how to allow admin users to authenticate with Okta.
 
 When you install a Medusa application, you get a fully-fledged commerce platform with a Framework for customization. Medusa also facilitates integrating third-party services that enrich your application with features specific to your unique business use case.
@@ -628,6 +636,36 @@ To register the Okta Auth Module Provider, you add an object to the `providers` 
     - `{identifier}`: The identifier static property defined in the Module Provider's service, which is `okta` in this case.
     - `{id}`: The ID set in this configuration, which is also `okta` in this case.
 - `options`: The options to pass to the module provider. These are the options you defined in the `Options` type of the module provider's service.
+
+### Allow the Okta Provider for Admin Users
+
+Admin users can only authenticate with the `emailpass` provider by default, so you must also allow the Okta provider for the `user` [actor type](../../../commerce-modules/auth/auth-identity-and-actor-types/page.mdx).
+
+To do that, set the `http.authMethodsPerActor` configuration in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      // ...
+      authMethodsPerActor: {
+        user: ["emailpass", "okta"],
+        customer: ["emailpass"],
+      },
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+This allows admin users to authenticate with email and password or with Okta, and customers with email and password only.
+
+<Note>
+
+Before [Medusa v2.21.1](https://github.com/medusajs/medusa/releases/tag/v2.21.1), admin users could authenticate with every registered provider by default, so this configuration wasn't necessary.
+
+</Note>
 
 ### f. Set Up Environment Variables
 

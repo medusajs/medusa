@@ -3,6 +3,8 @@ import { RedisCacheModuleOptions } from "@types"
 import { Redis } from "ioredis"
 import { createGunzip, createGzip } from "zlib"
 
+const CLEAR_BATCH_SIZE = 1000
+
 export class RedisCachingProvider {
   static identifier = "cache-redis"
 
@@ -387,69 +389,26 @@ export class RedisCachingProvider {
           return
         }
 
-        // Get all keys associated with the tags
-        const pipeline = this.redisClient.pipeline()
-        tags.forEach((tag) => {
+        if (options && options.autoInvalidate !== true) {
+          return
+        }
+
+        // Iterate tag members in batches so memory stays bounded for large tags
+        for (const tag of tags) {
           const tagKey = this.#getTagKey(tag)
-          pipeline.smembers(tagKey)
-        })
+          let cursor = "0"
 
-        const tagResults = await pipeline.exec()
+          do {
+            const [nextCursor, keyNames] = await this.redisClient.sscan(
+              tagKey,
+              cursor,
+              "COUNT",
+              CLEAR_BATCH_SIZE
+            )
+            cursor = nextCursor
 
-        const allKeys = new Set<string>()
-
-        tagResults?.forEach((result) => {
-          if (result && result[1]) {
-            ;(result[1] as string[]).forEach((key) => allKeys.add(key))
-          }
-        })
-
-        if (allKeys.size) {
-          // If no options provided (user explicit call), clear everything
-          if (!options) {
-            await this.#deleteEntries(Array.from(allKeys))
-            return
-          }
-
-          // If autoInvalidate is true (strategy call), only clear entries with autoInvalidate=true (default)
-          if (options.autoInvalidate === true) {
-            const optionsPipeline = this.redisClient.pipeline()
-
-            Array.from(allKeys).forEach((key) => {
-              optionsPipeline.hget(key, "options")
-            })
-
-            const optionsResults = await optionsPipeline.exec()
-            const keysToDelete: string[] = []
-
-            Array.from(allKeys).forEach((key, index) => {
-              const optionsResult = optionsResults?.[index]
-
-              if (optionsResult && optionsResult[1]) {
-                try {
-                  const entryOptions = JSON.parse(optionsResult[1] as string)
-
-                  // Delete if entry has autoInvalidate=true or no setting (default true)
-                  const shouldAutoInvalidate =
-                    entryOptions.autoInvalidate ?? true
-
-                  if (shouldAutoInvalidate) {
-                    keysToDelete.push(key)
-                  }
-                } catch (e) {
-                  // If can't parse options, assume it's safe to delete (default true)
-                  keysToDelete.push(key)
-                }
-              } else {
-                // No options stored, default to true
-                keysToDelete.push(key)
-              }
-            })
-
-            if (keysToDelete.length) {
-              await this.#deleteEntries(keysToDelete)
-            }
-          }
+            await this.#clearTaggedEntries(keyNames, options)
+          } while (cursor !== "0")
         }
       }
     } catch (error) {
@@ -463,6 +422,56 @@ export class RedisCachingProvider {
       }
       throw error
     }
+  }
+
+  async #clearTaggedEntries(
+    keyNames: string[],
+    options?: { autoInvalidate?: boolean }
+  ): Promise<void> {
+    if (!keyNames.length) {
+      return
+    }
+
+    // If no options provided (user explicit call), clear everything
+    if (!options) {
+      await this.#deleteEntries(keyNames)
+      return
+    }
+
+    // autoInvalidate is true (strategy call), only clear entries with autoInvalidate=true (default)
+    const optionsPipeline = this.redisClient.pipeline()
+
+    keyNames.forEach((key) => {
+      optionsPipeline.hget(key, "options")
+    })
+
+    const optionsResults = await optionsPipeline.exec()
+    const keysToDelete: string[] = []
+
+    keyNames.forEach((key, index) => {
+      const optionsResult = optionsResults?.[index]
+
+      if (optionsResult && optionsResult[1]) {
+        try {
+          const entryOptions = JSON.parse(optionsResult[1] as string)
+
+          // Delete if entry has autoInvalidate=true or no setting (default true)
+          const shouldAutoInvalidate = entryOptions.autoInvalidate ?? true
+
+          if (shouldAutoInvalidate) {
+            keysToDelete.push(key)
+          }
+        } catch (e) {
+          // If can't parse options, assume it's safe to delete (default true)
+          keysToDelete.push(key)
+        }
+      } else {
+        // No options stored, default to true
+        keysToDelete.push(key)
+      }
+    })
+
+    await this.#deleteEntries(keysToDelete)
   }
 
   async flush(): Promise<void> {

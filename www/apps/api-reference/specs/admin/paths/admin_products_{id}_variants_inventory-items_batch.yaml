@@ -27,13 +27,11 @@ post:
     - lang: JavaScript
       label: JS SDK
       source:
-        $ref: >-
-          ../code_samples/JavaScript/admin_products_{id}_variants_inventory-items_batch/post.js
+        $ref: ../code_samples/JavaScript/admin_products_{id}_variants_inventory-items_batch/post.js
     - lang: Shell
       label: cURL
       source:
-        $ref: >-
-          ../code_samples/Shell/admin_products_{id}_variants_inventory-items_batch/post.sh
+        $ref: ../code_samples/Shell/admin_products_{id}_variants_inventory-items_batch/post.sh
   tags:
     - Products
   responses:
@@ -42,8 +40,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: >-
-              ../components/schemas/AdminProductVariantInventoryBatchResponse.yaml
+            $ref: ../components/schemas/AdminProductVariantInventoryBatchResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

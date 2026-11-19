@@ -1,6 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "@medusajs/ui-preset/theme.css";
+
+@source "./";
 
 @layer base {
   :root {

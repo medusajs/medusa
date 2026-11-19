@@ -16,10 +16,9 @@ import {
 import { MedusaCloudEmailNotificationProvider } from "../providers/medusa-cloud-email"
 
 const validateCloudOptions = (options: NotificationModuleOptions["cloud"]) => {
-  const { api_key, endpoint, environment_handle, sandbox_handle } =
-    options ?? {}
+  const { api_key, endpoint, environment_handle } = options ?? {}
 
-  if (!environment_handle && !sandbox_handle) {
+  if (!environment_handle) {
     return false
   }
 

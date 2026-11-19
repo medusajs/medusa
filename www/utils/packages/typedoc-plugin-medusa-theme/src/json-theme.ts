@@ -3,8 +3,6 @@ import {
   DeclarationReflection,
   PageEvent,
   ProjectReflection,
-  Reflection,
-  RenderTemplate,
 } from "typedoc"
 import { MarkdownTheme } from "./theme.js"
 import { Mapping } from "./types.js"
@@ -42,11 +40,8 @@ export class JsonTheme extends MarkdownTheme {
    * The doc-model has no separate markdown/JSON formatting pass — the template
    * already returns the serialized `DocPage`.
    */
-  render(
-    page: PageEvent<Reflection>,
-    template: RenderTemplate<PageEvent<Reflection>>
-  ): string {
-    return template(page) as string
+  render(page: PageEvent): string {
+    return this.renderPage(page)
   }
 
   toUrl(mapping: Mapping, reflection: DeclarationReflection): string {

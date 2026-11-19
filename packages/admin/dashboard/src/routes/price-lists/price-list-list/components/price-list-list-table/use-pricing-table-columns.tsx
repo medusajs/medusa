@@ -1,5 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -8,11 +9,16 @@ import { TextHeader } from "../../../../../components/table/table-cells/common/t
 import { getPriceListStatus } from "../../../common/utils"
 import { PriceListListTableActions } from "./price-list-list-table-actions"
 import { PriceCountCell } from "./price-count-cell"
+import { usePricePermissions } from "../../../../../hooks/use-resource-permissions"
 
-const columnHelper = createColumnHelper<HttpTypes.AdminPriceList>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminPriceList
+>()
 
 export const usePricingTableColumns = () => {
   const { t } = useTranslation()
+  const { canRead: canReadPrices } = usePricePermissions()
 
   return useMemo(
     () => [
@@ -28,11 +34,17 @@ export const usePricingTableColumns = () => {
           return <StatusCell color={color}>{text}</StatusCell>
         },
       }),
-      columnHelper.display({
-        id: "price_overrides",
-        header: t("priceLists.fields.priceOverrides.header"),
-        cell: ({ row }) => <PriceCountCell priceListId={row.original.id} />,
-      }),
+      ...(canReadPrices
+        ? [
+            columnHelper.display({
+              id: "price_overrides",
+              header: t("priceLists.fields.priceOverrides.header"),
+              cell: ({ row }) => (
+                <PriceCountCell priceListId={row.original.id} />
+              ),
+            }),
+          ]
+        : []),
       columnHelper.display({
         id: "actions",
         cell: ({ row }) => (

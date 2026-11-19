@@ -2,6 +2,7 @@ import { HttpTypes } from "@medusajs/types"
 import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
@@ -12,12 +13,14 @@ import { useProductTypeTableColumns } from "../../../../../hooks/table/columns/u
 import { useProductTypeTableFilters } from "../../../../../hooks/table/filters/use-product-type-table-filters"
 import { useProductTypeTableQuery } from "../../../../../hooks/table/query/use-product-type-table-query"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useProductTypePermissions } from "../../../../../hooks/use-resource-permissions"
 import { ProductTypeRowActions } from "./product-table-row-actions"
 
 const PAGE_SIZE = 20
 
 export const ProductTypeListTable = () => {
   const { t } = useTranslation()
+  const { canCreate } = useProductTypePermissions()
 
   const { searchParams, raw } = useProductTypeTableQuery({
     pageSize: PAGE_SIZE,
@@ -53,9 +56,11 @@ export const ProductTypeListTable = () => {
             {t("productTypes.subtitle")}
           </Text>
         </div>
-        <Button size="small" variant="secondary" asChild>
-          <Link to="create">{t("actions.create")}</Link>
-        </Button>
+        {canCreate && (
+          <Button size="small" variant="secondary" asChild>
+            <Link to="create">{t("actions.create")}</Link>
+          </Button>
+        )}
       </div>
       <_DataTable
         table={table}
@@ -78,7 +83,10 @@ export const ProductTypeListTable = () => {
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminProductType>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminProductType
+>()
 
 const useColumns = () => {
   const base = useProductTypeTableColumns()

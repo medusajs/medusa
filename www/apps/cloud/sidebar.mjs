@@ -36,6 +36,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            path: "/migrate-self-hosted",
+            title: "Migrate from Self Hosting",
+          },
+          {
+            type: "link",
             title: "Command Palette",
             path: "/command-palette",
           },
@@ -68,7 +73,7 @@ export const sidebar = [
               },
               {
                 type: "link",
-                title: "ChatGPT App",
+                title: "ChatGPT Plugin",
                 path: "/medusa-mcp/chatgpt",
               },
               {
@@ -104,6 +109,11 @@ export const sidebar = [
                 type: "link",
                 title: "Connections",
                 path: "/organizations/connections",
+              },
+              {
+                type: "link",
+                title: "License",
+                path: "/organizations/license",
               },
             ],
           },
@@ -536,6 +546,23 @@ export const sidebar = [
             type: "link",
             title: "IP Addresses",
             path: "/ip-addresses",
+          },
+          {
+            type: "link",
+            title: "Medusa Security",
+            path: "/security",
+            children: [
+              {
+                type: "link",
+                title: "Security Analytics",
+                path: "/security/analytics",
+              },
+              {
+                type: "link",
+                title: "Data Protection",
+                path: "/security/data-protection",
+              },
+            ],
           },
         ],
       },

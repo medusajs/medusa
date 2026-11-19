@@ -1,7 +1,6 @@
 import { ConfigModule } from "@medusajs/framework/config"
 import { ApiLoader } from "@medusajs/framework/http"
 import { MedusaContainer, PluginDetails } from "@medusajs/framework/types"
-import { FeatureFlag } from "@medusajs/framework/utils"
 import { Express } from "express"
 import { join } from "path"
 import qs from "qs"
@@ -19,17 +18,14 @@ export default async ({ app, container, plugins }: Options) => {
     const parsedUrl = req.url.split("?")
     parsedUrl.shift()
     const queryParamsStr = parsedUrl.join("?")
-    if (queryParamsStr) {
-      req.query = qs.parse(queryParamsStr, { arrayLimit: Infinity })
-    }
+    Object.defineProperty(req, "query", {
+      value: qs.parse(queryParamsStr, { arrayLimit: Infinity }),
+      writable: true,
+      enumerable: true,
+      configurable: true,
+    })
     next()
   })
-
-  // Store the initial router stack length before loading API resources for HMR
-  if (FeatureFlag.isFeatureEnabled("backend_hmr")) {
-    const initialStackLength = (app as any)._router?.stack?.length ?? 0
-    ;(global as any).__MEDUSA_HMR_INITIAL_STACK_LENGTH__ = initialStackLength
-  }
 
   const sourcePaths: string[] = []
 

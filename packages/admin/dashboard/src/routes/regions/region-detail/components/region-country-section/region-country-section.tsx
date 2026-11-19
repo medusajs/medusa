@@ -6,12 +6,14 @@ import {
   RowSelectionState,
   createColumnHelper,
 } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useUpdateRegion } from "../../../../../hooks/api/regions"
 import { useDataTable } from "../../../../../hooks/use-data-table"
+import { useRegionPermissions } from "../../../../../hooks/use-resource-permissions"
 import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
@@ -27,6 +29,7 @@ const PAGE_SIZE = 10
 export const RegionCountrySection = ({ region }: RegionCountrySectionProps) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
+  const { canUpdate } = useRegionPermissions()
 
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
@@ -39,14 +42,14 @@ export const RegionCountrySection = ({ region }: RegionCountrySectionProps) => {
     ...searchParams,
   })
 
-  const columns = useColumns()
+  const columns = useColumns(canUpdate)
 
   const { table } = useDataTable({
     data: countries || [],
     columns,
     count,
     enablePagination: true,
-    enableRowSelection: true,
+    enableRowSelection: canUpdate,
     getRowId: (row) => row.iso_2,
     pageSize: PAGE_SIZE,
     rowSelection: {
@@ -102,19 +105,21 @@ export const RegionCountrySection = ({ region }: RegionCountrySectionProps) => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading level="h2">{t("fields.countries")}</Heading>
-        <ActionMenu
-          groups={[
-            {
-              actions: [
-                {
-                  label: t("regions.addCountries"),
-                  icon: <PlusMini />,
-                  to: "countries/add",
-                },
-              ],
-            },
-          ]}
-        />
+        {canUpdate && (
+          <ActionMenu
+            groups={[
+              {
+                actions: [
+                  {
+                    label: t("regions.addCountries"),
+                    icon: <PlusMini />,
+                    to: "countries/add",
+                  },
+                ],
+              },
+            ]}
+          />
+        )}
       </div>
       <_DataTable
         table={table}
@@ -129,13 +134,17 @@ export const RegionCountrySection = ({ region }: RegionCountrySectionProps) => {
         pagination
         queryObject={raw}
         prefix={PREFIX}
-        commands={[
-          {
-            action: handleRemoveCountries,
-            label: t("actions.remove"),
-            shortcut: "r",
-          },
-        ]}
+        commands={
+          canUpdate
+            ? [
+                {
+                  action: handleRemoveCountries,
+                  label: t("actions.remove"),
+                  shortcut: "r",
+                },
+              ]
+            : []
+        }
       />
     </Container>
   )
@@ -204,53 +213,64 @@ const CountryActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<StaticCountry>()
+const columnHelper = createColumnHelper<DataTableFeatures, StaticCountry>()
 
-const useColumns = () => {
+const useColumns = (canUpdate: boolean) => {
   const base = useCountryTableColumns()
 
   return useMemo(
     () => [
-      columnHelper.display({
-        id: "select",
-        header: ({ table }) => {
-          return (
-            <Checkbox
-              checked={
-                table.getIsSomePageRowsSelected()
-                  ? "indeterminate"
-                  : table.getIsAllPageRowsSelected()
-              }
-              onCheckedChange={(value) =>
-                table.toggleAllPageRowsSelected(!!value)
-              }
-            />
-          )
-        },
-        cell: ({ row }) => {
-          return (
-            <Checkbox
-              checked={row.getIsSelected()}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-        },
-      }),
+      ...(canUpdate
+        ? [
+            columnHelper.display({
+              id: "select",
+              header: ({ table }) => {
+                return (
+                  <Checkbox
+                    checked={
+                      !table.getIsAllPageRowsSelected() &&
+                      table.getIsSomePageRowsSelected()
+                        ? "indeterminate"
+                        : table.getIsAllPageRowsSelected()
+                    }
+                    onCheckedChange={(value) =>
+                      table.toggleAllPageRowsSelected(!!value)
+                    }
+                  />
+                )
+              },
+              cell: ({ row }) => {
+                return (
+                  <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                    }}
+                  />
+                )
+              },
+            }),
+          ]
+        : []),
       ...base,
-      columnHelper.display({
-        id: "actions",
-        cell: ({ row, table }) => {
-          const { region } = table.options.meta as {
-            region: HttpTypes.AdminRegion
-          }
+      ...(canUpdate
+        ? [
+            columnHelper.display({
+              id: "actions",
+              cell: ({ row, table }) => {
+                const { region } = table.options.meta as {
+                  region: HttpTypes.AdminRegion
+                }
 
-          return <CountryActions country={row.original} region={region} />
-        },
-      }),
+                return (
+                  <CountryActions country={row.original} region={region} />
+                )
+              },
+            }),
+          ]
+        : []),
     ],
-    [base]
-  ) as ColumnDef<StaticCountry>[]
+    [base, canUpdate]
+  ) as ColumnDef<DataTableFeatures, StaticCountry>[]
 }

@@ -396,8 +396,8 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
         this.eventBusRedisConnection_.pttl(`staging:${eventGroupId}`),
       ])
 
-      // Create a pipeline
-      const pipeline = this.eventBusRedisConnection_.pipeline()
+      // Run the rewrite in a transaction so it can't interleave with other writers
+      const pipeline = this.eventBusRedisConnection_.multi()
 
       // Empty the current list
       pipeline.del(`staging:${eventGroupId}`)
@@ -420,7 +420,12 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
         pipeline.pexpire(`staging:${eventGroupId}`, ttl)
       }
 
-      await pipeline.exec()
+      // exec resolves with [err, result] tuples instead of rejecting on a failed command
+      const results = await pipeline.exec()
+      const failed = results?.find(([err]) => err)
+      if (failed) {
+        throw failed[0]
+      }
 
       return
     }

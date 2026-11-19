@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import { Checkbox } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useTranslation } from "react-i18next"
 
 import {
@@ -10,7 +11,7 @@ import {
 import { getStylizedAmount } from "../../../../../lib/money-amount-helpers"
 import { getReturnableQuantity } from "../../../../../lib/rma"
 
-const columnHelper = createColumnHelper<any>()
+const columnHelper = createColumnHelper<DataTableFeatures, any>()
 
 export const useReturnItemTableColumns = (currencyCode: string) => {
   const { t } = useTranslation()
@@ -23,6 +24,7 @@ export const useReturnItemTableColumns = (currencyCode: string) => {
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()
