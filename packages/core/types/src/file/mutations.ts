@@ -43,4 +43,10 @@ export interface GetUploadFileUrlDTO {
    * The access level of the file to be uploaded. Defaults to private if not passed
    */
   access?: FileAccessPermission
+
+  /**
+   * The exact size of the file to be uploaded, in bytes. Providers that support it
+   * sign it into the URL, so an upload of any other size is rejected.
+   */
+  size?: number
 }

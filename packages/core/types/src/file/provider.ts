@@ -107,6 +107,12 @@ export type ProviderGetPresignedUploadUrlDTO = {
    * The validity of the presigned upload URL in seconds.
    */
   expiresIn?: number
+
+  /**
+   * The exact size of the file to be uploaded, in bytes. If the provider supports it,
+   * it should only accept an upload of this size.
+   */
+  size?: number
 }
 
 /**
