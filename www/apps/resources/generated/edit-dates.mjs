@@ -407,7 +407,7 @@ export const generatedEditDates = {
   "app/commerce-modules/inventory/reservations-lifecycle/page.mdx": "2026-07-16T09:48:42.878Z",
   "app/commerce-modules/auth/link-provider-identity/page.mdx": "2026-07-16T11:48:10.582Z",
   "app/commerce-modules/product/physical-customs-attributes/page.mdx": "2026-07-20T12:29:50.832Z",
-  "app/infrastructure-modules/caching/providers/redis/page.mdx": "2026-11-16T12:07:15.910Z",
+  "app/infrastructure-modules/caching/providers/redis/page.mdx": "2026-11-19T14:34:45.721Z",
   "app/commerce-modules/settings/concepts/page.mdx": "2026-08-21T06:05:37.107Z",
   "app/commerce-modules/settings/configure-view-configurations/page.mdx": "2026-09-11T07:25:55.405Z",
   "app/commerce-modules/settings/js-sdk/page.mdx": "2026-07-23T08:09:37.576Z",

@@ -146,17 +146,21 @@ CACHE_REDIS_URL=redis://localhost:6379
 
 The Redis Caching Module Provider stores a tag index in Redis for every [cache tag](../../concepts/page.mdx#cache-tags). The tag index is a set of the keys of all cache entries that use the tag. The provider uses it to find and remove the entries when the tag is invalidated.
 
-All entries that share a tag also share that tag's index. Every time you cache an entry, the provider resets the expiration of each of the entry's tag indexes to the entry's TTL plus 60 seconds.
+All entries that share a tag also share that tag's index. Every time you cache an entry, the provider makes sure each of the entry's tag indexes lives at least as long as the entry's TTL plus 60 seconds. The provider only extends a tag index's expiration and never shortens it. If you cache an entry without a TTL, its tag indexes don't expire.
 
-So, if you cache entries with different TTLs under the same tag, the most recently cached entry decides when the tag index expires. For example:
+So, a tag index outlives all the entries that use it, even if you cache them with different TTLs. For example:
 
 1. You cache entry A with the `Product:list:*` tag and a TTL of one hour.
 2. You then cache entry B with the same tag and a TTL of one minute.
-3. The `Product:list:*` tag index expires after two minutes, while entry A remains cached for the rest of its hour.
+3. The `Product:list:*` tag index keeps its expiration of one hour and one minute, so invalidating the `Product:list:*` tag still clears entry A.
 
-After the tag index expires, invalidating the `Product:list:*` tag no longer clears entry A, so the cache can serve stale data until entry A expires.
+<Note title="Medusa versions before v2.23.0">
 
-To avoid this, use the same TTL for all cache entries that share a tag. If you need a shorter TTL for some data, cache it under different tags, or [clear](/references/caching-service#clear) it by its key.
+Before Medusa v2.23.0, the provider reset the expiration of each tag index to the TTL of the most recently cached entry plus 60 seconds. In the example above, the `Product:list:*` tag index would expire after two minutes, and invalidating the tag would no longer clear entry A, so the cache could serve stale data until entry A expired.
+
+If you're using an older version, use the same TTL for all cache entries that share a tag. If you need a shorter TTL for some data, cache it under different tags, or [clear](/references/caching-service#clear) it by its key.
+
+</Note>
 
 ---
 
