@@ -3677,6 +3677,10 @@
     "domain": "屬性標籤",
     "title": "屬性標籤",
     "subtitle": "管理您實體可設定表格的自訂屬性標籤。",
+    "editTitle": "編輯屬性標籤",
+    "editDescription": "自訂 {{entity}} 的屬性名稱顯示方式",
+    "customLabel": "自訂標籤",
+    "updateSuccess": "屬性標籤已成功更新",
     "fields": {
       "module": "模組",
       "model": "模型",
@@ -3724,6 +3728,9 @@
   "fields": {
     "actions": "操作",
     "amount": "金額",
+    "yes": "是",
+    "no": "否",
+    "field": "欄位",
     "reference": "參考",
     "reference_id": "參考 ID",
     "refundAmount": "退款金額",

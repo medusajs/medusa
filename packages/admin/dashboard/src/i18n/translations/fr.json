@@ -3693,6 +3693,10 @@
     "domain": "Libellés de propriété",
     "title": "Libellés de propriété",
     "subtitle": "Gérer les libellés de propriété personnalisés pour les tableaux configurables de vos entités.",
+    "editTitle": "Modifier les libellés de propriété",
+    "editDescription": "Personnalisez la façon dont les noms de propriété sont affichés pour {{entity}}",
+    "customLabel": "Libellé personnalisé",
+    "updateSuccess": "Libellés de propriété mis à jour avec succès",
     "fields": {
       "module": "Module",
       "model": "Modèle",
@@ -3740,6 +3744,9 @@
   "fields": {
     "actions": "Actions",
     "amount": "Montant",
+    "yes": "Oui",
+    "no": "Non",
+    "field": "Champ",
     "reference": "Référence",
     "reference_id": "ID de référence",
     "refundAmount": "Montant de remboursement",

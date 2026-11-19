@@ -3275,6 +3275,9 @@
   },
   "fields": {
     "amount": "Số tiền",
+    "yes": "Có",
+    "no": "Không",
+    "field": "Trường",
     "reference": "Tham chiếu",
     "reference_id": "Mã tham chiếu",
     "refundAmount": "Số tiền hoàn lại",
@@ -3689,6 +3692,10 @@
       "propertyCount": "Số Thuộc tính"
     },
     "subtitle": "Quản lý nhãn thuộc tính tùy chỉnh cho các bảng có thể cấu hình của thực thể của bạn.",
+    "editTitle": "Chỉnh sửa Nhãn thuộc tính",
+    "editDescription": "Tùy chỉnh cách hiển thị tên thuộc tính cho {{entity}}",
+    "customLabel": "Nhãn tùy chỉnh",
+    "updateSuccess": "Nhãn thuộc tính đã được cập nhật thành công",
     "title": "Nhãn Thuộc tính"
   },
   "refundReasons": {

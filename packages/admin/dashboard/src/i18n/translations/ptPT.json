@@ -3686,6 +3686,10 @@
     "domain": "Etiquetas de Propriedade",
     "title": "Etiquetas de Propriedade",
     "subtitle": "Gere etiquetas de propriedade personalizadas para tabelas configuráveis das tuas entidades.",
+    "editTitle": "Editar Etiquetas de Propriedade",
+    "editDescription": "Personalizar como os nomes das propriedades são apresentados para {{entity}}",
+    "customLabel": "Etiqueta Personalizada",
+    "updateSuccess": "Etiquetas de propriedade atualizadas com sucesso",
     "fields": {
       "module": "Módulo",
       "model": "Modelo",
@@ -3733,6 +3737,9 @@
   "fields": {
     "actions": "Ações",
     "amount": "Montante",
+    "yes": "Sim",
+    "no": "Não",
+    "field": "Campo",
     "reference": "Referência",
     "reference_id": "ID de referência",
     "refundAmount": "Montante do reembolso",

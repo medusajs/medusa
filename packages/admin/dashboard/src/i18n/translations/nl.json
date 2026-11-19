@@ -3691,6 +3691,10 @@
     "domain": "Eigenschaplabels",
     "title": "Eigenschaplabels",
     "subtitle": "Beheer aangepaste eigenschaplabels voor configureerbare tabellen van uw entiteiten.",
+    "editTitle": "Eigenschapslabels bewerken",
+    "editDescription": "Pas aan hoe eigenschapsnamen worden weergegeven voor {{entity}}",
+    "customLabel": "Aangepast label",
+    "updateSuccess": "Eigenschapslabels succesvol bijgewerkt",
     "fields": {
       "module": "Module",
       "model": "Model",
@@ -3738,6 +3742,9 @@
   "fields": {
     "actions": "Acties",
     "amount": "Bedrag",
+    "yes": "Ja",
+    "no": "Nee",
+    "field": "Veld",
     "reference": "Referentie",
     "reference_id": "Referentie-ID",
     "refundAmount": "Terug te betalen bedrag",
