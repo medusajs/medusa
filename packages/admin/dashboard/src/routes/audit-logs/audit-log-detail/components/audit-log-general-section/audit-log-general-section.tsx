@@ -1,10 +1,15 @@
 import { HttpTypes } from "@medusajs/types"
 import { Container, Copy, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
+import { Link } from "react-router-dom"
 
 import { SectionRow } from "../../../../../components/common/section"
 import { useDate } from "../../../../../hooks/use-date"
 import { AuditLogOutcomeBadge } from "../../../common/audit-log-outcome-badge"
+import {
+  getActorUserName,
+  useAuditLogActorUsers,
+} from "../../../common/use-audit-log-actor-users"
 
 type AuditLogGeneralSectionProps = {
   auditLog: HttpTypes.AdminAuditLog
@@ -15,6 +20,10 @@ export const AuditLogGeneralSection = ({
 }: AuditLogGeneralSectionProps) => {
   const { t } = useTranslation()
   const { getFullDate } = useDate()
+  const actorUsers = useAuditLogActorUsers([auditLog])
+  const actorUser = auditLog.actor_id
+    ? actorUsers.get(auditLog.actor_id)
+    : undefined
 
   return (
     <Container className="divide-y p-0">
@@ -34,6 +43,22 @@ export const AuditLogGeneralSection = ({
         title={t("auditLogs.fields.endedAt")}
         value={getFullDate({ date: auditLog.ended_at, includeTime: true })}
       />
+      {actorUser && (
+        <SectionRow
+          title={t("auditLogs.fields.actor")}
+          value={
+            <Link
+              to={`/settings/users/${actorUser.id}`}
+              className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover flex flex-col"
+            >
+              <span>{getActorUserName(actorUser)}</span>
+              {getActorUserName(actorUser) !== actorUser.email && (
+                <span className="text-ui-fg-subtle">{actorUser.email}</span>
+              )}
+            </Link>
+          }
+        />
+      )}
       <SectionRow
         title={t("auditLogs.fields.actorType")}
         value={auditLog.actor_type}

@@ -9,6 +9,9 @@ import { AuditLogDetail } from "../audit-log-detail"
 
 const mocks = vi.hoisted(() => ({
   auditLog: undefined as unknown,
+  users: [] as Record<string, unknown>[],
+  canReadUsers: true,
+  usersQuery: undefined as unknown,
 }))
 
 vi.mock("react-i18next", () => ({
@@ -21,6 +24,20 @@ vi.mock("react-i18next", () => ({
 vi.mock("react-router-dom", () => ({
   useParams: () => ({ id: "audlog_1" }),
   useLoaderData: () => undefined,
+  Link: ({ to, children }: { to: string; children: React.ReactNode }) => (
+    <a href={to}>{children}</a>
+  ),
+}))
+
+vi.mock("../../../../hooks/api/users", () => ({
+  useUsers: (query: unknown, options: { enabled: boolean }) => {
+    mocks.usersQuery = options.enabled ? query : undefined
+    return { users: options.enabled ? mocks.users : undefined }
+  },
+}))
+
+vi.mock("../../../../hooks/use-resource-permissions", () => ({
+  useUserPermissions: () => ({ canRead: mocks.canReadUsers }),
 }))
 
 vi.mock("../../../../hooks/api/audit-logs", () => ({
@@ -85,6 +102,52 @@ const renderDetail = (auditLog: HttpTypes.AdminAuditLog) => {
 describe("AuditLogDetail", () => {
   afterEach(() => {
     cleanup()
+    mocks.users = []
+    mocks.canReadUsers = true
+    mocks.usersQuery = undefined
+  })
+
+  it("links a user actor by name and email, keeping the ID", () => {
+    mocks.users = [
+      {
+        id: "user_1",
+        email: "jane@example.com",
+        first_name: "Jane",
+        last_name: "Doe",
+      },
+    ]
+
+    renderDetail(baseLog)
+
+    const general = within(screen.getByTestId("AuditLogGeneralSection"))
+    const link = general.getByText("Jane Doe").closest("a")
+
+    expect(link?.getAttribute("href")).toBe("/settings/users/user_1")
+    expect(general.getByText("jane@example.com")).toBeTruthy()
+    expect(general.getByText("user_1")).toBeTruthy()
+    expect(mocks.usersQuery).toEqual({
+      id: ["user_1"],
+      fields: "id,email,first_name,last_name",
+      limit: 1,
+    })
+  })
+
+  it("shows only the actor ID when users can't be read", () => {
+    mocks.canReadUsers = false
+
+    renderDetail(baseLog)
+
+    const general = within(screen.getByTestId("AuditLogGeneralSection"))
+
+    expect(mocks.usersQuery).toBeUndefined()
+    expect(general.queryByText("auditLogs.fields.actor")).toBeNull()
+    expect(general.getByText("user_1")).toBeTruthy()
+  })
+
+  it("doesn't look up users for non-user actors", () => {
+    renderDetail({ ...baseLog, actor_type: "system", actor_id: null })
+
+    expect(mocks.usersQuery).toBeUndefined()
   })
 
   it("renders every field of the audit log", () => {

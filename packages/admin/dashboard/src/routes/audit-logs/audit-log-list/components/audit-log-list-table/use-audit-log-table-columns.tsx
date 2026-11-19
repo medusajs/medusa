@@ -5,11 +5,18 @@ import { useTranslation } from "react-i18next"
 
 import { useDate } from "../../../../../hooks/use-date"
 import { AuditLogOutcomeBadge } from "../../../common/audit-log-outcome-badge"
+import {
+  AuditLogActorUser,
+  getActorUserName,
+} from "../../../common/use-audit-log-actor-users"
 import { TwoLineCell } from "./two-line-cell"
 
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminAuditLog>()
+const NO_ACTOR_USERS = new Map<string, AuditLogActorUser>()
 
-export const useAuditLogTableColumns = () => {
+export const useAuditLogTableColumns = (
+  actorUsers: Map<string, AuditLogActorUser> = NO_ACTOR_USERS
+) => {
   const { t } = useTranslation()
   const { getFullDate } = useDate()
 
@@ -29,16 +36,22 @@ export const useAuditLogTableColumns = () => {
         header: t("auditLogs.fields.actor"),
         cell: ({ row }) => {
           const { actor_type, actor_id, impersonator_id } = row.original
+          const user =
+            actor_type === "user" && actor_id
+              ? actorUsers.get(actor_id)
+              : undefined
 
           return (
             <TwoLineCell
-              primary={actor_id ?? actor_type}
+              primary={user ? getActorUserName(user) : (actor_id ?? actor_type)}
               secondary={
                 impersonator_id
                   ? t("auditLogs.impersonatedBy", { id: impersonator_id })
-                  : actor_id
-                    ? actor_type
-                    : null
+                  : user
+                    ? user.email
+                    : actor_id
+                      ? actor_type
+                      : null
               }
             />
           )
@@ -77,6 +90,6 @@ export const useAuditLogTableColumns = () => {
         ),
       }),
     ],
-    [t, getFullDate]
+    [t, getFullDate, actorUsers]
   )
 }

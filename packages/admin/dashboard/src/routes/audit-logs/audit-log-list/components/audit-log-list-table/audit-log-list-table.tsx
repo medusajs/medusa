@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"
 import { DataTable } from "../../../../../components/data-table"
 import { useAuditLogs } from "../../../../../hooks/api/audit-logs"
 import { AUDIT_LOG_PAGE_SIZE } from "../../../common/constants"
+import { useAuditLogActorUsers } from "../../../common/use-audit-log-actor-users"
 import { useAuditLogTableColumns } from "./use-audit-log-table-columns"
 import { useAuditLogTableFilters } from "./use-audit-log-table-filters"
 import { useAuditLogTableQuery } from "./use-audit-log-table-query"
@@ -18,7 +19,8 @@ export const AuditLogListTable = () => {
     { placeholderData: keepPreviousData }
   )
 
-  const columns = useAuditLogTableColumns()
+  const actorUsers = useAuditLogActorUsers(audit_logs)
+  const columns = useAuditLogTableColumns(actorUsers)
   const filters = useAuditLogTableFilters()
 
   // Providers aren't required to support `q`, so a failed search shows the
