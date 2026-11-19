@@ -73,7 +73,7 @@ export const sidebar = [
               },
               {
                 type: "link",
-                title: "ChatGPT App",
+                title: "ChatGPT Plugin",
                 path: "/medusa-mcp/chatgpt",
               },
               {
@@ -109,6 +109,11 @@ export const sidebar = [
                 type: "link",
                 title: "Connections",
                 path: "/organizations/connections",
+              },
+              {
+                type: "link",
+                title: "License",
+                path: "/organizations/license",
               },
             ],
           },

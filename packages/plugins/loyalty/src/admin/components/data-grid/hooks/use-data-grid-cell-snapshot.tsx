@@ -1,15 +1,19 @@
+import { DataTableRowData } from "@medusajs/ui"
 import { useCallback, useState } from "react"
 import { FieldValues, Path, UseFormReturn } from "react-hook-form"
 import { DataGridMatrix } from "../models"
 import { DataGridCellSnapshot, DataGridCoordinates } from "../types"
 
-type UseDataGridCellSnapshotOptions<TData, TFieldValues extends FieldValues> = {
+type UseDataGridCellSnapshotOptions<
+  TData extends DataTableRowData,
+  TFieldValues extends FieldValues,
+> = {
   matrix: DataGridMatrix<TData, TFieldValues>
   form: UseFormReturn<TFieldValues>
 }
 
 export const useDataGridCellSnapshot = <
-  TData,
+  TData extends DataTableRowData,
   TFieldValues extends FieldValues,
 >({
   matrix,

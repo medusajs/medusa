@@ -1,16 +1,16 @@
-import { clx } from "@medusajs/ui";
+import { clx, DataTableRowData } from "@medusajs/ui";
 import { PropsWithChildren } from "react";
 import { useDataGridCellError } from "../hooks";
 import { DataGridCellProps } from "../types";
 import { DataGridRowErrorIndicator } from "./data-grid-row-error-indicator";
 
-type DataGridReadonlyCellProps<TData, TValue = any> = PropsWithChildren<
+type DataGridReadonlyCellProps<TData extends DataTableRowData, TValue = any> = PropsWithChildren<
   DataGridCellProps<TData, TValue>
 > & {
   color?: "muted" | "normal";
 };
 
-export const DataGridReadonlyCell = <TData, TValue = any>({
+export const DataGridReadonlyCell = <TData extends DataTableRowData, TValue = any>({
   context,
   color = "muted",
   children,

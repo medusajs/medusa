@@ -3678,6 +3678,10 @@
     "domain": "Label Properti",
     "title": "Label Properti",
     "subtitle": "Kelola label properti kustom untuk tabel yang dapat dikonfigurasi dari entitas Anda.",
+    "editTitle": "Edit Label Properti",
+    "editDescription": "Sesuaikan cara nama properti ditampilkan untuk {{entity}}",
+    "customLabel": "Label Kustom",
+    "updateSuccess": "Label properti berhasil diperbarui",
     "fields": {
       "module": "Modul",
       "model": "Model",
@@ -3725,6 +3729,9 @@
   "fields": {
     "actions": "Tindakan",
     "amount": "Jumlah",
+    "yes": "Ya",
+    "no": "Tidak",
+    "field": "Bidang",
     "reference": "Referensi",
     "reference_id": "ID Referensi",
     "refundAmount": "Jumlah pengembalian dana",

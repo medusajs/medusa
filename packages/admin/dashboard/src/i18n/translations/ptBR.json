@@ -3686,6 +3686,10 @@
     "domain": "Rótulos de Propriedade",
     "title": "Rótulos de Propriedade",
     "subtitle": "Gerencie rótulos de propriedade personalizados para tabelas configuráveis das suas entidades.",
+    "editTitle": "Editar Rótulos de Propriedade",
+    "editDescription": "Personalize como os nomes das propriedades são exibidos para {{entity}}",
+    "customLabel": "Rótulo Personalizado",
+    "updateSuccess": "Rótulos de propriedade atualizados com sucesso",
     "fields": {
       "module": "Módulo",
       "model": "Modelo",
@@ -3733,6 +3737,9 @@
   "fields": {
     "actions": "Ações",
     "amount": "Quantidade",
+    "yes": "Sim",
+    "no": "Não",
+    "field": "Campo",
     "reference": "Referência",
     "reference_id": "ID de referência",
     "refundAmount": "Valor do reembolso",

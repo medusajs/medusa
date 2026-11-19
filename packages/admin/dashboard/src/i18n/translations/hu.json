@@ -3691,6 +3691,10 @@
     "domain": "Tulajdonság feliratok",
     "title": "Tulajdonság feliratok",
     "subtitle": "Egyéni tulajdonság feliratokat kezelhet az entitások konfigurálható táblázataihoz.",
+    "editTitle": "Tulajdonságcímkék Szerkesztése",
+    "editDescription": "Testreszabhatja a tulajdonságnevek megjelenítését a következőhöz: {{entity}}",
+    "customLabel": "Egyéni Címke",
+    "updateSuccess": "A tulajdonságcímkék sikeresen frissítve",
     "fields": {
       "module": "Modul",
       "model": "Modell",
@@ -3738,6 +3742,9 @@
   "fields": {
     "actions": "Műveletek",
     "amount": "Összeg",
+    "yes": "Igen",
+    "no": "Nem",
+    "field": "Mező",
     "reference": "Hivatkozás",
     "reference_id": "Hivatkozás azonosítója",
     "refundAmount": "Visszatérítési összeg",

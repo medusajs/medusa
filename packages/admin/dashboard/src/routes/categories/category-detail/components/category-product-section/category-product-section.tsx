@@ -10,6 +10,7 @@ import {
 } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -173,7 +174,10 @@ export const CategoryProductSection = ({
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminProduct>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminProduct
+>()
 
 const useColumns = ({ canManageProducts }: { canManageProducts: boolean }) => {
   const base = useProductTableColumns()
@@ -188,6 +192,7 @@ const useColumns = ({ canManageProducts }: { canManageProducts: boolean }) => {
                 return (
                   <Checkbox
                     checked={
+                      !table.getIsAllPageRowsSelected() &&
                       table.getIsSomePageRowsSelected()
                         ? "indeterminate"
                         : table.getIsAllPageRowsSelected()

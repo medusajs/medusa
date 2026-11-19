@@ -1,15 +1,19 @@
+import { DataTableRowData } from "@medusajs/ui"
 import { useCallback } from "react"
 import { FieldValues } from "react-hook-form"
 import { DataGridMatrix } from "../models"
 import { CellErrorMetadata, CellMetadata, DataGridCoordinates } from "../types"
 import { generateCellId } from "../utils"
 
-type UseDataGridCellMetadataOptions<TData, TFieldValues extends FieldValues> = {
+type UseDataGridCellMetadataOptions<
+  TData extends DataTableRowData,
+  TFieldValues extends FieldValues,
+> = {
   matrix: DataGridMatrix<TData, TFieldValues>
 }
 
 export const useDataGridCellMetadata = <
-  TData,
+  TData extends DataTableRowData,
   TFieldValues extends FieldValues,
 >({
   matrix,
