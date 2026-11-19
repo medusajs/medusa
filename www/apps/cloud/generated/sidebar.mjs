@@ -96,7 +96,7 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "type": "link",
-                "title": "ChatGPT App",
+                "title": "ChatGPT Plugin",
                 "path": "/medusa-mcp/chatgpt",
                 "children": []
               },
