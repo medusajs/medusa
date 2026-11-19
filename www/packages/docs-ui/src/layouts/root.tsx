@@ -5,6 +5,7 @@ import { MainContentLayout, MainContentLayoutProps } from "./main-content"
 import { AiAssistantChatWindow } from "../components/AiAssistant/ChatWindow"
 import { TechArticleJsonLd } from "../components/TechArticleJsonLd"
 import { AgentDirective } from "../components/AgentDirective"
+import { WebMcpTools } from "../components/WebMcpTools"
 
 export type RootLayoutProps = {
   bodyClassName?: string
@@ -41,6 +42,7 @@ export const RootLayout = ({
               <AiAssistantChatWindow />
             </div>
             <TechArticleJsonLd />
+            <WebMcpTools />
           </ProvidersComponent>
         </RootProviders>
       </div>

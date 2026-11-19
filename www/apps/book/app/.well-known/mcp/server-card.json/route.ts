@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { config } from "../../../../config"
+import { trackAgentRequest } from "../../../../utils/track-agent-request"
 
 const headers = {
   "content-type": "application/json",
@@ -30,7 +31,10 @@ const getServerCard = () => {
   }
 }
 
-export function GET() {
+export function GET(req: NextRequest) {
+  trackAgentRequest(req, "well_known_requested", {
+    resource: "mcp-server-card",
+  })
   return NextResponse.json(getServerCard(), { headers })
 }
 

@@ -45,7 +45,7 @@ const HomepageDocsAssistant = () => {
         )}
       >
         <div className="flex flex-col gap-2 flex-1">
-          <span className="text-h1 text-pretty">Ask AI</span>
+          <span className="text-h1 text-pretty">Docs Assistant</span>
           <div className="w-full flex-1 py-0.75 border-t border-medusa-border-base relative">
             <textarea
               className={clsx(

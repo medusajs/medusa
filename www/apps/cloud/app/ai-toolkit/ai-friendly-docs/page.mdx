@@ -1,14 +1,6 @@
-import { 
+import {
   InlineIcon,
-  Tabs,
-  TabsContent,
-  TabsContentWrapper,
-  TabsList,
-  TabsTrigger,
-  Button,
-  Link,
-  Table,
-  BloomIcon,
+  DocsAssistantIcon,
   Kbd
 } from "docs-ui"
 
@@ -18,47 +10,55 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll learn about the AI-friendly features of the Medusa documentation, including the AI Assistant and the plain text documentation.
+In this guide, you'll learn about the features that help you and your AI agents use the Medusa documentation, including the Docs Assistant, the docs `SKILL.md`, Markdown pages, the retrieval endpoint, and WebMCP tools.
 
-## AI Assistant in Documentation
+## Summary of AI-Friendly Features
 
-The Medusa documentation includes an AI Assistant that answers your questions and helps you build customizations with Medusa.
+The following table summarizes the features that the Medusa documentation provides for AI agents:
 
-<Note>
+| Feature | URL | Use it to |
+|---|---|---|
+| [Docs SKILL.md](#docs-skillmd) | `https://docs.medusajs.com/SKILL.md` | Learn how to navigate the docs and which tools to use. |
+| [Markdown pages](#markdown-pages-and-llmstxt) | Any page URL plus `.md` | Read a page's content as Markdown. |
+| [llms.txt](#markdown-pages-and-llmstxt) | `https://docs.medusajs.com/llms.txt` | Discover all documentation pages. |
+| [Retrieval endpoint](#docs-retrieval-endpoint) | `https://docs.medusajs.com/agents/search` | Search the docs and get the most relevant content. |
+| [Docs MCP server](../docs-mcp/page.mdx) | `https://docs.medusajs.com/mcp` | Ask questions and get implementation guides from an MCP client. Requires a [Medusa account](../../sign-up/page.mdx). |
+| [WebMCP tools](#webmcp-tools) | Every docs page | Search, read, and navigate the docs from the browser. |
+| [Discovery endpoints](#discovery-endpoints) | `https://docs.medusajs.com/.well-known/*` | Find all agent-facing resources programmatically. |
 
-The AI Assistant in the docs is different from [Bloom](https://bloom.chat/), our AI-powered commerce assistant that helps you build, manage, and scale your ecommerce store. The AI Assistant in the docs is specifically designed to help you with Medusa development by providing relevant documentation links, code snippets, and explanations.
+---
 
-</Note>
+## Docs Assistant
 
-### Open the AI Assistant
+The Medusa documentation includes the Docs Assistant, which answers your questions and helps you build customizations with Medusa. It provides relevant documentation links, code snippets, and explanations.
 
-To open the AI Assistant, either:
+### Open the Docs Assistant
+
+To open the Docs Assistant, either:
 
 - Use the keyboard shortcut <Kbd>Ctrl + I</Kbd> for Windows/Linux, or <Kbd>Cmd + I</Kbd> for macOS.
-- Click the <InlineIcon Icon={BloomIcon} alt="Docs Assistant" /> icon in the top right corner of the documentation.
+- Click the <InlineIcon Icon={DocsAssistantIcon} alt="Docs Assistant" /> icon in the top right corner of the documentation.
 
-You can then ask the AI Assistant any questions about Medusa, such as:
+You can then ask the Docs Assistant any questions about Medusa, such as:
 
 - What is a workflow?
 - How to create a product review module?
 - How to update Medusa?
 - How to fix this error?
 
-The AI Assistant will provide you with relevant documentation links, code snippets, and explanations to help you with your development.
-
 ### Ask About Code Snippets
 
-While browsing the documentation, you'll find a <InlineIcon Icon={BloomIcon} alt="Docs Assistant" /> icon in the header of code snippets. You can click this icon to ask the AI Assistant about the code snippet.
+While browsing the documentation, you'll find a <InlineIcon Icon={DocsAssistantIcon} alt="Docs Assistant" /> icon in the header of code snippets. Click this icon to ask the Docs Assistant about the code snippet.
 
-The AI Assistant will analyze the code and provide explanations, usage examples, and any additional information you need to understand how the code works.
+The Docs Assistant analyzes the code and provides explanations, usage examples, and any additional information you need to understand how the code works.
 
 ### Ask About Documentation Pages
 
-If you need more help understanding a specific documentation page, you can click the "Explain this page" link in the page's right sidebar. This will open the AI Assistant and provide context about the current page, allowing you to ask questions related to the content.
+If you need more help understanding a specific documentation page, click the "Explain this page" link in the page's right sidebar. This opens the Docs Assistant with the current page as context, so you can ask questions related to its content.
 
 ### Formatting and Code Blocks
 
-In your questions to the AI Assistant, you can format code blocks by wrapping them in triple backticks (```). For example:
+In your questions to the Docs Assistant, you can format code blocks by wrapping them in triple backticks (```). For example:
 
 ~~~markdown
 ```
@@ -70,15 +70,86 @@ You can add new lines using the `Shift + Enter` shortcut.
 
 ---
 
-## Plain Text Documentation
+## Docs SKILL.md
 
-The Medusa documentation is available in plain text format, allowing LLMs and AI tools to easily parse and understand the content.
+The docs `SKILL.md` at [https://docs.medusajs.com/SKILL.md](https://docs.medusajs.com/SKILL.md) is an [agent skill](https://agentskills.io) that tells AI agents how to navigate the Medusa documentation, where to find what, and which tools they can use to read it.
 
-You can access the following plain text documentation files:
+To have your agent use it, ask your agent to fetch it before working on a Medusa task:
 
-- [llms.txt](https://docs.medusajs.com/llms.txt): Contains a short structure of links to important documentation pages.
-- [llms-full.txt](https://docs.medusajs.com/llms-full.txt): Contains the full documentation content, including all pages and sections.
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/SKILL.md and use it to find the Medusa documentation you need
+```
+
+You can also install it alongside the other [Medusa agent skills](../agent-skills/page.mdx), since the [agent skills index](https://docs.medusajs.com/.well-known/agent-skills/index.json) lists it.
+
+---
+
+## Markdown Pages and llms.txt
+
+The Medusa documentation is available in Markdown and plain text formats, so LLMs and AI tools can parse and understand the content.
+
+You can access the following files:
+
+- [llms.txt](https://docs.medusajs.com/llms.txt): An index of the documentation that links to the index of each documentation section, such as [Get Started](https://docs.medusajs.com/cloud/llms.txt) and [Development Resources](https://docs.medusajs.com/resources/llms.txt).
+- [llms-full.txt](https://docs.medusajs.com/llms-full.txt): The full content of the Framework documentation in a single file.
 - **Markdown version of any page**: Users and agents can access the Markdown version of any documentation page by either:
-    - Sending an `Accept: text/markdown` header when requesting documentation pages, which is automatically handled by agents like Claude Code. The documentation serves the Markdown version of the page when this header is present.
-    - Appending `/index.html.md` to the page URL. For example, the plain text content of the current page is available at [https://docs.medusajs.com/cloud/ai-toolkit/ai-friendly-docs/index.html.md](https://docs.medusajs.com/cloud/ai-toolkit/ai-friendly-docs/index.html.md).
-    - Appending `.md` to the page URL. For example, the plain text content of the current page is also available at [https://docs.medusajs.com/cloud/ai-toolkit/ai-friendly-docs.md](https://docs.medusajs.com/cloud/ai-toolkit/ai-friendly-docs.md).
+    - Sending an `Accept: text/markdown` header when requesting documentation pages. Agents like Claude Code send this header automatically.
+    - Appending `.md` to the page URL. For example, the Markdown content of the current page is available at [https://docs.medusajs.com/cloud/ai-toolkit/ai-friendly-docs.md](https://docs.medusajs.com/cloud/ai-toolkit/ai-friendly-docs.md).
+    - Appending `/index.html.md` to the page URL. For example, [https://docs.medusajs.com/cloud/ai-toolkit/ai-friendly-docs/index.html.md](https://docs.medusajs.com/cloud/ai-toolkit/ai-friendly-docs/index.html.md).
+
+---
+
+## Docs Retrieval Endpoint
+
+The retrieval endpoint searches the Medusa documentation and returns the most relevant content for a query, without generating an answer. Agents use it to find the right documentation before writing code.
+
+Send a `GET` request with your query in the `q` parameter:
+
+```bash
+curl "https://docs.medusajs.com/agents/search?q=how+to+create+a+workflow"
+```
+
+The endpoint accepts the following query parameters:
+
+- `q`: (required) The question or keywords to search for, up to 500 characters.
+- `limit`: (optional) The number of results to return, from `1` to `15`. Defaults to `5`.
+- `agent`: (optional) The name of the agent sending the request, such as `Claude Code`. Medusa uses it to improve the docs for that agent.
+
+It returns a JSON object with the following properties:
+
+```json
+{
+  "query": "how to create a workflow",
+  "results": [
+    {
+      "url": "https://docs.medusajs.com/learn/fundamentals/workflows",
+      "content": "# Workflows\n\n..."
+    }
+  ]
+}
+```
+
+To get the results as Markdown instead, send the `Accept: text/markdown` header. You can also send a `POST` request with a JSON body `{ "query": "...", "limit": 5, "agent": "..." }`.
+
+---
+
+## WebMCP Tools
+
+[WebMCP](https://github.com/webmachinelearning/webmcp) lets websites expose tools that AI agents in the browser can call. Every Medusa documentation page registers the following WebMCP tools, so agents in a browser that supports WebMCP can use the docs without scraping the page:
+
+- `search_medusa_docs`: Search the documentation using the [retrieval endpoint](#docs-retrieval-endpoint).
+- `get_medusa_docs_page`: Get the Markdown content of a documentation page by its URL or path.
+- `navigate_medusa_docs`: Open a documentation page by its URL or path.
+
+---
+
+## Discovery Endpoints
+
+The Medusa documentation exposes its agent-facing resources under the `.well-known` path, so agents and tools can discover them programmatically:
+
+- [/.well-known/ai-catalog.json](https://docs.medusajs.com/.well-known/ai-catalog.json): A catalog of all agent-facing resources, including the docs `SKILL.md`, the retrieval endpoint, the Docs MCP server, agent skills, and API specifications.
+- [/.well-known/agent-skills/index.json](https://docs.medusajs.com/.well-known/agent-skills/index.json): An index of the docs `SKILL.md` and the [Medusa agent skills](../agent-skills/page.mdx).
+- [/.well-known/mcp/server-card.json](https://docs.medusajs.com/.well-known/mcp/server-card.json): The [Docs MCP server's](../docs-mcp/page.mdx) metadata.
+- [/.well-known/api-catalog](https://docs.medusajs.com/.well-known/api-catalog): Links to the Store and Admin API OpenAPI specifications, the Docs MCP server, and the retrieval endpoint.
+
+The documentation homepage also links these resources in its `Link` response header.

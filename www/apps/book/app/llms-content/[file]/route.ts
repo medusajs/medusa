@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation"
-import { after, NextRequest, NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import path from "path"
-import { PostHog } from "posthog-node"
 import { fetchAssetResponse } from "../../../utils/fetch-asset-response"
+import { trackAgentRequest } from "../../../utils/track-agent-request"
 
-const ALLOWED_FILES = new Set(["llms.txt", "llms-full.txt"])
+const ALLOWED_FILES = new Set(["llms.txt", "llms-full.txt", "SKILL.md"])
 
 type Params = {
   params: Promise<{ file: string }>
@@ -34,32 +34,20 @@ export async function GET(req: NextRequest, { params }: Params) {
     }
   }
 
-  after(async () => {
-    const client = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-      host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-    })
-
-    client.capture({
-      distinctId: "anonymous",
-      event: "llms_txt_requested",
-      properties: {
-        $current_url: `${process.env.NEXT_PUBLIC_BASE_URL || origin}/${file}`,
-        $raw_user_agent: req.headers.get("user-agent") || undefined,
-        $ip:
-          req.headers.get("cf-connecting-ip") ||
-          req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-          undefined,
-        file,
-        referrer: req.headers.get("referer") || undefined,
-      },
-    })
-
-    await client.shutdown()
-  })
+  trackAgentRequest(
+    req,
+    file === "SKILL.md" ? "docs_skill_requested" : "llms_txt_requested",
+    {
+      $current_url: `${process.env.NEXT_PUBLIC_BASE_URL || origin}/${file}`,
+      file,
+    }
+  )
 
   return new NextResponse(body, {
     headers: {
-      "content-type": "text/plain; charset=utf-8",
+      "content-type": `${
+        file.endsWith(".md") ? "text/markdown" : "text/plain"
+      }; charset=utf-8`,
       "cache-control": "public, max-age=3600, must-revalidate",
     },
     status: 200,

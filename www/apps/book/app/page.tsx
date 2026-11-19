@@ -6,6 +6,7 @@ import {
   AiAssistantChatWindow,
   MainNav,
   RootProviders,
+  WebMcpTools,
 } from "docs-ui"
 import Providers from "../providers"
 import HomepageTopSection from "../components/Homepage/TopSection"
@@ -81,6 +82,7 @@ const Homepage = () => {
             </div>
           </div>
           <AiAssistantChatWindow />
+          <WebMcpTools />
         </Providers>
       </RootProviders>
     </body>

@@ -35,7 +35,7 @@ vi.mock("@/components/Kbd", () => ({
   Kbd: (props: KbdProps) => <kbd {...props} />,
 }))
 vi.mock("@/components/Icons", () => ({
-  BloomIcon: () => <span>BloomIcon</span>,
+  DocsAssistantIcon: () => <span>DocsAssistantIcon</span>,
 }))
 vi.mock("@/providers/AiAssistant", () => ({
   useAiAssistant: () => AiAssistantMocks.mockUseAiAssistant(),

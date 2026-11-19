@@ -3,7 +3,7 @@
 import React from "react"
 import clsx from "clsx"
 import { Tooltip } from "../../../Tooltip"
-import { BloomIcon } from "../../../Icons"
+import { DocsAssistantIcon } from "../../../Icons"
 import { useAnalytics } from "../../../../providers/Analytics"
 import { DocsTrackingEvents } from "../../../../constants"
 
@@ -60,7 +60,7 @@ export const CodeBlockBloomAction = ({
         )}
         onClick={handleClick}
       >
-        <BloomIcon />
+        <DocsAssistantIcon />
       </span>
     </Tooltip>
   )

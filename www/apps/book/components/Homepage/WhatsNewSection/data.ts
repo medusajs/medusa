@@ -29,6 +29,12 @@ export type WhatsNewItem = {
 
 export const whatsNewItems: WhatsNewItem[] = [
   {
+    title: "Docs SKILL.md and retrieval endpoint",
+    tag: "Docs",
+    date: "2026-11-19",
+    link: "https://docs.medusajs.com/cloud/ai-toolkit/ai-friendly-docs",
+  },
+  {
     title: "Migrate from self-hosting to Cloud",
     tag: "Medusa Cloud",
     date: "2026-11-13",

@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { config } from "../../../config"
+import { trackAgentRequest } from "../../../utils/track-agent-request"
 
 const headers = {
   "content-type": "application/json",
@@ -33,6 +34,30 @@ const getCatalog = () => {
           "how to add a payment provider to a Medusa store",
           "explain Medusa workflows and compensation steps",
           "how to customize the Medusa admin dashboard",
+        ],
+      },
+      {
+        identifier: urn("skills", "medusa-docs"),
+        displayName: "Medusa Docs Skill",
+        description:
+          "How to navigate the Medusa documentation, where to find what, and which tools agents can use.",
+        type: "text/markdown",
+        url: `${baseUrl}/SKILL.md`,
+        representativeQueries: [
+          "where are the Medusa docs for a topic",
+          "which tools can agents use to read the Medusa docs",
+        ],
+      },
+      {
+        identifier: urn("search", "docs"),
+        displayName: "Medusa Docs Retrieval Endpoint",
+        description:
+          "Search the Medusa documentation and get the most relevant content for a query. Pass the query in the `q` parameter.",
+        type: "application/json",
+        url: `${baseUrl}/agents/search`,
+        representativeQueries: [
+          "search the Medusa documentation",
+          "find Medusa docs about workflows",
         ],
       },
       {
@@ -90,7 +115,8 @@ const getCatalog = () => {
   }
 }
 
-export function GET() {
+export function GET(req: NextRequest) {
+  trackAgentRequest(req, "well_known_requested", { resource: "ai-catalog" })
   return NextResponse.json(getCatalog(), { headers })
 }
 
