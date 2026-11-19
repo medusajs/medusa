@@ -3767,6 +3767,10 @@
     "domain": "Etykiety właściwości",
     "title": "Etykiety właściwości",
     "subtitle": "Zarządzaj niestandardowymi etykietami właściwości dla konfigurowalnych tabel Twoich encji.",
+    "editTitle": "Edytuj etykiety właściwości",
+    "editDescription": "Dostosuj sposób wyświetlania nazw właściwości dla {{entity}}",
+    "customLabel": "Niestandardowa etykieta",
+    "updateSuccess": "Etykiety właściwości zostały zaktualizowane pomyślnie",
     "fields": {
       "module": "Moduł",
       "model": "Model",
@@ -3814,6 +3818,9 @@
   "fields": {
     "actions": "Akcje",
     "amount": "Kwota",
+    "yes": "Tak",
+    "no": "Nie",
+    "field": "Pole",
     "reference": "Referencja",
     "reference_id": "ID referencji",
     "refundAmount": "Kwota zwrotu",

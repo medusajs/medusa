@@ -3678,6 +3678,10 @@
     "domain": "속성 레이블",
     "title": "속성 레이블",
     "subtitle": "항목의 구성 가능한 테이블에 대한 사용자 지정 속성 레이블을 관리합니다.",
+    "editTitle": "속성 레이블 편집",
+    "editDescription": "{{entity}}에 대한 속성 이름 표시 방법을 사용자 지정합니다",
+    "customLabel": "사용자 지정 레이블",
+    "updateSuccess": "속성 레이블이 성공적으로 업데이트되었습니다",
     "fields": {
       "module": "모듈",
       "model": "모델",
@@ -3725,6 +3729,9 @@
   "fields": {
     "actions": "작업",
     "amount": "금액",
+    "yes": "예",
+    "no": "아니오",
+    "field": "필드",
     "reference": "참조",
     "reference_id": "참조 ID",
     "refundAmount": "환불 금액",

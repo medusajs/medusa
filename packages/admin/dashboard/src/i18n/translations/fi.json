@@ -3671,6 +3671,10 @@
     "domain": "Ominaisuusnimikkeet",
     "title": "Ominaisuusnimikkeet",
     "subtitle": "Hallinnoi entiteettiesi mukautettavien taulukoiden mukautettuja ominaisuusnimikkeitä.",
+    "editTitle": "Muokkaa ominaisuuksien otsikoita",
+    "editDescription": "Mukauta, miten ominaisuuksien nimet näytetään kohteelle {{entity}}",
+    "customLabel": "Mukautettu otsikko",
+    "updateSuccess": "Ominaisuuksien otsikot päivitetty onnistuneesti",
     "fields": {
       "module": "Moduuli",
       "model": "Malli",
@@ -3718,6 +3722,9 @@
   "fields": {
     "actions": "Toiminnot",
     "amount": "Summa",
+    "yes": "Kyllä",
+    "no": "Ei",
+    "field": "Kenttä",
     "reference": "Viite",
     "reference_id": "Viitetunnus",
     "refundAmount": "Hyvityssumma",

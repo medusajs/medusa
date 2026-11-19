@@ -3395,6 +3395,9 @@
   },
   "fields": {
     "amount": "Iznos",
+    "yes": "Da",
+    "no": "Ne",
+    "field": "Polje",
     "reference": "Referenca",
     "reference_id": "ID reference",
     "refundAmount": "Iznos povrata",
@@ -3978,6 +3981,10 @@
     "domain": "Nazivi svojstava",
     "title": "Nazivi svojstava",
     "subtitle": "Upravljajte prilagođenim nazivima svojstava za podesive tablice svojih entiteta.",
+    "editTitle": "Uredi oznake svojstava",
+    "editDescription": "Prilagodite prikaz naziva svojstava za {{entity}}",
+    "customLabel": "Prilagođena oznaka",
+    "updateSuccess": "Oznake svojstava su uspješno ažurirane",
     "fields": {
       "module": "Modul",
       "model": "Model",
