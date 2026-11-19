@@ -89,5 +89,6 @@ export const generatedEditDates = {
   "app/usage/compute/page.mdx": "2026-10-19T11:11:24.460Z",
   "app/security/data-protection/page.mdx": "2026-11-06T12:26:30.453Z",
   "app/migrate-self-hosted/page.mdx": "2026-11-13T11:04:19.082Z",
-  "app/security/page.mdx": "2026-11-13T15:30:43.727Z"
+  "app/security/page.mdx": "2026-11-13T15:30:43.727Z",
+  "app/organizations/license/page.mdx": "2026-11-18T16:39:07.029Z"
 }

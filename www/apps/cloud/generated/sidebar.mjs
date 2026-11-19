@@ -143,6 +143,13 @@ export const generatedSidebars = [
                 "title": "Connections",
                 "path": "/organizations/connections",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "License",
+                "path": "/organizations/license",
+                "children": []
               }
             ]
           },

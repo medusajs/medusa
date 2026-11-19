@@ -110,6 +110,11 @@ export const sidebar = [
                 title: "Connections",
                 path: "/organizations/connections",
               },
+              {
+                type: "link",
+                title: "License",
+                path: "/organizations/license",
+              },
             ],
           },
           {
