@@ -1,6 +1,6 @@
 import { Logger } from "@medusajs/framework/types"
 import { RedisCacheModuleOptions } from "@types"
-import { ChainableCommander, Redis } from "ioredis"
+import { ChainableCommander, ClientContext, Redis, Result } from "ioredis"
 import { createGunzip, createGzip } from "zlib"
 
 const CLEAR_BATCH_SIZE = 1000
@@ -47,25 +47,26 @@ for i = 1, #KEYS do
 end
 `
 
-// Both scripts take a variable number of keys, so the key count is the first argument
-type TagSetCommands = {
-  pruneExpiredTagMembers: (
+/**
+ * Lua scripts registered on the client with `defineCommand`. `Context` makes a
+ * command return a promise on the client and the pipeline on a pipeline.
+ * Both scripts take a variable number of keys, so the key count is the first argument.
+ */
+type CustomCommands<Context extends ClientContext = { type: "default" }> = {
+  pruneExpiredTagMembers(
+    numberOfKeys: number,
+    ...keys: string[]
+  ): Result<string[], Context>
+  indexEntryInTagSets(
     numberOfKeys: number,
     ...keysAndArgs: (string | number)[]
-  ) => Promise<string[]>
-}
-
-type TagSetPipelineCommands = {
-  indexEntryInTagSets: (
-    numberOfKeys: number,
-    ...keysAndArgs: (string | number)[]
-  ) => unknown
+  ): Result<null, Context>
 }
 
 export class RedisCachingProvider {
   static identifier = "cache-redis"
 
-  protected redisClient: Redis & TagSetCommands
+  protected redisClient: Redis & CustomCommands
   protected keyNamePrefix: string
   protected defaultTTL: number
   protected compressionThreshold: number
@@ -86,7 +87,7 @@ export class RedisCachingProvider {
     },
     options?: RedisCacheModuleOptions
   ) {
-    this.redisClient = redisClient as Redis & TagSetCommands
+    this.redisClient = redisClient as Redis & CustomCommands
     // Registered once so ioredis runs them through EVALSHA instead of sending
     // the script body on every call
     this.redisClient.defineCommand("pruneExpiredTagMembers", {
@@ -388,7 +389,7 @@ export class RedisCachingProvider {
       const hashedTags = tags?.map((tag) => this.hasher(tag)) ?? []
 
       const setPipeline = this.redisClient.pipeline() as ChainableCommander &
-        TagSetPipelineCommands
+        CustomCommands<{ type: "pipeline" }>
 
       // Main data with conditional operations
       setPipeline.hset(keyName, "data", finalData)
