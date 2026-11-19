@@ -79,14 +79,16 @@ export const generatedEditDates = {
   "app/search/settings/page.mdx": "2026-09-22T11:09:25.272Z",
   "app/mermaid-icon-test/page.mdx": "2026-09-15T06:44:06.483Z",
   "app/search/analytics/page.mdx": "2026-09-22T11:07:49.287Z",
-  "app/medusa-mcp/chatgpt/page.mdx": "2026-10-08T08:52:22.668Z",
+  "app/medusa-mcp/chatgpt/page.mdx": "2026-11-19T07:59:24.535Z",
   "app/medusa-mcp/claude/page.mdx": "2026-10-08T08:52:22.668Z",
-  "app/medusa-mcp/page.mdx": "2026-10-20T12:49:24.619Z",
+  "app/medusa-mcp/page.mdx": "2026-11-19T07:59:24.536Z",
   "app/organizations/connections/page.mdx": "2026-10-08T07:45:03.390Z",
   "app/medusa-mcp/custom-agents/page.mdx": "2026-10-08T08:52:22.668Z",
   "app/medusa-mcp/custom-data/page.mdx": "2026-10-20T12:53:55.860Z",
   "app/medusa-mcp/n8n/page.mdx": "2026-10-08T08:58:01.127Z",
   "app/usage/compute/page.mdx": "2026-10-19T11:11:24.460Z",
   "app/security/data-protection/page.mdx": "2026-11-06T12:26:30.453Z",
-  "app/migrate-self-hosted/page.mdx": "2026-11-13T11:04:19.082Z"
+  "app/migrate-self-hosted/page.mdx": "2026-11-13T11:04:19.082Z",
+  "app/security/page.mdx": "2026-11-13T15:30:43.727Z",
+  "app/organizations/license/page.mdx": "2026-11-18T16:39:07.029Z"
 }

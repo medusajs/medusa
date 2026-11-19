@@ -1,4 +1,4 @@
-import i18next from "i18next";
+import { getI18n } from "react-i18next";
 import { FieldPath, FieldValues, UseFormReturn } from "react-hook-form";
 import { z } from "@medusajs/framework/zod";
 
@@ -24,7 +24,7 @@ export const optionalInt = z
       return Number.isInteger(castNumber(value));
     },
     {
-      error: i18next.t("validation.mustBeInt"),
+      error: () => getI18n().t("validation.mustBeInt"),
     }
   )
   .refine(
@@ -36,7 +36,7 @@ export const optionalInt = z
       return castNumber(value) >= 0;
     },
     {
-      error: i18next.t("validation.mustBePositive"),
+      error: () => getI18n().t("validation.mustBePositive"),
     }
   );
 
@@ -55,7 +55,7 @@ export const optionalFloat = z
       return castNumber(value) >= 0;
     },
     {
-      error: i18next.t("validation.mustBePositive"),
+      error: () => getI18n().t("validation.mustBePositive"),
     }
   );
 

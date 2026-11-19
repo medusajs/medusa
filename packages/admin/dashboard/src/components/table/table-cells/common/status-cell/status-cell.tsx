@@ -17,7 +17,7 @@ export const StatusCell = ({ color, children }: StatusCellProps) => {
       >
         <div
           className={clx(
-            "h-2 w-2 rounded-sm shadow-[0px_0px_0px_1px_rgba(0,0,0,0.12)_inset]",
+            "h-2 w-2 rounded-xs shadow-[0px_0px_0px_1px_rgba(0,0,0,0.12)_inset]",
             {
               "bg-ui-tag-neutral-icon": color === "grey",
               "bg-ui-tag-green-icon": color === "green",

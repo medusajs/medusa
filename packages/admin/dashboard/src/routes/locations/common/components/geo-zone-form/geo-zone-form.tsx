@@ -4,6 +4,7 @@ import {
   RowSelectionState,
   createColumnHelper,
 } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useEffect, useMemo, useState } from "react"
 import { UseFormReturn, useFieldArray } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -270,7 +271,7 @@ const AreaStackedModal = <TForm extends UseFormReturn<any>>({
   )
 }
 
-const columnHelper = createColumnHelper<StaticCountry>()
+const columnHelper = createColumnHelper<DataTableFeatures, StaticCountry>()
 
 const useColumns = () => {
   const base = useCountryTableColumns()
@@ -283,6 +284,7 @@ const useColumns = () => {
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()

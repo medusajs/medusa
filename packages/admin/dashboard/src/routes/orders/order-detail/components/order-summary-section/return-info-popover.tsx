@@ -46,7 +46,7 @@ function ReturnInfoPopover({ orderReturn }: ReturnInfoPopoverProps) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         autoFocus={false}
-        className="align-sub focus-visible:outline-none"
+        className="align-sub focus-visible:outline-hidden"
       >
         <InformationCircleSolid />
       </Popover.Trigger>
@@ -54,7 +54,7 @@ function ReturnInfoPopover({ orderReturn }: ReturnInfoPopoverProps) {
       <Popover.Content
         align="center"
         side="top"
-        className="bg-ui-bg-component p-2 focus-visible:outline-none"
+        className="bg-ui-bg-component p-2 focus-visible:outline-hidden"
       >
         <div className="">
           <Badge size="2xsmall" className="mb-2" rounded="full">

@@ -92,7 +92,7 @@ export const useCreateDraftOrder = (
     mutationFn: async (payload) => {
       return await sdk.admin.draftOrder.create(payload)
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: draftOrdersQueryKeys.lists(),
       })
@@ -103,7 +103,7 @@ export const useCreateDraftOrder = (
         queryKey: shippingOptionsQueryKeys.list(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -125,12 +125,12 @@ export const useDeleteDraftOrder = (
     mutationFn: async (id: string) => {
       return await sdk.admin.draftOrder.delete(id)
     },
-    onSuccess: (data, undefined, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: draftOrdersQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, undefined, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -153,7 +153,7 @@ export const useUpdateDraftOrder = (
     mutationFn: async (payload) => {
       return await sdk.admin.draftOrder.update(id, payload)
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: draftOrdersQueryKeys.details(),
       })
@@ -164,7 +164,7 @@ export const useUpdateDraftOrder = (
         queryKey: draftOrdersQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -178,7 +178,7 @@ export const useConvertDraftOrder = (
 
   return useMutation({
     mutationFn: () => sdk.admin.draftOrder.convertToOrder(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: draftOrdersQueryKeys.detail(id),
       })
@@ -193,7 +193,7 @@ export const useConvertDraftOrder = (
         queryKey: ordersQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -211,12 +211,12 @@ export const useDraftOrderAddItems = (
 
   return useMutation({
     mutationFn: (payload) => sdk.admin.draftOrder.addItems(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -235,12 +235,12 @@ export const useDraftOrderUpdateItem = (
   return useMutation({
     mutationFn: ({ item_id, ...payload }) =>
       sdk.admin.draftOrder.updateItem(id, item_id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -259,12 +259,12 @@ export const useDraftOrderRemoveActionItem = (
   return useMutation({
     mutationFn: (action_id: string) =>
       sdk.admin.draftOrder.removeActionItem(id, action_id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -283,12 +283,12 @@ export const useDraftOrderUpdateActionItem = (
   return useMutation({
     mutationFn: ({ action_id, ...payload }) =>
       sdk.admin.draftOrder.updateActionItem(id, action_id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -306,12 +306,12 @@ export const useDraftOrderAddPromotions = (
 
   return useMutation({
     mutationFn: (payload) => sdk.admin.draftOrder.addPromotions(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -329,12 +329,12 @@ export const useDraftOrderRemovePromotions = (
 
   return useMutation({
     mutationFn: (payload) => sdk.admin.draftOrder.removePromotions(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -353,12 +353,12 @@ export const useDraftOrderAddShippingMethod = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.draftOrder.addShippingMethod(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -377,12 +377,12 @@ export const useDraftOrderUpdateActionShippingMethod = (
   return useMutation({
     mutationFn: ({ action_id, ...payload }) =>
       sdk.admin.draftOrder.updateActionShippingMethod(id, action_id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -401,12 +401,12 @@ export const useDraftOrderRemoveActionShippingMethod = (
   return useMutation({
     mutationFn: (action_id: string) =>
       sdk.admin.draftOrder.removeActionShippingMethod(id, action_id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -425,12 +425,12 @@ export const useDraftOrderRemoveShippingMethod = (
   return useMutation({
     mutationFn: (shipping_method_id: string) =>
       sdk.admin.draftOrder.removeShippingMethod(id, shipping_method_id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -449,12 +449,12 @@ export const useDraftOrderUpdateShippingMethod = (
   return useMutation({
     mutationFn: ({ method_id, ...payload }) =>
       sdk.admin.draftOrder.updateShippingMethod(id, method_id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -472,12 +472,12 @@ export const useDraftOrderBeginEdit = (
 
   return useMutation({
     mutationFn: () => sdk.admin.draftOrder.beginEdit(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -495,7 +495,7 @@ export const useDraftOrderCancelEdit = (
 
   return useMutation({
     mutationFn: () => sdk.admin.draftOrder.cancelEdit(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
@@ -508,7 +508,7 @@ export const useDraftOrderCancelEdit = (
         queryKey: draftOrdersQueryKeys.details(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -526,12 +526,12 @@ export const useDraftOrderRequestEdit = (
 
   return useMutation({
     mutationFn: () => sdk.admin.draftOrder.requestEdit(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -549,7 +549,7 @@ export const useDraftOrderConfirmEdit = (
 
   return useMutation({
     mutationFn: () => sdk.admin.draftOrder.confirmEdit(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.preview(id),
       })
@@ -574,7 +574,7 @@ export const useDraftOrderConfirmEdit = (
         queryKey: draftOrdersQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

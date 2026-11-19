@@ -6,13 +6,13 @@ import {
   Container,
   createDataTableColumnHelper,
   DataTableAction,
+  DataTableCellContext,
   Tooltip,
   usePrompt,
 } from "@medusajs/ui";
 import { keepPreviousData } from "@tanstack/react-query";
 import { useCallback, useMemo } from "react";
 
-import { CellContext } from "@tanstack/react-table";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { DataTable } from "../../../../../components/data-table";
 import { useDataTableDateColumns } from "../../../../../components/data-table/helpers/general/use-data-table-date-columns";
@@ -234,7 +234,7 @@ const useColumns = (
   }, [product]);
 
   const getActions = useCallback(
-    (ctx: CellContext<HttpTypes.AdminProductVariant, unknown>) => {
+    (ctx: DataTableCellContext<HttpTypes.AdminProductVariant, unknown>) => {
       const variant = ctx.row.original as HttpTypes.AdminProductVariant & {
         inventory_items: { inventory: HttpTypes.AdminInventoryItem }[];
       };

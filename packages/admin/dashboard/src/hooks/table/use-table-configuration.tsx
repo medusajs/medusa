@@ -1,7 +1,7 @@
-import { useState, useMemo, useCallback, useEffect } from "react"
+import { useState, useMemo, useCallback, useEffect, useRef } from "react"
 import { useSearchParams } from "react-router-dom"
 import { HttpTypes } from "@medusajs/types"
-import { DataTableFilter } from "@medusajs/ui"
+import { DataTableFilter, DataTableRowData } from "@medusajs/ui"
 import {
   useViewConfigurations,
   useViewConfiguration,
@@ -26,7 +26,7 @@ export interface UseTableConfigurationOptions {
   entity: string
   pageSize?: number
   queryPrefix?: string
-  transformColumns?: TableAdapter<unknown>["transformColumns"]
+  transformColumns?: TableAdapter<DataTableRowData>["transformColumns"]
   /**
    * Extra client-side columns to append to the API columns (e.g. the virtual
    * actions column). They participate in column state like any other column.
@@ -86,7 +86,15 @@ export function useTableConfiguration({
   viewConfigurationKey,
 }: UseTableConfigurationOptions): UseTableConfigurationReturn {
   const isViewConfigEnabled = useFeatureFlag("view_configurations")
-  const [_, setSearchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  // When the list mounts with table state already in the URL (e.g. going back
+  // through history or a breadcrumb), keep it instead of applying the view.
+  const keepUrlStateOnMountRef = useRef(
+    Array.from(searchParams.keys()).some((key) =>
+      key.startsWith(queryPrefix + "_")
+    )
+  )
 
   const viewConfigKey = viewConfigurationKey ?? entity
 
@@ -106,6 +114,7 @@ export function useTableConfiguration({
 
   const { activeView, createView } = useViewConfigurations(viewConfigKey)
   const currentActiveView = activeView?.view_configuration || null
+  const isActiveViewLoading = !!activeView?.isLoading
   const { updateView } = useViewConfiguration(
     viewConfigKey,
     currentActiveView?.id || ""
@@ -163,12 +172,26 @@ export function useTableConfiguration({
         .join(",")
     : ""
 
+  const syncedSignatureRef = useRef<string | null>(null)
+
   // Sync view configuration with URL and column state
   useEffect(() => {
-    if (!columnsToRender) {
+    if (!columnsToRender || isActiveViewLoading) {
       return
     }
+    // StrictMode re-runs this effect on mount; without this check the re-run
+    // would wipe the URL state kept on the first run.
+    const syncSignature = `${activeViewSignature}|${columnsSignature}`
+    if (syncedSignatureRef.current === syncSignature) {
+      return
+    }
+    syncedSignatureRef.current = syncSignature
+
     originalHandleViewChange(currentActiveView, columnsToRender)
+    if (keepUrlStateOnMountRef.current) {
+      keepUrlStateOnMountRef.current = false
+      return
+    }
     setSearchParams((prev) => {
       // Clear existing query params
       const keysToDelete = Array.from(prev.keys()).filter(
@@ -213,7 +236,7 @@ export function useTableConfiguration({
     // churn every render), or it re-runs on each render and clears the
     // just-applied filter. applyDefaultFilters is stable.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeViewSignature, columnsSignature])
+  }, [activeViewSignature, columnsSignature, isActiveViewLoading])
 
   // Current configuration from URL
   const currentConfiguration = useMemo(() => {

@@ -51,15 +51,15 @@
     "@babel/runtime": "^8.0.10",
     "@hookform/resolvers": "6.0.0",
     "@medusajs/js-sdk": "2.22.7",
-    "@tanstack/react-query": "5.64.2",
+    "@tanstack/react-query": "5.107.1",
     "@uiw/react-json-view": "^2.0.0-alpha.17",
     "date-fns": "^4.4.0",
     "dequal": "^2.0.3",
     "lodash.debounce": "^4.0.8",
     "match-sorter": "^8.3.0",
-    "radix-ui": "1.1.2",
-    "react-hook-form": "7.83.0",
-    "zod": "4.6.6"
+    "radix-ui": "1.8.1",
+    "react-hook-form": "7.92.0",
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@medusajs/admin-sdk": "2.22.7",
@@ -81,8 +81,8 @@
     "@medusajs/icons": "2.22.7",
     "@medusajs/test-utils": "2.22.7",
     "@medusajs/ui": "4.2.14",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "react-router-dom": "^6.30.4 || ^7.0.0"
   },
   "peerDependenciesMeta": {

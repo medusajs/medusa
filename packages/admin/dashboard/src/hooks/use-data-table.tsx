@@ -3,21 +3,24 @@ import {
   OnChangeFn,
   PaginationState,
   Row,
+  RowData,
   RowSelectionState,
-  getCoreRowModel,
-  getExpandedRowModel,
-  getPaginationRowModel,
-  useReactTable,
+  useTable,
 } from "@tanstack/react-table"
+import {
+  DataTableFeatures,
+  dataTableFeatures,
+} from "../components/table/data-table/data-table-features"
 import { useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
-type UseDataTableProps<TData> = {
+type UseDataTableProps<TData extends RowData> = {
   data?: TData[]
-  columns: ColumnDef<TData, any>[]
+  columns: ColumnDef<DataTableFeatures, TData, any>[]
   count?: number
   pageSize?: number
-  enableRowSelection?: boolean | ((row: Row<TData>) => boolean)
+  enableRowSelection?:
+    boolean | ((row: Row<DataTableFeatures, TData>) => boolean)
   rowSelection?: {
     state: RowSelectionState
     updater: OnChangeFn<RowSelectionState>
@@ -30,7 +33,7 @@ type UseDataTableProps<TData> = {
   prefix?: string
 }
 
-export const useDataTable = <TData,>({
+export const useDataTable = <TData extends RowData>({
   data = [],
   columns,
   count = 0,
@@ -102,7 +105,8 @@ export const useDataTable = <TData,>({
     return state
   }
 
-  const table = useReactTable({
+  const table = useTable({
+    features: dataTableFeatures,
     data,
     columns,
     state: {
@@ -117,14 +121,8 @@ export const useDataTable = <TData,>({
     onPaginationChange: enablePagination
       ? (onPaginationChange as OnChangeFn<PaginationState>)
       : undefined,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: enablePagination
-      ? getPaginationRowModel()
-      : undefined,
-    getExpandedRowModel: enableExpandableRows
-      ? getExpandedRowModel()
-      : undefined,
-    manualPagination: enablePagination ? true : undefined,
+    enableExpanding: enableExpandableRows,
+    manualPagination: true,
     meta,
   })
 

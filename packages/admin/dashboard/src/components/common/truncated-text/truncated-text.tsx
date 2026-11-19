@@ -33,7 +33,7 @@ export const TruncatedText = ({ text, className }: TruncatedTextProps) => {
     <Tooltip
       content={text}
       hidden={!overflow}
-      className="max-w-[360px] break-words"
+      className="max-w-[360px] wrap-break-word"
     >
       <span
         ref={ref}

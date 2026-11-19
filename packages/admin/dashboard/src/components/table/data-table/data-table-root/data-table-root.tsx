@@ -1,10 +1,12 @@
 import { CommandBar, Table, clx } from "@medusajs/ui"
 import {
   ColumnDef,
-  Table as ReactTable,
+  ReactTable,
   Row,
+  RowData,
   flexRender,
 } from "@tanstack/react-table"
+import { DataTableFeatures } from "../data-table-features"
 import {
   ComponentPropsWithoutRef,
   Fragment,
@@ -23,19 +25,19 @@ type BulkCommand = {
   action: (selection: Record<string, boolean>) => Promise<void>
 }
 
-export interface DataTableRootProps<TData> {
+export interface DataTableRootProps<TData extends RowData> {
   /**
    * The table instance to render
    */
-  table: ReactTable<TData>
+  table: ReactTable<DataTableFeatures, TData>
   /**
    * The columns to render
    */
-  columns: ColumnDef<TData, any>[]
+  columns: ColumnDef<DataTableFeatures, TData, any>[]
   /**
    * Function to generate a link to navigate to when clicking on a row
    */
-  navigateTo?: (row: Row<TData>) => string
+  navigateTo?: (row: Row<DataTableFeatures, TData>) => string
   /**
    * Bulk actions to render
    */
@@ -76,7 +78,7 @@ export interface DataTableRootProps<TData> {
 /**
  * Table component for rendering a table with pagination, filtering and ordering.
  */
-export const DataTableRoot = <TData,>({
+export const DataTableRoot = <TData extends RowData>({
   table,
   columns,
   pagination,
@@ -96,8 +98,8 @@ export const DataTableRoot = <TData,>({
   const hasActions = columns.find((c) => c.id === "actions")
   const hasCommandBar = commands && commands.length > 0
 
-  const rowSelection = table.getState().rowSelection
-  const { pageIndex, pageSize } = table.getState().pagination
+  const rowSelection = table.state.rowSelection
+  const { pageIndex, pageSize } = table.state.pagination
 
   const colCount = columns.length - (hasSelect ? 1 : 0) - (hasActions ? 1 : 0)
   const colWidth = 100 / colCount
@@ -132,7 +134,7 @@ export const DataTableRoot = <TData,>({
         ref={scrollableRef}
         onScroll={handleHorizontalScroll}
         className={clx("w-full", {
-          "min-h-0 flex-grow overflow-auto": layout === "fill",
+          "min-h-0 grow overflow-auto": layout === "fill",
           "overflow-x-auto": layout === "fit",
         })}
       >
@@ -176,9 +178,9 @@ export const DataTableRoot = <TData,>({
                                 : undefined,
                             }}
                             className={clx({
-                              "sticky start-0 bg-ui-bg-subtle after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
+                              "sticky inset-s-0 bg-ui-bg-subtle after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-['']":
                                 isStickyHeader,
-                              "start-[68px]":
+                              "inset-s-[68px]":
                                 isStickyHeader && hasSelect && !isSelectHeader,
                               "after:bg-ui-border-base":
                                 showStickyBorder &&
@@ -219,7 +221,7 @@ export const DataTableRoot = <TData,>({
                         "cursor-pointer": !!to,
                         "bg-ui-bg-highlight hover:bg-ui-bg-highlight-hover":
                           row.getIsSelected(),
-                        "!hover:bg-ui-bg-disabled !bg-ui-bg-disabled":
+                        "!hover:bg-ui-bg-disabled bg-ui-bg-disabled!":
                           isRowDisabled,
                       }
                     )}
@@ -262,15 +264,15 @@ export const DataTableRoot = <TData,>({
                         <Table.Cell
                           key={cell.id}
                           className={clx({
-                            "!pe-0 !ps-0": shouldRenderAsLink,
-                            "sticky start-0 bg-ui-bg-base transition-fg after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-[''] group-hover/row:bg-ui-bg-base-hover group-has-[[data-row-link]:focus-visible]:bg-ui-bg-base-hover group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover":
+                            "pe-0! ps-0!": shouldRenderAsLink,
+                            "sticky inset-s-0 bg-ui-bg-base transition-fg after:absolute after:inset-y-0 after:right-0 after:h-full after:w-px after:bg-transparent after:content-[''] group-hover/row:bg-ui-bg-base-hover group-has-[[data-row-link]:focus-visible]:bg-ui-bg-base-hover group-data-[selected=true]/row:bg-ui-bg-highlight group-data-[selected=true]/row:group-hover/row:bg-ui-bg-highlight-hover":
                               isStickyCell,
                             "bg-ui-bg-subtle group-hover/row:bg-ui-bg-subtle-hover":
                               isOdd && isStickyCell,
-                            "start-[68px]": hasLeftOffset,
+                            "inset-s-[68px]": hasLeftOffset,
                             "after:bg-ui-border-base":
                               showStickyBorder && isStickyCell && !isSelectCell,
-                            "!hover:bg-ui-bg-disabled !bg-ui-bg-disabled":
+                            "!hover:bg-ui-bg-disabled bg-ui-bg-disabled!":
                               isRowDisabled,
                           })}
                           style={{
@@ -282,7 +284,7 @@ export const DataTableRoot = <TData,>({
                           {shouldRenderAsLink ? (
                             <Link
                               to={to}
-                              className="size-full outline-none"
+                              className="size-full outline-hidden"
                               data-row-link
                               tabIndex={isTabableLink ? 0 : -1}
                             >
@@ -374,7 +376,7 @@ const Pagination = (props: PaginationProps) => {
 
   return (
     <Table.Pagination
-      className="flex-shrink-0"
+      className="shrink-0"
       {...props}
       translations={translations}
     />

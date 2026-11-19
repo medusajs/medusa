@@ -13,6 +13,7 @@ import {
   usePrompt,
 } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import copy from "copy-to-clipboard"
 import { format } from "date-fns"
 import { useMemo } from "react"
@@ -351,7 +352,10 @@ const InviteActions = ({ invite }: { invite: HttpTypes.AdminInvite }) => {
   return <ActionMenu groups={groups} />
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminInvite>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminInvite
+>()
 
 const useColumns = ({ isRbacEnabled }: { isRbacEnabled: boolean }) => {
   const { t } = useTranslation()

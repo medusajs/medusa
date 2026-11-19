@@ -2535,6 +2535,135 @@ medusaIntegrationTestRunner({
           })
         })
 
+        describe("with quantity based prices of different tax inclusivity", () => {
+          let tieredVariantId
+          let tieredCart
+
+          beforeEach(async () => {
+            const tieredProduct = (
+              await api.post(
+                `/admin/products`,
+                {
+                  title: "Medusa T-Shirt with mixed tax inclusivity",
+                  handle: "t-shirt-with-mixed-tax-inclusivity",
+                  status: ProductStatus.PUBLISHED,
+                  options: [{ title: "Size", values: ["S"] }],
+                  variants: [
+                    {
+                      title: "S",
+                      sku: "SHIRT-S-BLACK-w-mixed-tax-inclusivity",
+                      options: { Size: "S" },
+                      manage_inventory: false,
+                      prices: [
+                        {
+                          amount: 4000,
+                          currency_code: "usd",
+                          min_quantity: 1,
+                          max_quantity: 2,
+                        },
+                        {
+                          amount: 3000,
+                          currency_code: "usd",
+                          min_quantity: 3,
+                          rules: { region_id: region.id },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                adminHeaders
+              )
+            ).data.product
+
+            tieredVariantId = tieredProduct.variants[0].id
+
+            tieredCart = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                },
+                storeHeaders
+              )
+            ).data.cart
+          })
+
+          it("should update is_tax_inclusive of a merged line item with its new price", async () => {
+            let response = await api.post(
+              `/store/carts/${tieredCart.id}/line-items`,
+              { variant_id: tieredVariantId, quantity: 1 },
+              storeHeaders
+            )
+
+            expect(response.data.cart.items[0]).toEqual(
+              expect.objectContaining({
+                quantity: 1,
+                unit_price: 4000,
+                is_tax_inclusive: true,
+              })
+            )
+
+            response = await api.post(
+              `/store/carts/${tieredCart.id}/line-items`,
+              { variant_id: tieredVariantId, quantity: 2 },
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.cart.items).toHaveLength(1)
+            expect(response.data.cart.items[0]).toEqual(
+              expect.objectContaining({
+                quantity: 3,
+                unit_price: 3000,
+                is_tax_inclusive: false,
+              })
+            )
+          })
+
+          it("should update is_tax_inclusive of a line item with its new price when its quantity is updated", async () => {
+            const itemId = (
+              await api.post(
+                `/store/carts/${tieredCart.id}/line-items`,
+                { variant_id: tieredVariantId, quantity: 1 },
+                storeHeaders
+              )
+            ).data.cart.items[0].id
+
+            let response = await api.post(
+              `/store/carts/${tieredCart.id}/line-items/${itemId}`,
+              { quantity: 3 },
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.cart.items[0]).toEqual(
+              expect.objectContaining({
+                quantity: 3,
+                unit_price: 3000,
+                is_tax_inclusive: false,
+              })
+            )
+
+            response = await api.post(
+              `/store/carts/${tieredCart.id}/line-items/${itemId}`,
+              { quantity: 1 },
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.cart.items[0]).toEqual(
+              expect.objectContaining({
+                quantity: 1,
+                unit_price: 4000,
+                is_tax_inclusive: true,
+              })
+            )
+          })
+        })
+
         describe("with manage_inventory true", () => {
           let inventoryItem
           beforeEach(async () => {
@@ -5622,6 +5751,92 @@ medusaIntegrationTestRunner({
                 }),
               ]),
             })
+          )
+        })
+
+        it("should refresh the payment collection when recalculating taxes changes the cart total", async () => {
+          // Tax-exclusive prices so a rate change moves the cart total
+          const [usdPreference] = (
+            await api.get(
+              `/admin/price-preferences?attribute=currency_code&value=usd`,
+              adminHeaders
+            )
+          ).data.price_preferences
+          await api.post(
+            `/admin/price-preferences/${usdPreference.id}`,
+            { is_tax_inclusive: false },
+            adminHeaders
+          )
+
+          const taxExclusiveCart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                shipping_address: shippingAddressData,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const paymentCollection = (
+            await api.post(
+              `/store/payment-collections`,
+              { cart_id: taxExclusiveCart.id },
+              storeHeaders
+            )
+          ).data.payment_collection
+          await api.post(
+            `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+            { provider_id: "pp_system_default" },
+            storeHeaders
+          )
+          expect(paymentCollection.amount).toEqual(taxExclusiveCart.total)
+
+          const caTaxRate = (
+            await api.get(`/admin/tax-rates?q=CADEFAULT`, adminHeaders)
+          ).data.tax_rates.find((rate) => rate.code === "CADEFAULT")
+          await api.post(
+            `/admin/tax-rates/${caTaxRate.id}`,
+            { rate: 10 },
+            adminHeaders
+          )
+
+          const recalculated = (
+            await api.post(
+              `/store/carts/${taxExclusiveCart.id}/taxes`,
+              {},
+              storeHeaders
+            )
+          ).data.cart
+          expect(recalculated.total).not.toEqual(taxExclusiveCart.total)
+
+          const refetched = (
+            await api.get(
+              `/store/carts/${taxExclusiveCart.id}?fields=total,*payment_collection,*payment_collection.payment_sessions`,
+              storeHeaders
+            )
+          ).data.cart
+
+          expect(refetched.payment_collection.amount).toEqual(refetched.total)
+          expect(refetched.payment_collection.payment_sessions).toEqual([])
+        })
+
+        it("should not recalculate taxes for a completed cart", async () => {
+          await appContainer
+            .resolve(Modules.CART)
+            .updateCarts(cart.id, { completed_at: new Date() })
+
+          const { response } = await api
+            .post(`/store/carts/${cart.id}/taxes`, {}, storeHeaders)
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          expect(response.data.message).toEqual(
+            `Cart ${cart.id} is already completed.`
           )
         })
 

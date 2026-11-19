@@ -71,6 +71,7 @@ yarn medusa plugin:db:generate   # generate a migration after changing a model i
 - Until the module's migration runs, `GET /admin/cloud/announcements` fails to read the preferences and returns an empty list.
 - Don't add `@medusajs/medusa` as a dependency: it already depends on this package.
 - `tsconfig.json` excludes `src/admin`; admin code is type-checked with `src/admin/tsconfig.json` and bundled by `plugin:build`.
+- There is no Tailwind config: the app's admin build compiles the plugin's classes with Tailwind 4, so use v4 class names.
 - `content` is HTML authored in the Cloud admin and forwarded as is. Always render it through `sanitizeHtml` (`src/admin/lib/sanitize.ts`, DOMPurify), never directly.
 - Announcement types are `cloud-feature` (the default when the Cloud API sends none), `feature`, `security`, `incident`, and `admin`. They must match the platform's `AnnouncementTypeSchema`.
 - It runs on self-hosted projects too, where the backend calls the public Medusa Cloud API to fetch announcements. To turn it off, list the plugin in `medusa-config.ts` with `options: { disabled: true }`. `defineConfig` (`resolvePlugins`) then removes it from `plugins`, because admin widgets and UI routes can't be hidden at runtime. The plugin itself doesn't read `disabled`, so a config that isn't built with `defineConfig` still loads it.

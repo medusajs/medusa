@@ -20,7 +20,7 @@ import {
 
 export const adminSalesChannelRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/sales-channels/*",
+    matcher: "/admin/sales-channels/{*splat}",
     middlewares: [
       authorize([
         {

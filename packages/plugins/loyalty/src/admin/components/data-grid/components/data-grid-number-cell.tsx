@@ -1,4 +1,4 @@
-import { clx } from "@medusajs/ui";
+import { clx, DataTableRowData } from "@medusajs/ui";
 import { useEffect, useState } from "react";
 import { Controller, ControllerRenderProps } from "react-hook-form";
 import { useCombinedRefs } from "../../../utils/refs";
@@ -6,7 +6,7 @@ import { useDataGridCell, useDataGridCellError } from "../hooks";
 import { DataGridCellProps, InputProps } from "../types";
 import { DataGridCellContainer } from "./data-grid-cell-container";
 
-export const DataGridNumberCell = <TData, TValue = any>({
+export const DataGridNumberCell = <TData extends DataTableRowData, TValue = any>({
   context,
   ...rest
 }: DataGridCellProps<TData, TValue> & {
@@ -81,7 +81,7 @@ const Inner = ({
         type="number"
         inputMode="decimal"
         className={clx(
-          "txt-compact-small size-full bg-transparent outline-none",
+          "txt-compact-small size-full bg-transparent outline-hidden",
           "placeholder:text-ui-fg-muted"
         )}
         tabIndex={-1}

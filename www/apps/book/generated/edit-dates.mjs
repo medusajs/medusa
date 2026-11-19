@@ -92,7 +92,7 @@ export const generatedEditDates = {
   "app/learn/fundamentals/plugins/create/page.mdx": "2025-04-17T08:29:09.910Z",
   "app/learn/fundamentals/plugins/page.mdx": "2025-01-22T10:14:10.433Z",
   "app/learn/customization/reuse-customizations/page.mdx": "2025-09-04T15:45:52.047Z",
-  "app/learn/update/page.mdx": "2025-01-27T08:45:19.030Z",
+  "app/learn/update/page.mdx": "2026-11-16T13:29:34.096Z",
   "app/learn/fundamentals/admin/environment-variables/page.mdx": "2026-07-28T05:43:12.209Z",
   "app/learn/fundamentals/api-routes/parse-body/page.mdx": "2026-09-04T07:43:35.459Z",
   "app/learn/fundamentals/admin/routing/page.mdx": "2026-07-28T05:43:12.231Z",
@@ -100,7 +100,7 @@ export const generatedEditDates = {
   "app/learn/resources/contribution-guidelines/docs/page.mdx": "2025-09-26T13:53:55.070Z",
   "app/learn/resources/usage/page.mdx": "2025-02-26T13:35:34.824Z",
   "app/learn/configurations/medusa-config/page.mdx": "2026-11-13T14:27:35.954Z",
-  "app/learn/configurations/ts-aliases/page.mdx": "2025-07-23T15:32:18.008Z",
+  "app/learn/configurations/ts-aliases/page.mdx": "2026-11-16T13:29:34.021Z",
   "app/learn/production/worker-mode/page.mdx": "2025-10-13T10:33:27.403Z",
   "app/learn/fundamentals/module-links/read-only/page.mdx": "2026-08-21T06:06:02.827Z",
   "app/learn/fundamentals/data-models/properties/page.mdx": "2026-11-06T12:14:46.893Z",
@@ -141,5 +141,6 @@ export const generatedEditDates = {
   "app/learn/fundamentals/api-routes/allowed-fields/page.mdx": "2026-09-11T10:06:19.798Z",
   "app/learn/fundamentals/api-routes/disallowed-fields/page.mdx": "2026-09-11T08:58:48.383Z",
   "app/learn/fundamentals/workflows/cancel-workflow/page.mdx": "2026-09-22T06:13:18.949Z",
-  "app/learn/introduction/build-with-llms-ai/manage-store-with-agents/page.mdx": "2026-10-08T07:46:41.587Z"
+  "app/learn/introduction/build-with-llms-ai/manage-store-with-agents/page.mdx": "2026-11-19T07:59:24.534Z",
+  "app/learn/configurations/typescript/page.mdx": "2026-11-16T13:55:02.008Z"
 }

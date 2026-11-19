@@ -52,10 +52,23 @@ export function createInventoryTableAdapter({
     ],
     useData: (fields, params) => {
       const { inventory_items, count, isError, error, isPending } =
-        useInventoryItems({
-          fields,
-          ...params,
-        })
+        useInventoryItems(
+          {
+            fields,
+            ...params,
+          },
+          {
+            placeholderData: (previousData, previousQuery: any) => {
+              // Only keep placeholder data if the fields haven't changed
+              const prevFields =
+                previousQuery?.[previousQuery?.length - 1]?.query?.fields
+              if (prevFields && prevFields !== fields) {
+                return undefined
+              }
+              return previousData
+            },
+          }
+        )
       return {
         data: inventory_items,
         count,

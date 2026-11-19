@@ -156,7 +156,7 @@ const Event = ({
       </div>
       <RadixCollapsible.Root open={open} onOpenChange={setOpen}>
         <RadixCollapsible.Trigger asChild>
-          <div className="group flex cursor-pointer items-start justify-between outline-none">
+          <div className="group flex cursor-pointer items-start justify-between outline-hidden">
             <Text size="small" leading="compact" weight="plus">
               {identifier}
             </Text>

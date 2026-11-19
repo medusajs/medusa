@@ -127,7 +127,7 @@ describe("PermissionsMatrix", () => {
 
     renderMatrix({ ungrantable, selection })
 
-    const group = screen.getByRole("group", {
+    const group = screen.getByRole("radiogroup", {
       name: "roles.permissions.matrix.levelControlLabel",
     })
 
