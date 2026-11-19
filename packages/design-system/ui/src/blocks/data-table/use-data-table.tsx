@@ -3,16 +3,16 @@ import {
   ColumnFiltersState,
   type ColumnSort,
   type ColumnOrderState,
-  getCoreRowModel,
   PaginationState,
   type RowSelectionState,
   type SortingState,
   type TableOptions,
   type Updater,
-  useReactTable,
-  type VisibilityState,
+  useTable,
+  type ColumnVisibilityState as VisibilityState,
 } from "@tanstack/react-table"
 import * as React from "react"
+import { dataTableFeatures, DataTableFeatures } from "./data-table-features"
 import {
   DataTableColumnDef,
   DataTableColumnFilter,
@@ -24,12 +24,13 @@ import {
   DataTableFilterOption,
   DataTablePaginationState,
   DataTableRow,
+  DataTableRowData,
   DataTableRowSelectionState,
   DataTableSortingState,
 } from "./types"
 
-interface DataTableOptions<TData>
-  extends Pick<TableOptions<TData>, "data" | "getRowId"> {
+interface DataTableOptions<TData extends DataTableRowData>
+  extends Pick<TableOptions<DataTableFeatures, TData>, "data" | "getRowId"> {
   /**
    * The columns to use for the table.
    */
@@ -124,9 +125,9 @@ interface DataTableOptions<TData>
   }
 }
 
-interface UseDataTableReturn<TData>
+interface UseDataTableReturn<TData extends DataTableRowData>
   extends Pick<
-    ReturnType<typeof useReactTable<TData>>,
+    ReturnType<typeof useTable<DataTableFeatures, TData>>,
     | "getHeaderGroups"
     | "getRowModel"
     | "getCanNextPage"
@@ -180,7 +181,7 @@ interface UseDataTableReturn<TData>
   setColumnOrderFromArray: (order: string[]) => void
 }
 
-const useDataTable = <TData,>({
+const useDataTable = <TData extends DataTableRowData>({
   rowCount = 0,
   filters,
   commands,
@@ -284,11 +285,11 @@ const useDataTable = <TData,>({
       : undefined
   }, [onColumnOrderChange, columnOrderState])
 
-  const instance = useReactTable({
+  const instance = useTable({
     ...options,
-    getCoreRowModel: getCoreRowModel(),
+    features: dataTableFeatures,
     state: {
-      rowSelection: rowSelectionState ?? {},
+      rowSelection: (rowSelectionState ?? {}) as RowSelectionState,
       sorting: sortingState ? [sortingState] : undefined,
       columnFilters: Object.entries(filteringState ?? {}).map(
         ([id, filter]) => ({
@@ -314,14 +315,14 @@ const useDataTable = <TData,>({
   })
 
   const getSorting = React.useCallback(() => {
-    return instance.getState().sorting?.[0] ?? null
+    return instance.state.sorting?.[0] ?? null
   }, [instance])
 
   const setSorting = React.useCallback(
     (
       sortingOrUpdater: ColumnSort | ((prev: ColumnSort | null) => ColumnSort)
     ) => {
-      const currentSort = instance.getState().sorting?.[0] ?? null
+      const currentSort = instance.state.sorting?.[0] ?? null
       const newSorting =
         typeof sortingOrUpdater === "function"
           ? sortingOrUpdater(currentSort)
@@ -360,7 +361,7 @@ const useDataTable = <TData,>({
   )
 
   const getFiltering = React.useCallback(() => {
-    const state = instance.getState().columnFilters ?? []
+    const state = instance.state.columnFilters ?? []
     return Object.fromEntries(state.map((filter) => [filter.id, filter.value]))
   }, [instance])
 
@@ -453,7 +454,7 @@ const useDataTable = <TData,>({
   }, [commands])
 
   const getRowSelection = React.useCallback(() => {
-    return instance.getState().rowSelection
+    return instance.state.rowSelection
   }, [instance])
 
   const rows = instance.getRowModel().rows
@@ -503,8 +504,8 @@ const useDataTable = <TData,>({
     nextPage: instance.nextPage,
     previousPage: instance.previousPage,
     getPageCount: instance.getPageCount,
-    pageIndex: instance.getState()?.pagination?.pageIndex ?? 0,
-    pageSize: instance.getState()?.pagination?.pageSize ?? 10,
+    pageIndex: instance.state.pagination?.pageIndex ?? 0,
+    pageSize: instance.state.pagination?.pageSize ?? 10,
     rowCount,
     // Search
     enableSearch,
@@ -538,7 +539,7 @@ const useDataTable = <TData,>({
     enableColumnVisibility,
     // Column Order
     enableColumnOrder,
-    columnOrder: instance.getState().columnOrder,
+    columnOrder: instance.state.columnOrder,
     setColumnOrderFromArray,
   }
 }
@@ -559,13 +560,13 @@ function onSortingChangeTransformer(
 }
 
 function onRowSelectionChangeTransformer(
-  onRowSelectionChange: (state: RowSelectionState) => void,
-  state?: RowSelectionState
+  onRowSelectionChange: (state: DataTableRowSelectionState) => void,
+  state?: DataTableRowSelectionState
 ) {
   return (updaterOrValue: Updater<RowSelectionState>) => {
     const value =
       typeof updaterOrValue === "function"
-        ? updaterOrValue(state ?? {})
+        ? updaterOrValue((state ?? {}) as RowSelectionState)
         : updaterOrValue
 
     onRowSelectionChange(value)

@@ -3,8 +3,10 @@ import {
   ColumnDef,
   ColumnMeta,
   Row,
-  VisibilityState,
+  ColumnVisibilityState,
+  RowData,
 } from "@tanstack/react-table"
+import { DataGridFeatures } from "./data-grid-features"
 import React, { PropsWithChildren, ReactNode, RefObject } from "react"
 import {
   FieldErrors,
@@ -22,14 +24,17 @@ export type DataGridCoordinates = {
   col: number
 }
 
-export interface DataGridCellProps<TData = unknown, TValue = any> {
-  context: CellContext<TData, TValue>
+export interface DataGridCellProps<
+  TData extends RowData = RowData,
+  TValue = any,
+> {
+  context: CellContext<DataGridFeatures, TData, TValue>
 }
 
 export interface DataGridCellContext<
-  TData = unknown,
+  TData extends RowData = RowData,
   TValue = any,
-> extends CellContext<TData, TValue> {
+> extends CellContext<DataGridFeatures, TData, TValue> {
   /**
    * The index of the column in the grid.
    */
@@ -109,16 +114,20 @@ export type DataGridCellSnapshot<
   value: PathValue<TFieldValues, Path<TFieldValues>>
 }
 
-export type FieldContext<TData> = {
-  row: Row<TData>
-  column: ColumnDef<TData>
+export type FieldContext<TData extends RowData> = {
+  row: Row<DataGridFeatures, TData>
+  column: ColumnDef<DataGridFeatures, TData>
 }
 
-export type FieldFunction<TData, TFieldValues extends FieldValues> = (
-  context: FieldContext<TData>
-) => FieldPath<TFieldValues> | null
+export type FieldFunction<
+  TData extends RowData,
+  TFieldValues extends FieldValues,
+> = (context: FieldContext<TData>) => FieldPath<TFieldValues> | null
 
-export type InternalColumnMeta<TData, TFieldValues extends FieldValues> = {
+export type InternalColumnMeta<
+  TData extends RowData,
+  TFieldValues extends FieldValues,
+> = {
   name: string
   field?: FieldFunction<TData, TFieldValues>
 } & (
@@ -128,7 +137,7 @@ export type InternalColumnMeta<TData, TFieldValues extends FieldValues> = {
     }
   | { field?: null | undefined; type?: never }
 ) &
-  ColumnMeta<TData, any>
+  ColumnMeta<DataGridFeatures, TData, any>
 
 export type GridCell<TFieldValues extends FieldValues> = {
   field: FieldPath<TFieldValues>
@@ -153,8 +162,8 @@ export type CellErrorMetadata = {
 }
 
 export type VisibilitySnapshot = {
-  rows: VisibilityState
-  columns: VisibilityState
+  rows: ColumnVisibilityState
+  columns: ColumnVisibilityState
 }
 
 export type GridColumnOption = {

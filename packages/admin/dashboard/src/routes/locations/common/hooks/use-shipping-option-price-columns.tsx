@@ -1,5 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef, RowData } from "@tanstack/react-table"
+import { DataGridFeatures } from "../../../../components/data-grid/data-grid-features"
 import { TFunction } from "i18next"
 import { useMemo } from "react"
 import { FieldPath, FieldValues } from "react-hook-form"
@@ -60,7 +61,7 @@ export const useShippingOptionPriceColumns = ({
 }
 
 type CreateDataGridPriceColumnsProps<
-  TData,
+  TData extends RowData,
   TFieldValues extends FieldValues,
 > = {
   currencies?: string[]
@@ -74,7 +75,7 @@ type CreateDataGridPriceColumnsProps<
 }
 
 export const createDataGridPriceColumns = <
-  TData,
+  TData extends RowData,
   TFieldValues extends FieldValues,
 >({
   currencies,
@@ -83,6 +84,7 @@ export const createDataGridPriceColumns = <
   getFieldName,
   t,
 }: CreateDataGridPriceColumnsProps<TData, TFieldValues>): ColumnDef<
+  DataGridFeatures,
   TData,
   unknown
 >[] => {

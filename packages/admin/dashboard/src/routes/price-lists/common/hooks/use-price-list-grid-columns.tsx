@@ -1,6 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 import { Tooltip } from "@medusajs/ui"
 import { ColumnDef } from "@tanstack/react-table"
+import { DataGridFeatures } from "../../../../components/data-grid/data-grid-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -31,6 +32,7 @@ export const usePriceListGridColumns = ({
   const { t } = useTranslation()
 
   const colDefs: ColumnDef<
+    DataGridFeatures,
     HttpTypes.AdminProduct | HttpTypes.AdminProductVariant
   >[] = useMemo(() => {
     return [

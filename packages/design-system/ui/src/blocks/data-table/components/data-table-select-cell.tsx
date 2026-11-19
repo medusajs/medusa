@@ -3,19 +3,22 @@
 import type {
   DataTableCellContext,
   DataTableHeaderContext,
+  DataTableRowData,
 } from "@/blocks/data-table/types"
 import { Checkbox, CheckboxCheckedState } from "@/components/checkbox"
 import * as React from "react"
 
-interface DataTableSelectCellProps<TData> {
+interface DataTableSelectCellProps<TData extends DataTableRowData> {
   ctx: DataTableCellContext<TData, unknown>
 }
 
-const DataTableSelectCell = <TData,>(
+const DataTableSelectCell = <TData extends DataTableRowData>(
   props: DataTableSelectCellProps<TData>
 ) => {
   const checked = props.ctx.row.getIsSelected()
-  const onChange = props.ctx.row.getToggleSelectedHandler()
+  const onChange = (checked: CheckboxCheckedState) => {
+    props.ctx.row.toggleSelected(!!checked)
+  }
   const disabled = !props.ctx.row.getCanSelect()
 
   return (
@@ -29,16 +32,18 @@ const DataTableSelectCell = <TData,>(
 }
 DataTableSelectCell.displayName = "DataTable.SelectCell"
 
-interface DataTableSelectHeaderProps<TData> {
+interface DataTableSelectHeaderProps<TData extends DataTableRowData> {
   ctx: DataTableHeaderContext<TData, unknown>
 }
 
-const DataTableSelectHeader = <TData,>(
+const DataTableSelectHeader = <TData extends DataTableRowData>(
   props: DataTableSelectHeaderProps<TData>
 ) => {
-  const checked = props.ctx.table.getIsSomePageRowsSelected()
-    ? "indeterminate"
-    : props.ctx.table.getIsAllPageRowsSelected()
+  const allSelected = props.ctx.table.getIsAllPageRowsSelected()
+  const checked =
+    !allSelected && props.ctx.table.getIsSomePageRowsSelected()
+      ? "indeterminate"
+      : allSelected
 
   const onChange = (checked: CheckboxCheckedState) => {
     props.ctx.table.toggleAllPageRowsSelected(!!checked)

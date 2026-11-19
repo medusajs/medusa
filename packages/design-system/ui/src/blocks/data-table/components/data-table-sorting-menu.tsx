@@ -3,6 +3,7 @@
 import { useDataTableContext } from "@/blocks/data-table/context/use-data-table-context"
 import {
   DataTableColumn,
+  DataTableRowData,
   DataTableSortableColumnDefMeta,
 } from "@/blocks/data-table/types"
 import { DropdownMenu } from "@/components/dropdown-menu"
@@ -127,7 +128,7 @@ const DataTableSortingMenu = (props: DataTableSortingMenuProps) => {
 }
 DataTableSortingMenu.displayName = "DataTable.SortingMenu"
 
-function getSortLabel(column: DataTableColumn<any, unknown>) {
+function getSortLabel(column: DataTableColumn<DataTableRowData>) {
   const meta = column.columnDef.meta as
     DataTableSortableColumnDefMeta | undefined
   let headerValue: string | undefined = undefined
@@ -141,7 +142,7 @@ function getSortLabel(column: DataTableColumn<any, unknown>) {
 
 function getSortDescriptor(
   direction: "asc" | "desc",
-  column?: DataTableColumn<any, unknown>
+  column?: DataTableColumn<DataTableRowData>
 ) {
   if (!column) {
     return null

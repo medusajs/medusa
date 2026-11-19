@@ -1,3 +1,4 @@
+import { DataTableRowData } from "@medusajs/ui";
 import { useCallback, useEffect, useState } from "react";
 import CurrencyInput, {
   CurrencyInputProps,
@@ -10,12 +11,12 @@ import { useDataGridCell, useDataGridCellError } from "../hooks";
 import { DataGridCellProps, InputProps } from "../types";
 import { DataGridCellContainer } from "./data-grid-cell-container";
 
-interface DataGridCurrencyCellProps<TData, TValue = any>
+interface DataGridCurrencyCellProps<TData extends DataTableRowData, TValue = any>
   extends DataGridCellProps<TData, TValue> {
   code: string;
 }
 
-export const DataGridCurrencyCell = <TData, TValue = any>({
+export const DataGridCurrencyCell = <TData extends DataTableRowData, TValue = any>({
   context,
   code,
 }: DataGridCurrencyCellProps<TData, TValue>) => {

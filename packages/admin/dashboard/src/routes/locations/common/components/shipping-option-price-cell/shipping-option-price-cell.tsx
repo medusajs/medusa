@@ -1,10 +1,11 @@
+import { RowData } from "@tanstack/react-table"
 import { DataGridCellProps } from "../../../../../components/data-grid/types"
 import { getCustomShippingOptionPriceFieldName } from "../../utils/get-custom-shipping-option-price-field-info"
 import { useShippingOptionPrice } from "../shipping-option-price-provider"
 import { TieredPriceCell } from "../../../../../components/table/table-cells/common/tiered-price-cell/tiered-price-cell"
 
 interface ShippingOptionPriceCellProps<
-  TData,
+  TData extends RowData,
   TValue = any,
 > extends DataGridCellProps<TData, TValue> {
   code: string
@@ -12,7 +13,7 @@ interface ShippingOptionPriceCellProps<
   type: "currency" | "region"
 }
 
-export const ShippingOptionPriceCell = <TData, TValue = any>({
+export const ShippingOptionPriceCell = <TData extends RowData, TValue = any>({
   context,
   code,
   header,

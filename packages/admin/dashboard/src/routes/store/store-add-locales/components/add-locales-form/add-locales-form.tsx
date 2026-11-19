@@ -12,6 +12,7 @@ import {
   OnChangeFn,
   RowSelectionState,
 } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo, useState } from "react"
 import { useDataTable } from "../../../../../hooks/use-data-table"
 import { Button, Checkbox, Hint, toast, usePrompt } from "@medusajs/ui"
@@ -190,7 +191,10 @@ export const AddLocalesForm = ({ store }: AddLocalesFormProps) => {
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminLocale>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminLocale
+>()
 
 const useColumns = () => {
   const base = useLocalesTableColumns()
@@ -203,6 +207,7 @@ const useColumns = () => {
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()

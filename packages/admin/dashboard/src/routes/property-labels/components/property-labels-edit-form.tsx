@@ -6,6 +6,7 @@ import { Button, toast } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { HttpTypes } from "@medusajs/types"
 import { ColumnDef } from "@tanstack/react-table"
+import { DataGridFeatures } from "../../../components/data-grid/data-grid-features"
 
 import { RouteFocusModal, useRouteModal } from "../../../components/modals"
 import { KeyboundForm } from "../../../components/utilities/keybound-form"
@@ -139,54 +140,55 @@ export const PropertyLabelsEditForm = ({
     }))
   }, [columns])
 
-  const gridColumns: ColumnDef<PropertyFieldRow>[] = useMemo(() => {
-    return [
-      columnHelper.column({
-        id: "field",
-        name: "field",
-        header: t("fields.field", "Field"),
-        cell: (context) => {
-          const row = context.row.original
-          return (
-            <DataGrid.ReadonlyCell context={context}>
-              {row.field}
-            </DataGrid.ReadonlyCell>
-          )
-        },
-        disableHiding: true,
-        minSize: 250,
-      }),
-      columnHelper.column({
-        id: "label",
-        name: "label",
-        header: t("propertyLabels.customLabel", "Custom Label"),
-        type: "text",
-        field: (context) => {
-          const row = context.row.original
-          return `${row.field}.label`
-        },
-        cell: (context) => {
-          return <DataGrid.TextCell context={context} />
-        },
-        disableHiding: true,
-        minSize: 250,
-      }),
-      columnHelper.column({
-        id: "description",
-        name: "description",
-        header: t("fields.description", "Description"),
-        type: "multiline-text",
-        field: (context) => {
-          const row = context.row.original
-          return `${row.field}.description`
-        },
-        cell: (context) => {
-          return <DataGrid.MultilineCell context={context} />
-        },
-        minSize: 400,
-      }),
-    ]
-  }, [t])
+  const gridColumns: ColumnDef<DataGridFeatures, PropertyFieldRow>[] =
+    useMemo(() => {
+      return [
+        columnHelper.column({
+          id: "field",
+          name: "field",
+          header: t("fields.field", "Field"),
+          cell: (context) => {
+            const row = context.row.original
+            return (
+              <DataGrid.ReadonlyCell context={context}>
+                {row.field}
+              </DataGrid.ReadonlyCell>
+            )
+          },
+          disableHiding: true,
+          minSize: 250,
+        }),
+        columnHelper.column({
+          id: "label",
+          name: "label",
+          header: t("propertyLabels.customLabel", "Custom Label"),
+          type: "text",
+          field: (context) => {
+            const row = context.row.original
+            return `${row.field}.label`
+          },
+          cell: (context) => {
+            return <DataGrid.TextCell context={context} />
+          },
+          disableHiding: true,
+          minSize: 250,
+        }),
+        columnHelper.column({
+          id: "description",
+          name: "description",
+          header: t("fields.description", "Description"),
+          type: "multiline-text",
+          field: (context) => {
+            const row = context.row.original
+            return `${row.field}.description`
+          },
+          cell: (context) => {
+            return <DataGrid.MultilineCell context={context} />
+          },
+          minSize: 400,
+        }),
+      ]
+    }, [t])
 
   const flattenData = (
     obj: any,

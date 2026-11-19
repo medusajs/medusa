@@ -1,3 +1,4 @@
+import { RowData } from "@tanstack/react-table"
 import { clx } from "@medusajs/ui"
 import { useEffect, useRef, useState } from "react"
 import { Controller, ControllerRenderProps } from "react-hook-form"
@@ -7,7 +8,7 @@ import { useDataGridCell, useDataGridCellError } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
-export const DataGridTextCell = <TData, TValue = any>({
+export const DataGridTextCell = <TData extends RowData, TValue = any>({
   context,
 }: DataGridCellProps<TData, TValue>) => {
   const { field, control, renderProps } = useDataGridCell({

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import { HttpTypes } from "@medusajs/types"
 import { keepPreviousData } from "@tanstack/react-query"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useCollections } from "../../../../../hooks/api/collections"
@@ -85,7 +86,10 @@ export const CollectionListTable = () => {
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminCollection>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminCollection
+>()
 
 const useColumns = () => {
   const base = useCollectionTableColumns()
