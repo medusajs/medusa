@@ -81,14 +81,11 @@ class FakeRedisClient {
     }
   )
 
-  // Mirrors PRUNE_EXPIRED_TAG_MEMBERS_SCRIPT, the only script the provider runs
-  public readonly eval = jest.fn(
-    async (
-      _script: string,
-      _numKeys: number,
-      tagKey: string,
-      ...keyNames: string[]
-    ) => {
+  public readonly defineCommand = jest.fn()
+
+  // Mirrors PRUNE_EXPIRED_TAG_MEMBERS_SCRIPT
+  public readonly pruneExpiredTagMembers = jest.fn(
+    async (_numKeys: number, tagKey: string, ...keyNames: string[]) => {
       return keyNames.filter((keyName) => {
         const isLive = this.hashes.has(keyName)
         if (!isLive) {

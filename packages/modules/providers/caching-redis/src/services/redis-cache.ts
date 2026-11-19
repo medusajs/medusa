@@ -47,10 +47,18 @@ for i = 1, #KEYS do
 end
 `
 
+// The script takes a variable number of keys, so the key count is the first argument
+type TagSetCommands = {
+  pruneExpiredTagMembers: (
+    numberOfKeys: number,
+    ...keysAndArgs: (string | number)[]
+  ) => Promise<string[]>
+}
+
 export class RedisCachingProvider {
   static identifier = "cache-redis"
 
-  protected redisClient: Redis
+  protected redisClient: Redis & TagSetCommands
   protected keyNamePrefix: string
   protected defaultTTL: number
   protected compressionThreshold: number
@@ -71,7 +79,12 @@ export class RedisCachingProvider {
     },
     options?: RedisCacheModuleOptions
   ) {
-    this.redisClient = redisClient
+    this.redisClient = redisClient as Redis & TagSetCommands
+    // Registered once so ioredis runs it through EVALSHA instead of sending
+    // the script body on every call
+    this.redisClient.defineCommand("pruneExpiredTagMembers", {
+      lua: PRUNE_EXPIRED_TAG_MEMBERS_SCRIPT,
+    })
     this.keyNamePrefix = prefix
     this.defaultTTL = options?.ttl ?? 3600 // 1 hour default
     this.compressionThreshold = options?.compressionThreshold ?? 2048 // 2KB default
@@ -485,12 +498,11 @@ export class RedisCachingProvider {
       return keyNames
     }
 
-    return (await this.redisClient.eval(
-      PRUNE_EXPIRED_TAG_MEMBERS_SCRIPT,
+    return await this.redisClient.pruneExpiredTagMembers(
       keyNames.length + 1,
       tagKey,
       ...keyNames
-    )) as string[]
+    )
   }
 
   async #clearTaggedEntries(
