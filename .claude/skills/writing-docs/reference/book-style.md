@@ -1,6 +1,8 @@
 # Book Style Guide
 
-The `book` project (`www/apps/book/`) is the Medusa learning platform covering framework fundamentals, architecture, configurations, and how-to guides for building with Medusa.
+The `book` project (`www/apps/book/`, served at `/learn`) is the **Framework** documentation under the Build navbar item. It covers the open-source framework's fundamentals, architecture, configurations, and customization.
+
+Onboarding (installation, local setup, AI tooling) is not in the book: it lives in the `cloud` project under Get Started. See `cloud-first.md`.
 
 ## Content Structure
 
@@ -50,7 +52,8 @@ In this chapter, you'll learn about <topic>.
 | Core concepts (modules, workflows, events, etc.) | `app/learn/fundamentals/` |
 | Configuration files (medusa-config, pnpm, tsconfig) | `app/learn/configurations/` |
 | Custom features, plugins, extend behavior | `app/learn/customization/` |
-| Deployment, Docker, hosting | `app/learn/deployment/` |
+| Publishing customizations to Cloud | `app/learn/customization/publish/` |
+| Production concerns (worker modes, build) | `app/learn/production/` |
 | Testing, debugging, logging | `app/learn/debugging-and-testing/` |
 | Frontend/storefront integration | `app/learn/storefront-development/` |
 
@@ -110,4 +113,6 @@ Use highlights to call attention to key lines in the code (see `mdx-patterns.md`
 - Commerce-module-specific documentation (product, order, cart) → goes in `resources`
 - Step-by-step integration tutorials → goes in `resources`
 - Generated API references → never add to book
-- User-facing admin UI instructions → goes in `user-guide`
+- User-facing admin UI instructions → goes in the Merchant Guide (`user-guide`)
+- Installation, local setup, or AI tooling → goes in `cloud` (Get Started)
+- Self-hosting or non-Cloud deployment guides → don't add them

@@ -1,6 +1,6 @@
 # MDX Patterns
 
-Exact syntax used across `book`, `resources`, `ui`, and `user-guide` projects.
+Exact syntax used across `book`, `resources`, `ui`, `user-guide` (Merchant Guide), and `cloud` projects.
 
 ## Page Metadata
 
@@ -211,8 +211,8 @@ import { Prerequisites } from "docs-ui"
 <Prerequisites
   items={[
     {
-      text: "Medusa application set up",
-      link: "!docs!/learn/installation",
+      text: "Medusa application set up locally",
+      link: "!cloud!/setup-locally",
     },
     {
       text: "pnpm installed",
@@ -229,7 +229,8 @@ Never use absolute URLs for cross-project links. Use the special link syntax:
 ```mdx
 [text](!docs!/learn/fundamentals/workflows)    → book
 [text](!resources!/commerce-modules/product)   → resources
-[text](!user-guide!/products)                  → user-guide
+[text](!user-guide!/products)                  → user-guide (Merchant Guide)
+[text](!cloud!/setup-locally)                  → cloud (Get Started)
 ```
 
 Internal links within the same project use relative paths:
@@ -274,7 +275,7 @@ export const metadata = {
 
 ## Images
 
-Use standard markdown image syntax with a Cloudinary URL for user-guide screenshots:
+Use standard markdown image syntax with a Cloudinary URL for Merchant Guide screenshots:
 
 ```mdx
 ![Alt text describing the screenshot](https://res.cloudinary.com/dza7lstvk/image/upload/...)

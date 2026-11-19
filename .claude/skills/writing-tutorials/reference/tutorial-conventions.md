@@ -52,13 +52,20 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 <CardList items={[...]} />
 
+<Note title="Agent Hand-off">
+[pre-written template — see below]
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 [pre-written template — see below]
 
 ## Step 2: ...
 ...
+
+## Step N: Publish to Cloud
+[pre-written template — see below]
 
 ## Next Steps
 
@@ -69,16 +76,38 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
 
 Note: `## Troubleshooting` and `## Getting Help` are **subsections** (`###`) under `## Next Steps`, not top-level sections.
 
+Tutorials are **Cloud-first**: the reader creates a Cloud project, builds and tests locally, then publishes to Cloud. Never install with `create-medusa-app` and never describe self-hosting or other deployment platforms.
+
+## Agent Hand-off Note (Always Include)
+
+Place it after the `CardList` and before the `---` that precedes Step 1. Replace the URL with the tutorial's URL plus `.md`, and end the prompt with a short imperative describing the feature:
+
+````mdx
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/{name}.md and [implement X] in my Medusa project
+```
+
+</Note>
+````
+
 ## Pre-Written Step 1 Template (Always Use Verbatim)
 
 Copy this exactly — do not rewrite it:
 
 ````mdx
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20+",
+    text: "A Medusa account",
+    link: "!cloud!/sign-up"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -91,34 +120,79 @@ Copy this exactly — do not rewrite it:
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose Yes.
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
-Afterward, the installation process will start, which will install the Medusa application in a directory with your project's name, and the Next.js Starter Storefront in a separate directory with the `{project-name}-storefront` name.
+<Note>
 
-<Note title="Why is the storefront installed separately">
-
-The Medusa application is composed of a headless Node.js server and an admin dashboard. The storefront is installed or custom-built separately and connects to the Medusa application through its REST endpoints, called [API routes](!docs!/learn/fundamentals/api-routes). Learn more in [Medusa's Architecture documentation](!docs!/learn/introduction/architecture).
-
-</Note>
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
+In this guide, all file paths of backend customizations are relative to the `apps/backend` directory of your Medusa project.
 
 </Note>
 
 ---
 ````
 
-For integration guides where a storefront may not be needed, omit the storefront-related sentences and the "Why is the storefront installed separately" note.
+For guides that don't customize the storefront, drop the storefront mentions:
+
+- First paragraph: `Start by creating a Cloud project from the DTC starter. Follow the ...`
+- Monorepo sentence: `The project is a monorepository. The Medusa application is in the `apps/backend` directory.`
+
+Add extra prerequisites for integration guides (e.g., third-party account, API key) after the PostgreSQL item.
+
+## Environment Variables
+
+Show the `.env` change for local development, then add this line after it, linking to the publish step's anchor:
+
+```mdx
+You'll add these variables to your Cloud environment when you [publish to Cloud](#step-N-publish-to-cloud).
+```
+
+The publish step lists every variable and explains where to set it (see the template below).
+
+## Pre-Written Publish to Cloud Template (Always the Last Step)
+
+The last numbered step before `## Next Steps` is always `## Step N: Publish to Cloud`. Use this template, replacing the branch name, commit message, and feature description:
+
+````mdx
+## Step N: Publish to Cloud
+
+After you test the [feature] customizations locally, publish them to your Cloud project.
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/{feature-name}
+git add .
+git commit -m "Add {feature}"
+git push origin feat/{feature-name}
+```
+
+Then, on GitHub, open a pull request from the `feat/{feature-name}` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
+
+---
+````
+
+If the tutorial added environment variables, insert this before "Create a new branch", listing each variable and marking secrets (API keys, tokens, webhook secrets) as **Sensitive**:
+
+````mdx
+Create the environment variables that you added in the `.env` file in your Cloud project. Add the following variables in the environment's **Backend** variables:
+
+- `MY_SERVICE_API_KEY`
+
+Add the variables in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variables in the environment variables section. Preview environments created afterward inherit them. Learn more in the [Preview Environments](!cloud!/environments/preview#manage-shared-previews-settings) guide.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variables and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
+
+In both places, enable the **Build** toggle of all the variables, since `medusa-config.ts` reads them. Mark `MY_SERVICE_API_KEY` as **Sensitive**. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+````
+
+Only enable **Build** for variables that `medusa-config.ts` or the build reads. If a third-party service needs the deployed URL (webhooks, redirect URLs), add a numbered "After you merge the pull request" list that tells the reader to update it to `{your_backend_url}/...`.
 
 ## Intro Paragraph Pattern
 
@@ -139,10 +213,11 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 By following this tutorial, you'll learn how to:
 
-- Install and set up Medusa.
+- Create a Cloud project and set it up locally.
 - [Main feature: e.g., Define product review models and implement their management features in the Medusa server.]
 - [Admin: e.g., Customize the Medusa Admin to allow merchants to view and manage product reviews.]
 - [Storefront: e.g., Customize the Next.js Starter Storefront to display and submit product reviews.]
+- Publish the customizations to Cloud.
 ```
 
 ## CardList (GitHub + OpenAPI)
@@ -169,16 +244,7 @@ If no OpenAPI specs exist, omit the second card.
 ## Components
 
 ### Prerequisites
-Use only at Step 1:
-```mdx
-<Prerequisites items={[
-  { text: "Node.js v20+", link: "https://nodejs.org/en/download" },
-  { text: "Git CLI tool", link: "https://git-scm.com/downloads" },
-  { text: "PostgreSQL", link: "https://www.postgresql.org/download/" }
-]} />
-```
-
-Add extra prerequisites for integration guides (e.g., third-party account, API key).
+Use only at Step 1 (see the Step 1 template for the items). Add extra prerequisites for integration guides (e.g., third-party account, API key).
 
 ### WorkflowDiagram
 Place immediately after introducing a workflow:
@@ -237,7 +303,7 @@ npm install some-package
 ```
 
 ```bash npx2yarnExec
-npx create-medusa-app@latest
+npx medusa db:migrate
 ```
 ```
 

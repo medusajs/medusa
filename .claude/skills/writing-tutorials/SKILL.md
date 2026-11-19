@@ -46,7 +46,9 @@ Guides an agent through creating a complete Medusa tutorial: building the featur
 
 - [ ] Jumping straight to writing documentation without building the feature first
 - [ ] Writing both phases in one session without user confirmation between them
-- [ ] Writing Step 1 (Medusa installation) from scratch — use the pre-written template in `tutorial-conventions.md`
+- [ ] Writing Step 1 (Cloud project setup) or the Publish to Cloud step from scratch — use the pre-written templates in `tutorial-conventions.md`
+- [ ] Installing with `create-medusa-app` or mentioning self-hosting — tutorials are Cloud-first
+- [ ] Forgetting the Agent Hand-off note before Step 1
 - [ ] Forgetting to update the sidebar after writing the tutorial MDX
 - [ ] Leaving `_step-*.md` temp files after combining into final MDX
 - [ ] Making tutorial code overly complex — tutorials are educational, keep it simple
