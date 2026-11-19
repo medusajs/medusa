@@ -34,7 +34,7 @@
     "test:watch": "../../../node_modules/.bin/vitest"
   },
   "devDependencies": {
-    "vite": "^8.3.5"
+    "vite": "^8.3.8"
   },
   "peerDependencies": {
     "vite": "^5.4.21 || ^6.0.0 || ^7.0.0 || ^8.0.0"

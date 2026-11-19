@@ -3458,14 +3458,14 @@ __metadata:
     "@medusajs/types": "npm:2.22.7"
     "@medusajs/ui-preset": "npm:2.22.7"
     "@tailwindcss/vite": "npm:^4.3.5"
-    "@vitejs/plugin-react": "npm:^6.1.2"
+    "@vitejs/plugin-react": "npm:^6.3.0"
     compression: "npm:^1.8.2"
     express: "npm:^5.3.0"
     get-port: "npm:^7.2.0"
     glob: "npm:14.0.2"
     outdent: "npm:^0.8.0"
     tailwindcss: "npm:^4.3.5"
-    vite: "npm:^8.3.5"
+    vite: "npm:^8.3.8"
   languageName: unknown
   linkType: soft
 
@@ -3496,7 +3496,7 @@ __metadata:
     magic-string: "npm:1.4.3"
     outdent: "npm:^0.8.0"
     picocolors: "npm:^1.1.0"
-    vite: "npm:^8.3.5"
+    vite: "npm:^8.3.8"
   peerDependencies:
     vite: ^5.4.21 || ^6.0.0 || ^7.0.0 || ^8.0.0
   languageName: unknown
@@ -10324,7 +10324,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-react@npm:^6.1.2":
+"@vitejs/plugin-react@npm:^6.3.0":
   version: 6.3.0
   resolution: "@vitejs/plugin-react@npm:6.3.0"
   dependencies:
@@ -20190,7 +20190,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^8.72.0"
     "@typescript-eslint/rule-tester": "npm:^8.72.0"
     "@typescript/native": "npm:typescript@^7.0.2"
-    "@vitejs/plugin-react": "npm:^6.1.2"
+    "@vitejs/plugin-react": "npm:^6.3.0"
     "@vitest/coverage-v8": "npm:^5.0.5"
     ajv: "npm:^8.18.0"
     autocannon: "npm:^8.0.0"
@@ -20240,7 +20240,7 @@ __metadata:
     tsup: "npm:^9.0.0"
     turbo: "npm:^2.11.10"
     typescript: "npm:@typescript/typescript6@^6.0.2"
-    vite: "npm:^8.3.5"
+    vite: "npm:^8.3.8"
     vite-plugin-inspect: "npm:^12.1.0"
     vitest: "npm:^5.0.5"
     yalc: "npm:^1.0.0-pre.53"
@@ -22376,7 +22376,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^8.3.5":
+"vite@npm:^8.3.8":
   version: 8.3.8
   resolution: "vite@npm:8.3.8"
   dependencies:
