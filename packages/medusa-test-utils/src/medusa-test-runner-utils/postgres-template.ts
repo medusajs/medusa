@@ -84,6 +84,8 @@ const MAX_DROP_ATTEMPTS = 10
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
+// Role-less backends (e.g. autovacuum workers) are skipped: a non-superuser can't signal
+// them, and DROP/CREATE DATABASE already stop autovacuum workers on the databases involved.
 async function terminateDatabaseConnections(
   client: Client,
   databaseName: string
@@ -92,6 +94,7 @@ async function terminateDatabaseConnections(
     `SELECT pg_terminate_backend(pid)
      FROM pg_stat_activity
      WHERE datname = $1
+     AND usename IS NOT NULL
      AND pid <> pg_backend_pid();`,
     [databaseName]
   )
@@ -105,6 +108,7 @@ async function cancelAndTerminateDatabaseConnections(
     `SELECT pg_cancel_backend(pid)
      FROM pg_stat_activity
      WHERE datname = $1
+     AND usename IS NOT NULL
      AND pid <> pg_backend_pid();`,
     [databaseName]
   )
