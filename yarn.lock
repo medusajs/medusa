@@ -3969,7 +3969,7 @@ __metadata:
     "@medusajs/framework": "npm:2.22.7"
     "@medusajs/types": "npm:2.22.7"
     "@medusajs/utils": "npm:2.22.7"
-    bullmq: "npm:6.4.1"
+    bullmq: "npm:6.7.6"
     ioredis: "npm:^6.0.0"
   peerDependencies:
     "@medusajs/framework": 2.22.7
@@ -4796,7 +4796,7 @@ __metadata:
   dependencies:
     "@medusajs/framework": "npm:2.22.7"
     "@medusajs/test-utils": "npm:2.22.7"
-    bullmq: "npm:6.4.1"
+    bullmq: "npm:6.7.6"
     ioredis: "npm:^6.0.0"
     ulid: "npm:^3.0.2"
   peerDependencies:
@@ -11333,15 +11333,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bullmq@npm:6.4.1":
-  version: 6.4.1
-  resolution: "bullmq@npm:6.4.1"
+"bullmq@npm:6.7.6":
+  version: 6.7.6
+  resolution: "bullmq@npm:6.7.6"
   dependencies:
-    cron-parser: "npm:5.10.2"
-    msgpackr: "npm:2.1.2"
+    cron-parser: "npm:5.10.4"
+    msgpackr: "npm:2.1.4"
     node-abort-controller: "npm:3.1.1"
-    semver: "npm:7.8.5"
-    tslib: "npm:2.8.1"
+    semver: "npm:7.8.6"
+    tslib: "npm:2.9.1"
   peerDependencies:
     bullmq-otel: ">=2.0.0"
     ioredis: ">=5.0.0"
@@ -11356,7 +11356,7 @@ __metadata:
       optional: true
     redis:
       optional: true
-  checksum: 10c0/2c7eb1159f4bff7395bf53ebc622569b12c83e1063085517aa4a91d34efb5ae1d9c3b71f8d53d213ab6bea80f58a5f508242ce651fe08f97b5ef38cefb89edac
+  checksum: 10c0/ffd95198071876c3f3370391cfead958fe6a4ce15f6a5ba482a86ab651c6b4773d8cee7c6e9a01510284b988eab191787ece00d8d7c255d2948ce53b332b7e8e
   languageName: node
   linkType: hard
 
@@ -12232,12 +12232,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cron-parser@npm:5.10.2":
-  version: 5.10.2
-  resolution: "cron-parser@npm:5.10.2"
+"cron-parser@npm:5.10.4":
+  version: 5.10.4
+  resolution: "cron-parser@npm:5.10.4"
   dependencies:
     luxon: "npm:^3.7.2"
-  checksum: 10c0/b1aefe64a0fcea39f36e1bcf06b8f4c97780fc982524a67389e4a6268163e863bebaca096e6c7b0536a5f14d1b977d820523170ddfa8c322455b786b5e5fe5cc
+  checksum: 10c0/4d672375cab88bcb886f914b545717a675d1fcdfcac5ca362b2cbbf34c60423271ae9893b280270a945ba8ed2f1a257f674de44e175bbad522218b98a8d48bc7
   languageName: node
   linkType: hard
 
@@ -17425,7 +17425,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"msgpackr-extract@npm:^3.0.4":
+"msgpackr-extract@npm:^3.0.6":
   version: 3.0.7
   resolution: "msgpackr-extract@npm:3.0.7"
   dependencies:
@@ -17456,15 +17456,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"msgpackr@npm:2.1.2":
-  version: 2.1.2
-  resolution: "msgpackr@npm:2.1.2"
+"msgpackr@npm:2.1.4":
+  version: 2.1.4
+  resolution: "msgpackr@npm:2.1.4"
   dependencies:
-    msgpackr-extract: "npm:^3.0.4"
+    msgpackr-extract: "npm:^3.0.6"
   dependenciesMeta:
     msgpackr-extract:
       optional: true
-  checksum: 10c0/63c2378288ccc76b5958fba6a38e335271934b90599971eb9ac9b81a12ab6031588496c1a4402215e3672add6a8caf40e44bccda88f8c6bb47046795e41f3463
+  checksum: 10c0/5c562c2546f06ed093ad5d637481f2442afee19ccc6d426f37d4d6dbdeccdcd185fc4053deb0199f52d5313a6c6927d90c56edd53cda843115baf81e086a8b6e
   languageName: node
   linkType: hard
 
@@ -21761,10 +21761,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:2.8.1, tslib@npm:~2.8.0":
-  version: 2.8.1
-  resolution: "tslib@npm:2.8.1"
-  checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
+"tslib@npm:2.9.1, tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.6.1, tslib@npm:^2.6.2, tslib@npm:^2.6.3, tslib@npm:^2.8.0, tslib@npm:^2.8.1, tslib@npm:^2.9.1":
+  version: 2.9.1
+  resolution: "tslib@npm:2.9.1"
+  checksum: 10c0/8ff46e7a4d19fa62c23483c89cf5ccc3906e742ef6e6d60bd3826b686143b300b4f6f04161cc1cf31a6b11fe70e1058ae4d4e4a108b5c68326d469684736a83c
   languageName: node
   linkType: hard
 
@@ -21775,10 +21775,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.6.1, tslib@npm:^2.6.2, tslib@npm:^2.6.3, tslib@npm:^2.8.0, tslib@npm:^2.8.1, tslib@npm:^2.9.1":
-  version: 2.9.1
-  resolution: "tslib@npm:2.9.1"
-  checksum: 10c0/8ff46e7a4d19fa62c23483c89cf5ccc3906e742ef6e6d60bd3826b686143b300b4f6f04161cc1cf31a6b11fe70e1058ae4d4e4a108b5c68326d469684736a83c
+"tslib@npm:~2.8.0":
+  version: 2.8.1
+  resolution: "tslib@npm:2.8.1"
+  checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
   languageName: node
   linkType: hard
 
