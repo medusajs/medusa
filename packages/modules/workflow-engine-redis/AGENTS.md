@@ -58,11 +58,12 @@ yarn test:integration integration-tests/__tests__/race.spec.ts
 yarn migration:create           # after any change in src/models
 ```
 
-- Integration tests: `index.spec.ts`, `race.spec.ts`, `retry-interval.spec.ts`; fixtures in `integration-tests/__fixtures__/`. `integration-tests/utils/database.ts` deletes `bull:*` and `dtrx:*` keys in Redis at `REDIS_URL` (default `redis://localhost:6379`), and `index.spec.ts` hardcodes `redisUrl: "localhost:6379"`.
+- Integration tests: `index.spec.ts`, `race.spec.ts`, `retry-interval.spec.ts`, `scheduled-concurrency.spec.ts`; fixtures in `integration-tests/__fixtures__/`. `integration-tests/utils/database.ts` deletes `bull:*` and `dtrx:*` keys in Redis at `REDIS_URL` (default `redis://localhost:6379`), and `index.spec.ts` hardcodes `redisUrl: "localhost:6379"`. They load the built `dist`, so run `yarn build` after changing `src`.
 
 ## Gotchas
 
 - Workers, the job queue, and the cleaner queue only exist when `worker_mode` is not `"server"`. On a server-only instance, retries and timeouts are enqueued but processed elsewhere, and `schedule()` is a no-op (`jobQueue` is undefined).
+- Scheduled workflows with `concurrency: "forbid"` (the default) skip a tick, rather than delay it, while an earlier tick of the same workflow is still active in the BullMQ job queue (`jobQueue.getActive()`). This only covers the awaited `run`, so a workflow with async steps can still overlap. `concurrency: "allow"` skips the check.
 - The loader throws when no `redisUrl` / `url` is set, but connection errors are only logged.
 - Shutdown: workers close in `onApplicationPrepareShutdown` (waits for running jobs), queues and Redis connections close in `onApplicationShutdown`.
 - On start it removes repeatable jobs left on the main queue by pre-2.6 versions, which scheduled jobs on that queue.

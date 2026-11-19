@@ -318,4 +318,130 @@ describe("RedisDistributedTransactionStorage", () => {
       expect(Worker).not.toHaveBeenCalled()
     })
   })
+
+  describe("executeScheduledJob - concurrency", () => {
+    const createStorage = () => {
+      const storage = new RedisDistributedTransactionStorage({
+        ...baseModuleDeps,
+        redisMainQueueOptions: {},
+        redisMainWorkerOptions: {},
+        redisJobQueueOptions: {},
+        redisJobWorkerOptions: {},
+        redisCleanerQueueOptions: {},
+        redisCleanerWorkerOptions: {},
+      })
+
+      const activeJobs: object[] = []
+      ;(storage as any).jobQueue.getActive = jest.fn(async () => [
+        ...activeJobs,
+      ])
+
+      const pendingRuns: (() => void)[] = []
+      const run = jest.fn(
+        () => new Promise<void>((resolve) => pendingRuns.push(resolve))
+      )
+      storage.setWorkflowOrchestratorService({ run })
+
+      let tick = 0
+      const execute = (
+        schedulerOptions: object,
+        jobId = "scheduled-workflow"
+      ) => {
+        tick++
+        const job = {
+          id: `repeat:${jobId}:${tick}`,
+          timestamp: tick,
+          processedOn: tick,
+          data: {
+            jobId,
+            schedulerOptions: { cron: "* * * * *", ...schedulerOptions },
+          },
+        }
+        activeJobs.push(job)
+
+        return (storage as any).executeScheduledJob(job).finally(() => {
+          activeJobs.splice(activeJobs.indexOf(job), 1)
+        })
+      }
+
+      const flush = () => new Promise((resolve) => setImmediate(resolve))
+
+      const finishRuns = async (executions: Promise<unknown>[]) => {
+        pendingRuns.splice(0).forEach((resolve) => resolve())
+        await Promise.all(executions)
+      }
+
+      return { run, execute, flush, finishRuns }
+    }
+
+    it("should skip a scheduled run while the previous run is still in progress when concurrency is forbid", async () => {
+      const { run, execute, flush, finishRuns } = createStorage()
+
+      const first = execute({ concurrency: "forbid" })
+      await flush()
+      const second = execute({ concurrency: "forbid" })
+      await flush()
+
+      expect(run).toHaveBeenCalledTimes(1)
+
+      await finishRuns([first, second])
+
+      const third = execute({ concurrency: "forbid" })
+      await flush()
+      await finishRuns([third])
+
+      expect(run).toHaveBeenCalledTimes(2)
+    })
+
+    it("should skip overlapping scheduled runs when concurrency is not set", async () => {
+      const { run, execute, flush, finishRuns } = createStorage()
+
+      const first = execute({})
+      await flush()
+      const second = execute({})
+      await flush()
+
+      expect(run).toHaveBeenCalledTimes(1)
+
+      await finishRuns([first, second])
+    })
+
+    it("should run only the earliest tick when two ticks start at the same time", async () => {
+      const { run, execute, flush, finishRuns } = createStorage()
+
+      const first = execute({ concurrency: "forbid" })
+      const second = execute({ concurrency: "forbid" })
+      await flush()
+
+      expect(run).toHaveBeenCalledTimes(1)
+
+      await finishRuns([first, second])
+    })
+
+    it("should not skip a scheduled run because a different scheduled workflow is running", async () => {
+      const { run, execute, flush, finishRuns } = createStorage()
+
+      const first = execute({ concurrency: "forbid" })
+      await flush()
+      const second = execute({ concurrency: "forbid" }, "other-workflow")
+      await flush()
+
+      expect(run).toHaveBeenCalledTimes(2)
+
+      await finishRuns([first, second])
+    })
+
+    it("should allow overlapping scheduled runs when concurrency is allow", async () => {
+      const { run, execute, flush, finishRuns } = createStorage()
+
+      const first = execute({ concurrency: "allow" })
+      await flush()
+      const second = execute({ concurrency: "allow" })
+      await flush()
+
+      expect(run).toHaveBeenCalledTimes(2)
+
+      await finishRuns([first, second])
+    })
+  })
 })

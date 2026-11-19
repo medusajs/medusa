@@ -25,6 +25,7 @@ import {
 } from "@medusajs/framework/utils"
 import { WorkflowOrchestratorService } from "@services"
 import {
+  Job,
   Queue,
   QueueOptions,
   RepeatOptions,
@@ -237,12 +238,7 @@ export class RedisDistributedTransactionStorage
               job.data.schedulerOptions
             )}`
           )
-          const scheduledFor = new Date(job.timestamp)
-          return await this.executeScheduledJob(
-            job.data.jobId,
-            job.data.schedulerOptions,
-            scheduledFor
-          )
+          return await this.executeScheduledJob(job)
         },
         jobWorkerOptions
       )
@@ -434,14 +430,44 @@ export class RedisDistributedTransactionStorage
     })
   }
 
-  private async executeScheduledJob(
-    jobId: string,
-    schedulerOptions: SchedulerOptions,
-    scheduledFor: Date
-  ) {
+  private async hasEarlierActiveExecution(job: Job): Promise<boolean> {
+    const startedAt = (activeJob: Job) =>
+      activeJob.processedOn ?? activeJob.timestamp
+
+    const activeJobs = (await this.jobQueue?.getActive()) ?? []
+
+    return activeJobs.some((activeJob) => {
+      if (
+        !activeJob ||
+        activeJob.id === job.id ||
+        activeJob.data?.jobId !== job.data.jobId
+      ) {
+        return false
+      }
+
+      return (
+        startedAt(activeJob) < startedAt(job) ||
+        (startedAt(activeJob) === startedAt(job) && activeJob.id! < job.id!)
+      )
+    })
+  }
+
+  private async executeScheduledJob(job: Job) {
+    const jobId: string = job.data.jobId
+    const schedulerOptions: SchedulerOptions = job.data.schedulerOptions
+    const scheduledFor = new Date(job.timestamp)
+
+    if (
+      schedulerOptions?.concurrency !== "allow" &&
+      (await this.hasEarlierActiveExecution(job))
+    ) {
+      this.logger_?.debug(
+        `Skipping scheduled workflow ${jobId} because its previous execution is still running.`
+      )
+      return
+    }
+
     try {
-      // TODO: In the case of concurrency being forbidden, we want to generate a predictable transaction ID and rely on the idempotency
-      // of the transaction to ensure that the transaction is only executed once.
       await this.workflowOrchestratorService_.run(jobId, {
         logOnError: true,
         input: {
