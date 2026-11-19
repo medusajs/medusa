@@ -11,6 +11,7 @@ import {
 import {
   getCallerFilePath,
   isString,
+  MedusaError,
   Modules,
   OrchestrationUtils,
   registerDevServerResource,
@@ -274,10 +275,20 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
         }
 
         if (workflowEngine && isAsync) {
-          await workflowEngine.cancel(name, {
-            transactionId: executionContext.transactionId,
-            context: executionContext,
-          })
+          try {
+            await workflowEngine.cancel(name, {
+              transactionId: executionContext.transactionId,
+              context: executionContext,
+            })
+          } catch (error) {
+            // A sub workflow that failed has already reverted itself and isn't stored
+            if (
+              !MedusaError.isMedusaError(error) ||
+              error.type !== MedusaError.Types.NOT_FOUND
+            ) {
+              throw error
+            }
+          }
         } else {
           if (!transaction) {
             return

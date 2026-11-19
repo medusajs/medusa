@@ -438,6 +438,57 @@ describe("Workflow composer", () => {
       expect(transaction.getState()).toEqual(TransactionState.REVERTED)
     })
 
+    it("should compensate the completed sub workflow steps only once when the sub workflow fails", async function () {
+      const step1Mock = jest.fn()
+      const step1 = createStep(
+        "step1",
+        async () => {
+          return new StepResponse({ result: "step1" })
+        },
+        step1Mock
+      )
+
+      const subStep1Mock = jest.fn()
+      const subStep1 = createStep(
+        "sub-step1",
+        async () => {
+          return new StepResponse({ result: "sub-step1" })
+        },
+        subStep1Mock
+      )
+
+      const subStepWithError = createStep("sub-step-with-error", async () => {
+        throw new Error("Sub step failed")
+      })
+
+      const step3Mock = jest.fn()
+      const step3 = createStep("step3", async () => {
+        step3Mock()
+      })
+
+      const subWorkflow = createWorkflow(getNewWorkflowId(), function () {
+        subStep1()
+        subStepWithError()
+        return new WorkflowResponse(void 0)
+      })
+
+      const workflow = createWorkflow(getNewWorkflowId(), function () {
+        step1()
+        subWorkflow.runAsStep({ input: {} })
+        step3()
+        return new WorkflowResponse(void 0)
+      })
+
+      const { transaction } = await workflow.run({
+        throwOnError: false,
+      })
+
+      expect(subStep1Mock).toHaveBeenCalledTimes(1)
+      expect(step1Mock).toHaveBeenCalledTimes(1)
+      expect(step3Mock).not.toHaveBeenCalled()
+      expect(transaction.getState()).toEqual(TransactionState.REVERTED)
+    })
+
     it("should succeed and pass down the transaction id and event group id when provided from the context", async function () {
       let parentContext, childContext
 
