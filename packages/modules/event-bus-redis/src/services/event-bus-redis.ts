@@ -24,6 +24,7 @@ import {
   BullJob,
   EmitOptions,
   EventBusRedisModuleOptions,
+  LegacyJobOptions,
   Options,
 } from "../types"
 
@@ -39,7 +40,7 @@ type InjectedDependencies = {
 type IORedisEventType<T = unknown> = {
   name: string
   data: Omit<Event<T>, "name"> // See comment in `buildEvents` method
-  opts: BulkJobOptions
+  opts: BulkJobOptions & LegacyJobOptions
 }
 
 const GROUPED_EVENTS_CHUNK_SIZE = 1000
@@ -139,7 +140,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
    * Priority levels (lower number = higher priority):
    * - 10: Critical business events (e.g., order placed)
    * - 100: Default priority for normal events (default)
-   * - 2,097,152: Lowest priority for internal events
+   * - 2,097,151: Lowest priority for internal events
    *
    * Priority override hierarchy (highest to lowest precedence):
    * 1. Message-level options (eventData.options.priority)
@@ -260,7 +261,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
       if (eventsWithSubscribers.length) {
         const emitData = this.buildEvents(eventsWithSubscribers, options)
-        promises.push(this.queue_.addBulk(emitData))
+        promises.push(this.addJobs(emitData))
       }
     }
 
@@ -275,6 +276,24 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     }
 
     await promiseAll(promises)
+  }
+
+  private async addJobs<T>(events: IORedisEventType<T>[]) {
+    const jobs = events.map(({ opts, ...event }) => {
+      const { debounce, ...jobOpts } = opts
+
+      return {
+        ...event,
+        opts: {
+          ...jobOpts,
+          // BullMQ v6 rejects custom job ids that contain ":" and removed `debounce`
+          jobId: jobOpts.jobId?.replaceAll(":", "|"),
+          deduplication: jobOpts.deduplication ?? debounce,
+        },
+      }
+    })
+
+    return await this.queue_.addBulk(jobs)
   }
 
   private async groupEvents<T = unknown>(
@@ -342,7 +361,7 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
       }))
 
     if (eventsWithSubscribers.length) {
-      await this.queue_.addBulk(eventsWithSubscribers)
+      await this.addJobs(eventsWithSubscribers)
     }
 
     await this.clearGroupedEvents(eventGroupId)
