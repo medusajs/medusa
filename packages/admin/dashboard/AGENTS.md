@@ -57,6 +57,8 @@ Docs:
   - Mutation hooks invalidate the affected `lists()` / `detail(id)` keys in `onSuccess`, then call `options?.onSuccess?.(...)`.
 - Detail-page loaders prefetch with `queryClient.getQueryData(key) ?? queryClient.fetchQuery(...)` using the same key and `fields` as the page's hook, which then receives the result as `initialData`. Keep loader and hook `fields` identical or the cache misses.
 - Detail and list pages render `LayoutComposer` with `widgetsZonePrefix` set to the page's injection zone and wrap each core section in `<LayoutComposer.Entry id="...">`.
+- `src/hooks/api/modules.tsx`: `useIsModuleInstalled(key)` / `isModuleInstalled(modules, key)` read `GET /admin/modules`, which lists only modules that loaded (a licensed module doesn't load without its license). Keys: `RBAC_MODULE_KEY` (`"rbac"`), `AUDIT_MODULE_KEY` (`"audit"`).
+- `src/routes/audit-logs/`: read-only audit log pages at `/settings/audit-logs` and `/settings/audit-logs/:id`, behind `audit_log:read`. The Settings item shows only when `AUDIT_MODULE_KEY` is installed and the user can read `audit_log`; `common/audit-module-loader.ts` on the parent route throws a 404 so a direct URL without the module renders the not-found screen. `user` actors are shown by name and email (`common/use-audit-log-actor-users.ts`, one batched `useUsers` call, skipped without `user:read`); the ID shows on the detail page and as the fallback.
 - `src/lib/client/client.ts`: JS SDK instance built from bundler defines `__BACKEND_URL__`, `__AUTH_TYPE__` (default `"session"`), `__JWT_TOKEN_STORAGE_KEY__`.
 - `src/i18n/translations/`: `en.json` is the source of truth; `$schema.json` is generated from it.
 
@@ -87,6 +89,7 @@ yarn i18n:sync missing
 - The `src/exports/*` surface is documented API for extensions. Changing a signature breaks plugins; update the matching page under `www/apps/resources/app/admin-components`.
 - A new virtual module must be added to `external` in `tsup.config.cjs` and to `VIRTUAL_MODULES` in `@medusajs/admin-shared`.
 - `src/app.css` ships as `@medusajs/dashboard/css` and must stay plain CSS (no `@import "tailwindcss"` or `@apply`). `@medusajs/admin-bundler` generates every utility in one Tailwind pass, so a second copy in `app.css` would override the classes of admin extensions. `src/index.css` is the Tailwind entry for `yarn dev` only.
+- `DataTable` (from `@medusajs/ui`) treats a column with id `action` as the row actions menu and gives it no width. A column for a field named `action` needs another id (`columnHelper.display({ id: "..." })`).
 - Use `gap-*` rather than `space-*` / `divide-*` on containers whose children can render inline popovers or conditional siblings. In Tailwind 4, `space-y-*` adds a margin to every child except the last, so a popover appended at the end shifts the layout.
 - The roles permissions UI hardcodes two things from the RBAC module, both in `src/routes/roles/common/constants.ts`:
   - `PERMISSION_GROUPS` maps every core policy resource to a group (Orders, Products, ...). A resource missing from the map lands in the Custom group, next to plugin permissions. When a module adds a core resource, add it to a group and give it a label under `permissions.resources` in `en.json`; `common/__tests__/utils.spec.ts` fails until every entry of `CORE_POLICY_RESOURCES` (`@medusajs/types`) is in exactly one group.
