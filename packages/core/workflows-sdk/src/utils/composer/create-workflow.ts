@@ -281,10 +281,15 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
               context: executionContext,
             })
           } catch (error) {
-            // A sub workflow that failed has already reverted itself and isn't stored
+            const isNotFound =
+              MedusaError.isMedusaError(error) &&
+              error.type === MedusaError.Types.NOT_FOUND
+
+            // A failed sub workflow already reverted itself and isn't stored. With compensateAsync,
+            // the parent would wait forever for that missing sub workflow to report back.
             if (
-              !MedusaError.isMedusaError(error) ||
-              error.type !== MedusaError.Types.NOT_FOUND
+              !isNotFound ||
+              stepContext[" stepDefinition"]?.compensateAsync
             ) {
               throw error
             }
