@@ -1164,6 +1164,77 @@ medusaIntegrationTestRunner({
         })
       })
 
+      describe("when cancelling an edit", () => {
+        let promotion
+
+        beforeEach(async () => {
+          promotion = (
+            await api.post(
+              "/admin/promotions",
+              {
+                code: "linked-promo",
+                type: "standard",
+                status: "active",
+                application_method: {
+                  type: "fixed",
+                  target_type: "items",
+                  allocation: "each",
+                  currency_code: "usd",
+                  value: 100,
+                  max_quantity: 5,
+                },
+                is_automatic: false,
+              },
+              adminHeaders
+            )
+          ).data.promotion
+
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit`,
+            {},
+            adminHeaders
+          )
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/promotions`,
+            { promo_codes: [promotion.code] },
+            adminHeaders
+          )
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/confirm`,
+            {},
+            adminHeaders
+          )
+        })
+
+        it("should keep a promotion already linked to the draft order when it is re-added and the edit is cancelled", async () => {
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit`,
+            {},
+            adminHeaders
+          )
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/promotions`,
+            { promo_codes: [promotion.code] },
+            adminHeaders
+          )
+          await api.delete(
+            `/admin/draft-orders/${testDraftOrder.id}/edit`,
+            adminHeaders
+          )
+
+          const draftOrder = (
+            await api.get(
+              `/admin/draft-orders/${testDraftOrder.id}?fields=+promotions.code`,
+              adminHeaders
+            )
+          ).data.draft_order
+
+          expect(draftOrder.promotions).toEqual([
+            expect.objectContaining({ code: promotion.code }),
+          ])
+        })
+      })
+
       describe("with promotion rules", () => {
         let taggedProduct
         let untaggedProduct
