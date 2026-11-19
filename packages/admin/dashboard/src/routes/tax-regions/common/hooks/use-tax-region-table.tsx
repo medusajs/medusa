@@ -1,11 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
-import {
-  OnChangeFn,
-  PaginationState,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
+import { OnChangeFn, PaginationState, useTable } from "@tanstack/react-table"
+import { dataTableFeatures } from "../../../../components/table/data-table/data-table-features"
 import { useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
@@ -73,16 +68,15 @@ export const useTaxRegionTable = ({
     return state
   }
 
-  const table = useReactTable({
+  const table = useTable({
+    features: dataTableFeatures,
     data,
     columns: [], // We don't actually want to render any columns
     pageCount: Math.ceil(count / pageSize),
     state: {
       pagination,
     },
-    getCoreRowModel: getCoreRowModel(),
     onPaginationChange: onPaginationChange as OnChangeFn<PaginationState>,
-    getPaginationRowModel: getPaginationRowModel(),
     manualPagination: true,
   })
 

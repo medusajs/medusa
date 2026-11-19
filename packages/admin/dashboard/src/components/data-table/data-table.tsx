@@ -6,6 +6,7 @@ import {
   DataTableEmptyStateProps,
   DataTableFilter,
   DataTableRow,
+  DataTableRowData,
   DataTableRowSelectionState,
   Heading,
   Text,
@@ -62,7 +63,7 @@ type DataTableActionMenuProps = {
   groups: DataTableActionMenuGroupProps[]
 }
 
-export interface DataTableProps<TData> {
+export interface DataTableProps<TData extends DataTableRowData> {
   data?: TData[]
   columns: DataTableColumnDef<TData, any>[]
   filters?: DataTableFilter[]
@@ -103,7 +104,7 @@ export interface DataTableProps<TData> {
   filterBarContent?: React.ReactNode
 }
 
-export const DataTable = <TData,>({
+export const DataTable = <TData extends DataTableRowData>({
   data = [],
   columns,
   filters,

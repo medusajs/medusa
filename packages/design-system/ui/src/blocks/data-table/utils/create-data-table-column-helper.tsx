@@ -2,6 +2,7 @@
 
 import { createColumnHelper as createColumnHelperTanstack } from "@tanstack/react-table"
 import * as React from "react"
+import { DataTableFeatures } from "../data-table-features"
 import { DataTableActionCell } from "../components/data-table-action-cell"
 import {
   DataTableSelectCell,
@@ -10,6 +11,7 @@ import {
 import {
   DataTableActionColumnDef,
   DataTableColumnHelper,
+  DataTableRowData,
   DataTableSelectColumnDef,
   DataTableSortableColumnDef,
   DataTableSortableColumnDefMeta,
@@ -20,10 +22,10 @@ import {
 } from "../types"
 
 const createDataTableColumnHelper = <
-  TData,
+  TData extends DataTableRowData,
 >(): DataTableColumnHelper<TData> => {
   const { accessor: accessorTanstack, display } =
-    createColumnHelperTanstack<TData>()
+    createColumnHelperTanstack<DataTableFeatures, TData>()
 
   return {
     accessor: (accessor, column) => {
@@ -80,11 +82,5 @@ const createDataTableColumnHelper = <
       }),
   }
 }
-
-const helper = createColumnHelperTanstack()
-
-helper.accessor("name", {
-  meta: {},
-})
 
 export { createDataTableColumnHelper }

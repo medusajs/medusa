@@ -12,6 +12,7 @@ import {
   toast,
 } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -458,7 +459,7 @@ export const CreateRegionForm = ({ currencies }: CreateRegionFormProps) => {
   )
 }
 
-const columnHelper = createColumnHelper<StaticCountry>()
+const columnHelper = createColumnHelper<DataTableFeatures, StaticCountry>()
 
 const useColumns = () => {
   const base = useCountryTableColumns()
@@ -471,6 +472,7 @@ const useColumns = () => {
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()
