@@ -1023,6 +1023,46 @@ medusaIntegrationTestRunner({
           expect(response.data.count).toEqual(0)
         })
 
+        it("should return empty array for a non-translatable entity type", async () => {
+          const orderModule = appContainer.resolve(Modules.ORDER)
+          await orderModule.createOrders([
+            { email: "customer@medusa-test.com", currency_code: "usd" },
+          ])
+
+          const response = await api.get(
+            "/admin/translations/entities?type=order",
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.data).toEqual([])
+          expect(response.data.count).toEqual(0)
+        })
+
+        it("should return empty array for an entity type with inactive translation settings", async () => {
+          const productModule = appContainer.resolve(Modules.PRODUCT)
+          await productModule.createProducts([{ title: "Product 1" }])
+
+          const translationModule = appContainer.resolve(Modules.TRANSLATION)
+          const [productSettings] =
+            await translationModule.listTranslationSettings({
+              entity_type: "product",
+            })
+          await translationModule.updateTranslationSettings({
+            id: productSettings.id,
+            is_active: false,
+          })
+
+          const response = await api.get(
+            "/admin/translations/entities?type=product",
+            adminHeaders
+          )
+
+          expect(response.status).toEqual(200)
+          expect(response.data.data).toEqual([])
+          expect(response.data.count).toEqual(0)
+        })
+
         it("should support pagination", async () => {
           const productModule = appContainer.resolve(Modules.PRODUCT)
           await productModule.createProducts([
