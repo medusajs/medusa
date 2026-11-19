@@ -34,7 +34,7 @@ yarn build:plugin          # medusa plugin:build -> .medusa/server (the only pub
 yarn dev                   # medusa plugin:develop (watch + publish to local registry)
 ```
 
-- There is no unit test setup. Draft-order behaviour is covered by HTTP integration tests in `integration-tests/http/__tests__/draft-order/admin/`, which exercise the core routes.
+- Pure admin helpers (e.g. `src/admin/lib/utils/metadata-utils.ts`) have Jest unit tests in `__tests__/` beside them; run them with `npx jest` from the package directory (there's no `test` script). Draft-order behaviour is covered by HTTP integration tests in `integration-tests/http/__tests__/draft-order/admin/`, which exercise the core routes.
 - Root `yarn build` runs `build:plugin` through turbo, after `@medusajs/medusa#build`.
 - Plugin docs: https://docs.medusajs.com/learn/fundamentals/plugins.md
 
