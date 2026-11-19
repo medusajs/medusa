@@ -153,9 +153,12 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const body = (await req.json().catch(() => ({}))) as SearchInput
+  const body: unknown = await req.json().catch(() => null)
 
-  return searchAndTrack(req, body)
+  return searchAndTrack(
+    req,
+    body && typeof body === "object" ? (body as SearchInput) : {}
+  )
 }
 
 export function OPTIONS() {
