@@ -334,4 +334,5 @@ export enum DocsTrackingEvents {
   SEARCH_CALLOUT_CLICK = "search_callout_click",
   BLOOM_ACTION = "bloom_action",
   WHATS_NEW_ITEM_CLICK = "whats_new_item_click",
+  WEBMCP_TOOL_CALL = "webmcp_tool_call",
 }

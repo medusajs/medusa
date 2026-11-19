@@ -71,7 +71,7 @@ export const AiAssistantSearchWindow = () => {
           }
           clickable={true}
         >
-          <Badge variant="neutral">AI Assistant</Badge>
+          <Badge variant="neutral">Docs Assistant</Badge>
         </Tooltip>
       </div>
       <div

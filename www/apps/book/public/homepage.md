@@ -4,6 +4,8 @@
 
 > For the complete documentation index, see [llms.txt](/llms.txt)
 
+> To learn how to navigate the docs and which tools agents can use, see [SKILL.md](/SKILL.md)
+
 Get Started with Medusa, the Agent-Native Commerce Platform.
 
 ## Get Started with Your AI Agent
@@ -54,6 +56,15 @@ Ask anything about Medusa...
 - [Medusa MCP](https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp): Connect AI agents to your Medusa Cloud projects and stores.
 - [Agent Skills](https://docs.medusajs.com/cloud/ai-toolkit/agent-skills): Teach AI agents how to build with Medusa.
 - [Cloud CLI](https://docs.medusajs.com/cloud/cli): Manage Medusa Cloud from the terminal.
+
+## Agent Tools for the Docs
+
+- [Docs SKILL.md](https://docs.medusajs.com/SKILL.md): How to navigate the docs, where to find what, and which tools agents can use.
+- [Docs retrieval endpoint](https://docs.medusajs.com/agents/search?q=how+to+create+a+workflow): Search the docs and get the most relevant content. Pass your question in the `q` query parameter.
+- [Docs MCP server](https://docs.medusajs.com/cloud/ai-toolkit/docs-mcp): Connect AI agents and IDEs to the docs at `https://docs.medusajs.com/mcp`. Requires signing in with a Medusa account.
+- [WebMCP tools](https://docs.medusajs.com/cloud/ai-toolkit/ai-friendly-docs#webmcp-tools): Search, read, and navigate the docs from a browser that supports WebMCP.
+- [AI-friendly docs](https://docs.medusajs.com/cloud/ai-toolkit/ai-friendly-docs): All the ways agents can read the docs, including Markdown pages and `llms.txt`.
+- [AI catalog](https://docs.medusajs.com/.well-known/ai-catalog.json): Machine-readable catalog of all agent-facing resources.
 
 ## Customize Medusa
 

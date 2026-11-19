@@ -1,7 +1,7 @@
 import React from "react"
 import { IconProps } from "@medusajs/icons/dist/types"
 
-export const BloomIcon = (props: IconProps) => {
+export const DocsAssistantIcon = (props: IconProps) => {
   return (
     <svg
       width="15"

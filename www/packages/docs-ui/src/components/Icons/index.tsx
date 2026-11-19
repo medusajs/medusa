@@ -1,4 +1,4 @@
-export * from "./Bloom"
+export * from "./DocsAssistant"
 export * from "./BundledProduct"
 export * from "./CalendarRefresh"
 export * from "./ChefHat"
