@@ -16,6 +16,7 @@ export const useAuditLogTableColumns = () => {
   return useMemo(
     () => [
       columnHelper.accessor("started_at", {
+        size: 180,
         header: t("auditLogs.fields.time"),
         cell: ({ row }) =>
           getFullDate({ date: row.original.started_at, includeTime: true }),
@@ -24,6 +25,7 @@ export const useAuditLogTableColumns = () => {
         sortDescLabel: t("filters.sorting.dateDesc"),
       }),
       columnHelper.accessor("actor_id", {
+        size: 260,
         header: t("auditLogs.fields.actor"),
         cell: ({ row }) => {
           const { actor_type, actor_id, impersonator_id } = row.original
@@ -42,11 +44,15 @@ export const useAuditLogTableColumns = () => {
           )
         },
       }),
-      columnHelper.accessor("action", {
+      // The DataTable reserves the `action` column id for the row actions menu.
+      columnHelper.display({
+        id: "audit_action",
+        size: 240,
         header: t("auditLogs.fields.action"),
         cell: ({ row }) => <TwoLineCell primary={row.original.action} />,
       }),
       columnHelper.accessor("resource_id", {
+        size: 280,
         header: t("auditLogs.fields.resource"),
         cell: ({ row }) => {
           const { resource_type, resource_id } = row.original
@@ -64,6 +70,7 @@ export const useAuditLogTableColumns = () => {
         },
       }),
       columnHelper.accessor("outcome", {
+        size: 130,
         header: t("auditLogs.fields.outcome"),
         cell: ({ row }) => (
           <AuditLogOutcomeBadge outcome={row.original.outcome} />
