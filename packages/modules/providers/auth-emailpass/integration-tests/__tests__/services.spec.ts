@@ -46,7 +46,7 @@ describe("Email password auth provider", () => {
 
   it("return error if the passwords don't match", async () => {
     const config = { logN: 15, r: 8, p: 1 }
-    const passwordHash = await Scrypt.kdf("somepass", config)
+    const passwordHash = Buffer.from(await Scrypt.kdf("somepass", config))
 
     const authServiceSpies = {
       retrieve: jest.fn().mockImplementation(() => {
@@ -78,7 +78,7 @@ describe("Email password auth provider", () => {
 
   it("return an existing entity if the passwords match", async () => {
     const config = { logN: 15, r: 8, p: 1 }
-    const passwordHash = await Scrypt.kdf("somepass", config)
+    const passwordHash = Buffer.from(await Scrypt.kdf("somepass", config))
 
     const authServiceSpies = {
       retrieve: jest.fn().mockImplementation(() => {
@@ -155,7 +155,7 @@ describe("Email password auth provider", () => {
 
   it("returns the existing identity if it has no app_metadata and the password matches", async () => {
     const config = { logN: 15, r: 8, p: 1 }
-    const passwordHash = await Scrypt.kdf("somepass", config)
+    const passwordHash = Buffer.from(await Scrypt.kdf("somepass", config))
 
     const authServiceSpies = {
       retrieve: jest.fn().mockImplementation(() => {
@@ -196,7 +196,7 @@ describe("Email password auth provider", () => {
 
   it("returns the existing identity if app_metadata is empty and the password matches", async () => {
     const config = { logN: 15, r: 8, p: 1 }
-    const passwordHash = await Scrypt.kdf("somepass", config)
+    const passwordHash = Buffer.from(await Scrypt.kdf("somepass", config))
 
     const authServiceSpies = {
       retrieve: jest.fn().mockImplementation(() => {
@@ -228,7 +228,7 @@ describe("Email password auth provider", () => {
 
   it("throw if it has no app_metadata and the password does not match", async () => {
     const config = { logN: 15, r: 8, p: 1 }
-    const passwordHash = await Scrypt.kdf("somepass", config)
+    const passwordHash = Buffer.from(await Scrypt.kdf("somepass", config))
 
     const authServiceSpies = {
       retrieve: jest.fn().mockImplementation(() => {

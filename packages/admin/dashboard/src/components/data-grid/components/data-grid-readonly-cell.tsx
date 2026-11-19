@@ -25,7 +25,7 @@ export const DataGridReadonlyCell = <TData extends RowData, TValue = any>({
   return (
     <div
       className={clx(
-        "txt-compact-small flex w-full cursor-not-allowed justify-between overflow-hidden px-4 py-2.5 text-ui-fg-subtle outline-none",
+        "txt-compact-small flex w-full cursor-not-allowed justify-between overflow-hidden px-4 py-2.5 text-ui-fg-subtle outline-hidden",
         color === "muted" && "bg-ui-bg-subtle",
         color === "normal" && "bg-ui-bg-base",
         "h-full items-center"
@@ -34,7 +34,7 @@ export const DataGridReadonlyCell = <TData extends RowData, TValue = any>({
       <div
         className={clx("flex-1", {
           truncate: !isMultiLine,
-          "whitespace-pre-wrap break-words": isMultiLine,
+          "whitespace-pre-wrap wrap-break-word": isMultiLine,
         })}
       >
         {children}

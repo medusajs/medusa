@@ -8,8 +8,6 @@ import {
 
 jest.setTimeout(30000)
 
-process.env.MEDUSA_FF_TRANSLATION = "true"
-
 medusaIntegrationTestRunner({
   testSuite: ({ getContainer, api, dbUtils }) => {
     describe("Store Locales API", () => {
@@ -39,10 +37,6 @@ medusaIntegrationTestRunner({
         })
 
         await dbUtils.snapshot()
-      })
-
-      afterAll(async () => {
-        delete process.env.MEDUSA_FF_TRANSLATION
       })
 
       describe("GET /store/locales", () => {

@@ -34,7 +34,7 @@ export const storeCustomerRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: "ALL",
-    matcher: "/store/customers/me*",
+    matcher: "/store/customers/me{*splat}",
     middlewares: [authenticate("customer", ["session", "bearer"])],
   },
   {

@@ -79,7 +79,7 @@ yarn storybook         # port 6006, loads src/main.css
 ## Gotchas
 
 - `CONTRIBUTING.md`: new components from external contributors are not accepted. Propose them in an issue instead.
-- Peer deps are `react` / `react-dom` `^18.3.1`. Don't use React 19-only APIs.
+- Peer deps are `react` / `react-dom` `^19.3.1`.
 - `clx` uses `tailwind-merge`, so a consumer's `className` overrides conflicting variant classes. Pass user `className` last.
 - Classes in `src` must compile to the same CSS in Tailwind 3 and 4, since storefronts compile them with their own Tailwind. Use `outline-hidden`, `rounded-xs`, `shrink-0`, and `gap-*` instead of `outline-none`, `rounded-sm`, `flex-shrink-0`, and `space-*` / `divide-*`; no trailing `!` or other v4-only syntax. `tailwind-compat/tailwind-compat.spec.ts` enforces this.
 - Don't center an animated element with `translate-*` (e.g. `left-1/2 -translate-x-1/2` plus `animate-in`). Tailwind 4's `translate` property stacks with the enter animation's `transform`, so it animates in from off-center. Center with `inset-0 m-auto h-fit` instead, as `Prompt` does.

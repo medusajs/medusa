@@ -27,7 +27,7 @@ export const DataGridCellContainer = ({
     <div className="group/container relative size-full">
       <div
         className={clx(
-          "bg-ui-bg-base group/cell relative flex size-full items-center gap-x-2 px-4 py-2.5 outline-none",
+          "bg-ui-bg-base group/cell relative flex size-full items-center gap-x-2 px-4 py-2.5 outline-hidden",
           {
             "bg-ui-tag-red-bg text-ui-tag-red-text":
               hasError && !isAnchor && !isSelected && !isDragSelected,

@@ -34,7 +34,9 @@
   </a>
 </p>
 
-Index Module for Medusa: ingests data from multiple modules (by default products, variants, prices, and sales channels, plus linked models marked `filterable`) into a single Postgres-backed store so you can filter data by its linked records. Use it through Query's `index` method when `query.graph` can't filter across module links. It ships with `@medusajs/medusa` but is not registered by default, and the `/store/products` and `/admin/products` routes only use it when the `index_engine` feature flag is enabled.
+> **Deprecated:** the Index Module and `query.index()` are deprecated and will be removed in a future release. Use `query.graph()` instead, which filters across linked modules. See [Filter by linked data models](https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property).
+
+Index Module for Medusa: ingests data from multiple modules (by default products, variants, prices, and sales channels, plus linked models marked `filterable`) into a single Postgres-backed store so you can filter data by its linked records. Use it through Query's `index` method. It ships with `@medusajs/medusa` but is not registered by default, and the `/store/products` and `/admin/products` routes only use it when the `index_engine` feature flag is enabled.
 
 ## At a glance
 
@@ -96,5 +98,6 @@ const { data: products } = await query.index({
 ## Resources
 
 - [Index Module](https://docs.medusajs.com/learn/fundamentals/query/index-module)
+- [Filter by linked data models with Query](https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property)
 - [Query](https://docs.medusajs.com/learn/fundamentals/query)
 - [Feature Flags](https://docs.medusajs.com/learn/debugging-and-testing/feature-flags)

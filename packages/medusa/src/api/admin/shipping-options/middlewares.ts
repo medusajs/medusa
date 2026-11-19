@@ -3,8 +3,8 @@ import {
   validateAndTransformQuery,
 } from "@medusajs/framework"
 import {
+  applyCrossModuleFilter,
   authorize,
-  maybeApplyLinkFilter,
   MiddlewareRoute,
 } from "@medusajs/framework/http"
 import { PolicyOperation } from "@medusajs/framework/utils"
@@ -28,7 +28,7 @@ import {
 
 export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/shipping-options/*",
+    matcher: "/admin/shipping-options/{*splat}",
     middlewares: [
       authorize([
         {
@@ -52,11 +52,9 @@ export const adminShippingOptionRoutesMiddlewares: MiddlewareRoute[] = [
         AdminGetShippingOptionsParams,
         listTransformQueryConfig
       ),
-      maybeApplyLinkFilter({
-        entryPoint: "location_fulfillment_set",
-        resourceId: "fulfillment_set_id",
+      applyCrossModuleFilter({
         filterableField: "stock_location_id",
-        filterByField: "service_zone.fulfillment_set_id",
+        relationPath: "service_zone.fulfillment_set.location.id",
       }),
     ],
   },

@@ -15,7 +15,7 @@ import {
 
 export const adminRefundReasonsRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/refund-reasons/*",
+    matcher: "/admin/refund-reasons/{*splat}",
     middlewares: [
       authorize([
         {

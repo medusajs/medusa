@@ -1,14 +1,14 @@
 import { mkdir, writeFile } from "node:fs/promises"
-import { join } from "node:path"
+import { dirname, join, relative, sep } from "node:path"
 import outdent from "outdent"
 
-export async function writeStaticFiles(plugins?: string[]) {
+export async function writeStaticFiles(plugins?: string[], sources?: string[]) {
   const outDir = join(process.cwd(), ".medusa/client")
 
   await mkdir(outDir, { recursive: true })
 
   const promises = [
-    writeCSSFile(outDir),
+    writeCSSFile(outDir, plugins, sources),
     writeEntryFile(outDir, plugins),
     writeHTMLFile(outDir),
   ]
@@ -16,13 +16,43 @@ export async function writeStaticFiles(plugins?: string[]) {
   await Promise.all(promises)
 }
 
-async function writeCSSFile(outDir: string) {
-  const css = outdent`
-    @import "@medusajs/dashboard/css";
+function resolvePackageDir(name: string) {
+  try {
+    return dirname(require.resolve(name))
+  } catch (_e) {
+    return undefined
+  }
+}
 
-    @tailwind base;
-    @tailwind components;
-    @tailwind utilities;
+function toCSSPath(outDir: string, target: string) {
+  return relative(outDir, target).split(sep).join("/")
+}
+
+async function writeCSSFile(
+  outDir: string,
+  plugins: string[] = [],
+  sources: string[] = []
+) {
+  const sourceDirs = [
+    outDir,
+    resolvePackageDir("@medusajs/dashboard"),
+    resolvePackageDir("@medusajs/ui"),
+    ...sources,
+    ...plugins.map(resolvePackageDir),
+  ].filter((dir): dir is string => !!dir)
+
+  const imports = [
+    require.resolve("tailwindcss/index.css"),
+    require.resolve("@medusajs/ui-preset/theme.css"),
+    require.resolve("@medusajs/dashboard/css"),
+  ]
+
+  const css = outdent`
+    ${imports.map((file) => `@import "${toCSSPath(outDir, file)}";`).join("\n")}
+
+    ${sourceDirs
+      .map((dir) => `@source "${toCSSPath(outDir, dir) || "."}";`)
+      .join("\n")}
   `
 
   await writeFile(join(outDir, "index.css"), css)

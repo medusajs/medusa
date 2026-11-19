@@ -1,4 +1,7 @@
-import { createRbacRolePoliciesWorkflow } from "@medusajs/core-flows"
+import {
+  createRbacRolePoliciesWorkflow,
+  deleteRbacRolePoliciesWorkflow,
+} from "@medusajs/core-flows"
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
@@ -8,9 +11,13 @@ import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   ContainerRegistrationKeys,
   defineFileConfig,
+  MedusaError,
   Modules,
 } from "@medusajs/framework/utils"
-import { AdminAddRolePoliciesType } from "../../validators"
+import {
+  AdminAddRolePoliciesType,
+  AdminRemoveRolePoliciesType,
+} from "../../validators"
 
 /**
  * @since 2.22.3
@@ -68,6 +75,51 @@ export const POST = async (
   })
 
   res.status(200).json({ policies: data })
+}
+
+/**
+ * Detaches multiple policies from a role in one request. The actor must hold
+ * every policy being detached, the same requirement as for attaching them.
+ */
+export const DELETE = async (
+  req: AuthenticatedMedusaRequest<AdminRemoveRolePoliciesType>,
+  res: MedusaResponse<HttpTypes.AdminRbacRolePoliciesDeleteResponse>
+) => {
+  const roleId = req.params.id
+  const policyIds = Array.from(new Set(req.validatedBody.policies))
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+
+  const { data: rolePolicies } = await query.graph({
+    entity: "rbac_role_policy",
+    fields: ["id", "policy_id"],
+    filters: { role_id: roleId, policy_id: policyIds },
+  })
+
+  const attachedPolicyIds = new Set(rolePolicies.map((rp) => rp.policy_id))
+  const missingPolicyIds = policyIds.filter((id) => !attachedPolicyIds.has(id))
+
+  if (missingPolicyIds.length) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Policies with ids "${missingPolicyIds.join(
+        ", "
+      )}" are not attached to role "${roleId}"`
+    )
+  }
+
+  await deleteRbacRolePoliciesWorkflow(req.scope).run({
+    input: {
+      role_policy_ids: rolePolicies.map((rp) => rp.id),
+      actor_id: req.auth_context.actor_id,
+      actor: req.auth_context.actor_type,
+    },
+  })
+
+  res.status(200).json({
+    ids: policyIds,
+    object: "rbac_role_policy",
+    deleted: true,
+  })
 }
 
 defineFileConfig({

@@ -3,7 +3,7 @@ import { MedusaError, Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const validateRolesExistStepId = "validate-roles-exist-step"
 
@@ -13,7 +13,7 @@ export const validateRolesExistStepId = "validate-roles-exist-step"
  *
  * @example
  * validateRolesExistStep(["role_123", "role_456"])
- * @ignore
+ * @since 2.22.4
  */
 export const validateRolesExistStep = createStep(
   validateRolesExistStepId,

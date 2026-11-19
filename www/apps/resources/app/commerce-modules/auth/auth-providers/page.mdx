@@ -64,8 +64,8 @@ module.exports = defineConfig({
   projectConfig: {
     http: {
       authMethodsPerActor: {
-        user: ["emailpass", "google"],
-        customer: ["emailpass"],
+        user: ["emailpass"],
+        customer: ["emailpass", "google"],
       },
       // ...
     },
@@ -79,6 +79,19 @@ module.exports = defineConfig({
 When you specify the `authMethodsPerActor` configuration, it overrides the default. So, if you don't specify any providers for an actor type, users of that actor type can't authenticate with any provider.
 
 </Note>
+
+### Public Auth Providers for Admin Users
+
+When an admin logs in to the Medusa Admin with a third-party provider for the first time, Medusa creates an admin user for their account without an invite. The Google and GitHub Auth Module Providers accept any Google or GitHub account, and they don't have an option to restrict the accounts that can authenticate.
+
+So, if you allow the `user` actor type to use them, anyone with a Google or GitHub account can become an admin user of your store.
+
+To let admin users log in with a third-party service, use one of the following instead:
+
+- The [OIDC Auth Module Provider](../../../enterprise/sso/page.mdx) with its [allowed_email_domains option](../../../enterprise/sso/provider-options/page.mdx#allowed_email_domains), which restricts authentication to your organization's email domains.
+- An identity provider that only authenticates the members of your organization, such as Okta or Microsoft Entra ID.
+
+If you already allow the `user` actor type to use a public auth provider, remove the provider from the `user` array, then review the admin users in your store and delete the ones you don't recognize.
 
 ---
 

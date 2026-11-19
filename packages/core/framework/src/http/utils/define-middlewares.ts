@@ -1,4 +1,5 @@
 import {
+  AuditRouteSetting,
   MedusaNextFunction,
   MedusaRequest,
   MedusaResponse,
@@ -23,6 +24,7 @@ export function defineMiddlewares<
     matcher: string | RegExp
     bodyParser?: ParserConfig
     additionalDataValidator?: ZodRawShape
+    audit?: AuditRouteSetting
     // eslint-disable-next-line space-before-function-paren
     middlewares?: (<Req extends MedusaRequest>(
       req: Req,
@@ -33,13 +35,19 @@ export function defineMiddlewares<
 >(
   config:
     | Route[]
-    | { routes?: Route[]; errorHandler?: MiddlewaresConfig["errorHandler"] }
+    | {
+        routes?: Route[]
+        errorHandler?: MiddlewaresConfig["errorHandler"]
+        audit?: MiddlewaresConfig["audit"]
+      }
 ): MiddlewaresConfig {
   const routes = Array.isArray(config) ? config : config.routes || []
   const errorHandler = Array.isArray(config) ? undefined : config.errorHandler
+  const audit = Array.isArray(config) ? undefined : config.audit
 
   return {
     errorHandler,
+    audit,
     routes: routes.map((route) => {
       let { middlewares, method, methods, ...rest } = route
       if (!methods) {

@@ -15,7 +15,7 @@ Options (from `src/index.ts`):
 - `[project-name]`: prompted if missing. Names containing `.` are rejected (MikroORM path resolution breaks).
 - `--plugin`: clone `medusajs/medusa-starter-plugin` and only install dependencies (no DB, no start).
 - `--repo-url <url>`: starter to clone (default `https://github.com/medusajs/dtc-starter`, branch `main`, `--depth 1`).
-- `--version <version>`: pin every `@medusajs/*` dependency to this version (except `@medusajs/ui`, which is versioned separately).
+- `--version <version>`: pin every `@medusajs/*` entry in `dependencies`, `devDependencies`, and `peerDependencies` to this version (except `@medusajs/ui`, which is versioned separately). Also applies with `--plugin`.
 - `--skip-db`, `--db-url <url>`, `--no-migrations`, `--no-browser`, `--directory-path <path>`.
 - `--with-nextjs-starter`: keep and install `apps/storefront`; otherwise you're prompted, and a "no" deletes it.
 - `--use-npm` / `--use-yarn` / `--use-pnpm` (mutually exclusive), `--verbose`.
@@ -53,3 +53,4 @@ Unit tests are in `src/utils/__tests__/`. Jest maps `.js` imports back to `.ts` 
 - Generated `.env` hardcodes `JWT_SECRET=supersecret` / `COOKIE_SECRET=supersecret`, `REDIS_URL=redis://localhost:6379`, CORS values that include `https://docs.medusajs.com`, and a random `AUTH_MFA_ENCRYPTION_KEY`.
 - Migrations are verified by checking for the `mikro_orm_migrations` table. If it's missing, the CLI throws with the command output.
 - The browser opens `http://localhost:9000/app/invite?token=...` after polling `http://localhost:9000/health`, so the starter must serve on port 9000.
+- Yarn v1 keeps a package next to its peer dependencies, so two `@types/node` versions leave `ts-node` in `apps/backend/node_modules`, where the root-hoisted `@medusajs/cli` can't resolve it. For Yarn v1, `applyYarnWorkspaceChanges` adds a root `resolutions` entry pinning `@types/node` to the backend's range, and skips the Yarn v2+ files (`.yarnrc.yml`, empty `yarn.lock`).

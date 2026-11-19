@@ -21,7 +21,8 @@ export function getComputedActionsForShippingMethods(
   promotion: PromotionTypes.PromotionDTO | InferEntityType<typeof Promotion>,
   shippingMethodApplicationContext: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS],
   methodIdPromoValueMap: Map<string, number>,
-  attributeUsage?: CampaignBudgetUsageDTO
+  attributeUsage?: CampaignBudgetUsageDTO,
+  budgetAllottedAmounts?: Map<string, BigNumberInput>
 ): PromotionTypes.ComputeActions[] {
   let applicableShippingItems: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS] =
     []
@@ -58,7 +59,8 @@ export function getComputedActionsForShippingMethods(
     promotion,
     applicableShippingItems,
     methodIdPromoValueMap,
-    attributeUsage
+    attributeUsage,
+    budgetAllottedAmounts
   )
 }
 
@@ -66,7 +68,8 @@ export function applyPromotionToShippingMethods(
   promotion: PromotionTypes.PromotionDTO | InferEntityType<typeof Promotion>,
   shippingMethods: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS],
   methodIdPromoValueMap: Map<string, BigNumberInput>,
-  attributeUsage?: CampaignBudgetUsageDTO
+  attributeUsage?: CampaignBudgetUsageDTO,
+  budgetAllottedAmounts?: Map<string, BigNumberInput>
 ): PromotionTypes.ComputeActions[] {
   const { application_method: applicationMethod } = promotion
   const allocation = applicationMethod?.allocation!
@@ -109,7 +112,8 @@ export function applyPromotionToShippingMethods(
       const budgetExceededAction = computeActionForBudgetExceeded(
         promotion,
         amount,
-        attributeUsage
+        attributeUsage,
+        budgetAllottedAmounts
       )
 
       if (budgetExceededAction) {
@@ -180,7 +184,8 @@ export function applyPromotionToShippingMethods(
       const budgetExceededAction = computeActionForBudgetExceeded(
         promotion,
         amount,
-        attributeUsage
+        attributeUsage,
+        budgetAllottedAmounts
       )
 
       if (budgetExceededAction) {

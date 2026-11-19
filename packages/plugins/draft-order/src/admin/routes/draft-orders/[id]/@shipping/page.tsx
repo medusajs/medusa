@@ -24,7 +24,7 @@ import {
   TriangleRightMini,
   TruckFast,
 } from "@medusajs/icons"
-import isEqual from "lodash.isequal"
+import { dequal as isEqual } from "dequal"
 import { Accordion } from "radix-ui"
 import { ConditionalTooltip } from "../../../../components/common/conditional-tooltip"
 import { Form } from "../../../../components/common/form"
@@ -328,7 +328,7 @@ const ShippingForm = ({ preview, order }: ShippingFormProps) => {
                             {!shippingOption ? (
                               <div className="flex items-center gap-x-3">
                                 <div className="shadow-borders-base flex size-7 items-center justify-center rounded-md">
-                                  <div className="bg-ui-bg-component-hover flex size-6 items-center justify-center rounded">
+                                  <div className="bg-ui-bg-component-hover flex size-6 items-center justify-center rounded-sm">
                                     <Shopping className="text-ui-fg-subtle" />
                                   </div>
                                 </div>

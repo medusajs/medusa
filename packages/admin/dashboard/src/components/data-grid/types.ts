@@ -68,7 +68,7 @@ type InputAttributes = {
 }
 
 export interface InputProps {
-  ref: RefObject<HTMLElement>
+  ref: RefObject<HTMLElement | null>
   onBlur: () => void
   onFocus: () => void
   onChange: (next: any, prev: any) => void
@@ -83,7 +83,7 @@ type InnerAttributes = {
 }
 
 interface InnerProps {
-  ref: RefObject<HTMLDivElement>
+  ref: RefObject<HTMLDivElement | null>
   onMouseOver: ((e: React.MouseEvent<HTMLElement>) => void) | undefined
   onMouseDown: ((e: React.MouseEvent<HTMLElement>) => void) | undefined
   onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => void

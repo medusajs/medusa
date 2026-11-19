@@ -397,7 +397,7 @@ export const RulesFormField = ({
 
             {index < fields.length - 1 && (
               <div className="relative px-6 py-3">
-                <div className="absolute bottom-0 left-[40px] top-0 z-[-1] w-px border-ui-border-strong bg-[linear-gradient(var(--border-strong)_33%,rgba(255,255,255,0)_0%)] bg-[length:1px_3px] bg-repeat-y"></div>
+                <div className="absolute bottom-0 left-[40px] top-0 z-[-1] w-px border-ui-border-strong bg-[linear-gradient(var(--border-strong)_33%,rgba(255,255,255,0)_0%)] bg-size-[1px_3px] bg-repeat-y"></div>
 
                 <Badge size="2xsmall" className="text-xs">
                   {t("promotions.form.and")}

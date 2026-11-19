@@ -400,7 +400,7 @@ const useDataTable = <TData extends DataTableRowData>({
   const { state: searchState, onSearchChange, debounce = 300 } = search ?? {}
 
   const [localSearch, setLocalSearch] = React.useState(searchState ?? "")
-  const timeoutRef = React.useRef<ReturnType<typeof setTimeout>>()
+  const timeoutRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)
 
   React.useEffect(() => {
     setLocalSearch(searchState ?? "")

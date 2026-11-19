@@ -4,21 +4,21 @@ import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export type DeleteRoleAssignmentsStepInput = {
   id: string | string[]
 }
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export const deleteRoleAssignmentsStepId = "delete-role-assignments"
 
 /**
  * This step hard-deletes the RBAC role assignments with the given IDs.
  *
- * @ignore
+ * @since 2.22.4
  */
 export const deleteRoleAssignmentsStep = createStep(
   deleteRoleAssignmentsStepId,

@@ -2378,6 +2378,38 @@ module.exports = defineConfig({
 })
 ```
 
+#### http.corsOptions
+
+This option is available since Medusa [v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+
+The `projectConfig.http.corsOptions` configuration sets additional CORS options for API routes starting with `/admin`, `/store`, and `/auth`. Medusa applies these options on top of the allowed origins you set in the [authCors](#httpauthcors), [storeCors](#httpstorecors), and [adminCors](#httpadmincors) configurations.
+
+For example, set `maxAge` so that browsers cache the responses of preflight requests:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      corsOptions: {
+        maxAge: 7200,
+        exposedHeaders: ["x-request-id"],
+      },
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+This configuration is an object that accepts the following properties:
+
+- maxAge: (\`number\`) How long, in seconds, browsers can cache the response of a preflight request. Medusa sets it in the \`Access-Control-Max-Age\` header.
+- exposedHeaders: (\`string\` | \`string\[]\`) The response headers to expose to the browser. Medusa sets them in the \`Access-Control-Expose-Headers\` header.
+- allowedHeaders: (\`string\` | \`string\[]\`) The request headers to allow in cross-origin requests. Medusa sets them in the \`Access-Control-Allow-Headers\` header.
+- methods: (\`string\` | \`string\[]\`) The HTTP methods to allow in cross-origin requests. Medusa sets them in the \`Access-Control-Allow-Methods\` header.
+
+You can't override the `origin` and `credentials` CORS options with this configuration. Use the `authCors`, `storeCors`, and `adminCors` configurations to set the allowed origins.
+
 #### http.authVerificationsPerActor
 
 This option is available since Medusa [v2.16.0](https://github.com/medusajs/medusa/releases/tag/v2.16.0).
@@ -2443,6 +2475,42 @@ This configuration is an object that accepts the following properties:
 - memLevel: (\`number\`) How much memory should be allocated to the internal compression state. It value is between \`1\` (minimum level) and \`9\` (maximum level).
 - threshold: (\`number\` | \`string\`) The minimum response body size that compression is applied on. Its value can be the number of bytes or any string accepted by the \[bytes]\(https://www.npmjs.com/package/bytes) package.
 
+#### http.securityHeaders
+
+This option is available since Medusa [v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+
+The `projectConfig.http.securityHeaders` configuration modifies the security headers that Medusa sets on every HTTP response, including responses of the Medusa Admin. By default, Medusa sets the following headers:
+
+- `X-Content-Type-Options: nosniff`: Prevents browsers from guessing a response's content type.
+- `X-Frame-Options: SAMEORIGIN`: Allows only pages on the same origin to embed the Medusa application in an iframe.
+- `Content-Security-Policy: frame-ancestors 'self'`: Specifies the sources allowed to embed the Medusa application in an iframe.
+
+Medusa also removes the `X-Powered-By` header from all responses, regardless of this configuration.
+
+For example, to allow a dashboard on another domain to embed the Medusa Admin in an iframe:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      securityHeaders: {
+        frameAncestors: [
+          "'self'",
+          "https://dashboard.example.com",
+        ],
+      },
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+This configuration is an object that accepts the following properties:
+
+- enabled: (\`boolean\`) Whether to set the security headers on responses. Set it to \`false\` if you set these headers at another layer, such as a reverse proxy.
+- frameAncestors: (\`string\[]\`) The sources allowed to embed the Medusa application in an iframe. Medusa sets them in the \`Content-Security-Policy: frame-ancestors\` header. When you set this property, Medusa doesn't send the \`X-Frame-Options\` header, since it can't allow other origins.
+
 #### http.authMethodsPerActor
 
 The `projectConfig.http.authMethodsPerActor` configuration specifies the supported authentication providers per actor type (such as `user`, `customer`, or any custom actor).
@@ -2473,6 +2541,8 @@ module.exports = defineConfig({
 ```
 
 This configuration allows admin users to log in with an email and password, and customers to log in with an email and password or with Google.
+
+Don't allow the `user` actor type to use an auth provider that anyone can sign up with, such as Google or GitHub. Medusa creates an admin user for an account that logs in to the Medusa Admin with the provider for the first time, so anyone with an account at that provider can become an admin user of your store. Learn more in the [Auth Module Provider documentation](https://docs.medusajs.com/resources/commerce-modules/auth/auth-providers#public-auth-providers-for-admin-users/index.html.md).
 
 #### http.requireActorAssociation
 
@@ -2894,6 +2964,35 @@ module.exports = {
 
 The above configuration registers two plugins: `medusa-my-plugin-1` and `medusa-my-plugin`. The latter plugin requires an API key option, which is passed in the `options` object.
 
+### Default Plugins
+
+The `defineConfig` function registers the following plugins in every Medusa application, so you don't need to install or register them:
+
+- `@medusajs/draft-order`: Adds draft order management to the Medusa Admin.
+- `@medusajs/cloud`: Adds Cloud features to the Medusa Admin, whether your application runs on Cloud or is self-hosted. It shows in-app announcements in a "What's new" button in the admin's top bar and in a card at the bottom of the sidebar. Admin users choose the announcement categories they see in **Settings > Announcements**. This plugin is registered since [Medusa v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+
+If you add an entry with the same `resolve` value to the `plugins` configuration, your entry replaces the default one.
+
+#### Disable the Cloud Plugin
+
+To disable the `@medusajs/cloud` plugin, add it to the `plugins` configuration with the `disabled` option set to `true`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  plugins: [
+    {
+      resolve: "@medusajs/cloud",
+      options: {
+        disabled: true,
+      },
+    },
+  ],
+  // ...
+})
+```
+
+When you disable the plugin, `defineConfig` removes it from the registered plugins. So, the Medusa application doesn't fetch announcements, and the Medusa Admin doesn't show the announcement widgets or the **Settings > Announcements** page.
+
 ### Register Modules in Plugins
 
 When you register a plugin, its modules are automatically registered in the Medusa application. You don't have to register them manually in the `modules` configuration.
@@ -3226,12 +3325,11 @@ Medusa also doesn't support TypeScript aliases in the admin customizations by de
 
 ### Step 1: Update `src/admin/tsconfig.json`
 
-Update `src/admin/tsconfig.json` to include `baseUrl` and `paths` configuration:
+Update `src/admin/tsconfig.json` to include the `paths` configuration:
 
 ```json title="src/admin/tsconfig.json"
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./*"] 
     }
@@ -3241,7 +3339,9 @@ Update `src/admin/tsconfig.json` to include `baseUrl` and `paths` configuration:
 }
 ```
 
-The `baseUrl` option sets the base directory to `src/admin`, and the `paths` option defines the `@` alias to allow importing files from the `src/admin` directory using aliases.
+The `paths` option defines the `@` alias to allow importing files from the `src/admin` directory using aliases. The paths are relative to the `src/admin/tsconfig.json` file.
+
+Don't set the `baseUrl` option. TypeScript 6 deprecates it, and TypeScript 7 removes it. Learn more in the [TypeScript 6 and 7](https://docs.medusajs.com/learn/configurations/typescript/index.html.md) chapter.
 
 ### Step 2: Update `medusa-config.ts`
 
@@ -3285,7 +3385,6 @@ For example, if you set the `@/*` alias to point to `./components/*`:
 ```json title="src/admin/tsconfig.json"
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./components/*"]
     }
@@ -3311,6 +3410,84 @@ module.exports = defineConfig({
   },
 })
 ```
+
+
+# Use TypeScript 6 and 7
+
+In this chapter, you'll learn how to configure your Medusa application or plugin to use TypeScript 6 or TypeScript 7.
+
+## TypeScript Version Support
+
+Medusa applications and plugins use TypeScript 5 by default. You can upgrade them to TypeScript 6 or TypeScript 7, but you need to update your `tsconfig.json` because TypeScript 6 changed some default compiler options.
+
+Support for TypeScript 7 is available since Medusa [v2.22.4](https://github.com/medusajs/medusa/releases/tag/v2.22.4).
+
+***
+
+## Step 1: Install TypeScript
+
+To use TypeScript 6, install it as a development dependency:
+
+```bash
+npm install --save-dev typescript@^6
+```
+
+To use TypeScript 7, install it along with the `@typescript/typescript6` package:
+
+```bash
+npm install --save-dev typescript@^7 @typescript/typescript6
+```
+
+TypeScript 7 doesn't expose a compiler API. So, Medusa uses `@typescript/typescript6` to load TypeScript files, such as `medusa-config.ts`, when you run `medusa` commands. If the package isn't installed, the Medusa CLI shows an error asking you to install it.
+
+***
+
+## Step 2: Update `tsconfig.json`
+
+Next, update the `compilerOptions` in your application's or plugin's `tsconfig.json`:
+
+```json title="tsconfig.json"
+{
+  "compilerOptions": {
+    // other options...
+    "strict": false,
+    "types": ["*"]
+  }
+}
+```
+
+TypeScript 6 changed the defaults of these options:
+
+- `strict` is now `true` by default. Setting it to `false` keeps the TypeScript 5 behavior. Otherwise, your build may report new errors, such as implicit `any` types.
+- `types` is now `[]` by default, so TypeScript no longer loads the type packages in `node_modules/@types` automatically. Setting it to `["*"]` keeps the TypeScript 5 behavior. Otherwise, your build may report errors like `Cannot find name 'describe'` in your test files.
+
+### Remove `baseUrl`
+
+TypeScript 6 deprecates the `baseUrl` option, and TypeScript 7 removes it. If your `tsconfig.json` or `src/admin/tsconfig.json` sets `baseUrl`, remove it and make sure the paths in `paths` are relative to the `tsconfig.json` file:
+
+```json title="tsconfig.json"
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+Learn more about configuring aliases in the [Type Aliases](https://docs.medusajs.com/learn/configurations/ts-aliases/index.html.md) chapter.
+
+***
+
+## Step 3: Test the Configurations
+
+To verify that your application or plugin builds with the new TypeScript version, run the `build` command:
+
+```bash
+npm run build
+```
+
+If the build succeeds without new type errors, your project is ready to use the new TypeScript version.
 
 
 # Guide: Create Brand API Route
@@ -6237,7 +6414,7 @@ There are multiple ways to enable or disable feature flags in Medusa:
 
 The Medusa configurations in `medusa-config.ts` accept a `featureFlags` configuration to toggle feature flags. Its value is an object whose key is the feature flag key (defined in the feature flag's file), and the value is a boolean indicating whether the feature is enabled.
 
-For example, to enable the [Index Module](https://docs.medusajs.com/learn/fundamentals/query/index-module/index.html.md)'s feature flag in `medusa-config.ts`:
+For example, to enable the deprecated [Index Module](https://docs.medusajs.com/learn/fundamentals/query/index-module/index.html.md)'s feature flag in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -6258,7 +6435,7 @@ The feature flags can also be enabled or disabled using environment variables. T
 
 To toggle a feature flag using an environment variable, set an environment variable with its environment variable name (defined in the feature flag's file) and set its value to `true` or `false`.
 
-For example, to enable the [Index Module](https://docs.medusajs.com/learn/fundamentals/query/index-module/index.html.md)'s feature flag using an environment variable:
+For example, to enable the deprecated [Index Module](https://docs.medusajs.com/learn/fundamentals/query/index-module/index.html.md)'s feature flag using an environment variable:
 
 ```shell
 MEDUSA_FF_INDEX_ENGINE=true
@@ -15452,6 +15629,52 @@ This retrieves records that include `New Products` in their `title` property.
 
 ***
 
+## Computed Property
+
+Use the `computed` method on a property's definition to indicate that it's a computed property.
+
+Medusa doesn't store computed properties in the database. So, it doesn't create a column for them in migrations, and it doesn't set their value when you retrieve records.
+
+For example:
+
+```ts
+import { model } from "@medusajs/framework/utils"
+
+const Post = model.define("post", {
+  id: model.id().primaryKey(),
+  calculated_price: model.bigNumber().computed(),
+  // ...
+})
+
+export default Post
+```
+
+In this example, the `calculated_price` property is computed, so the `post` table has no column for it.
+
+You compute and set the property's value in your own code. For example, in a custom method of your module's service, set the property on the records after retrieving them:
+
+```ts title="src/modules/blog/service.ts"
+import { MedusaService } from "@medusajs/framework/utils"
+import Post from "./models/post"
+
+class BlogModuleService extends MedusaService({
+  Post,
+}) {
+  async listPostsWithPrices() {
+    const posts = await this.listPosts()
+
+    return posts.map((post) => ({
+      ...post,
+      calculated_price: 100, // compute the value here
+    }))
+  }
+}
+
+export default BlogModuleService
+```
+
+***
+
 ## Make Property Translatable
 
 ### Prerequisites
@@ -22012,9 +22235,11 @@ The next chapter explains how you can create and publish a plugin.
 
 In this chapter, you'll learn about the Index Module and how you can use it.
 
-The Index Module is experimental and still in development, so it is subject to change. However, it's being actively used in the Medusa Admin dashboard and is increasingly stable for production use. Consider your application's tolerance for minor issues when deciding to implement it.
+The Index Module and Query's `index` method are deprecated since [Medusa v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7) and will be removed in a future release. Use Query's `graph` method instead, which [filters by linked data models](https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property/index.html.md) in the database when [certain conditions](https://docs.medusajs.com/learn/fundamentals/query#query-in-memory-filtering-conditions/index.html.md) are met. This covers most filtering needs, such as filtering products by sales channels.
 
-For multi-vendor setups with sales channel filtering needs, the Index Module provides the most efficient approach for filtering products by sales channels and other linked data models.
+If you still use the Index Module, Medusa logs a deprecation warning when the application starts, the first time you call `query.index`, and when you send a request to the `/admin/index/details` or `/admin/index/sync` API routes.
+
+The `filterable` property of link definitions is also deprecated, since only the Index Module uses it.
 
 ## What is the Index Module?
 
@@ -22103,15 +22328,15 @@ For example, if you create a new product, the Index Module will ingest it into i
 
 ### Enable Index Module Feature Flag
 
-Since the Index Module is still experimental, the `/store/products` and `/admin/products` API routes will use the Index Module to retrieve products only if the Index Module's feature flag is enabled. By enabling the feature flag, you can filter products by their linked data models in these API routes.
-
-To enable the Index Module's feature flag, add the following line to your `.env` file:
+You must enable the Index Module's feature flag to use it. To enable the Index Module's feature flag, add the following line to your `.env` file:
 
 ```env
 MEDUSA_FF_INDEX_ENGINE=true
 ```
 
-If you send a request to the `/store/products` or `/admin/products` API routes, you'll receive the following response:
+Starting from [Medusa v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7), the `/store/products` and `/admin/products` API routes no longer use the Index Module, even when its feature flag is enabled. Instead, they retrieve products with Query's `graph` method, which [filters by linked data models](https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property/index.html.md) using cross-module joins. You can still use the Index Module in your own customizations with Query's `index` method.
+
+When the feature flag is enabled, the `/store/products` and `/admin/products` API routes return an `estimate_count` property in their response:
 
 ```json
 {
@@ -22125,7 +22350,9 @@ If you send a request to the `/store/products` or `/admin/products` API routes, 
 }
 ```
 
-Notice the `estimate_count` property, which is the estimated total number of products in the database. You'll learn more about it in the [Pagination](#apply-pagination-with-the-index-module) section.
+Starting from Medusa v2.22.7, the `estimate_count` property in these API routes' responses is deprecated and has the same value as `count`. Use `count` instead, as `estimate_count` will be removed in the next minor release.
+
+The `estimate_count` property returned by Query's `index` method is the estimated total number of records in the database. You'll learn more about it in the [Pagination](#apply-pagination-with-the-index-module) section.
 
 ***
 
@@ -22885,7 +23112,9 @@ This will retrieve all brands that are linked to at least one product.
 
 ### Sales Channel Filtering for Multi-Vendor Setups
 
-For multi-vendor marketplaces where you need to filter products based on sales channels, the Index Module provides the most efficient solution. Unlike `query.graph`, which may filter by linked data models in memory, the Index Module filters across linked data models in its own data store.
+For multi-vendor marketplaces where you need to filter products based on sales channels, the Index Module filters across linked data models in its own data store.
+
+Query's `graph` method also filters products by sales channels in the database using cross-module joins. Use it instead of the deprecated Index Module, as explained in the [Query](https://docs.medusajs.com/learn/fundamentals/query#filter-by-linked-data-models-property/index.html.md) chapter.
 
 For example, to filter vendor products by multiple sales channels:
 
@@ -23726,7 +23955,7 @@ If any condition in a linked data model's filter object requires in-memory filte
 
 To filter in memory, Query retrieves all main records matching the rest of the filters, retrieves their linked records, then keeps only the main records that match. Query applies pagination after filtering, so `count` and the returned page are still correct.
 
-In-memory filtering ignores pagination when retrieving records. So, a query that returns one page of 20 records may load thousands of records and their linked records into memory, which slows down the query and increases your application's memory usage. On data models with many records, make sure your filters meet the database conditions, add other filters that narrow down the main records, or use the [Index Module](https://docs.medusajs.com/learn/fundamentals/query/index-module/index.html.md).
+In-memory filtering ignores pagination when retrieving records. So, a query that returns one page of 20 records may load thousands of records and their linked records into memory, which slows down the query and increases your application's memory usage. On data models with many records, make sure your filters meet the database conditions or add other filters that narrow down the main records.
 
 #### Limitations of Linked Data Model Filters
 
@@ -24666,6 +24895,83 @@ To test it out, start your Medusa application and send a `GET` request to the `/
 Try passing one of the Query configuration parameters, like `fields` or `limit`, and you'll see its impact on the returned result.
 
 Learn more about [specifying fields and relations](https://docs.medusajs.com/api/store/select-fields-and-relations) and [pagination](https://docs.medusajs.com/api/store/pagination) in the API reference.
+
+### Filter by Linked Data Model with Query Parameters
+
+The `applyCrossModuleFilter` middleware is available starting [Medusa v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+
+Your API route may accept a flat query parameter that filters records by a linked data model's property, such as `brand_id`. Use the `applyCrossModuleFilter` middleware to transform this query parameter into a nested [linked data model filter](#filter-by-linked-data-models-property) that you can pass to Query.
+
+For example:
+
+```ts title="src/api/middlewares.ts"
+import { 
+  applyCrossModuleFilter,
+  validateAndTransformQuery,
+  defineMiddlewares,
+} from "@medusajs/framework/http"
+import { createFindParams } from "@medusajs/medusa/api/utils/validators"
+import { z } from "@medusajs/framework/zod"
+
+export const GetProductsSchema = createFindParams().extend({
+  brand_id: z.string().optional(),
+})
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/custom-products",
+      method: "GET",
+      middlewares: [
+        validateAndTransformQuery(GetProductsSchema, {
+          defaults: ["id", "title", "brand.*"],
+          isList: true,
+        }),
+        applyCrossModuleFilter({
+          filterableField: "brand_id",
+          relationPath: "brand.id",
+        }),
+      ],
+    },
+  ],
+})
+```
+
+The `applyCrossModuleFilter` middleware must be added after the `validateAndTransformQuery` middleware. It accepts an object with the following properties:
+
+- `filterableField`: The name of the query parameter to transform. The `validateAndTransformQuery` middleware adds it to the request's `filterableFields` property.
+- `relationPath`: The dot-separated path of the linked data model's property to filter by. For example, `brand.id` or `variants.prices.price_list_id`.
+
+If the request has the `brand_id` query parameter, the middleware removes it from `req.filterableFields` and adds a `{ brand: { id } }` filter instead. Then, pass `req.filterableFields` to Query in your API route:
+
+```ts title="src/api/custom-products/route.ts"
+import {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+
+export const GET = async (
+  req: MedusaRequest,
+  res: MedusaResponse
+) => {
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+
+  const { data: products } = await query.graph({
+    entity: "product",
+    filters: req.filterableFields,
+    ...req.queryConfig,
+  })
+
+  res.json({ products })
+}
+```
+
+Query then applies the filter using cross-module joins in the database, as long as the filter meets the [database filtering conditions](#query-in-memory-filtering-conditions).
+
+The `maybeApplyLinkFilter` middleware is deprecated starting from Medusa v2.22.7 and will be removed in the next minor release. Use `applyCrossModuleFilter` instead, which filters through cross-module joins without an extra query.
 
 
 # Query Context
@@ -31478,9 +31784,9 @@ Refer to the [Claude Connector](https://docs.medusajs.com/cloud/medusa-mcp/claud
 
 ## ChatGPT App
 
-The ChatGPT app is under review by OpenAI and isn't available in ChatGPT yet. In the meantime, you can add the Medusa MCP server to ChatGPT as a [custom plugin](https://docs.medusajs.com/cloud/medusa-mcp/chatgpt#add-medusa-mcp-as-a-custom-plugin-in-chatgpt/index.html.md) in developer mode.
+The [Medusa ChatGPT app](https://chatgpt.com/plugins/plugin_asdk_app_6aed956ee81c81919f9ade97457321f1) connects ChatGPT to your stores, so you can ask ChatGPT about your stores in any chat.
 
-The ChatGPT app connects ChatGPT to your stores, so you can ask ChatGPT about your stores in any chat.
+The ChatGPT app provides a fixed set of tools that retrieve common commerce data, such as orders, products, and customers. To use all of the Medusa MCP server's tools in ChatGPT, including the tools that call your custom API routes, add the Medusa MCP server to ChatGPT as a [custom plugin](https://docs.medusajs.com/cloud/medusa-mcp/chatgpt#add-medusa-mcp-as-a-custom-plugin-in-chatgpt/index.html.md) in developer mode.
 
 Refer to the [ChatGPT app](https://docs.medusajs.com/cloud/medusa-mcp/chatgpt/index.html.md) guide in the Cloud documentation to learn more.
 
@@ -33733,7 +34039,7 @@ Learn more about using the publishable API key in the [Storefront Development gu
 
 In this chapter, you'll learn about updating your Medusa application and packages.
 
-Medusa's current version is v2.22.3. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.22.3).
+Medusa's current version is v2.22.7. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
 
 ## Medusa Versioning
 
@@ -34653,6 +34959,34 @@ GITHUB_CALLBACK_URL=<YOUR_GITHUB_CALLBACK_URL>
 
 ***
 
+## Allow the GitHub Provider for Customers
+
+By default, customers and other custom actor types can authenticate with any registered Auth Module Provider, whereas admin users can only authenticate with the `emailpass` provider. If you deploy your application to Cloud, admin users can also authenticate with their Cloud account.
+
+To specify the actor types that can use the GitHub Auth Module Provider, set the [authMethodsPerActor configuration](https://docs.medusajs.com/docs/learn/configurations/medusa-config#httpauthMethodsPerActor/index.html.md) in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      authMethodsPerActor: {
+        user: ["emailpass"],
+        customer: ["emailpass", "github"],
+      },
+      // ...
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+This configuration allows customers to authenticate with their email and password or with GitHub, and admin users to authenticate with their email and password only.
+
+Don't add `github` to the `user` actor type. Any GitHub account can authenticate with this provider, and it doesn't have an option to restrict the accounts that can authenticate. So, if you allow the `user` actor type to use it, anyone with a GitHub account can become an admin user of your store. Learn more in the [Auth Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers#public-auth-providers-for-admin-users/index.html.md) guide.
+
+***
+
 ## Override Callback URL During Authentication
 
 In many cases, you may have different callback URLs for actor types. For example, you may redirect admin users to a different URL than customers after authentication.
@@ -34739,6 +35073,34 @@ GOOGLE_CALLBACK_URL=<YOUR_GOOGLE_CALLBACK_URL>
 
 ***
 
+## Allow the Google Provider for Customers
+
+By default, customers and other custom actor types can authenticate with any registered Auth Module Provider, whereas admin users can only authenticate with the `emailpass` provider. If you deploy your application to Cloud, admin users can also authenticate with their Cloud account.
+
+To specify the actor types that can use the Google Auth Module Provider, set the [authMethodsPerActor configuration](https://docs.medusajs.com/docs/learn/configurations/medusa-config#httpauthMethodsPerActor/index.html.md) in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  projectConfig: {
+    http: {
+      authMethodsPerActor: {
+        user: ["emailpass"],
+        customer: ["emailpass", "google"],
+      },
+      // ...
+    },
+    // ...
+  },
+  // ...
+})
+```
+
+This configuration allows customers to authenticate with their email and password or with Google, and admin users to authenticate with their email and password only.
+
+Don't add `google` to the `user` actor type. Any Google account can authenticate with this provider, and it doesn't have an option to restrict the accounts that can authenticate. So, if you allow the `user` actor type to use it, anyone with a Google account can become an admin user of your store. Learn more in the [Auth Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers#public-auth-providers-for-admin-users/index.html.md) guide.
+
+***
+
 ## Override Callback URL During Authentication
 
 In many cases, you may have different callback URLs for actor types. For example, you may redirect admin users to a different URL than customers after authentication.
@@ -34792,8 +35154,8 @@ module.exports = defineConfig({
   projectConfig: {
     http: {
       authMethodsPerActor: {
-        user: ["emailpass", "google"],
-        customer: ["emailpass"],
+        user: ["emailpass"],
+        customer: ["emailpass", "google"],
       },
       // ...
     },
@@ -34803,6 +35165,19 @@ module.exports = defineConfig({
 ```
 
 When you specify the `authMethodsPerActor` configuration, it overrides the default. So, if you don't specify any providers for an actor type, users of that actor type can't authenticate with any provider.
+
+### Public Auth Providers for Admin Users
+
+When an admin logs in to the Medusa Admin with a third-party provider for the first time, Medusa creates an admin user for their account without an invite. The Google and GitHub Auth Module Providers accept any Google or GitHub account, and they don't have an option to restrict the accounts that can authenticate.
+
+So, if you allow the `user` actor type to use them, anyone with a Google or GitHub account can become an admin user of your store.
+
+To let admin users log in with a third-party service, use one of the following instead:
+
+- The [OIDC Auth Module Provider](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/enterprise/sso/index.html.md) with its [allowed\_email\_domains option](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/enterprise/sso/provider-options#allowed_email_domains/index.html.md), which restricts authentication to your organization's email domains.
+- An identity provider that only authenticates the members of your organization, such as Okta or Microsoft Entra ID.
+
+If you already allow the `user` actor type to use a public auth provider, remove the provider from the `user` array, then review the admin users in your store and delete the ones you don't recognize.
 
 ***
 
@@ -38765,6 +39140,51 @@ await cartModuleService.setShippingMethodAdjustments(
   ) as AddShippingMethodAdjustment[]
 )
 ```
+
+***
+
+## How Medusa Refreshes Adjustments
+
+In the Medusa application, the [updateCartPromotionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/updateCartPromotionsWorkflow/index.html.md) computes a cart's adjustments whenever the cart's promotions change or the cart is refreshed, such as after adding a line item.
+
+A shipping method's price can depend on the cart's discounted item total, and a shipping method's adjustments depend on its price. So, after computing the adjustments, the workflow re-prices the cart's shipping methods. If any shipping method's price changes or a shipping method becomes invalid and is removed, the workflow recomputes the adjustments once more so they reflect the new shipping prices.
+
+### Recompute Adjustments in Custom Workflows
+
+The `refreshCartPromotionAdjustmentsWorkflow` is available since [Medusa v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+
+If you make changes to a cart that affect its adjustments in your customizations, use the `refreshCartPromotionAdjustmentsWorkflow` to recompute them. The workflow computes the adjustments of the cart's line items and shipping methods from the cart's current state, and replaces the existing adjustments with them.
+
+For example:
+
+```ts
+import {
+  refreshCartPromotionAdjustmentsWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+// ...
+
+const { result } = await refreshCartPromotionAdjustmentsWorkflow(
+  container
+).run({
+  input: {
+    cart_id: "cart_123",
+    promo_codes: ["10OFF"],
+  },
+})
+
+// promotion codes that couldn't be applied
+console.log(result.skipped_promo_codes)
+```
+
+The workflow accepts the following input:
+
+- `cart_id`: The ID of the cart.
+- `promo_codes`: The promotion codes to apply to the cart. They replace the cart's existing promotions.
+- `cart`: (optional) The cart's details, if you've already retrieved them. Otherwise, the workflow retrieves the cart by its ID.
+- `additional_promotion_context`: (optional) Custom context to merge into the cart's context when evaluating promotion rules.
+
+The workflow returns an object with a `skipped_promo_codes` property, which holds the promotion codes that Medusa didn't apply to the cart.
 
 
 # Enforce Sales Channel Availability in Carts
@@ -45147,6 +45567,69 @@ The built-in [createPaymentSessionsWorkflow](https://docs.medusajs.com/reference
 
 If you build a custom workflow that creates account holders, use the same `noCompensation: true` config on `createPaymentAccountHolderStep`, or omit a compensation function that calls `deleteAccountHolder` on the provider.
 
+***
+
+## Replace Missing Account Holders
+
+Replacing missing account holders is available since Medusa [v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+
+An account holder in Medusa can point to a customer that no longer exists in the third-party payment provider. For example, this happens when you copy your database from an environment that uses a different payment provider account, such as copying a production database to a staging environment that uses a Stripe test account.
+
+### Replacement in the Payment Session Flow
+
+The [createPaymentSessionsWorkflow](https://docs.medusajs.com/references/medusa-workflows/createPaymentSessionsWorkflow/index.html.md) handles missing account holders automatically:
+
+1. It tries to create the payment session with the customer's existing account holder using the `tryCreatePaymentSessionStep`.
+2. If the payment provider reports that the account holder doesn't exist, the workflow uses the `replacePaymentAccountHolderStep` to create a new account holder in the provider.
+3. The workflow then creates the payment session again with the replacement account holder.
+
+The replacement keeps the account holder's ID in Medusa, so its link to the customer stays the same. However, payment methods saved under the old provider-side customer aren't available anymore.
+
+### Replace an Account Holder Manually
+
+You can also replace an account holder using the `replaceAccountHolder` method of the Payment Module's service. The method creates a new account holder in the payment provider, updates the `external_id`, `email`, and `data` fields of the existing `AccountHolder` record, then deletes the old account holder in the provider.
+
+For example:
+
+```ts
+const accountHolder =
+  await paymentModuleService.replaceAccountHolder({
+    id: "acchld_123",
+    provider_id: "pp_stripe_stripe",
+    context: {
+      customer: {
+        id: "cus_123",
+        email: "jane@example.com",
+      },
+    },
+  })
+```
+
+The method throws an error if the payment provider doesn't support account holders.
+
+In a workflow, use the `replacePaymentAccountHolderStep` from `@medusajs/medusa/core-flows` instead, which accepts the same input.
+
+### Support Replacement in Custom Payment Providers
+
+For Medusa to detect a missing account holder, your custom payment provider must throw a `MedusaError` with the `MedusaError.Codes.ACCOUNT_HOLDER_NOT_FOUND` code when the third-party service reports that the customer doesn't exist. For example, in the provider's `initiatePayment` method:
+
+```ts
+import { MedusaError } from "@medusajs/framework/utils"
+
+// in the provider's service...
+if (isCustomerMissingError(error)) {
+  throw new MedusaError(
+    MedusaError.Types.NOT_FOUND,
+    error.message,
+    MedusaError.Codes.ACCOUNT_HOLDER_NOT_FOUND
+  )
+}
+```
+
+Where `isCustomerMissingError` is a placeholder for your own check of the third-party service's error.
+
+Since replacing an account holder deletes the old one in the provider, your provider's `deleteAccountHolder` method should also succeed without errors if the customer doesn't exist in the third-party service anymore. The Stripe and Medusa Payments providers already implement both behaviors.
+
 
 # Links between Payment Module and Other Modules
 
@@ -48688,7 +49171,7 @@ const { product } = await sdk.admin.product.create({
     {
       title: "Small",
       sku: "SHIRT-S",
-      ean: "1234567890123",
+      ean: "1234567890128",
       manage_inventory: true,
       allow_backorder: false,
       options: {
@@ -48794,6 +49277,7 @@ Keep in mind the following about updates:
 - The order of the `images` array sets the order of the product's images. Pass an existing image's `id` along with its `url` to keep that image.
 - Updating `images` doesn't change the `thumbnail`. Pass `thumbnail` to change it.
 - `metadata` is merged with the product's existing metadata.
+- If you pass `variants`, they replace the product's full variant list, so Medusa deletes existing variants that you don't include. Pass a variant's `id` to update it, or omit the `id` to create a new variant.
 - In the same request, you can update the product's `collection_id`, `type_id`, `shipping_profile_id`, `status`, and other scalar fields.
 
 To manage the product's variants and options, use the dedicated methods explained in the next sections.
@@ -50397,6 +50881,12 @@ If you apply a `$100` fixed discount on the order, Medusa distributes it proport
 
 If another order-level promotion applies afterward, Medusa recalculates each item's share using its remaining amount (`$187.5` and `$112.5`).
 
+### Multiple Buy X Get Y Promotions
+
+When you apply more than one `buyget` promotion, each item unit can only count toward one of them. Once a promotion uses a unit, either to meet its "buy X" condition or to receive its "get Y" discount, Medusa doesn't use that unit for the other `buyget` promotions in either role.
+
+For example, consider a cart with two shirts and two promotions that each require buying one shirt to get one shirt free. The first promotion uses one shirt as its "buy X" item and discounts the other shirt. No shirts remain for the second promotion, so Medusa doesn't apply it unless the customer adds more shirts to the cart.
+
 ***
 
 ## Action Types
@@ -50514,6 +51004,7 @@ The [ApplicationMethod data model](https://docs.medusajs.com/references/promotio
 |`allocation`|Is the discounted amount applied to each item, split between the applicable items, or applied on specific number of items?|`each`, `across`, `once`|
 |`value`|How much is discounted? Its meaning depends on the `type`: a fixed amount when `type` is `fixed`, or a percentage between `0` and `100` when `type` is `percentage`.|A number, such as `10`.|
 |`currency_code`|Which currency does the promotion apply to? Only carts whose currency matches receive the discount. Required for `fixed` promotions, as explained in the [Discount Value and Currency section](#discount-value-and-currency).|A currency code, such as `usd`.|
+|`target_selection_strategy`|Which eligible items does a `buyget` promotion discount? Learn more in the [Target Selection Strategy section](#target-selection-strategy).|`most_expensive_first` (default), `cheapest_first`|
 
 ***
 
@@ -50569,7 +51060,53 @@ When the cart has more eligible items than the promotion needs, the Promotion Mo
 Then, the Promotion Module selects the items as follows:
 
 1. It reserves items to satisfy the "buy X" condition, starting with the highest-priced items. It prefers items that don't match the target rules, so that matching "get Y" items remain available for the discount.
-2. It applies the discount to the highest-priced items that match the target rules and weren't reserved in the previous step, up to the `apply_to_quantity` and `max_quantity` limits.
+2. It applies the discount to the items that match the target rules and weren't reserved in the previous step, up to the `apply_to_quantity` and `max_quantity` limits. The application method's `target_selection_strategy` determines whether it discounts the highest-priced or the lowest-priced items first, as explained in the next section.
+
+### Target Selection Strategy
+
+The `target_selection_strategy` property is available since Medusa [v2.22.5](https://github.com/medusajs/medusa/releases/tag/v2.22.5).
+
+The `target_selection_strategy` property of a `buyget` promotion's application method determines which eligible "get Y" items receive the discount. It only affects which target items are discounted. The Promotion Module always reserves the "buy X" items starting with the highest-priced items.
+
+|Value|Behavior|
+|---|---|
+|`most_expensive_first`|The default. Each time the promotion applies, it discounts the most expensive eligible target item that's left.|
+|`cheapest_first`|Each time the promotion applies, it discounts the cheapest eligible target item that's left.|
+
+For example, consider a "Buy 3, get 1 free" promotion and a cart with eight eligible items priced from `100` to `800`. The promotion applies twice. With `cheapest_first`, the Promotion Module discounts the items priced `100` and `200`.
+
+You can set the `target_selection_strategy` property when you create or update a `buyget` promotion. For other promotion types, the Promotion Module throws an error if you set it to a value other than `most_expensive_first`.
+
+```ts
+const promotion = await promotionModuleService.createPromotions({
+  code: "BUY3GET1",
+  type: "buyget",
+  application_method: {
+    type: "percentage",
+    target_type: "items",
+    value: 100,
+    allocation: "each",
+    max_quantity: 1,
+    apply_to_quantity: 1,
+    buy_rules_min_quantity: 3,
+    target_selection_strategy: "cheapest_first",
+    target_rules: [
+      {
+        attribute: "items.product.id",
+        operator: "eq",
+        values: ["prod_123"],
+      },
+    ],
+    buy_rules: [
+      {
+        attribute: "items.product.id",
+        operator: "eq",
+        values: ["prod_123"],
+      },
+    ],
+  },
+})
+```
 
 ***
 
@@ -55470,7 +56007,7 @@ In this section of the documentation, you will find resources to learn more abou
 ### Prerequisites
 
 - [Medusa v2.12.3 or later](https://github.com/medusajs/medusa/releases/tag/v2.12.3)
-- [Translation Feature Flag Enabled](#configure-translation-module)
+- [Translation Feature Flag Enabled (before Medusa v2.22.7)](#configure-translation-module)
 
 Refer to the [Medusa Admin User Guide](https://docs.medusajs.com/user-guide/settings/translations/index.html.md) to learn how to manage translations in the dashboard.
 
@@ -55489,9 +56026,19 @@ Refer to the [Module Isolation](https://docs.medusajs.com/docs/learn/fundamental
 
 ## Configure Translation Module
 
-The Translation Module is currently behind a feature flag. To use it in your Medusa application, add it to the `modules` array and enable the `translation` feature flag.
+Starting from [Medusa v2.22.7](https://github.com/medusajs/medusa/releases/tag/v2.22.7), the Translation Module is enabled by default. Medusa registers it in your application, so you don't need to add it to `medusa-config.ts` or enable a feature flag.
 
-In your `medusa-config.ts` file, add the Translation Module to the `modules` array and enable the `translation` feature flag:
+If you're upgrading from an earlier version, run the following command to make the necessary database changes for the Translation Module:
+
+```bash
+npx medusa db:migrate
+```
+
+You can also remove the `translation` feature flag from your `medusa-config.ts` file, since it no longer has an effect.
+
+### Configure Translation Module Before v2.22.7
+
+In Medusa versions before v2.22.7, the Translation Module is behind a feature flag. To use it in your Medusa application, add it to the `modules` array and enable the `translation` feature flag in your `medusa-config.ts` file:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -57564,7 +58111,7 @@ The following table shows when the Caching Module invalidates cached data based 
 |---|---|
 |Create|`Entity:list:*` (`Product:list:*`)|
 |Update|`Entity:{id}`, `Entity:list:*` (`Product:prod_123`, `Product:list:*`)|
-|Delete|`Entity:list:*` (`Product:list:*`)|
+|Delete|`Entity:{id}`, `Entity:list:*` (`Product:prod_123`, `Product:list:*`)|
 |Restore (soft-delete reversal)|`Entity:{id}`, `Entity:list:*` (`Product:prod_123`, `Product:list:*`)|
 |Attach (link created)|`Entity:list:*` (`LinkProductVariantInventoryItem:list:*`)|
 |Detach (link removed)|`Entity:list:*` (`LinkProductVariantInventoryItem:list:*`)|
@@ -59340,6 +59887,24 @@ CACHE_REDIS_URL=redis://localhost:6379
 |`prefix`|A string to prefix all cache keys with. This is useful for namespacing your cache keys, especially when sharing a Redis instance with other applications or modules.|No prefix by default|
 |`compressionThreshold`|A number indicating the size threshold in bytes above which cached items will be compressed before being stored in Redis. This helps save memory when caching large items.|`1024` (1 KB)|
 |`redisOptions`|An object of [ioredis options](https://github.com/redis/ioredis/blob/main/lib/redis/RedisOptions.ts) to pass to the Redis client. Available since Medusa v2.18.0.||
+
+***
+
+## Cache Tags and TTL
+
+The Redis Caching Module Provider stores a tag index in Redis for every [cache tag](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/caching/concepts#cache-tags/index.html.md). The tag index is a set of the keys of all cache entries that use the tag. The provider uses it to find and remove the entries when the tag is invalidated.
+
+All entries that share a tag also share that tag's index. Every time you cache an entry, the provider resets the expiration of each of the entry's tag indexes to the entry's TTL plus 60 seconds.
+
+So, if you cache entries with different TTLs under the same tag, the most recently cached entry decides when the tag index expires. For example:
+
+1. You cache entry A with the `Product:list:*` tag and a TTL of one hour.
+2. You then cache entry B with the same tag and a TTL of one minute.
+3. The `Product:list:*` tag index expires after two minutes, while entry A remains cached for the rest of its hour.
+
+After the tag index expires, invalidating the `Product:list:*` tag no longer clears entry A, so the cache can serve stale data until entry A expires.
+
+To avoid this, use the same TTL for all cache entries that share a tag. If you need a shorter TTL for some data, cache it under different tags, or [clear](https://docs.medusajs.com/references/caching-service#clear/index.html.md) it by its key.
 
 ***
 
@@ -83658,7 +84223,6 @@ import CustomerModule from "@medusajs/medusa/customer"
 export default defineLink(
   {
     linkable: TierModule.linkable.tier,
-    filterable: ["id"],
   },
   {
     linkable: CustomerModule.linkable.customer,
@@ -83669,7 +84233,7 @@ export default defineLink(
 
 You define a link using the `defineLink` function from the Modules SDK. It accepts two parameters:
 
-1. An object indicating the first data model in the link. You pass the link configurations for the `Tier` data model from the Tier Module. You also specify the `id` property as filterable, allowing you to filter customers by their tier later using the [Index Module](https://docs.medusajs.com/docs/learn/fundamentals/query/index-module/index.html.md).
+1. An object indicating the first data model in the link. You pass the link configurations for the `Tier` data model from the Tier Module.
 2. An object indicating the second data model in the link. You pass the linkable configurations of the Customer Module's `Customer` data model. You set `isList` to `true` because a tier can have multiple customers.
 
 This link allows you to retrieve and manage customers associated with a tier, and vice versa.
@@ -85034,7 +85598,7 @@ export async function GET(
   const { id } = req.params
 
   // Query customers linked to this tier
-  const { data: customers, metadata } = await query.index({
+  const { data: customers, metadata } = await query.graph({
     entity: "customer",
     filters: {
       tier: {
@@ -85046,7 +85610,7 @@ export async function GET(
 
   res.json({
     customers,
-    count: metadata?.estimate_count || 0,
+    count: metadata?.count || 0,
     offset: metadata?.skip || 0,
     limit: metadata?.take || 15,
   })
@@ -85057,7 +85621,7 @@ You export a `GET` function, which exposes a `GET` API route at `/admin/tiers/:i
 
 In the route handler, you resolve Query from the Medusa container and use it to retrieve customers linked to the tier with the given ID.
 
-Notice that you use the `query.index` method. This method is similar to `query.graph` but allows you to filter by linked records using the [Index Module](https://docs.medusajs.com/docs/learn/fundamentals/query/index-module/index.html.md).
+Notice that you filter customers by the `tier` linked data model. Query's `graph` method [filters by linked data models](https://docs.medusajs.com/docs/learn/fundamentals/query#filter-by-linked-data-models-property/index.html.md) in the database, so it only retrieves the customers linked to the tier.
 
 You return the customers in the response.
 
@@ -85094,46 +85658,7 @@ You set the following configurations:
 - `isList`: Set to `true` to indicate that the API route returns a list of records.
 - `defaults`: An array of fields to return by default if the client doesn't specify any fields in the request.
 
-### c. Install Index Module
-
-The [Index Module](https://docs.medusajs.com/docs/learn/fundamentals/query/index-module/index.html.md) is a tool for performing high-performance queries across modules, such as filtering linked modules.
-
-The Index Module is currently experimental, so you need to install and configure it manually.
-
-To install the Index Module, run the following command in the `apps/backend` directory:
-
-```bash
-npm install @medusajs/index
-```
-
-Then, add the following to your Medusa application's configuration file:
-
-```ts title="medusa-config.ts"
-export default config({
-  modules: [
-    // ...
-    {
-      resolve: "@medusajs/index",
-    },
-  ],
-})
-```
-
-Next, run the migrations to create the necessary tables for the Index Module in your database:
-
-```bash
-npx medusa db:migrate
-```
-
-Lastly, start the Medusa application to ingest the data into the Index Module:
-
-```bash
-npm run dev
-```
-
-You can now use the Index Module to filter customers by their tier. You'll test out the API route when you customize the Medusa Admin dashboard in the next step.
-
-Refer to the [Index Module](https://docs.medusajs.com/docs/learn/fundamentals/query/index-module/index.html.md) documentation to learn more.
+You'll test out the API route when you customize the Medusa Admin dashboard in the next step.
 
 ***
 
@@ -169881,6 +170406,8 @@ return new WorkflowResponse({
 ```
 
 You use the `createProductsWorkflow` and `updateProductsWorkflow` to create and update the products returned from the transform function. Since both of these are workflows, you use the `runAsStep` method to run them as steps in the current workflow.
+
+When you pass `variants` to the `updateProductsWorkflow`, they replace the product's full variant list. Medusa deletes existing variants that aren't in the list, so make sure each product to update includes all the variants it should keep.
 
 Finally, a workflow must return a instance of `WorkflowResponse` passing it as a parameter the data to return, which in this case is the products fetched from Odoo.
 

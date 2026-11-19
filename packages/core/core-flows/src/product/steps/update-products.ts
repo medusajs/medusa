@@ -4,6 +4,8 @@ import type {
 } from "@medusajs/framework/types"
 import {
   arrayDifference,
+  isObject,
+  isPresent,
   MedusaError,
   Modules,
   getSelectsAndRelationsFromObjectArray,
@@ -30,6 +32,37 @@ export type UpdateProductsStepInput =
        */
       products: ProductTypes.UpsertProductDTO[]
     }
+
+// Keep only the fields the update sets, so unrelated references loaded with
+// the product (e.g. `type` next to `type_id`) don't override the restored values.
+// Metadata is merged on update, so keys the update added are cleared with "".
+function buildRestoreData(
+  product: ProductTypes.ProductDTO,
+  update: ProductTypes.UpdateProductDTO
+) {
+  const restoreData: Record<string, any> = {
+    id: product.id,
+    options: product.options,
+  }
+
+  for (const key of Object.keys(update)) {
+    if (key !== "options" && key in product) {
+      restoreData[key] = product[key]
+    }
+  }
+
+  if (isPresent(restoreData.metadata) && isObject(update.metadata)) {
+    const metadata = { ...restoreData.metadata }
+    for (const key of Object.keys(update.metadata)) {
+      if (!(key in metadata)) {
+        metadata[key] = ""
+      }
+    }
+    restoreData.metadata = metadata
+  }
+
+  return restoreData as ProductTypes.ProductDTO
+}
 
 export const updateProductsStepId = "update-products"
 /**
@@ -98,16 +131,23 @@ export const updateProductsStep = createStep(
         }
       }
 
+      const updateById = new Map(
+        data.products.map((product) => [product.id, product])
+      )
+
       const products = await service.upsertProducts(data.products)
       return new StepResponse(products, {
-        prevProducts,
+        prevProducts: prevProducts.map((product) =>
+          buildRestoreData(product, updateById.get(product.id) ?? {})
+        ),
         targetOptionIdsByProductId,
       })
     }
 
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray([
-      data.update,
-    ])
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray(
+      [data.update],
+      { objectFields: ["metadata"] }
+    )
 
     const prevProducts = await service.listProducts(data.selector, {
       select: selects,
@@ -123,7 +163,9 @@ export const updateProductsStep = createStep(
 
     const products = await service.updateProducts(data.selector, data.update)
     return new StepResponse(products, {
-      prevProducts,
+      prevProducts: prevProducts.map((product) =>
+        buildRestoreData(product, data.update)
+      ),
       targetOptionIdsByProductId,
     })
   },

@@ -50,7 +50,7 @@ export interface CreateUserDTO {
   /**
    * The RBAC roles to assign to the user, each optionally scoped.
    *
-   * @ignore
+   * @since 2.22.4
    */
   roles?: CreateActorRoleDTO[] | null
 }
@@ -88,7 +88,7 @@ export interface CreateInviteDTO {
    * The RBAC roles to assign to the user when the invite is accepted, each
    * optionally scoped.
    *
-   * @ignore
+   * @since 2.22.4
    */
   roles?: CreateActorRoleDTO[] | null
 }

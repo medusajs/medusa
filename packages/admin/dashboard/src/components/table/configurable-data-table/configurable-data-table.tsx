@@ -13,6 +13,7 @@ import { SaveViewDropdown } from "./save-view-dropdown"
 import { useTableConfiguration } from "../../../hooks/table/use-table-configuration"
 import { useConfigurableTableColumns } from "../../../hooks/table/columns/use-configurable-table-columns"
 import { expandDottedKeys, parseFilterParam } from "../../../hooks/table/query"
+import { useViewConfigurationPermissions } from "../../../hooks/use-resource-permissions"
 import {
   createActionsColumn,
   createSelectColumn,
@@ -51,6 +52,7 @@ export function ConfigurableDataTable<TData extends DataTableRowData>({
   actions,
 }: ConfigurableDataTableProps<TData>) {
   const { t } = useTranslation()
+  const { can: canManageSystemDefault } = useViewConfigurationPermissions()
   const [saveDialogOpen, setSaveDialogOpen] = useState(false)
   const [editingView, setEditingView] = useState<any>(null)
   const [rowSelection, setRowSelection] = useState<DataTableRowSelectionState>(
@@ -201,6 +203,10 @@ export function ConfigurableDataTable<TData extends DataTableRowData>({
     setEditingView(null)
   }
 
+  const canSaveAsDefault = canManageSystemDefault(
+    activeView?.is_system_default ? "update" : "create"
+  )
+
   // Filter bar content with save controls
   const filterBarContent = hasConfigurationChanged ? (
     <>
@@ -216,7 +222,7 @@ export function ConfigurableDataTable<TData extends DataTableRowData>({
         isDefaultView={activeView?.is_system_default || !activeView}
         currentViewId={activeView?.id}
         currentViewName={activeView?.name}
-        onSaveAsDefault={handleSaveAsDefault}
+        onSaveAsDefault={canSaveAsDefault ? handleSaveAsDefault : undefined}
         onUpdateExisting={handleUpdateExisting}
         onSaveAsNew={handleSaveAsNew}
       />

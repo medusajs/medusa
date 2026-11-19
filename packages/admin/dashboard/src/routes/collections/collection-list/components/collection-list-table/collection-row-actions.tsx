@@ -12,7 +12,6 @@ import {
   useProductCollectionPermissions,
   useCanOpenTranslations,
 } from "../../../../../hooks/use-resource-permissions"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
 export const CollectionRowActions = ({
   collection,
@@ -21,11 +20,10 @@ export const CollectionRowActions = ({
 }) => {
   const { t } = useTranslation()
   const prompt = usePrompt()
-  const isTranslationsEnabled = useFeatureFlag("translation")
   const { canUpdate, canDelete } = useProductCollectionPermissions()
   const canOpenTranslations = useCanOpenTranslations()
 
-  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
+  const canManageTranslations = canOpenTranslations
 
   const { mutateAsync } = useDeleteCollection(collection.id!)
 

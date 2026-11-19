@@ -206,7 +206,7 @@ export class RoutesSorter<T extends Route> {
 
       if (!route.methods && !route.method) {
         bucket = "global"
-      } else if (segment.startsWith("*")) {
+      } else if (segment.startsWith("*") || segment.startsWith("{*")) {
         bucket = "wildcard"
       } else if (segment.startsWith(":")) {
         bucket = "params"

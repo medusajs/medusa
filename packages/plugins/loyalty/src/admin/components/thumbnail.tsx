@@ -11,7 +11,7 @@ export const Thumbnail = ({ src, alt, size = "base" }: ThumbnailProps) => {
   return (
     <div
       className={clx(
-        "bg-ui-bg-component border-ui-border-base flex items-center justify-center overflow-hidden rounded border",
+        "bg-ui-bg-component border-ui-border-base flex items-center justify-center overflow-hidden rounded-sm border",
         {
           "h-8 w-6": size === "base",
           "h-5 w-4": size === "small",

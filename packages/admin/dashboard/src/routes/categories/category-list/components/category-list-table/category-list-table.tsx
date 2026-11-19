@@ -22,7 +22,6 @@ import {
   useProductCategoryPermissions,
   useCanOpenTranslations,
 } from "../../../../../hooks/use-resource-permissions"
-import { useFeatureFlag } from "../../../../../providers/feature-flag-provider"
 
 const PAGE_SIZE = 20
 
@@ -117,12 +116,11 @@ const CategoryRowActions = ({
   category: AdminProductCategoryResponse["product_category"]
 }) => {
   const { t } = useTranslation()
-  const isTranslationsEnabled = useFeatureFlag("translation")
   const { canUpdate, canDelete } = useProductCategoryPermissions()
   const canOpenTranslations = useCanOpenTranslations()
   const handleDelete = useDeleteProductCategoryAction(category)
 
-  const canManageTranslations = isTranslationsEnabled && canOpenTranslations
+  const canManageTranslations = canOpenTranslations
 
   const groups: ActionGroup[] = []
 

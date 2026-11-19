@@ -42,7 +42,7 @@ export const CountrySelect = forwardRef<
           defaultValue={defaultValue ? defaultValue.toLowerCase() : undefined}
           disabled={disabled}
           className={clx(
-            "bg-ui-bg-field shadow-buttons-neutral transition-fg txt-compact-small flex w-full select-none appearance-none items-center justify-between rounded-md px-2 py-1.5 outline-none",
+            "bg-ui-bg-field shadow-buttons-neutral transition-fg txt-compact-small flex w-full select-none appearance-none items-center justify-between rounded-md px-2 py-1.5 outline-hidden",
             "placeholder:text-ui-fg-muted text-ui-fg-base",
             "hover:bg-ui-bg-field-hover",
             "focus-visible:shadow-borders-interactive-with-active data-[state=open]:!shadow-borders-interactive-with-active",

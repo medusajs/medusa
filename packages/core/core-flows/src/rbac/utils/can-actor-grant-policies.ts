@@ -2,7 +2,7 @@ import { getActorPermissions, isGranted } from "@medusajs/framework"
 import { MedusaContainer, RbacScope } from "@medusajs/framework/types"
 
 /**
- * @ignore
+ * @since 2.22.4
  */
 export type CanActorGrantPoliciesInput = {
   container: MedusaContainer

@@ -127,7 +127,7 @@ const Header = () => {
         <DropdownMenu.Trigger
           disabled={!isLoaded}
           className={clx(
-            "grid w-full grid-cols-[24px_1fr_15px] items-center gap-x-3 rounded-md bg-ui-bg-subtle p-0.5 pe-2 outline-none transition-fg",
+            "grid w-full grid-cols-[24px_1fr_15px] items-center gap-x-3 rounded-md bg-ui-bg-subtle p-0.5 pe-2 outline-hidden transition-fg",
             "hover:bg-ui-bg-subtle-hover",
             "data-[state=open]:bg-ui-bg-subtle-hover",
             "focus-visible:shadow-borders-focus"
@@ -155,7 +155,7 @@ const Header = () => {
           <EllipsisHorizontal className="text-ui-fg-muted" />
         </DropdownMenu.Trigger>
         {isLoaded && (
-          <DropdownMenu.Content className="w-[var(--radix-dropdown-menu-trigger-width)] min-w-0">
+          <DropdownMenu.Content className="w-(--radix-dropdown-menu-trigger-width) min-w-0">
             <div className="flex items-center gap-x-3 px-2 py-1">
               <Avatar variant="squared" size="small" fallback={fallback} />
               <div className="flex flex-col overflow-hidden">
@@ -332,7 +332,7 @@ const Searchbar = () => {
       <button
         onClick={toggleSearch}
         className={clx(
-          "flex w-full items-center gap-x-2.5 rounded-md bg-ui-bg-subtle px-2 py-1 text-ui-fg-subtle outline-none",
+          "flex w-full items-center gap-x-2.5 rounded-md bg-ui-bg-subtle px-2 py-1 text-ui-fg-subtle outline-hidden",
           "hover:bg-ui-bg-subtle-hover",
           "focus-visible:shadow-borders-focus"
         )}
@@ -423,9 +423,13 @@ const SidebarRoutes = () => {
 const UtilitySection = () => {
   const location = useLocation()
   const { t } = useTranslation()
+  const { getWidgets } = useExtension()
 
   return (
-    <div className="flex flex-col gap-y-0.5 px-3 py-3">
+    <div className="flex flex-col gap-y-2 px-3 py-3">
+      {getWidgets("sidebar.settings.before").map((Component, i) => {
+        return <Component key={i} />
+      })}
       <NavItem
         label={t("app.nav.settings.header")}
         to="/settings"

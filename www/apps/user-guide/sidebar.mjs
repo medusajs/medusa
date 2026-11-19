@@ -437,6 +437,11 @@ export const sidebar = [
             title: "Search Indexes",
             path: "/settings/search",
           },
+          {
+            type: "link",
+            title: "Announcements",
+            path: "/settings/announcements",
+          },
         ],
       },
     ],

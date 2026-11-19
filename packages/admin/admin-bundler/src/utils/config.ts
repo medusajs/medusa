@@ -1,7 +1,7 @@
 import { VIRTUAL_MODULES } from "@medusajs/admin-shared"
 import path from "path"
 import type { HmrOptions, InlineConfig } from "vite"
-import { injectTailwindCSS } from "../plugins/inject-tailwindcss"
+import { resolvePlugins } from "../plugins/resolve-plugins"
 import { writeStaticFiles } from "../plugins/write-static-files"
 import { BundlerOptions } from "../types"
 
@@ -11,6 +11,7 @@ export async function getViteConfig(
   const { searchForWorkspaceRoot, mergeConfig } = await import("vite")
   const { default: react } = await import("@vitejs/plugin-react")
   const { default: medusa } = await import("@medusajs/admin-vite-plugin")
+  const { default: tailwindcss } = await import("@tailwindcss/vite")
 
   const getPort = await import("get-port")
   const hmrPort = process.env.HMR_PORT
@@ -33,15 +34,16 @@ export async function getViteConfig(
     resolve: {
       dedupe: ["react", "react-dom"],
     },
+    css: {
+      // An inline config stops Vite from loading a postcss.config.* found above the project root.
+      postcss: { plugins: [] },
+    },
     build: {
       emptyOutDir: true,
       outDir: path.resolve(process.cwd(), options.outDir),
       /**
-       * Pinned rather than left to Vite's default. Vite 7 changed the default
-       * from `modules` (Chrome 87 / Firefox 78 / Safari 14 / Edge 88) to
-       * `baseline-widely-available` (Chrome 107 / Firefox 104 / Safari 16 /
-       * Edge 107). Setting it explicitly keeps the admin's supported browser
-       * matrix stable across future Vite majors, which move this default.
+       * Vite moves the browsers behind this alias with each major. In Vite 8
+       * it's Chrome 111 / Edge 111 / Firefox 114 / Safari 16.4.
        */
       target: "baseline-widely-available",
     },
@@ -82,10 +84,10 @@ export async function getViteConfig(
     plugins: [
       writeStaticFiles({
         plugins: options.plugins,
-      }),
-      injectTailwindCSS({
-        entry: root,
         sources: options.sources,
+      }),
+      tailwindcss(),
+      resolvePlugins({
         plugins: options.plugins,
       }),
       react(),

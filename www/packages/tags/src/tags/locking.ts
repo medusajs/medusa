@@ -248,6 +248,10 @@ export const locking = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/processPaymentWorkflow"
   },
   {
+    "title": "unassignRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/unassignRolesWorkflow"
+  },
+  {
     "title": "createReservationsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createReservationsStep"
   },
@@ -278,6 +282,14 @@ export const locking = [
   {
     "title": "updateReservationsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateReservationsWorkflow"
+  },
+  {
+    "title": "deleteUsersWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteUsersWorkflow"
+  },
+  {
+    "title": "removeUserAccountWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeUserAccountWorkflow"
   },
   {
     "title": "Use Locking Module",

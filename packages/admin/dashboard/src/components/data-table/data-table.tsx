@@ -207,6 +207,7 @@ export const DataTable = <TData extends DataTableRowData>({
 
   const handleSearchChange = (value: string) => {
     setSearchParams((prev) => {
+      prev.delete(getQueryParamKey("offset", prefix))
       if (value) {
         prev.set(getQueryParamKey("q", prefix), value)
       } else {
@@ -244,6 +245,7 @@ export const DataTable = <TData extends DataTableRowData>({
 
   const handleFilteringChange = (value: DataTableFilteringState) => {
     setSearchParams((prev) => {
+      prev.delete(getQueryParamKey("offset", prefix))
       // Remove filters that are no longer in the state
       Array.from(prev.keys()).forEach((key) => {
         if (prefixedFilterIds.includes(key)) {
@@ -285,6 +287,7 @@ export const DataTable = <TData extends DataTableRowData>({
 
   const handleSortingChange = (value: DataTableSortingState) => {
     setSearchParams((prev) => {
+      prev.delete(getQueryParamKey("offset", prefix))
       if (value) {
         const valueToStore = transformSortingState(value)
 
@@ -328,6 +331,10 @@ export const DataTable = <TData extends DataTableRowData>({
   )
 
   const instance = useDataTable({
+    // Filter, sort, and search handlers reset the page themselves. The built-in
+    // reset is a second setSearchParams call in the same tick, and both build
+    // on the same render's params, so one write overwrites the other.
+    autoResetPageIndex: false,
     data,
     columns,
     filters,
@@ -382,7 +389,7 @@ export const DataTable = <TData extends DataTableRowData>({
     <UiDataTable
       instance={instance}
       className={
-        layout === "fill" ? "h-full [&_tr]:last-of-type:!border-b" : undefined
+        layout === "fill" ? "h-full [&_tr]:last-of-type:border-b!" : undefined
       }
     >
       <UiDataTable.Toolbar

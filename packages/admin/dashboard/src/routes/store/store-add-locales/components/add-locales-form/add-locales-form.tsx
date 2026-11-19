@@ -15,7 +15,7 @@ import {
 import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo, useState } from "react"
 import { useDataTable } from "../../../../../hooks/use-data-table"
-import { Button, Checkbox, Hint, toast, Tooltip } from "@medusajs/ui"
+import { Button, Checkbox, Hint, toast, usePrompt } from "@medusajs/ui"
 import { RouteFocusModal } from "../../../../../components/modals/route-focus-modal"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { _DataTable } from "../../../../../components/table/data-table"
@@ -26,7 +26,7 @@ type AddLocalesFormProps = {
 }
 
 const AddLocalesSchema = z.object({
-  locales: z.array(z.string()).min(1),
+  locales: z.array(z.string()),
 })
 
 const PAGE_SIZE = 50
@@ -35,6 +35,10 @@ const PREFIX = "al"
 export const AddLocalesForm = ({ store }: AddLocalesFormProps) => {
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
+  const prompt = usePrompt()
+
+  const currentLocales =
+    store.supported_locales?.map((l) => l.locale_code) ?? []
 
   const { raw, searchParams } = useLocalesTableQuery({
     pageSize: PAGE_SIZE,
@@ -53,12 +57,14 @@ export const AddLocalesForm = ({ store }: AddLocalesFormProps) => {
 
   const form = useForm<z.infer<typeof AddLocalesSchema>>({
     defaultValues: {
-      locales: [],
+      locales: currentLocales,
     },
     resolver: zodResolver(AddLocalesSchema),
   })
 
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>(() =>
+    Object.fromEntries(currentLocales.map((code) => [code, true]))
+  )
 
   const { setValue } = form
 
@@ -74,9 +80,6 @@ export const AddLocalesForm = ({ store }: AddLocalesFormProps) => {
     setRowSelection(updated)
   }
 
-  const preSelectedRows =
-    store.supported_locales?.map((l) => l.locale_code) ?? []
-
   const columns = useColumns()
 
   const { table } = useDataTable({
@@ -84,7 +87,7 @@ export const AddLocalesForm = ({ store }: AddLocalesFormProps) => {
     columns,
     count: count,
     getRowId: (row) => row.code,
-    enableRowSelection: (row) => !preSelectedRows.includes(row.original.code),
+    enableRowSelection: true,
     enablePagination: true,
     pageSize: PAGE_SIZE,
     prefix: PREFIX,
@@ -97,13 +100,26 @@ export const AddLocalesForm = ({ store }: AddLocalesFormProps) => {
   const { mutateAsync, isPending } = useUpdateStore(store.id)
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    const locales = Array.from(
-      new Set([...data.locales, ...preSelectedRows])
-    ) as string[]
+    const removedCount = currentLocales.filter(
+      (code) => !data.locales.includes(code)
+    ).length
+
+    if (removedCount) {
+      const confirmed = await prompt({
+        title: t("general.areYouSure"),
+        description: t("store.removeLocaleWarning", { count: removedCount }),
+        confirmText: t("actions.save"),
+        cancelText: t("actions.cancel"),
+      })
+
+      if (!confirmed) {
+        return
+      }
+    }
 
     await mutateAsync(
       {
-        supported_locales: locales.map((l) => ({
+        supported_locales: data.locales.map((l) => ({
           locale_code: l,
         })),
       },
@@ -181,7 +197,6 @@ const columnHelper = createColumnHelper<
 >()
 
 const useColumns = () => {
-  const { t } = useTranslation()
   const base = useLocalesTableColumns()
 
   return useMemo(
@@ -203,34 +218,18 @@ const useColumns = () => {
             />
           )
         },
-        cell: ({ row }) => {
-          const isPreSelected = !row.getCanSelect()
-          const isSelected = row.getIsSelected() || isPreSelected
-
-          const Component = (
-            <Checkbox
-              checked={isSelected}
-              disabled={isPreSelected}
-              onCheckedChange={(value) => row.toggleSelected(!!value)}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            />
-          )
-
-          if (isPreSelected) {
-            return (
-              <Tooltip content={t("store.localeAlreadyAdded")} side="right">
-                {Component}
-              </Tooltip>
-            )
-          }
-
-          return Component
-        },
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            onClick={(e) => {
+              e.stopPropagation()
+            }}
+          />
+        ),
       }),
       ...base,
     ],
-    [t, base]
+    [base]
   )
 }

@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/test-utils",
-  "version": "2.22.3",
+  "version": "2.22.7",
   "description": "Test utils for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -22,6 +22,7 @@
   "files": [
     "dist",
     "AGENTS.md",
+    "jest-preset.js",
     "!dist/**/__tests__",
     "!dist/**/__mocks__",
     "!dist/**/__fixtures__"
@@ -32,19 +33,19 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/core-flows": "2.22.3",
-    "@medusajs/framework": "2.22.3"
+    "@medusajs/core-flows": "2.22.7",
+    "@medusajs/framework": "2.22.7"
   },
   "dependencies": {
-    "@types/express": "^4.17.21",
+    "@types/express": "^5.0.6",
     "axios": "^1.20.0",
-    "express": "^4.21.0",
+    "express": "^5.3.0",
     "ulid": "^3.0.2"
   },
   "peerDependencies": {
-    "@medusajs/core-flows": "2.22.3",
-    "@medusajs/framework": "2.22.3",
-    "@medusajs/medusa": "2.22.3"
+    "@medusajs/core-flows": "2.22.7",
+    "@medusajs/framework": "2.22.7",
+    "@medusajs/medusa": "2.22.7"
   },
   "peerDependenciesMeta": {
     "@medusajs/core-flows": {

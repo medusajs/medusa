@@ -27,7 +27,7 @@ medusaIntegrationTestRunner({
       const email = "test@test.com"
 
       it("should return a token on successful login", async () => {
-        const passwordHash = (
+        const passwordHash = Buffer.from(
           await Scrypt.kdf(password, { logN: 15, r: 8, p: 1 })
         ).toString("base64")
         const authService: IAuthModuleService = appContainer.resolve(
@@ -62,7 +62,7 @@ medusaIntegrationTestRunner({
       })
 
       it("should throw an error upon incorrect password", async () => {
-        const passwordHash = (
+        const passwordHash = Buffer.from(
           await Scrypt.kdf(password, { logN: 15, r: 8, p: 1 })
         ).toString("base64")
         const authService: IAuthModuleService = appContainer.resolve(
@@ -96,7 +96,7 @@ medusaIntegrationTestRunner({
       })
 
       it.skip("should throw an error upon logging in with a non existing auth user", async () => {
-        const passwordHash = (
+        const passwordHash = Buffer.from(
           await Scrypt.kdf(password, { logN: 15, r: 8, p: 1 })
         ).toString("base64")
 

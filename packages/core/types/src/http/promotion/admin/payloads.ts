@@ -1,5 +1,6 @@
 import {
   ApplicationMethodAllocationValues,
+  ApplicationMethodTargetSelectionStrategyValues,
   ApplicationMethodTargetTypeValues,
   ApplicationMethodTypeValues,
   PromotionRuleOperatorValues,
@@ -94,6 +95,12 @@ export interface AdminCreateApplicationMethod {
    * if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is 2.
    */
   buy_rules_min_quantity?: number | null
+  /**
+   * How a `buyget` promotion picks the items it discounts. With
+   * `most_expensive_first`, it discounts the most expensive target left over.
+   * With `cheapest_first`, it discounts the cheapest eligible items in the cart.
+   */
+  target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues
 }
 
 export interface AdminUpdateApplicationMethod {
@@ -139,6 +146,12 @@ export interface AdminUpdateApplicationMethod {
    * if the promotion is a "Buy 2 shirts get 1 free", the value of this attribute is 2.
    */
   buy_rules_min_quantity?: number | null
+  /**
+   * How a `buyget` promotion picks the items it discounts. With
+   * `most_expensive_first`, it discounts the most expensive target left over.
+   * With `cheapest_first`, it discounts the cheapest eligible items in the cart.
+   */
+  target_selection_strategy?: ApplicationMethodTargetSelectionStrategyValues
 }
 
 export interface AdminCreatePromotion {

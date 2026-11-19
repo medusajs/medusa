@@ -150,3 +150,26 @@ Medusa skips the check with the license service, and logs nothing about the lice
 
 - `MEDUSA_LICENSE_KEY` isn't set, or the local check couldn't verify it.
 - The license service reports that the license is active.
+
+---
+
+## Frequently Asked Questions
+
+### What happens when the license expires?
+
+When your license expires, Medusa removes the enterprise entitlements from your organization, and the two license checks behave as follows:
+
+- The local check keeps passing, since it only confirms that Medusa signed the key.
+- The check with the license service reports that the license was revoked, so the application logs [the license key no longer entitles the instance](#the-license-key-no-longer-entitles-the-instance) error and exits.
+
+So, your organization doesn't keep access to the enterprise features on its current Medusa version. To restore access, renew the license.
+
+### Can I disable the check with the license service?
+
+No, you can't disable the check with the license service or replace it with an offline check. The check also runs in Cloud deployments.
+
+The request to the license service only includes the license key.
+
+### Can I use the same license key across multiple backends?
+
+Yes, Medusa issues license keys per organization, not per instance. So, you can use the same license key across multiple self-hosted Medusa backends of your organization.

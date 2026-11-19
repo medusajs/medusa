@@ -78,7 +78,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
           max={max}
           step={step}
           className={clx(
-            "flex-1 px-2 py-1 bg-transparent txt-compact-small text-ui-fg-base outline-none [appearance:textfield]",
+            "flex-1 px-2 py-1 bg-transparent txt-compact-small text-ui-fg-base outline-hidden [appearance:textfield]",
             "[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none",
             "placeholder:text-ui-fg-muted"
           )}
@@ -86,7 +86,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         />
         <button
           className={clx(
-            "flex items-center justify-center outline-none transition-fg",
+            "flex items-center justify-center outline-hidden transition-fg",
             "disabled:cursor-not-allowed disabled:text-ui-fg-muted",
             "focus:bg-ui-bg-field-component-hover",
             "hover:bg-ui-bg-field-component-hover",
@@ -104,7 +104,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
         </button>
         <button
           className={clx(
-            "flex items-center justify-center outline-none transition-fg",
+            "flex items-center justify-center outline-hidden transition-fg",
             "disabled:cursor-not-allowed disabled:text-ui-fg-muted",
             "focus:bg-ui-bg-field-hover",
             "hover:bg-ui-bg-field-hover",

@@ -19,7 +19,7 @@ type UseDataGridKeydownEventOptions<
   TData extends DataTableRowData,
   TFieldValues extends FieldValues,
 > = {
-  containerRef: React.RefObject<HTMLDivElement>
+  containerRef: React.RefObject<HTMLDivElement | null>
   matrix: DataGridMatrix<TData, TFieldValues>
   anchor: DataGridCoordinates | null
   rangeEnd: DataGridCoordinates | null
@@ -654,7 +654,7 @@ export const useDataGridKeydownEvent = <
   }
 }
 
-function getFocusableElements(ref: React.RefObject<HTMLDivElement>) {
+function getFocusableElements(ref: React.RefObject<HTMLDivElement | null>) {
   const focusableElements = Array.from(
     document.querySelectorAll<HTMLElement>(
       "[tabindex], a, button, input, select, textarea"

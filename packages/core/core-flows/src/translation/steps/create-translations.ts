@@ -15,7 +15,6 @@ export const createTranslationsStepId = "create-translations"
  * This step creates one or more translations.
  * 
  * @since 2.12.3
- * @featureFlag translation
  *
  * @example
  * const data = createTranslationsStep([

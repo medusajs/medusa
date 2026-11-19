@@ -47,7 +47,7 @@ export const QuantityInput = forwardRef<
         "hover:bg-ui-bg-field-hover",
         "focus-within:shadow-borders-interactive-with-active",
         size === "small" ? "h-7" : "h-8",
-        isInvalid && "!shadow-borders-error",
+        isInvalid && "shadow-borders-error!",
         className
       )}
     >
@@ -56,7 +56,7 @@ export const QuantityInput = forwardRef<
         type="number"
         className={clx(
           "txt-compact-small text-ui-fg-base placeholder-ui-fg-muted",
-          "size-full min-w-0 flex-1 appearance-none bg-transparent px-2 outline-none",
+          "size-full min-w-0 flex-1 appearance-none bg-transparent px-2 outline-hidden",
           "disabled:cursor-not-allowed disabled:text-ui-fg-disabled",
           size === "small" ? "py-1" : "py-1.5"
         )}

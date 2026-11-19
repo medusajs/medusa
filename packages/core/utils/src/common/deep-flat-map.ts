@@ -75,6 +75,13 @@ export function deepFlatMap(
 
     if (remainingPath.length === 0) {
       if (Array.isArray(element[currentKey])) {
+        // An empty leaf still describes a valid branch, so the callback runs
+        // with the context gathered so far. Its return value is not a result.
+        if (element[currentKey].length === 0) {
+          callback({ ...context })
+          continue
+        }
+
         element[currentKey].forEach((item) => {
           results.push(callback({ ...context, [lastKey]: item }))
         })

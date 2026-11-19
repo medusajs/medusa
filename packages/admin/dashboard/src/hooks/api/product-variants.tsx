@@ -46,7 +46,6 @@ export const useInfiniteVariants = (
       HttpTypes.AdminProductVariantListResponse,
       FetchError,
       InfiniteData<HttpTypes.AdminProductVariantListResponse, number>,
-      HttpTypes.AdminProductVariantListResponse,
       QueryKey,
       number
     >,

@@ -23,7 +23,6 @@ export const updateTranslationsWorkflowId = "update-translations"
  * to update translations in your custom flows.
  *
  * @since 2.12.3
- * @featureFlag translation
  *
  * @example
  * To update translations by their IDs:

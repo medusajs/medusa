@@ -250,7 +250,7 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
                   <div
                     className={clx(
                       "grid gap-1.5 rounded-xl bg-ui-bg-component py-1.5 shadow-elevation-card-rest transition-fg",
-                      "aria-[invalid='true']:shadow-borders-error"
+                      "aria-invalid:shadow-borders-error"
                     )}
                     role="application"
                     ref={field.ref}
@@ -268,7 +268,7 @@ export const PriceListDetailsForm = ({ form }: PriceListDetailsFormProps) => {
                         <StackedFocusModal.Trigger asChild>
                           <button
                             type="button"
-                            className="txt-compact-small flex flex-1 items-center gap-x-2 rounded-md bg-ui-bg-field-component px-2 py-1.5 text-ui-fg-muted shadow-borders-base outline-none transition-fg hover:bg-ui-bg-field-component-hover focus-visible:shadow-borders-interactive-with-active"
+                            className="txt-compact-small flex flex-1 items-center gap-x-2 rounded-md bg-ui-bg-field-component px-2 py-1.5 text-ui-fg-muted shadow-borders-base outline-hidden transition-fg hover:bg-ui-bg-field-component-hover focus-visible:shadow-borders-interactive-with-active"
                           >
                             <MagnifyingGlass />
                             {t(

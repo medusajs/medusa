@@ -28,7 +28,6 @@ export const createTranslationsWorkflowId = "create-translations"
  * to create translations in your custom flows.
  *
  * @since 2.12.3
- * @featureFlag translation
  *
  * @example
  * const { result } = await createTranslationsWorkflow(container)

@@ -36,7 +36,6 @@ export type BatchTranslationsWorkflowInput = {
  * to create, update, and delete translations in your custom flows.
  * 
  * @since 2.12.3
- * @featureFlag translation
  *
  * @example
  * const { result } = await batchTranslationsWorkflow(container)
