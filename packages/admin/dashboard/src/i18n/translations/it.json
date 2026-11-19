@@ -3693,6 +3693,10 @@
     "domain": "Etichette proprietà",
     "title": "Etichette proprietà",
     "subtitle": "Gestisci etichette di proprietà personalizzate per le tabelle configurabili delle tue entità.",
+    "editTitle": "Modifica Etichette di Proprietà",
+    "editDescription": "Personalizza il modo in cui i nomi delle proprietà vengono visualizzati per {{entity}}",
+    "customLabel": "Etichetta Personalizzata",
+    "updateSuccess": "Etichette di proprietà aggiornate con successo",
     "fields": {
       "module": "Modulo",
       "model": "Modello",
@@ -3740,6 +3744,9 @@
   "fields": {
     "actions": "Azioni",
     "amount": "Importo",
+    "yes": "Sì",
+    "no": "No",
+    "field": "Campo",
     "reference": "Riferimento",
     "reference_id": "ID riferimento",
     "refundAmount": "Importo rimborso",

@@ -3374,6 +3374,9 @@
   },
   "fields": {
     "amount": "Miktar",
+    "yes": "Evet",
+    "no": "Hayır",
+    "field": "Alan",
     "reference": "Referans",
     "reference_id": "Referans Kimliği",
     "refundAmount": "İade miktarı",
@@ -3943,6 +3946,10 @@
     "domain": "Özellik Etiketleri",
     "title": "Özellik Etiketleri",
     "subtitle": "Varlıklarınızın yapılandırılabilir tabloları için özel özellik etiketlerini yönetin.",
+    "editTitle": "Özellik Etiketlerini Düzenle",
+    "editDescription": "{{entity}} için özellik adlarının nasıl görüntüleneceğini özelleştirin",
+    "customLabel": "Özel Etiket",
+    "updateSuccess": "Özellik etiketleri başarıyla güncellendi",
     "fields": {
       "module": "Modül",
       "model": "Model",
