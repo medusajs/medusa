@@ -39480,6 +39480,8 @@ The following table explains how each cart operation affects the cart's tax line
 
 To force Medusa to recalculate a cart's tax lines, even when `automatic_taxes` is disabled, send a request to the [Calculate Cart Taxes API route](undefined/api/store/carts/calculate-taxes). This also triggers a fresh calculation from your third-party tax provider, if you use one.
 
+Since Medusa v2.23.0, the Calculate Cart Taxes API route also refreshes the cart's payment collection, so its amount matches the cart's new total. If you run the `updateTaxLinesWorkflow` in your customizations, pass the `force_refresh_payment_collection: true` input to refresh the payment collection after updating the tax lines.
+
 ***
 
 ## Retrieve Tax Lines
