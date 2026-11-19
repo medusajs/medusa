@@ -127,7 +127,7 @@ export const generatedEditDates = {
   "app/learn/fundamentals/api-routes/localization/page.mdx": "2026-08-21T06:05:37.195Z",
   "app/learn/codemods/replace-zod-imports/page.mdx": "2026-07-09T09:38:19.065Z",
   "app/learn/configurations/pnpm/page.mdx": "2026-06-16T11:01:54.704Z",
-  "app/learn/fundamentals/events-and-subscribers/event-priority/page.mdx": "2026-01-20T08:32:57.574Z",
+  "app/learn/fundamentals/events-and-subscribers/event-priority/page.mdx": "2026-11-19T13:08:34.651Z",
   "app/learn/fundamentals/data-models/indexes/page.mdx": "2025-04-22T11:23:04.671Z",
   "app/learn/introduction/build-with-llms-ai/agentic-skills/page.mdx": "2026-04-29T13:34:27.727Z",
   "app/learn/introduction/build-with-llms-ai/ai-friendly-docs/page.mdx": "2026-04-29T13:21:17.313Z",
