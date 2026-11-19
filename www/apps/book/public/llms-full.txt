@@ -42386,6 +42386,8 @@ const { data: carts } = useQueryGraphStep({
 // carts[0].gift_cards
 ```
 
+The Store API routes for carts and orders don't accept `*gift_cards` in the `fields` query parameter, and they don't return the gift card's `reference` and `reference_id` properties, which hold the purchasing order's ID. Instead, request individual gift card fields, such as `+gift_cards.code` and `+gift_cards.value`.
+
 ### Manage with Link
 
 To manage the gift cards of a cart, use [Link](undefined/docs/learn/fundamentals/module-links/link):

@@ -518,5 +518,6 @@ export const generatedEditDates = {
   "app/lint/rules/scheduled-job-schedule-valid-cron/page.mdx": "2026-11-16T12:04:58.670Z",
   "app/lint/rules/subscriber-config-export-required/page.mdx": "2026-11-16T12:05:02.918Z",
   "app/lint/rules/subscriber-default-export-must-be-async/page.mdx": "2026-11-16T12:05:04.369Z",
-  "app/lint/rules/subscriber-default-export-required/page.mdx": "2026-11-16T12:05:01.520Z"
+  "app/lint/rules/subscriber-default-export-required/page.mdx": "2026-11-16T12:05:01.520Z",
+  "app/commerce-modules/loyalty/links-to-other-modules/page.mdx": "2026-11-19T13:19:27.266Z"
 }
