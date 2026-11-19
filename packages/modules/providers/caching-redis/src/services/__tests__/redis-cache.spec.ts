@@ -81,6 +81,21 @@ class FakeRedisClient {
     }
   )
 
+  public readonly defineCommand = jest.fn()
+
+  // Mirrors PRUNE_EXPIRED_TAG_MEMBERS_SCRIPT
+  public readonly pruneExpiredTagMembers = jest.fn(
+    async (_numKeys: number, tagKey: string, ...keyNames: string[]) => {
+      return keyNames.filter((keyName) => {
+        const isLive = this.hashes.has(keyName)
+        if (!isLive) {
+          this.sremSync(tagKey, keyName)
+        }
+        return isLive
+      })
+    }
+  )
+
   setHash(key: string, fields: Record<string, RedisHashValue>) {
     this.hashes.set(key, new Map(Object.entries(fields)))
   }

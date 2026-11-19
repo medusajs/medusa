@@ -43,11 +43,13 @@ module.exports = defineConfig({
 - `src/services/redis-cache.ts`: `RedisCachingProvider`, `static identifier = "cache-redis"` (not `caching-redis`). Plain class implementing the `ICachingProviderService` shape: `get({ key?, tags? })`, `set({ key, data, ttl?, tags?, options? })`, `clear({ key?, tags?, options? })`, `flush()`.
 - `src/loaders/connection.ts` creates the ioredis client and registers `redisClient`, `prefix`, `logger` in the provider container; `src/loaders/hash.ts` registers an `xxhash-wasm` `hasher` for tag keys.
 - Each entry is a Redis hash (`data`, optional `options`) at `{prefix}{key}`, plus a forward index `{prefix}tag:{hash}` and reverse index `{prefix}tags:{key}` (both expire `ttl + 60` s).
+- Redis expiry leaves an entry's key in its forward tag sets. `clear({ tags })` removes those dead members per SSCAN batch with a Lua script (atomic, so a concurrent `set()` is never unindexed) before clearing the live ones.
 - Stored values carry a 1-byte header: `0` raw, `1` gzip (used when the payload exceeds `compressionThreshold`).
 
 ## Development
 
 - `yarn build` (also runs `resolve:aliases` for `@types` path alias), `yarn test` (unit tests in `src/**/__tests__`, Redis is mocked).
+- `yarn test:integration` also runs `integration-tests/__tests__`, which need a real Redis at `localhost:6379`.
 
 ## Gotchas
 
