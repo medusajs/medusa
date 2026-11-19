@@ -1,6 +1,6 @@
 import { Logger } from "@medusajs/framework/types"
 import { RedisCacheModuleOptions } from "@types"
-import { Redis } from "ioredis"
+import { ChainableCommander, Redis } from "ioredis"
 import { createGunzip, createGzip } from "zlib"
 
 const CLEAR_BATCH_SIZE = 1000
@@ -47,12 +47,19 @@ for i = 1, #KEYS do
 end
 `
 
-// The script takes a variable number of keys, so the key count is the first argument
+// Both scripts take a variable number of keys, so the key count is the first argument
 type TagSetCommands = {
   pruneExpiredTagMembers: (
     numberOfKeys: number,
     ...keysAndArgs: (string | number)[]
   ) => Promise<string[]>
+}
+
+type TagSetPipelineCommands = {
+  indexEntryInTagSets: (
+    numberOfKeys: number,
+    ...keysAndArgs: (string | number)[]
+  ) => unknown
 }
 
 export class RedisCachingProvider {
@@ -80,10 +87,13 @@ export class RedisCachingProvider {
     options?: RedisCacheModuleOptions
   ) {
     this.redisClient = redisClient as Redis & TagSetCommands
-    // Registered once so ioredis runs it through EVALSHA instead of sending
+    // Registered once so ioredis runs them through EVALSHA instead of sending
     // the script body on every call
     this.redisClient.defineCommand("pruneExpiredTagMembers", {
       lua: PRUNE_EXPIRED_TAG_MEMBERS_SCRIPT,
+    })
+    this.redisClient.defineCommand("indexEntryInTagSets", {
+      lua: INDEX_ENTRY_IN_TAG_SETS_SCRIPT,
     })
     this.keyNamePrefix = prefix
     this.defaultTTL = options?.ttl ?? 3600 // 1 hour default
@@ -377,7 +387,8 @@ export class RedisCachingProvider {
       const finalData = await this.#compressData(serializedData)
       const hashedTags = tags?.map((tag) => this.hasher(tag)) ?? []
 
-      const setPipeline = this.redisClient.pipeline()
+      const setPipeline = this.redisClient.pipeline() as ChainableCommander &
+        TagSetPipelineCommands
 
       // Main data with conditional operations
       setPipeline.hset(keyName, "data", finalData)
@@ -400,8 +411,7 @@ export class RedisCachingProvider {
         const tagKeys = hashedTags.map((hashedTag) =>
           this.#getTagKey(hashedTag, { isHashed: true })
         )
-        setPipeline.eval(
-          INDEX_ENTRY_IN_TAG_SETS_SCRIPT,
+        setPipeline.indexEntryInTagSets(
           tagKeys.length,
           ...tagKeys,
           keyName,
