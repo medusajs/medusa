@@ -20,6 +20,9 @@ www/apps/<project>/app/<path>/page.mdx  →  <prefix>/<path>
 | `www/apps/ui` | `/ui` | `www/apps/ui/app/colors/overview/page.mdx` → `/ui/colors/overview` |
 | `www/apps/user-guide` | `/user-guide` | `www/apps/user-guide/app/customers/page.mdx` → `/user-guide/customers` |
 
+- `www/apps/cloud` is the docs' **Get Started** section: besides the Cloud platform, it holds onboarding, local setup (`/cloud/setup-locally`, formerly `/learn/installation`), and the AI Toolkit (`/cloud/ai-toolkit`, formerly `/learn/introduction/build-with-llms-ai`). Link the current paths, not the old ones.
+- `www/apps/user-guide` is the **Merchant Guide** (formerly User Guide). Call it the Merchant Guide in comments.
+
 ## API Reference
 
 The API reference has only two pages: `/api/store` and `/api/admin`.

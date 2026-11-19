@@ -12,7 +12,7 @@ This applies especially to:
 - CLI options present in the source that are missing from the reference table in docs
 - Workflow steps or service methods referenced in code but not described on any doc page
 - Config options accepted by `medusa-config` but absent from the configurations docs
-- Admin UI screens or flows that exist but have no user-guide page
+- Admin UI screens or flows that exist but have no Merchant Guide (`user-guide`) page
 
 ---
 
@@ -26,7 +26,7 @@ This applies especially to:
 - A new workflow or step is added to `core-flows` (document in `resources`, consider `book` if it relates to a core concept)
 - A workflow or step's input/output type changes (update usage examples in `resources` and `book` if referenced there)
 - A new configuration option is added to `medusa-config` (document in `book` under `configurations/`)
-- A new `packages/admin/dashboard` route is added that creates new UI screens visible to admin users (document in `user-guide`)
+- A new `packages/admin/dashboard` route is added that creates new UI screens visible to admin users (document in the Merchant Guide, `user-guide`)
 
 ### Document in `book` AND `resources`
 
@@ -42,7 +42,7 @@ This applies especially to:
 
 > **Why:** The `book` has chapters on customizing the admin (adding widgets, creating UI routes), and `resources` has how-to guides for the same. If the extension API changes, both need updating.
 
-### Document in `user-guide` only
+### Document in the Merchant Guide (`user-guide`) only
 
 - New screens, tabs, or sections added to the Medusa admin dashboard
 - Changes to existing admin UI that affect how a non-technical user completes a task
@@ -74,7 +74,7 @@ This applies especially to:
 CLI packages have dedicated documentation pages in `resources` and are also referenced across other guides.
 
 **`packages/cli/create-medusa-app`** — the `create-medusa-app` CLI tool:
-- Changes to flags, options, or the default project structure → update `www/apps/resources/app/create-medusa-app/` and any page across `book` or `resources` that shows a `create-medusa-app` command
+- Changes to flags, options, or the default project structure → update its reference page, `www/apps/resources/app/create-medusa-app/`. It's no longer the main install method, so don't add `create-medusa-app` commands to other pages
 - New flags should be added to the reference page; changed defaults should update all usage examples that show the old default
 
 **`packages/cli/medusa-cli`** (the `medusa` CLI) — commands like `medusa start`, `medusa db:migrate`, `medusa plugin:develop`, etc.:
@@ -84,8 +84,7 @@ CLI packages have dedicated documentation pages in `resources` and are also refe
 
 To find usages of a CLI command in the docs, search across the writable directories:
 ```bash
-grep -r "create-medusa-app" www/apps/book/app www/apps/resources/app
-grep -r "medusa db:migrate" www/apps/book/app www/apps/resources/app
+grep -r "medusa db:migrate" www/apps/book/app www/apps/resources/app www/apps/cloud/app
 ```
 
 ### Other package changes
@@ -101,7 +100,7 @@ For packages that don't fall into the categories above (shown under "Other Chang
 | `module` | `book`, `resources` | Always both |
 | `core-flow` | `book`, `resources` | Always both |
 | `framework` | `book`, `resources` | Always both |
-| `admin` | `user-guide` | Add `book` + `resources` if widget zones or extension API changed |
+| `admin` | `user-guide` (Merchant Guide) | Add `book` + `resources` if widget zones or extension API changed |
 | `design-system` | `ui` | Add `book` + `resources` if a component referenced in those docs changed |
 | `cli` | `resources` | Also update `book` if the command appears in book tutorials |
 | `other` | (advisory) | Decide based on whether the change has a user-facing doc surface |
