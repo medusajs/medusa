@@ -398,6 +398,46 @@ describe("Workflow composer", () => {
       expect(step3Mock).toHaveBeenCalledTimes(1)
     })
 
+    it("should revert the parent workflow when the sub workflow itself fails", async function () {
+      const step1Mock = jest.fn()
+      const step1 = createStep(
+        "step1",
+        async () => {
+          return new StepResponse({ result: "step1" })
+        },
+        step1Mock
+      )
+
+      const subStepWithError = createStep("sub-step-with-error", async () => {
+        throw new Error("Sub step failed")
+      })
+
+      const subWorkflow = createWorkflow(getNewWorkflowId(), function () {
+        subStepWithError()
+        return new WorkflowResponse(void 0)
+      })
+
+      const workflow = createWorkflow(getNewWorkflowId(), function () {
+        step1()
+        subWorkflow.runAsStep({ input: {} })
+        return new WorkflowResponse(void 0)
+      })
+
+      const { errors, transaction } = await workflow.run({
+        throwOnError: false,
+      })
+
+      expect(errors).toEqual([
+        expect.objectContaining({
+          error: expect.objectContaining({
+            message: "Sub step failed",
+          }),
+        }),
+      ])
+      expect(step1Mock).toHaveBeenCalledTimes(1)
+      expect(transaction.getState()).toEqual(TransactionState.REVERTED)
+    })
+
     it("should succeed and pass down the transaction id and event group id when provided from the context", async function () {
       let parentContext, childContext
 

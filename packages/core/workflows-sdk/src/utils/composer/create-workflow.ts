@@ -279,6 +279,10 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
             context: executionContext,
           })
         } else {
+          if (!transaction) {
+            return
+          }
+
           await workflow(container).cancel({
             transaction: ((transaction as WorkflowResult<any>) ?? {})
               ?.transaction,
