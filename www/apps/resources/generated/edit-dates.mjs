@@ -393,7 +393,7 @@ export const generatedEditDates = {
   "app/medusa-cli/commands/codemod/page.mdx": "2026-09-11T07:40:12.217Z",
   "app/troubleshooting/nextjs-node-25/page.mdx": "2026-01-14T08:34:00.550Z",
   "app/integrations/guides/paypal/page.mdx": "2026-01-19T08:52:36.209Z",
-  "app/commerce-modules/auth/mfa/page.mdx": "2026-08-28T14:42:00.559Z",
+  "app/commerce-modules/auth/mfa/page.mdx": "2026-11-19T19:09:58.881Z",
   "app/commerce-modules/auth/email-verification/page.mdx": "2026-07-31T13:59:23.806Z",
   "app/storefront-development/customers/verify-account/page.mdx": "2026-07-24T12:45:09.279Z",
   "app/commerce-modules/product/guides/filter-products/page.mdx": "2026-06-04T06:31:12.858Z",
