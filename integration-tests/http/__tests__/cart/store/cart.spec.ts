@@ -5625,6 +5625,92 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should refresh the payment collection when recalculating taxes changes the cart total", async () => {
+          // Tax-exclusive prices so a rate change moves the cart total
+          const [usdPreference] = (
+            await api.get(
+              `/admin/price-preferences?attribute=currency_code&value=usd`,
+              adminHeaders
+            )
+          ).data.price_preferences
+          await api.post(
+            `/admin/price-preferences/${usdPreference.id}`,
+            { is_tax_inclusive: false },
+            adminHeaders
+          )
+
+          const taxExclusiveCart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                shipping_address: shippingAddressData,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const paymentCollection = (
+            await api.post(
+              `/store/payment-collections`,
+              { cart_id: taxExclusiveCart.id },
+              storeHeaders
+            )
+          ).data.payment_collection
+          await api.post(
+            `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+            { provider_id: "pp_system_default" },
+            storeHeaders
+          )
+          expect(paymentCollection.amount).toEqual(taxExclusiveCart.total)
+
+          const caTaxRate = (
+            await api.get(`/admin/tax-rates?q=CADEFAULT`, adminHeaders)
+          ).data.tax_rates.find((rate) => rate.code === "CADEFAULT")
+          await api.post(
+            `/admin/tax-rates/${caTaxRate.id}`,
+            { rate: 10 },
+            adminHeaders
+          )
+
+          const recalculated = (
+            await api.post(
+              `/store/carts/${taxExclusiveCart.id}/taxes`,
+              {},
+              storeHeaders
+            )
+          ).data.cart
+          expect(recalculated.total).not.toEqual(taxExclusiveCart.total)
+
+          const refetched = (
+            await api.get(
+              `/store/carts/${taxExclusiveCart.id}?fields=total,*payment_collection,*payment_collection.payment_sessions`,
+              storeHeaders
+            )
+          ).data.cart
+
+          expect(refetched.payment_collection.amount).toEqual(refetched.total)
+          expect(refetched.payment_collection.payment_sessions).toEqual([])
+        })
+
+        it("should not recalculate taxes for a completed cart", async () => {
+          await appContainer
+            .resolve(Modules.CART)
+            .updateCarts(cart.id, { completed_at: new Date() })
+
+          const { response } = await api
+            .post(`/store/carts/${cart.id}/taxes`, {}, storeHeaders)
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          expect(response.data.message).toEqual(
+            `Cart ${cart.id} is already completed.`
+          )
+        })
+
         it("should update a cart's region, sales channel, customer data and tax lines", async () => {
           const newSalesChannel = (
             await api.post(
