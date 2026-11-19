@@ -49,7 +49,7 @@
 - [IP Addresses](http://localhost:3000/cloud/ip-addresses)
 - [Logs](http://localhost:3000/cloud/logs)
 - [Medusa MCP](http://localhost:3000/cloud/medusa-mcp)
-- [Medusa ChatGPT App](http://localhost:3000/cloud/medusa-mcp/chatgpt)
+- [Medusa ChatGPT Plugin](http://localhost:3000/cloud/medusa-mcp/chatgpt)
 - [Medusa Claude Connector](http://localhost:3000/cloud/medusa-mcp/claude)
 - [Connect a Custom Agent to Medusa MCP](http://localhost:3000/cloud/medusa-mcp/custom-agents)
 - [Retrieve Custom Data with Medusa MCP](http://localhost:3000/cloud/medusa-mcp/custom-data)
