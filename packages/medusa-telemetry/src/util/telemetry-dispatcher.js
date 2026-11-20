@@ -1,12 +1,12 @@
 import removeSlash from "remove-trailing-slash"
 import axios from "axios"
-import axiosRetry from "axios-retry"
 
 import showAnalyticsNotification from "./show-notification"
 import Store from "../store"
 import isTruthy from "./is-truthy"
 
 const MEDUSA_TELEMETRY_VERBOSE = process.env.MEDUSA_TELEMETRY_VERBOSE || false
+const MAX_RETRIES = 3
 
 class TelemetryDispatcher {
   constructor(options) {
@@ -25,12 +25,6 @@ class TelemetryDispatcher {
 
     this.timeout = options.timeout || false
     this.flushed = false
-
-    axiosRetry(this.axiosInstance, {
-      retries: 3,
-      retryDelay: axiosRetry.exponentialDelay,
-      retryCondition: this.isErrorRetryable_,
-    })
   }
 
   isTrackingEnabled() {
@@ -70,8 +64,7 @@ class TelemetryDispatcher {
         headers: {},
       }
 
-      return await this.axiosInstance
-        .post(`${this.host}${this.path}`, data, req)
+      return await this.postWithRetry_(`${this.host}${this.path}`, data, req)
         .then(() => {
           if (isTruthy(MEDUSA_TELEMETRY_VERBOSE)) {
             console.log("POSTing batch succeeded")
@@ -87,9 +80,25 @@ class TelemetryDispatcher {
     })
   }
 
+  async postWithRetry_(url, data, config) {
+    for (let retry = 1; ; retry++) {
+      try {
+        return await this.axiosInstance.post(url, data, config)
+      } catch (error) {
+        if (retry > MAX_RETRIES || !this.isErrorRetryable_(error)) {
+          throw error
+        }
+        const delay = 2 ** retry * 100
+        await new Promise((resolve) =>
+          setTimeout(resolve, delay + Math.random() * delay * 0.2)
+        )
+      }
+    }
+  }
+
   isErrorRetryable_(error) {
     // Retry Network Errors.
-    if (axiosRetry.isNetworkError(error)) {
+    if (!error.response && error.code && error.code !== "ECONNABORTED") {
       return true
     }
 
