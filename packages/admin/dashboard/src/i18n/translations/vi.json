@@ -3633,6 +3633,56 @@
     },
     "subtitle": "Xác định các quyền mà vai trò có thể cấp."
   },
+  "auditLogs": {
+    "domain": "Nhật ký kiểm tra",
+    "subtitle": "Xem ai đã làm gì trong cửa hàng của bạn, trên tài nguyên nào, và kết quả như thế nào.",
+    "impersonatedBy": "Được mạo danh bởi {{id}}",
+    "outcome": {
+      "succeeded": "Thành công",
+      "denied": "Bị từ chối",
+      "failed": "Thất bại"
+    },
+    "fields": {
+      "time": "Thời gian",
+      "actor": "Người thực hiện",
+      "actorType": "Loại người thực hiện",
+      "actorId": "ID người thực hiện",
+      "impersonatorId": "ID người mạo danh",
+      "action": "Hành động",
+      "resource": "Tài nguyên",
+      "resourceType": "Loại tài nguyên",
+      "resourceId": "ID tài nguyên",
+      "outcome": "Kết quả",
+      "startedAt": "Bắt đầu lúc",
+      "endedAt": "Kết thúc lúc",
+      "requestData": "Dữ liệu yêu cầu",
+      "responseData": "Dữ liệu phản hồi"
+    },
+    "request": {
+      "header": "Yêu cầu",
+      "method": "Phương thức",
+      "route": "Tuyến đường",
+      "path": "Đường dẫn",
+      "statusCode": "Mã trạng thái",
+      "requestId": "ID yêu cầu",
+      "ipAddress": "Địa chỉ IP",
+      "userAgent": "Tác nhân người dùng",
+      "none": "Nhật ký kiểm tra này không được ghi lại cho một yêu cầu API."
+    },
+    "list": {
+      "empty": {
+        "heading": "Chưa có nhật ký kiểm tra",
+        "description": "Các hành động được thực hiện trong cửa hàng của bạn sẽ xuất hiện ở đây."
+      },
+      "filtered": {
+        "heading": "Không có kết quả",
+        "description": "Không có nhật ký kiểm tra nào khớp với tiêu chí lọc hiện tại."
+      },
+      "searchError": {
+        "heading": "Tìm kiếm thất bại"
+      }
+    }
+  },
   "productOptions": {
     "create": {
       "header": "Tạo tùy chọn sản phẩm",

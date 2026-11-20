@@ -3950,6 +3950,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Zapisnici revizije",
+    "subtitle": "Pregledajte tko je što učinio u vašoj trgovini, na kojem resursu i kako je završilo.",
+    "impersonatedBy": "Lažno predstavljanje od strane {{id}}",
+    "outcome": {
+      "succeeded": "Uspjelo",
+      "denied": "Odbijeno",
+      "failed": "Neuspjelo"
+    },
+    "fields": {
+      "time": "Vrijeme",
+      "actor": "Izvođač",
+      "actorType": "Vrsta izvođača",
+      "actorId": "ID izvođača",
+      "impersonatorId": "ID imitatora",
+      "action": "Radnja",
+      "resource": "Resurs",
+      "resourceType": "Vrsta resursa",
+      "resourceId": "ID resursa",
+      "outcome": "Ishod",
+      "startedAt": "Započeto u",
+      "endedAt": "Završeno u",
+      "requestData": "Podaci zahtjeva",
+      "responseData": "Podaci odgovora"
+    },
+    "request": {
+      "header": "Zahtjev",
+      "method": "Metoda",
+      "route": "Ruta",
+      "path": "Putanja",
+      "statusCode": "Statusni kod",
+      "requestId": "ID zahtjeva",
+      "ipAddress": "IP adresa",
+      "userAgent": "Korisnički agent",
+      "none": "Ovaj zapisnik revizije nije zabilježen za API zahtjev."
+    },
+    "list": {
+      "empty": {
+        "heading": "Još nema zapisnika revizije",
+        "description": "Radnje izvršene u vašoj trgovini pojavit će se ovdje."
+      },
+      "filtered": {
+        "heading": "Nema rezultata",
+        "description": "Nema zapisnika revizije koji odgovaraju trenutnim kriterijima filtra."
+      },
+      "searchError": {
+        "heading": "Pretraga nije uspjela"
+      }
+    }
+  },
   "searchIndexes": {
     "domain": "Pretraživanje",
     "subtitle": "Pregledajte registrirane indekse pretraživanja i ponovno ih izgradite iz izvornih podataka.",

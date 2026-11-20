@@ -3080,6 +3080,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "감사 로그",
+    "subtitle": "스토어에서 누가 어떤 작업을 어떤 리소스에서 수행했으며 결과가 어떻게 되었는지 검토합니다.",
+    "impersonatedBy": "{{id}}에 의해 대리 접속됨",
+    "outcome": {
+      "succeeded": "성공",
+      "denied": "거부됨",
+      "failed": "실패"
+    },
+    "fields": {
+      "time": "시간",
+      "actor": "행위자",
+      "actorType": "행위자 유형",
+      "actorId": "행위자 ID",
+      "impersonatorId": "대리 접속자 ID",
+      "action": "작업",
+      "resource": "리소스",
+      "resourceType": "리소스 유형",
+      "resourceId": "리소스 ID",
+      "outcome": "결과",
+      "startedAt": "시작 시간",
+      "endedAt": "종료 시간",
+      "requestData": "요청 데이터",
+      "responseData": "응답 데이터"
+    },
+    "request": {
+      "header": "요청",
+      "method": "메서드",
+      "route": "라우트",
+      "path": "경로",
+      "statusCode": "상태 코드",
+      "requestId": "요청 ID",
+      "ipAddress": "IP 주소",
+      "userAgent": "사용자 에이전트",
+      "none": "이 감사 로그는 API 요청에 대해 기록되지 않았습니다."
+    },
+    "list": {
+      "empty": {
+        "heading": "감사 로그 없음",
+        "description": "스토어에서 수행된 작업이 여기에 표시됩니다."
+      },
+      "filtered": {
+        "heading": "결과 없음",
+        "description": "현재 필터 조건과 일치하는 감사 로그가 없습니다."
+      },
+      "searchError": {
+        "heading": "검색 실패"
+      }
+    }
+  },
   "translations": {
     "domain": "번역",
     "settings": {

@@ -3915,6 +3915,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Denetim günlükleri",
+    "subtitle": "Mağazanızda kimin ne yaptığını, hangi kaynakta ve nasıl sonuçlandığını inceleyin.",
+    "impersonatedBy": "{{id}} tarafından taklit edildi",
+    "outcome": {
+      "succeeded": "Başarılı",
+      "denied": "Reddedildi",
+      "failed": "Başarısız"
+    },
+    "fields": {
+      "time": "Zaman",
+      "actor": "Aktör",
+      "actorType": "Aktör türü",
+      "actorId": "Aktör ID",
+      "impersonatorId": "Taklit eden ID",
+      "action": "Eylem",
+      "resource": "Kaynak",
+      "resourceType": "Kaynak türü",
+      "resourceId": "Kaynak ID",
+      "outcome": "Sonuç",
+      "startedAt": "Başlangıç zamanı",
+      "endedAt": "Bitiş zamanı",
+      "requestData": "İstek verisi",
+      "responseData": "Yanıt verisi"
+    },
+    "request": {
+      "header": "İstek",
+      "method": "Yöntem",
+      "route": "Rota",
+      "path": "Yol",
+      "statusCode": "Durum kodu",
+      "requestId": "İstek ID",
+      "ipAddress": "IP adresi",
+      "userAgent": "Kullanıcı aracısı",
+      "none": "Bu denetim günlüğü bir API isteği için kaydedilmedi."
+    },
+    "list": {
+      "empty": {
+        "heading": "Henüz denetim günlüğü yok",
+        "description": "Mağazanızda gerçekleştirilen işlemler burada görünecektir."
+      },
+      "filtered": {
+        "heading": "Sonuç yok",
+        "description": "Mevcut filtre kriterlerine uyan denetim günlüğü bulunamadı."
+      },
+      "searchError": {
+        "heading": "Arama başarısız oldu"
+      }
+    }
+  },
   "searchIndexes": {
     "domain": "Arama",
     "subtitle": "Kayıtlı arama dizinlerini görüntüleyin ve kaynak verilerden yeniden oluşturun.",

@@ -3072,6 +3072,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Revisionsloggar",
+    "subtitle": "Granska vem som gjorde vad i din butik, på vilken resurs och hur det slutade.",
+    "impersonatedBy": "Personifierad av {{id}}",
+    "outcome": {
+      "succeeded": "Lyckades",
+      "denied": "Nekades",
+      "failed": "Misslyckades"
+    },
+    "fields": {
+      "time": "Tid",
+      "actor": "Aktör",
+      "actorType": "Aktörstyp",
+      "actorId": "Aktörs-ID",
+      "impersonatorId": "Personifierarens ID",
+      "action": "Åtgärd",
+      "resource": "Resurs",
+      "resourceType": "Resurstyp",
+      "resourceId": "Resurs-ID",
+      "outcome": "Utfall",
+      "startedAt": "Startade vid",
+      "endedAt": "Avslutade vid",
+      "requestData": "Begärandata",
+      "responseData": "Svarsdata"
+    },
+    "request": {
+      "header": "Begäran",
+      "method": "Metod",
+      "route": "Rutt",
+      "path": "Sökväg",
+      "statusCode": "Statuskod",
+      "requestId": "Begäran-ID",
+      "ipAddress": "IP-adress",
+      "userAgent": "Användaragent",
+      "none": "Den här revisionsloggen registrerades inte för en API-begäran."
+    },
+    "list": {
+      "empty": {
+        "heading": "Inga revisionsloggar ännu",
+        "description": "Åtgärder som utförs i din butik visas här."
+      },
+      "filtered": {
+        "heading": "Inga resultat",
+        "description": "Inga revisionsloggar matchar de aktuella filterkriterierna."
+      },
+      "searchError": {
+        "heading": "Sökningen misslyckades"
+      }
+    }
+  },
   "translations": {
     "domain": "Översättningar",
     "settings": {

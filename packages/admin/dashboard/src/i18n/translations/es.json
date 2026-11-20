@@ -3236,6 +3236,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Registros de auditoría",
+    "subtitle": "Revisa quién hizo qué en tu tienda, en qué recurso y cómo terminó.",
+    "impersonatedBy": "Suplantado por {{id}}",
+    "outcome": {
+      "succeeded": "Exitoso",
+      "denied": "Denegado",
+      "failed": "Fallido"
+    },
+    "fields": {
+      "time": "Hora",
+      "actor": "Actor",
+      "actorType": "Tipo de actor",
+      "actorId": "ID del actor",
+      "impersonatorId": "ID del suplantador",
+      "action": "Acción",
+      "resource": "Recurso",
+      "resourceType": "Tipo de recurso",
+      "resourceId": "ID del recurso",
+      "outcome": "Resultado",
+      "startedAt": "Iniciado a las",
+      "endedAt": "Finalizado a las",
+      "requestData": "Datos de la solicitud",
+      "responseData": "Datos de la respuesta"
+    },
+    "request": {
+      "header": "Solicitud",
+      "method": "Método",
+      "route": "Ruta",
+      "path": "Ruta de acceso",
+      "statusCode": "Código de estado",
+      "requestId": "ID de la solicitud",
+      "ipAddress": "Dirección IP",
+      "userAgent": "Agente de usuario",
+      "none": "Este registro de auditoría no fue registrado para una solicitud de API."
+    },
+    "list": {
+      "empty": {
+        "heading": "No hay registros de auditoría",
+        "description": "Las acciones realizadas en tu tienda aparecerán aquí."
+      },
+      "filtered": {
+        "heading": "Sin resultados",
+        "description": "Ningún registro de auditoría coincide con los criterios de filtro actuales."
+      },
+      "searchError": {
+        "heading": "La búsqueda falló"
+      }
+    }
+  },
   "translations": {
     "domain": "Traducciones",
     "list": {
