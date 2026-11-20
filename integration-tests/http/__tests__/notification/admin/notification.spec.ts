@@ -82,6 +82,25 @@ medusaIntegrationTestRunner({
 
           expect(response.data.notifications).toEqual([])
         })
+
+        it("should apply free-text search within the requester's notifications", async () => {
+          const ownResponse = await api.get(
+            `/admin/notifications?q=${secondAdminNotification.to}`,
+            secondAdminHeaders
+          )
+
+          expect(ownResponse.status).toEqual(200)
+          expect(ownResponse.data.notifications.map((n) => n.id)).toEqual([
+            secondAdminNotification.id,
+          ])
+
+          const otherResponse = await api.get(
+            `/admin/notifications?q=${firstAdminNotification.to}`,
+            secondAdminHeaders
+          )
+
+          expect(otherResponse.data.notifications).toEqual([])
+        })
       })
 
       describe("GET /admin/notifications/:id", () => {
