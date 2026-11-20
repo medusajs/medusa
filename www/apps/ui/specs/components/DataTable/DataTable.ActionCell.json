@@ -6,7 +6,7 @@
     "ctx": {
       "required": true,
       "tsType": {
-        "name": "CellContext",
+        "name": "DataTableCellContext",
         "elements": [
           {
             "name": "TData"
@@ -15,7 +15,7 @@
             "name": "unknown"
           }
         ],
-        "raw": "CellContext<TData, unknown>"
+        "raw": "DataTableCellContext<TData, unknown>"
       },
       "description": ""
     }

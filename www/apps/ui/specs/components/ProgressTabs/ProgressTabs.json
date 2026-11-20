@@ -7,18 +7,9 @@
       "description": "Whether a tab is activated automatically or manually.",
       "required": false,
       "tsType": {
-        "name": "union",
-        "raw": "\"manual\" \\| \"automatic\"",
-        "elements": [
-          {
-            "name": "literal",
-            "value": "\"manual\""
-          },
-          {
-            "name": "literal",
-            "value": "\"automatic\""
-          }
-        ]
+        "name": "ActivationMode",
+        "elements": [],
+        "raw": "ActivationMode"
       }
     },
     "defaultValue": {
@@ -64,18 +55,9 @@
       "description": "The orientation the tabs are layed out.\nMainly so arrow navigation is done accordingly (left & right vs. up & down)",
       "required": false,
       "tsType": {
-        "name": "union",
-        "raw": "\"horizontal\" \\| \"vertical\"",
-        "elements": [
-          {
-            "name": "literal",
-            "value": "\"horizontal\""
-          },
-          {
-            "name": "literal",
-            "value": "\"vertical\""
-          }
-        ]
+        "name": "Orientation",
+        "elements": [],
+        "raw": "Orientation"
       }
     },
     "value": {
