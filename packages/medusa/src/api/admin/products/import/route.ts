@@ -26,6 +26,7 @@ export const POST = async (
     input: {
       filename: input.originalname,
       fileContent: input.buffer.toString("utf-8"),
+      to: req.auth_context.actor_id,
     },
   })
 
