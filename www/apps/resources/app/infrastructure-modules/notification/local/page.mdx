@@ -133,6 +133,7 @@ In this subscriber, you:
 
 - Resolve the Notification Module's main service from the [Medusa container](!docs!/learn/fundamentals/medusa-container).
 - Use the `createNotifications` method of the Notification Module's main service to create a notification to be sent to the admin dashboard. By specifying the `feed` channel, the Local Notification Module Provider is used to send the notification.
+- The `to` property sets which admin users see the notification. Set it to an empty string to show the notification to all admin users, or to an admin user's ID to show it only to that user. Learn more in the [Send Notifications to a Specific Admin User](#send-notifications-to-a-specific-admin-user) section.
 - The `template` property of the `createNotifications` method's parameter must be set to `admin-ui`.
 - The `data` property allows you to customize the content of the admin notification. It must contain `title` and `description` properties.
 
@@ -141,6 +142,39 @@ In this subscriber, you:
 Medusa stores the `data` property of every notification, and the [List Notifications](!api!/admin/notifications/list-notifications) and [Get Notification](!api!/admin/notifications/get-a-notification) API routes return it. Any admin user with the `notification:read` [RBAC policy](../../../enterprise/rbac/concepts/page.mdx#policy) can view it, so don't pass data that those users shouldn't see.
 
 </Note>
+
+### Send Notifications to a Specific Admin User
+
+<Note>
+
+Scoping feed notifications to a specific admin user is available since [Medusa v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0).
+
+</Note>
+
+The [List Notifications](!api!/admin/notifications/list-notifications) and [Get Notification](!api!/admin/notifications/get-a-notification) API routes only return a `feed` notification to an admin user if the notification's `to` property is either:
+
+- An empty string, which shows the notification to all admin users.
+- The ID of the authenticated admin user.
+
+Notifications on other channels aren't affected by this scoping.
+
+So, to show an admin notification to a single admin user, set the `to` property to that user's ID. For example:
+
+```ts
+await notificationModuleService.createNotifications({
+  to: userId,
+  channel: "feed",
+  template: "admin-ui",
+  data: {
+    title: "Export ready",
+    description: "Your export is ready to download",
+  },
+})
+```
+
+Where `userId` is the ID of the admin user. In an API route, you can get the ID of the authenticated admin user from `req.auth_context.actor_id`.
+
+Medusa's product import and export, order export, and inventory item export features use this to send their feed notifications only to the admin user who started the import or export. If you execute their workflows, such as `exportProductsWorkflow` or `importProductsWorkflow`, pass the admin user's ID in the workflow's `to` input. If you don't pass `to`, the notifications are shown to all admin users.
 
 ### Test Sending Notification
 

@@ -163,7 +163,7 @@ export const generatedEditDates = {
   "app/infrastructure-modules/event/local/page.mdx": "2025-03-27T14:53:13.309Z",
   "app/infrastructure-modules/workflow-engine/in-memory/page.mdx": "2024-11-19T16:37:47.262Z",
   "app/infrastructure-modules/cache/in-memory/page.mdx": "2026-09-11T07:40:12.302Z",
-  "app/infrastructure-modules/notification/local/page.mdx": "2026-09-11T07:40:12.304Z",
+  "app/infrastructure-modules/notification/local/page.mdx": "2026-11-20T07:57:15.207Z",
   "app/infrastructure-modules/file/local/page.mdx": "2026-09-11T07:40:12.303Z",
   "app/infrastructure-modules/notification/send-notification/page.mdx": "2025-05-20T07:51:40.714Z",
   "app/infrastructure-modules/file/page.mdx": "2025-04-17T08:29:00.672Z",
