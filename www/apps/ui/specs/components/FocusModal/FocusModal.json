@@ -10,13 +10,6 @@
         "name": "boolean"
       }
     },
-    "open": {
-      "description": "Whether the modal is opened.",
-      "required": false,
-      "tsType": {
-        "name": "boolean"
-      }
-    },
     "onOpenChange": {
       "description": "A function to handle when the modal is opened or closed.",
       "required": false,
@@ -38,6 +31,13 @@
             "name": "void"
           }
         }
+      }
+    },
+    "open": {
+      "description": "Whether the modal is opened.",
+      "required": false,
+      "tsType": {
+        "name": "boolean"
       }
     }
   }

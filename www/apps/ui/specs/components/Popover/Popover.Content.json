@@ -52,7 +52,7 @@
       "description": "The preferred alignment against the anchor. May change when collisions occur.",
       "tsType": {
         "name": "union",
-        "raw": "\"center\" \\| \"end\" \\| \"start\"",
+        "raw": "\"center\" \\| \"start\" \\| \"end\"",
         "elements": [
           {
             "name": "literal",
@@ -60,11 +60,11 @@
           },
           {
             "name": "literal",
-            "value": "\"end\""
+            "value": "\"start\""
           },
           {
             "name": "literal",
-            "value": "\"start\""
+            "value": "\"end\""
           }
         ]
       },

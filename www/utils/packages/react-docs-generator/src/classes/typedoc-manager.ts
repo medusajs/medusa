@@ -12,11 +12,14 @@ import {
   Context,
   Converter,
   DeclarationReflection,
+  LiteralType,
   ProjectReflection,
+  ReferenceType,
   Reflection,
   SignatureReflection,
   SomeType,
   SourceReference,
+  UnionType,
 } from "typedoc"
 import ts from "typescript"
 import type {} from "types"
@@ -346,6 +349,12 @@ export default class TypedocManager {
           (reflectionType.reflection as DeclarationReflection) ||
           getProjectChild(this.project!, reflectionType.name)
         const elements: TsType[] = []
+        const literalUnion = referenceReflection
+          ? undefined
+          : this.resolveLiteralUnionAlias(reflectionType)
+        if (literalUnion) {
+          return this.getTsType(literalUnion, symbol, level)
+        }
         if (!referenceReflection && symbol) {
           return (
             getTypescriptTsType(symbol) || {
@@ -590,13 +599,72 @@ export default class TypedocManager {
       return false
     }
 
-    return reflection.signatures.some(
-      (signature) =>
-        signature.type?.type === "reference" &&
-        (signature.type.name === "ReactNode" ||
-          (signature.type.name === "Element" &&
-            signature.type.package === "@types/react"))
+    // React 19's `FunctionComponent` returns `ReactNode | Promise<ReactNode>`.
+    return reflection.signatures.some((signature) =>
+      (signature.type?.type === "union"
+        ? signature.type.types
+        : [signature.type]
+      ).some(
+        (type) =>
+          type?.type === "reference" &&
+          (type.name === "ReactNode" ||
+            (type.name === "Element" && type.package === "@types/react"))
+      )
     )
+  }
+
+  // Resolves a reference to a type alias that isn't part of the project, such as
+  // Radix UI's `type Orientation = (typeof Orientation)[keyof typeof Orientation]`,
+  // into its union of literals, since Typedoc only keeps the alias's name.
+  resolveLiteralUnionAlias(
+    reflectionType: ReferenceType
+  ): UnionType | undefined {
+    const { fileName, pos } = reflectionType.symbolId || {}
+    if (!this.context || !fileName || pos === undefined) {
+      return
+    }
+
+    for (const program of this.context.programs) {
+      // The symbol's position can point to a value sharing the alias's name,
+      // such as `declare const Orientation`, so match any top-level declaration.
+      const declarationName = program
+        .getSourceFile(fileName)
+        ?.statements.flatMap<ts.Node>((statement) => {
+          return ts.isVariableStatement(statement)
+            ? [...statement.declarationList.declarations]
+            : [statement]
+        })
+        .find(
+          (declaration): declaration is ts.NamedDeclaration =>
+            declaration.getStart() === pos
+        )?.name
+      if (!declarationName) {
+        continue
+      }
+
+      const checker = program.getTypeChecker()
+      const aliasSymbol = checker.getSymbolAtLocation(declarationName)
+      if (!aliasSymbol || !(aliasSymbol.flags & ts.SymbolFlags.TypeAlias)) {
+        return
+      }
+
+      const type = checker.getDeclaredTypeOfSymbol(aliasSymbol)
+      if (
+        !type.isUnion() ||
+        !type.types.every(
+          (member) => member.isStringLiteral() || member.isNumberLiteral()
+        )
+      ) {
+        return
+      }
+
+      return new UnionType(
+        type.types.map(
+          (member) =>
+            new LiteralType((member as ts.LiteralType).value as string | number)
+        )
+      )
+    }
   }
 
   // Returns the TsType of a child of a reflection.
