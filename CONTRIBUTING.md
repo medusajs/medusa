@@ -18,7 +18,7 @@ If you, as a community contributor, wish to work on more extensive features, ple
 
 ## Issues before PRs
 
-1. Before you start working on a change please make sure that there is an issue for what you will be working on. You can either find and [existing issue](https://github.com/medusajs/medusa/issues) or [open a new issue](https://github.com/medusajs/medusa/issues/new) if none exists. Doing this makes sure that others can contribute with thoughts or suggest alternatives, ultimately making sure that we only add changes that make
+1. Before you start working on a change please make sure that there is an issue for what you will be working on. You can either find an [existing issue](https://github.com/medusajs/medusa/issues) or [open a new issue](https://github.com/medusajs/medusa/issues/new) if none exists. Doing this makes sure that others can contribute with thoughts or suggest alternatives, ultimately making sure that we only add changes that make sense for Medusa.
 
 2. Comment on the issue to ask to work on it, and wait for a maintainer to assign it to you. Pull requests are automatically closed unless they link an open issue (for example, `Fixes #123` in the description) **and** you are assigned to that issue. A PR without a linked issue gets a warning and is closed after 8 hours if no issue is linked; editing the description to link one reopens it. Issues that our automation is already fixing are not assigned to contributors.
 
@@ -45,8 +45,8 @@ git pull upstream develop
 
 Before starting work, verify the configuration with `git remote -v`. `origin` should point to your fork and `upstream` should point to `https://github.com/medusajs/medusa.git`.
 
-3. Make your changes.
-4. [Open a pull request towards the develop branch in the Medusa repo](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork). Within a couple of days a Medusa team member will review, comment and eventually approve your PR.
+4. Make your changes.
+5. [Open a pull request towards the develop branch in the Medusa repo](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork). Within a couple of days a Medusa team member will review, comment and eventually approve your PR.
 
 ## Local development
 
@@ -66,7 +66,7 @@ The code snippets in this section assume that your forked Medusa project and the
 |__ test-project_storefront // (optional) storefront to interact with medusa application
 ```
 
-1. Replace the @medusajs/\* dependencies and devDependencies in you test project's `package.json` to point to the corresponding local packages in your forked Medusa repository. You will also need to add the medusa packages in the resolutions section of the `package.json`, so that every dependency is resolved locally. For example, assuming your forked Medusa project and the test project are sibling directories:
+1. Replace the @medusajs/\* dependencies and devDependencies in your test project's `package.json` to point to the corresponding local packages in your forked Medusa repository. You will also need to add the medusa packages in the resolutions section of the `package.json`, so that every dependency is resolved locally. For example, assuming your forked Medusa project and the test project are sibling directories:
 
 ```json
 // test project package.json (for npm/yarn)
@@ -132,7 +132,7 @@ The code snippets in this section assume that your forked Medusa project and the
     "@medusajs/cli": "file:../medusa/packages/cli/medusa-cli",
     "@medusajs/modules-sdk": "file:../medusa/packages/core/modules-sdk",
     "@medusajs/workflows-sdk": "file:../medusa/packages/core/workflows-sdk",
-    "@medusajs/js-sdk": "file:../../medusa/packages/core/js-sdk",
+    "@medusajs/js-sdk": "file:../medusa/packages/core/js-sdk",
     "@medusajs/framework": "file:../medusa/packages/core/framework",
     "@medusajs/auth-emailpass": "file:../medusa/packages/modules/providers/auth-emailpass",
     "@medusajs/locking-redis": "file:../medusa/packages/modules/providers/locking-redis",
@@ -236,6 +236,7 @@ node-linker=hoisted
       "@medusajs/telemetry": "link:../medusa/packages/medusa-telemetry",
       "@medusajs/settings": "link:../medusa/packages/modules/settings",
       "@medusajs/draft-order": "link:../medusa/packages/plugins/draft-order",
+      "@medusajs/loyalty-plugin": "link:../medusa/packages/plugins/loyalty",
       "@medusajs/deps": "link:../medusa/packages/deps",
       "@medusajs/caching-redis": "link:../medusa/packages/modules/providers/caching-redis",
       "@medusajs/caching": "link:../medusa/packages/modules/caching",
