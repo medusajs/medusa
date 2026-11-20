@@ -12,9 +12,9 @@ import {
   generateJwtTokenForAuthIdentity,
   generateJwtTokenWithChecks,
 } from "../../utils/generate-jwt-token"
+import { validateTokenIssuedAfterCredentialsUpdate } from "../../utils/validate-token-issued-after-credentials-update"
 
 // Retrieve a newly generated JWT token. Checking the existing token is valid already happens in the auth middleware.
-// Note: We probably want to disallow refreshes if the password changes, and require reauth.
 export const POST = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
@@ -27,6 +27,24 @@ export const POST = async (
       "The auth provider is not set while refreshing token"
     )
   }
+
+  const authIdentity = await service.retrieveAuthIdentity(
+    req.auth_context.auth_identity_id,
+    { relations: ["provider_identities"] }
+  )
+
+  if (!authIdentity) {
+    throw new MedusaError(
+      MedusaError.Types.UNAUTHORIZED,
+      "Invalid auth identity while refreshing token"
+    )
+  }
+
+  await validateTokenIssuedAfterCredentialsUpdate(service, {
+    authContext: req.auth_context,
+    authIdentity,
+    authProvider: req.auth_context.auth_provider,
+  })
 
   /* A request would have the actor ID set on it only after it:
     - Creates an actor after registration
@@ -41,18 +59,6 @@ export const POST = async (
     const { http } = req.scope.resolve<ConfigModule>(
       ContainerRegistrationKeys.CONFIG_MODULE
     ).projectConfig
-
-    const authIdentity = await service.retrieveAuthIdentity(
-      req.auth_context.auth_identity_id,
-      { relations: ["provider_identities"] }
-    )
-
-    if (!authIdentity) {
-      throw new MedusaError(
-        MedusaError.Types.UNAUTHORIZED,
-        "Invalid auth identity while refreshing token"
-      )
-    }
 
     const token = await generateJwtTokenForAuthIdentity(
       {
@@ -74,13 +80,14 @@ export const POST = async (
   }
 
   // This will get results (and perform checks), similar to the authenticate call.
-  const { authIdentity, mfaChallenge } = await service.validateAuthIdentity(
-    req.auth_context.auth_identity_id,
-    req.auth_context.auth_provider,
-    { relations: ["provider_identities"] }
-  )
+  const { authIdentity: validatedAuthIdentity, mfaChallenge } =
+    await service.validateAuthIdentity(
+      req.auth_context.auth_identity_id,
+      req.auth_context.auth_provider,
+      { relations: ["provider_identities"] }
+    )
 
-  if (!authIdentity) {
+  if (!validatedAuthIdentity) {
     throw new MedusaError(
       MedusaError.Types.UNAUTHORIZED,
       "Invalid auth identity while refreshing token"
@@ -88,7 +95,7 @@ export const POST = async (
   }
 
   const result = await generateJwtTokenWithChecks(req.scope, {
-    authIdentity,
+    authIdentity: validatedAuthIdentity,
     mfaChallenge,
     actorType: req.auth_context.actor_type,
     authProvider: req.auth_context.auth_provider,
