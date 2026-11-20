@@ -1066,11 +1066,11 @@ For example, instead of importing `@mikro-orm/core`, you now import it from `@me
 - `@opentelemetry/instrumentation-pg` -> `@medusajs/framework/opentelemetry/instrumentation-pg`
 - `@opentelemetry/resources` -> `@medusajs/framework/opentelemetry/resources`
 - `@opentelemetry/sdk-node` -> `@medusajs/framework/opentelemetry/sdk-node`
-- `@opentelemetry/sdk-trace-node` -> `@medusajs/framework/opentelemetry/sdk-trace-node`
+- `@opentelemetry/sdk-trace` -> `@medusajs/framework/opentelemetry/sdk-trace`
 
-Since Medusa [v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), Medusa uses OpenTelemetry JS SDK 3.0, which replaces `@opentelemetry/sdk-trace-node` with `@opentelemetry/sdk-trace`. So, Medusa renamed the `@medusajs/framework/opentelemetry/sdk-trace-node` subpath to `@medusajs/framework/opentelemetry/sdk-trace`.
+Before Medusa [v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), Medusa used an OpenTelemetry JS SDK version earlier than 3.0, which provided `@opentelemetry/sdk-trace-node` instead of `@opentelemetry/sdk-trace`. So, the subpath was `@medusajs/framework/opentelemetry/sdk-trace-node`.
 
-If you upgrade to v2.23.0 or later, replace imports of `@medusajs/framework/opentelemetry/sdk-trace-node` with `@medusajs/framework/opentelemetry/sdk-trace`. Also, use `TracerProvider` instead of `NodeTracerProvider`, and pass an object with the `exporter` property to `SimpleSpanProcessor` and `BatchSpanProcessor`. For example, `new SimpleSpanProcessor({ exporter })`.
+If you use a Medusa version before v2.23.0, import from `@medusajs/framework/opentelemetry/sdk-trace-node` instead of `@medusajs/framework/opentelemetry/sdk-trace`. Also, use `NodeTracerProvider` instead of `TracerProvider`, and pass the exporter directly to `SimpleSpanProcessor` and `BatchSpanProcessor`. For example, `new SimpleSpanProcessor(exporter)`.
 
 To help you update your codebase to reflect these changes, Medusa provides a codemod that automatically replaces imports of these packages throughout your codebase.
 
@@ -1113,9 +1113,9 @@ const replacements = [
     replacement: 'from "@medusajs/framework/pg"',
   },
   // OpenTelemetry imports - replace @opentelemetry/instrumentation-pg, @opentelemetry/resources, 
-  // @opentelemetry/sdk-node, and @opentelemetry/sdk-trace-node with @medusajs/framework/opentelemetry/{subpath}
+  // @opentelemetry/sdk-node, @opentelemetry/sdk-trace, and @opentelemetry/sdk-trace-node with @medusajs/framework/opentelemetry/{subpath}
   {
-    pattern: /from\s+['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace-node)['"]/g,
+    pattern: /from\s+['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace|sdk-trace-node)['"]/g,
     // eslint-disable-next-line quotes
     replacement: 'from "@medusajs/framework/opentelemetry/$1"',
   },
@@ -1138,10 +1138,10 @@ const replacements = [
     replacement: 'require("@medusajs/framework/pg")',
   },
   // OpenTelemetry require statements - replace require('@opentelemetry/instrumentation-pg'), 
-  // require('@opentelemetry/resources'), require('@opentelemetry/sdk-node'), and 
-  // require('@opentelemetry/sdk-trace-node') with require('@medusajs/framework/opentelemetry/{subpath}')
+  // require('@opentelemetry/resources'), require('@opentelemetry/sdk-node'),
+  // require('@opentelemetry/sdk-trace'), and require('@opentelemetry/sdk-trace-node') with require('@medusajs/framework/opentelemetry/{subpath}')
   {
-    pattern: /require\s*\(\s*['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace-node)['"]\s*\)/g,
+    pattern: /require\s*\(\s*['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace|sdk-trace-node)['"]\s*\)/g,
     // eslint-disable-next-line quotes
     replacement: 'require("@medusajs/framework/opentelemetry/$1")',
   },
@@ -1210,7 +1210,9 @@ function getTargetFiles() {
           /from\s+['"]pg['"]/.test(content) ||
           /require\s*\(\s*['"]@?mikro-orm\//.test(content) ||
           /require\s*\(\s*['"]awilix['"]/.test(content) ||
-          /require\s*\(\s*['"]pg['"]/.test(content)
+          /require\s*\(\s*['"]pg['"]/.test(content) ||
+          /from\s+['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace|sdk-trace-node)['"]/.test(content) ||
+          /require\s*\(\s*['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace|sdk-trace-node)['"]/.test(content)
         ) {
           targetFiles.push(file.startsWith("./") ? file.slice(2) : file)
         }
@@ -1290,7 +1292,7 @@ if (require.main === module) {
 module.exports = { processFile, getTargetFiles, main }
 ```
 
-This script scans your project for files that import from `mikro-orm/{subpath}`, `awilix`, or `pg`, and replaces those imports with their new equivalents from `@medusajs/framework`. It handles both ES module `import` statements and CommonJS `require` statements in JavaScript and TypeScript files.
+This script scans your project for files that import from `mikro-orm/{subpath}`, `awilix`, `pg`, or the OpenTelemetry packages listed above, and replaces those imports with their new equivalents from `@medusajs/framework`. It handles both ES module `import` statements and CommonJS `require` statements in JavaScript and TypeScript files.
 
 Next, run the following command in your terminal to make the script executable:
 
@@ -1322,7 +1324,7 @@ If everything is working correctly, you can remove the `replace-imports.js` file
 - `@opentelemetry/instrumentation-pg`
 - `@opentelemetry/resources`
 - `@opentelemetry/sdk-node`
-- `@opentelemetry/sdk-trace-node`
+- `@opentelemetry/sdk-trace`
 
 
 # Replace Zod Imports Codemod (v2.13.0+)
@@ -6599,9 +6601,11 @@ Medusa uses [OpenTelemetry](https://opentelemetry.io/) for instrumentation and r
 
 As of [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0), OpenTelemetry dependencies are installed by default in new Medusa projects. If you're using an older version of Medusa, you need to install the `@opentelemetry/sdk-node`, `@opentelemetry/resources`, `@opentelemetry/sdk-trace-node`, and `@opentelemetry/instrumentation-pg` dependencies.
 
-Since Medusa [v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), Medusa uses OpenTelemetry JS SDK 3.0. The exporter you pass to `registerOtel` must target SDK 3.0, so install a version of your exporter package that's compatible with it. Traces also include the `os.*` and `service.instance.id` resource attributes, which the SDK detects by default.
+Before you start, you must install the dependencies relevant for the exporter you use. Medusa uses OpenTelemetry JS SDK 3.0, so install a version of your exporter package that's compatible with it. Traces also include the `os.*` and `service.instance.id` resource attributes, which the SDK detects by default.
 
-Before you start, you must install the dependencies relevant for the exporter you use. If you're using Zipkin, install the following dependencies:
+Before Medusa [v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), Medusa used an OpenTelemetry JS SDK version earlier than 3.0. If you use a Medusa version before v2.23.0, install a version of your exporter package that's compatible with the SDK version your Medusa application uses. Traces also don't include the `os.*` and `service.instance.id` resource attributes by default.
+
+If you're using Zipkin, install the following dependencies:
 
 ```bash
 npm install @opentelemetry/exporter-zipkin
@@ -9432,19 +9436,10 @@ The Medusa Admin is built with [Vite v7](https://v7.vite.dev/). When you [instal
 
 If you don't have an admin user, use the [Medusa CLI](undefined/resources/medusa-cli/commands/user) to create one.
 
-The Medusa Admin was migrated from Vite v5 to v7.3.6 and `react-router-dom` v6 to v7.18.2 in [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
-
-As of that version, the Medusa Admin supports Chrome v107+, Edge v107+, Firefox v104+, and Safari v16+. If you need to support older browsers, change the `build.target` option in the [admin.vite configuration](undefined/learn/configurations/medusa-config#vite).
-
-If your project installs `react-router-dom` directly, update it to v7. Learn more in the [Admin Routing Customizations](undefined/learn/fundamentals/admin/routing) chapter.
-
-Since Medusa v2.23.0, the Medusa Admin and the Medusa UI package use React v19, and the `@medusajs/medusa` package requires `react-dom` v19.3.1 or later as a peer dependency.
-
-If your project or plugin installs `react`, `react-dom`, `@types/react`, or `@types/react-dom`, update them to v19. Then, make sure your admin customizations are compatible with React v19. For example, `useRef` now requires an initial value, and refs created with `useRef<HTMLDivElement>(null)` have the type `RefObject<HTMLDivElement | null>`. Learn more in the [React 19 Upgrade Guide](https://react.dev/blog/2024/04/25/react-19-upgrade-guide).
-
-Since Medusa v2.23.0, the Medusa Admin and your admin customizations compile with [Tailwind CSS v4](https://tailwindcss.com/). The admin build scans your project's and plugins' admin files for Tailwind classes, so you don't need a `tailwind.config` file in your project or plugin. The admin build also doesn't load PostCSS configuration files.
-
-Make sure your admin customizations use Tailwind CSS v4 class names. For example, use `outline-hidden` instead of `outline-none`, and `rounded-sm` instead of `rounded`. Learn more in the [Tailwind CSS v4 Upgrade Guide](https://tailwindcss.com/docs/upgrade-guide).
+- Since [Medusa v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), the Medusa Admin uses Vite v8 and supports Chrome v111+, Edge v111+, Firefox v114+, and Safari v16.4+. If you need to support older browsers, change the `build.target` option in the [admin.vite configuration](undefined/learn/configurations/medusa-config#vite).
+- Since Medusa v2.23.0, the Medusa Admin and the Medusa UI package use React v19, and the `@medusajs/medusa` package requires `react-dom` v19.3.1 or later as a peer dependency. If your project or plugin installs `react`, `react-dom`, `@types/react`, or `@types/react-dom`, update them to v19 and make sure your admin customizations are compatible with React v19. For example, `useRef` now requires an initial value, and refs created with `useRef<HTMLDivElement>(null)` have the type `RefObject<HTMLDivElement | null>`. Learn more in the [React 19 Upgrade Guide](https://react.dev/blog/2024/04/25/react-19-upgrade-guide).
+- Since Medusa v2.23.0, the Medusa Admin and your admin customizations compile with [Tailwind CSS v4](https://tailwindcss.com/). The admin build scans your project's and plugins' admin files for Tailwind classes, so you don't need a `tailwind.config` file in your project or plugin. The admin build also doesn't load PostCSS configuration files. Make sure your admin customizations use Tailwind CSS v4 class names. For example, use `outline-hidden` instead of `outline-none`, and `rounded-sm` instead of `rounded`. Learn more in the [Tailwind CSS v4 Upgrade Guide](https://tailwindcss.com/docs/upgrade-guide).
+- Since [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0), the Medusa Admin uses `react-router-dom` v7. If your project installs `react-router-dom` directly, update it to v7. Learn more in the [Admin Routing Customizations](undefined/learn/fundamentals/admin/routing) chapter.
 
 ***
 
@@ -12103,7 +12098,7 @@ If the middleware didn't run, make sure you've correctly created the middleware 
 
 ## String Matcher Syntax
 
-The information explained in this section is applicable starting from [Medusa v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), where Medusa's server uses Express 5.
+This section is applicable starting from [Medusa v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), where Medusa's server uses Express 5. Previous versions were using Express 4.
 
 Medusa's server is based on Express 5, which uses the [path-to-regexp](https://github.com/pillarjs/path-to-regexp) syntax to match string matchers. To match any path under a route, use a named wildcard, such as `{*splat}`:
 
@@ -12124,7 +12119,7 @@ export default defineMiddlewares({
 
 This middleware applies to `/custom` and any route starting with `/custom`, such as `/custom/products`.
 
-For backward compatibility, Medusa converts a bare `*` in a string matcher to an optional named wildcard. So, the matchers `/custom*` and `/custom/*` keep working as they did with Express 4. For example, `/custom/*` matches `/custom/` and any nested route, such as `/custom/products/123`.
+For backward compatibility of Express 4 string matchers, Medusa converts a bare `*` in a string matcher to an optional named wildcard. So, the matchers `/custom*` and `/custom/*` keep working as they did with Express 4. For example, `/custom/*` matches `/custom/` and any nested route, such as `/custom/products/123`.
 
 Express 5 doesn't support other Express 4 string patterns, such as `(products|collections)`, `?`, and `+`. A string matcher that uses these patterns throws an error when the Medusa application starts. Use a [regular expression matcher](#apply-a-middleware-using-a-regular-expression) instead.
 
@@ -37048,8 +37043,6 @@ On success, the response contains the JWT token the user can use in the `Authori
 
 Each challenge is single-use and expires after the configured TTL (default five minutes).
 
-Since [Medusa v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), the Auth Module verifies an MFA challenge while holding a lock on it, so concurrent verification requests for the same challenge can't bypass its maximum number of attempts. The Auth Module uses the [Locking Module](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/infrastructure-modules/locking) for this, which Medusa registers by default. If you run multiple Medusa instances, use a shared locking provider, such as the [Redis Locking Module Provider](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/infrastructure-modules/locking/redis).
-
 ***
 
 ## Recovery Codes
@@ -39467,8 +39460,6 @@ Regardless of the `automatic_taxes` setting, Medusa only calculates tax lines on
 Medusa determines the tax rates from the country in the cart's shipping address, not from the list of countries in the cart's [region](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/region). So, a region with multiple countries doesn't have a default country for tax calculation. Medusa calculates each customer's taxes based on the country they set in their shipping address.
 
 If the cart's region has only one country, Medusa sets that country as the cart's shipping address country when creating the cart. So, Medusa can calculate tax lines without the customer setting their address. For a region with multiple countries, the customer must set their shipping address's country before Medusa calculates tax lines.
-
-Since Medusa v2.23.0, Medusa also keeps the region's single country when you update the cart with a new shipping address that has no `country_code`. So, the cart's shipping address doesn't lose its country, and Medusa can still calculate the tax lines.
 
 ### Cart Completion Requires a Shipping Address Country
 
@@ -133200,8 +133191,10 @@ To set up instrumentation in Medusa, you need to install the dependencies necess
 So, run the following command to install the necessary Sentry dependencies:
 
 ```bash
-npm install @sentry/node @opentelemetry/api @opentelemetry/exporter-trace-otlp-grpc @sentry/opentelemetry-node @opentelemetry/core@1.x @opentelemetry/sdk-trace-base@1.x @opentelemetry/semantic-conventions@1.x
+npm install @sentry/node@11 @opentelemetry/exporter-trace-otlp-http
 ```
+
+Since Medusa [v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), Medusa uses OpenTelemetry JS SDK 3.0, and the latest `@opentelemetry/exporter-trace-otlp-http` version targets it. If you use an older Medusa version, install a version of `@opentelemetry/exporter-trace-otlp-http` that's compatible with the OpenTelemetry JS SDK version your Medusa application uses.
 
 ### b. Configure Instrumentation
 
@@ -133212,29 +133205,18 @@ You can configure instrumentation in a special `instrumentation.ts` file at the 
 You should already have a file named `instrumentation.ts` in your Medusa application with commented-out code. Replace the file's content with the following:
 
 ```ts title="instrumentation.ts"
-import Sentry from "@sentry/node"
-import otelApi from "@opentelemetry/api"
+import * as Sentry from "@sentry/node"
 import { registerOtel } from "@medusajs/medusa"
-import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc" 
-import { 
-  SentrySpanProcessor, 
-  SentryPropagator,
-} from "@sentry/opentelemetry-node"
-
-Sentry.init({
-  dsn: process.env.SENTRY_DSN,
-  tracesSampleRate: 1.0,
-  // @ts-ignore
-  instrumenter: "otel",
-})
-
-otelApi.propagation.setGlobalPropagator(new SentryPropagator())
+import {
+  OTLPTraceExporter,
+} from "@opentelemetry/exporter-trace-otlp-http"
 
 export function register() {
   registerOtel({
     serviceName: "medusa",
-    spanProcessors: [new SentrySpanProcessor()],
-    traceExporter: new OTLPTraceExporter(),
+    exporter: new OTLPTraceExporter(
+      Sentry.getOtlpTracesEndpoint(process.env.SENTRY_DSN!)
+    ),
     instrument: {
       http: true,
       workflows: true,
@@ -133242,17 +133224,23 @@ export function register() {
       db: true,
     },
   })
+
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    integrations: [Sentry.openTelemetryIntegration()],
+  })
 }
 ```
 
-You first initialize Sentry with your Data Source Name (DSN), which you'll retrieve and set as an environment variable soon. You also set the `tracesSampleRate` to `1.0`, which enables tracing in your Sentry project.
-
-Next, you set the global propagator to Sentry's propagator, which allows Sentry to propagate trace context across your application.
-
-Finally, you export a `register` function that registers OpenTelemetry. It uses the `registerOtel` function from Medusa, which accepts [OpenTelemetry configurations](https://open-telemetry.github.io/opentelemetry-js/interfaces/_opentelemetry_sdk-node.NodeSDKConfiguration.html) with the following custom Medusa options:
+You export a `register` function that registers OpenTelemetry. It uses the `registerOtel` function from Medusa, which accepts [OpenTelemetry configurations](https://open-telemetry.github.io/opentelemetry-js/interfaces/_opentelemetry_sdk-node.NodeSDKConfiguration.html) with the following custom Medusa options:
 
 - `serviceName`: The name of your service, which you set to "medusa". You can change it to a more descriptive name if needed.
+- `exporter`: The exporter that sends traces. You pass an OTLP exporter that sends traces to Sentry. The `Sentry.getOtlpTracesEndpoint` function returns the URL and authentication headers of your Sentry project's OTLP endpoint based on your Data Source Name (DSN), which you'll retrieve and set as an environment variable soon.
 - `instrument`: An object that specifies what to trace in your Medusa application. You enable tracing for HTTP requests, workflows, Query usages, and database operations by setting their respective properties to `true`. Since Medusa v2.22.0, you can also pass an object to `http` to choose which query parameter values Medusa reports to Sentry. Learn more in the [Instrumentation](undefined/docs/learn/debugging-and-testing/instrumentation#configure-http-tracing) chapter.
+
+After registering OpenTelemetry, you initialize Sentry with your DSN and the `openTelemetryIntegration`, which attaches errors that Sentry captures to the active OpenTelemetry trace. You must initialize Sentry after registering OpenTelemetry.
+
+Don't set the `tracesSampleRate` or `tracesSampler` options in `Sentry.init`. OpenTelemetry handles tracing, so enabling Sentry's tracing creates duplicate spans.
 
 You can add any additional configurations to either Sentry or OpenTelemetry as needed for your use case.
 
