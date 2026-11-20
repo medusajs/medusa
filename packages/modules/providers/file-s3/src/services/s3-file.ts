@@ -368,6 +368,7 @@ export class S3FileService extends AbstractFileProviderService {
       ContentType: fileData.mimeType,
       ACL: acl,
       Key: fileKey,
+      ContentLength: fileData.size,
     })
 
     const signedUrl = await getSignedUrl(this.client_ as any, command as any, {
