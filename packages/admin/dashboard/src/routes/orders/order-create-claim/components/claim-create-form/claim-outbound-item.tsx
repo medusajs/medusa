@@ -55,7 +55,7 @@ function ClaimOutboundItem({
         </div>
 
         <div className="flex flex-1 justify-between">
-          <div className="flex flex-grow items-center gap-2">
+          <div className="flex grow items-center gap-2">
             <Form.Field
               control={form.control}
               name={`outbound_items.${index}.quantity`}
@@ -92,7 +92,7 @@ function ClaimOutboundItem({
             </Text>
           </div>
 
-          <div className="txt-small mr-2 flex flex-shrink-0 text-ui-fg-subtle">
+          <div className="txt-small mr-2 flex shrink-0 text-ui-fg-subtle">
             <MoneyAmountCell
               currencyCode={currencyCode}
               amount={previewItem.total}

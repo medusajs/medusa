@@ -22,7 +22,7 @@ export const SegmentedControl = ({
   return (
     <div
       className={clx(
-        "grid items-center gap-x-[1px] rounded-md bg-ui-bg-disabled p-[1px]",
+        "grid items-center gap-x-px rounded-md bg-ui-bg-disabled p-px",
         className
       )}
       style={{

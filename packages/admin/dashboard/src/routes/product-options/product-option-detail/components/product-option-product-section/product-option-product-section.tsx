@@ -1,10 +1,11 @@
-import { Container } from "@medusajs/ui"
+import { HttpTypes } from "@medusajs/types"
+import { Container, createDataTableColumnHelper } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { DataTable } from "../../../../../components/data-table"
 import { useProducts } from "../../../../../hooks/api"
-import { useProductTableColumns } from "../../../../../hooks/table/columns"
+import { useProductTableColumnDefs } from "../../../../../hooks/table/columns"
 import { useProductTableQuery } from "../../../../../hooks/table/query"
 
 type ProductOptionProductSectionProps = {
@@ -67,8 +68,13 @@ export const ProductOptionProductSection = ({
   )
 }
 
-const useColumns = () => {
-  const columns = useProductTableColumns()
+const columnHelper = createDataTableColumnHelper<HttpTypes.AdminProduct>()
 
-  return useMemo(() => [...columns], [columns])
+const useColumns = () => {
+  const columns = useProductTableColumnDefs()
+
+  return useMemo(
+    () => columns.map((column) => columnHelper.display(column)),
+    [columns]
+  )
 }

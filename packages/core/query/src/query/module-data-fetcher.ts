@@ -306,18 +306,30 @@ export class ModuleDataFetcher implements IRemoteDataFetcher {
   }
 }
 
-export function getAllFieldsAndRelations(
-  expand: RemoteExpandProperty | RemoteNestedExpands[number],
-  prefix = BASE_PREFIX,
-  args: JoinerArgument = {} as JoinerArgument
-): {
+type FieldsAndRelations = {
   select?: string[]
   relations: string[]
   args: JoinerArgument
   take?: number | null
-} {
-  expand = JSON.parse(JSON.stringify(expand))
+}
 
+export function getAllFieldsAndRelations(
+  expand: RemoteExpandProperty | RemoteNestedExpands[number],
+  prefix = BASE_PREFIX,
+  args: JoinerArgument = {} as JoinerArgument
+): FieldsAndRelations {
+  return collectFieldsAndRelations(
+    JSON.parse(JSON.stringify(expand)),
+    prefix,
+    args
+  )
+}
+
+function collectFieldsAndRelations(
+  expand: RemoteExpandProperty | RemoteNestedExpands[number],
+  prefix: string,
+  args: JoinerArgument
+): FieldsAndRelations {
   let fields: Set<string> = new Set()
   let relations: string[] = []
 
@@ -352,7 +364,7 @@ export function getAllFieldsAndRelations(
     relations.push(newPrefix)
     fields.delete(newPrefix)
 
-    const result = getAllFieldsAndRelations(nestedExpand, newPrefix, args)
+    const result = collectFieldsAndRelations(nestedExpand, newPrefix, args)
 
     result.select?.forEach(fields.add, fields)
     relations = relations.concat(result.relations)

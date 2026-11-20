@@ -101,7 +101,7 @@ const PathDisplay = ({
         <div className="flex w-full items-center gap-x-0.5 overflow-hidden">
           <Tooltip content={t("categories.fields.path.tooltip")}>
             <button
-              className="outline-none"
+              className="outline-hidden"
               type="button"
               onClick={() => setExpanded(true)}
             >

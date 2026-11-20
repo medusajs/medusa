@@ -84,7 +84,7 @@ const InvalidResetToken = () => {
               <Link
                 key="login-link"
                 to="/login"
-                className="text-ui-fg-interactive outline-none transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover"
+                className="text-ui-fg-interactive outline-hidden transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover"
               />,
             ]}
           />
@@ -224,7 +224,7 @@ const ChooseNewPassword = ({ token }: { token: string }) => {
               <Link
                 key="login-link"
                 to="/login"
-                className="hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover text-ui-fg-base outline-none transition-fg"
+                className="hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover text-ui-fg-base outline-hidden transition-fg"
               />,
             ]}
           />
@@ -330,7 +330,7 @@ export const ResetPassword = () => {
               <Link
                 key="login-link"
                 to="/login"
-                className="hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover text-ui-fg-base outline-none transition-fg"
+                className="hover:text-ui-fg-base-hover focus-visible:text-ui-fg-base-hover text-ui-fg-base outline-hidden transition-fg"
               />,
             ]}
           />

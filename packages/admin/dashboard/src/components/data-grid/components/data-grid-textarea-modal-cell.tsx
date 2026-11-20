@@ -1,3 +1,4 @@
+import { RowData } from "@tanstack/react-table"
 import { clx, Textarea } from "@medusajs/ui"
 import { Popover as RadixPopover } from "radix-ui"
 import React, { useCallback, useEffect, useRef, useState } from "react"
@@ -9,14 +10,17 @@ import { useDataGridContext } from "../context"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
-type DataGridExpandableTextCellProps<TData, TValue = any> = DataGridCellProps<
-  TData,
-  TValue
-> & {
+type DataGridExpandableTextCellProps<
+  TData extends RowData,
+  TValue = any,
+> = DataGridCellProps<TData, TValue> & {
   fieldLabel?: string
 }
 
-export const DataGridExpandableTextCell = <TData, TValue = any>({
+export const DataGridExpandableTextCell = <
+  TData extends RowData,
+  TValue = any,
+>({
   context,
   fieldLabel,
 }: DataGridExpandableTextCellProps<TData, TValue>) => {
@@ -178,7 +182,7 @@ const Inner = ({
         <RadixPopover.Anchor asChild>
           <div
             className={clx(
-              "txt-compact-small flex size-full cursor-pointer items-center justify-center bg-transparent text-ui-fg-subtle outline-none",
+              "txt-compact-small flex size-full cursor-pointer items-center justify-center bg-transparent text-ui-fg-subtle outline-hidden",
               "focus:cursor-text"
             )}
           >
@@ -206,7 +210,7 @@ const Inner = ({
       <RadixPopover.Portal>
         <RadixPopover.Content
           className={clx(
-            "flex max-h-[80vh] w-[600px] overflow-hidden bg-ui-bg-base p-0 shadow-elevation-flyout outline-none"
+            "flex max-h-[80vh] w-[600px] overflow-hidden bg-ui-bg-base p-0 shadow-elevation-flyout outline-hidden"
           )}
           align="start"
           side="bottom"
@@ -223,7 +227,7 @@ const Inner = ({
               onKeyDown={(e) => {
                 e.stopPropagation()
               }}
-              className="h-full min-h-[300px] w-full resize-none border-0 !bg-ui-bg-base p-4 !shadow-none focus-visible:!shadow-none"
+              className="h-full min-h-[300px] w-full resize-none border-0 bg-ui-bg-base! p-4 shadow-none! focus-visible:shadow-none!"
             />
           </div>
         </RadixPopover.Content>

@@ -1,5 +1,5 @@
 import type { MiddlewareVerb, RouteVerb } from "./types"
-import { isString } from "@medusajs/utils"
+import { toExpressPath } from "./utils/to-express-path"
 
 type PathToRegexp = typeof import("path-to-regexp", {
   with: { "resolution-mode": "import" },
@@ -67,17 +67,10 @@ export class RoutesFinder<
       return
     }
 
-    // Doing a replacement for backwards compatibility with the old path-to-regexp with express 4
-    let normalizedPath = route.matcher
-    if (isString(route.matcher)) {
-      // Replace /* with {*splat} (wildcard matches zero or more path segments)
-      normalizedPath = normalizedPath.replace(/\/\*/g, "{*splat}")
-      // Replace /path* (no slash before asterisk) with /path{*splat}
-      normalizedPath = normalizedPath.replace(/(\w)\*/g, "$1{*splat}")
-    }
     this.#routes.push({
       ...route,
-      matchRegex: loadPathToRegexp().pathToRegexp(normalizedPath).regexp,
+      matchRegex: loadPathToRegexp().pathToRegexp(toExpressPath(route.matcher))
+        .regexp,
     })
   }
 

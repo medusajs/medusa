@@ -67,9 +67,9 @@ export const useCreateCampaign = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.campaign.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.lists() })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -85,13 +85,13 @@ export const useUpdateCampaign = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.campaign.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.details() })
       queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.details() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -107,11 +107,11 @@ export const useDeleteCampaign = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.campaign.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.details() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -127,11 +127,11 @@ export const useAddOrRemoveCampaignPromotions = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.campaign.batchPromotions(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: campaignsQueryKeys.details() })
       queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: promotionsQueryKeys.details() })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

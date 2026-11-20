@@ -307,7 +307,7 @@ export const ExchangeOutboundSection = ({
 
         <StackedFocusModal id="outbound-items">
           <StackedFocusModal.Trigger asChild>
-            <a className="txt-compact-small-plus cursor-pointer text-blue-500 outline-none transition-fg hover:text-blue-400 focus-visible:shadow-borders-focus">
+            <a className="txt-compact-small-plus cursor-pointer text-blue-500 outline-hidden transition-fg hover:text-blue-400 focus-visible:shadow-borders-focus">
               {t("actions.addItems")}
             </a>
           </StackedFocusModal.Trigger>
@@ -410,7 +410,7 @@ export const ExchangeOutboundSection = ({
           <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             <div>
               <Form.Label>{t("orders.exchanges.outboundShipping")}</Form.Label>
-              <Form.Hint className="!mt-1">
+              <Form.Hint className="mt-1!">
                 {t("orders.exchanges.outboundShippingHint")}
               </Form.Hint>
             </div>

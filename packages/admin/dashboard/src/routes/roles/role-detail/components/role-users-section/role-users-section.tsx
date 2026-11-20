@@ -2,6 +2,7 @@ import { Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import { Button, Checkbox, Container, Heading, usePrompt } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
@@ -217,7 +218,10 @@ const RoleUserActions = ({
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminUser>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminUser
+>()
 
 const useColumns = (isRoleAssignable: boolean) => {
   const { t } = useTranslation()
@@ -231,6 +235,7 @@ const useColumns = (isRoleAssignable: boolean) => {
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()

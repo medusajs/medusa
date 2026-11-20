@@ -177,7 +177,7 @@ export const TaxRegionCreateForm = ({ parentId }: TaxRegionCreateFormProps) => {
               <PermissionGuard permission="tax_rate:create">
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center gap-x-1">
-                    <Heading level="h2" className="!txt-compact-small-plus">
+                    <Heading level="h2" className="txt-compact-small-plus!">
                       {t("taxRegions.fields.defaultTaxRate.label")}
                     </Heading>
                     <Text

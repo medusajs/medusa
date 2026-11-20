@@ -3,6 +3,7 @@ import {
   MiddlewareRoute,
   validateAndTransformBody,
 } from "@medusajs/framework/http"
+import { loginAuditMetadata } from "./utils/login-audit-metadata"
 import { validateScopeProviderAssociation } from "./utils/validate-scope-provider-association"
 import { validateToken } from "./utils/validate-token"
 import {
@@ -114,6 +115,8 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["GET", "POST"],
     matcher: "/auth/:actor_type/:auth_provider/callback",
+    // GET too, since providers usually redirect back to the callback.
+    audit: { action: "auth.authenticate", metadata: loginAuditMetadata },
     middlewares: [validateScopeProviderAssociation()],
   },
   {
@@ -124,7 +127,7 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST"],
     matcher: "/auth/:actor_type/:auth_provider",
-    audit: { action: "auth.authenticate" },
+    audit: { action: "auth.authenticate", metadata: loginAuditMetadata },
     middlewares: [validateScopeProviderAssociation()],
   },
   {

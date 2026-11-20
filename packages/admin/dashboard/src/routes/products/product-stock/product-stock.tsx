@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"
 import { Await, useLoaderData } from "react-router-dom"
 
 import { ColumnDef } from "@tanstack/react-table"
+import { DataGridFeatures } from "../../../components/data-grid/data-grid-features"
 import { ProgressBar } from "../../../components/common/progress-bar"
 import { Skeleton } from "../../../components/common/skeleton"
 import { DataGridSkeleton } from "../../../components/data-grid/components"
@@ -28,7 +29,7 @@ export const ProductStock = () => {
    * the animation when the data is loaded, and the form is rendered.
    */
   const [isLoading, setIsLoading] = useState(false)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>()
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined)
 
   useEffect(() => {
     timeoutRef.current = setTimeout(() => {
@@ -93,7 +94,9 @@ const ProductStockFallback = () => {
         </div>
         <div className="flex-1 overflow-auto">
           <DataGridSkeleton
-            columns={Array.from({ length: 10 }) as ColumnDef<any>[]}
+            columns={
+              Array.from({ length: 10 }) as ColumnDef<DataGridFeatures, any>[]
+            }
           />
         </div>
         <div className="flex items-center justify-end gap-x-2 bg-ui-bg-base p-4">

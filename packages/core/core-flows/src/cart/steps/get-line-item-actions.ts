@@ -114,6 +114,8 @@ export const getLineItemActionsStep = createStep(
             quantity: quantity,
             variant_id: item.variant_id!,
             unit_price: item.unit_price ?? existingItem.unit_price,
+            is_tax_inclusive:
+              item.is_tax_inclusive ?? existingItem.is_tax_inclusive,
             compare_at_unit_price:
               item.compare_at_unit_price ?? existingItem.compare_at_unit_price,
           })

@@ -2,15 +2,16 @@
 
 import * as React from "react"
 
+import { DataTableRowData } from "../types"
 import { UseDataTableReturn } from "../use-data-table"
 import { DataTableContext } from "./data-table-context"
 
-type DataTableContextProviderProps<TData> = {
+type DataTableContextProviderProps<TData extends DataTableRowData> = {
   instance: UseDataTableReturn<TData>
   children: React.ReactNode
 }
 
-const DataTableContextProvider = <TData,>({
+const DataTableContextProvider = <TData extends DataTableRowData>({
   instance,
   children,
 }: DataTableContextProviderProps<TData>) => {

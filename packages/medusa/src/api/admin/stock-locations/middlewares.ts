@@ -21,7 +21,7 @@ import {
 
 export const adminStockLocationRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/stock-locations/*",
+    matcher: "/admin/stock-locations/{*splat}",
     middlewares: [
       authorize([
         {

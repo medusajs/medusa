@@ -1,12 +1,16 @@
 import { HttpTypes } from "@medusajs/types"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 import { DateCell } from "../../../components/table/table-cells/common/date-cell"
 import { TextCell } from "../../../components/table/table-cells/common/text-cell"
 
-const columnHelper = createColumnHelper<HttpTypes.AdminShippingOptionType>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminShippingOptionType
+>()
 
 export const useShippingOptionTypeTableColumns = () => {
   const { t } = useTranslation()

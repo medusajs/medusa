@@ -106,7 +106,7 @@ const authorizeNestedProductWrites = <TBody>(
 
 export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/products/*",
+    matcher: "/admin/products/{*splat}",
     middlewares: [
       authorize([
         {
@@ -117,7 +117,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
-    matcher: "/admin/products/*/variants/*",
+    matcher: "/admin/products/{*splat}/variants/{*splat}",
     middlewares: [
       authorize([
         {
@@ -128,7 +128,7 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
-    matcher: "/admin/products/*/options/*",
+    matcher: "/admin/products/{*splat}/options/{*splat}",
     middlewares: [
       authorize([
         {
@@ -139,7 +139,8 @@ export const adminProductRoutesMiddlewares: MiddlewareRoute[] = [
     ],
   },
   {
-    matcher: "/admin/products/*/variants/*/inventory-items/*",
+    matcher:
+      "/admin/products/{*splat}/variants/{*splat}/inventory-items/{*splat}",
     middlewares: [
       authorize([
         {

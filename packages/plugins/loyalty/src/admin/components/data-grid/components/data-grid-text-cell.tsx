@@ -1,4 +1,4 @@
-import { clx } from "@medusajs/ui";
+import { clx, DataTableRowData } from "@medusajs/ui";
 import { useEffect, useState } from "react";
 import { Controller, ControllerRenderProps } from "react-hook-form";
 import { useCombinedRefs } from "../../../utils/refs";
@@ -6,7 +6,7 @@ import { useDataGridCell, useDataGridCellError } from "../hooks";
 import { DataGridCellProps, InputProps } from "../types";
 import { DataGridCellContainer } from "./data-grid-cell-container";
 
-export const DataGridTextCell = <TData, TValue = any>({
+export const DataGridTextCell = <TData extends DataTableRowData, TValue = any>({
   context,
 }: DataGridCellProps<TData, TValue>) => {
   const { field, control, renderProps } = useDataGridCell({
@@ -52,7 +52,7 @@ const Inner = ({
   return (
     <input
       className={clx(
-        "txt-compact-small text-ui-fg-subtle flex size-full cursor-pointer items-center justify-center bg-transparent outline-none",
+        "txt-compact-small text-ui-fg-subtle flex size-full cursor-pointer items-center justify-center bg-transparent outline-hidden",
         "focus:cursor-text"
       )}
       autoComplete="off"

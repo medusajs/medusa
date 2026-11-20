@@ -375,7 +375,7 @@ export function OrderReceiveReturnForm({
                         <Form.Label>
                           {t("orders.returns.sendNotification")}
                         </Form.Label>
-                        <Form.Hint className="!mt-1">
+                        <Form.Hint className="mt-1!">
                           {t("orders.returns.receive.sendNotificationHint")}
                         </Form.Hint>
                       </div>

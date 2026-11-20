@@ -74,7 +74,7 @@ export const useCapturePayment = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.payment.capture(paymentId, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
@@ -83,7 +83,7 @@ export const useCapturePayment = (
         queryKey: ordersQueryKeys.preview(orderId),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -100,7 +100,7 @@ export const useRefundPayment = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.payment.refund(paymentId, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.details(),
       })
@@ -109,7 +109,7 @@ export const useRefundPayment = (
         queryKey: ordersQueryKeys.preview(orderId),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

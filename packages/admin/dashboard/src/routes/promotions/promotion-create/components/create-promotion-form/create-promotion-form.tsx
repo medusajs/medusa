@@ -625,7 +625,7 @@ export const CreatePromotionForm = () => {
                                     <Form.Label>
                                       {t("promotions.form.taxInclusive.title")}
                                     </Form.Label>
-                                    <Form.Hint className="!mt-1">
+                                    <Form.Hint className="mt-1!">
                                       {t(
                                         "promotions.form.taxInclusive.description"
                                       )}

@@ -11,6 +11,7 @@ export const POST = async (
     input: {
       cart_id: req.params.id,
       force_tax_calculation: true,
+      force_refresh_payment_collection: true,
     },
   })
 

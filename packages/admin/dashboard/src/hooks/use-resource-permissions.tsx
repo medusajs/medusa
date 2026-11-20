@@ -222,6 +222,11 @@ export const useRbacPolicyPermissions = () =>
   useResourcePermissions("rbac_policy")
 
 /**
+ * Hook for checking audit log permissions.
+ */
+export const useAuditLogPermissions = () => useResourcePermissions("audit_log")
+
+/**
  * Hook for checking API key-specific permissions.
  */
 export const useApiKeyPermissions = () => useResourcePermissions("api_key")
@@ -290,6 +295,33 @@ export const useTranslationPermissions = () =>
  */
 export const useTranslationSettingPermissions = () =>
   useResourcePermissions("translation_setting")
+
+/**
+ * Hook for checking search index-specific permissions.
+ */
+export const useSearchIndexPermissions = () =>
+  useResourcePermissions("search_index")
+
+/**
+ * Hook for checking search index sync-specific permissions. Reindexing creates
+ * a sync.
+ */
+export const useSearchIndexSyncPermissions = () =>
+  useResourcePermissions("search_index_sync")
+
+/**
+ * Hook for checking permissions on system default view configurations. A
+ * user's own views need no permission.
+ */
+export const useViewConfigurationPermissions = () =>
+  useResourcePermissions("view_configuration")
+
+/**
+ * Hook for checking permissions on default layout configurations. A user's
+ * own layout needs no permission.
+ */
+export const useLayoutConfigurationPermissions = () =>
+  useResourcePermissions("layout_configuration")
 
 /**
  * Permissions the translations editor needs to open (translations, the

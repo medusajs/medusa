@@ -9,7 +9,6 @@ import {
   toast,
 } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
-import { RowSelectionState } from "@tanstack/react-table"
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -55,7 +54,9 @@ export const ApiKeySalesChannelsForm = ({
 
   const { setValue } = form
 
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const [rowSelection, setRowSelection] = useState<DataTableRowSelectionState>(
+    {}
+  )
 
   const { mutateAsync, isPending: isMutating } =
     useBatchAddSalesChannelsToApiKey(apiKey)

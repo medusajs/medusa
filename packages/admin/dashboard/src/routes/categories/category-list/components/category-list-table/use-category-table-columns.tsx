@@ -2,6 +2,7 @@ import { TriangleRightMini } from "@medusajs/icons"
 import { AdminProductCategoryResponse } from "@medusajs/types"
 import { IconButton, Text, clx } from "@medusajs/ui"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -16,8 +17,10 @@ import {
   getIsInternalProps,
 } from "../../../common/utils"
 
-const columnHelper =
-  createColumnHelper<AdminProductCategoryResponse["product_category"]>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  AdminProductCategoryResponse["product_category"]
+>()
 
 export const useCategoryTableColumns = () => {
   const { t } = useTranslation()

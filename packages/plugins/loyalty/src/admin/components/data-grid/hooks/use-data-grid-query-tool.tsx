@@ -2,7 +2,7 @@ import { RefObject, useEffect, useRef } from "react"
 
 import { DataGridQueryTool } from "../models"
 
-export const useDataGridQueryTool = (containerRef: RefObject<HTMLElement>) => {
+export const useDataGridQueryTool = (containerRef: RefObject<HTMLElement | null>) => {
   const queryToolRef = useRef<DataGridQueryTool | null>(null)
 
   useEffect(() => {
