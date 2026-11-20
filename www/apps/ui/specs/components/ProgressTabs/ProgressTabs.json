@@ -7,9 +7,18 @@
       "description": "Whether a tab is activated automatically or manually.",
       "required": false,
       "tsType": {
-        "name": "ActivationMode",
-        "elements": [],
-        "raw": "ActivationMode"
+        "name": "union",
+        "raw": "\"manual\" \\| \"automatic\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"manual\""
+          },
+          {
+            "name": "literal",
+            "value": "\"automatic\""
+          }
+        ]
       }
     },
     "defaultValue": {
@@ -23,9 +32,18 @@
       "description": "The direction of navigation between toolbar items.",
       "required": false,
       "tsType": {
-        "name": "Direction",
-        "elements": [],
-        "raw": "Direction"
+        "name": "union",
+        "raw": "\"ltr\" \\| \"rtl\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"ltr\""
+          },
+          {
+            "name": "literal",
+            "value": "\"rtl\""
+          }
+        ]
       }
     },
     "onValueChange": {
@@ -55,9 +73,18 @@
       "description": "The orientation the tabs are layed out.\nMainly so arrow navigation is done accordingly (left & right vs. up & down)",
       "required": false,
       "tsType": {
-        "name": "Orientation",
-        "elements": [],
-        "raw": "Orientation"
+        "name": "union",
+        "raw": "\"horizontal\" \\| \"vertical\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"horizontal\""
+          },
+          {
+            "name": "literal",
+            "value": "\"vertical\""
+          }
+        ]
       }
     },
     "value": {

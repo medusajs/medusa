@@ -385,9 +385,18 @@
       "description": "Controls the behavior of paging. Pagination either works by advancing the visible page by\nvisibleDuration (default) or one unit of visibleDuration.",
       "required": false,
       "tsType": {
-        "name": "PageBehavior",
-        "elements": [],
-        "raw": "PageBehavior"
+        "name": "union",
+        "raw": "\"single\" \\| \"visible\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"single\""
+          },
+          {
+            "name": "literal",
+            "value": "\"visible\""
+          }
+        ]
       }
     },
     "placeholderValue": {

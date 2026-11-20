@@ -11,6 +11,7 @@
       "description": "Whether to show the select items below (`popper`) or over (`item-aligned`) the select input.",
       "tsType": {
         "name": "union",
+        "raw": "\"item-aligned\" \\| \"popper\"",
         "elements": [
           {
             "name": "literal",
@@ -19,9 +20,6 @@
           {
             "name": "literal",
             "value": "\"popper\""
-          },
-          {
-            "name": "undefined"
           }
         ]
       },
