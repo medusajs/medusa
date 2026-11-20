@@ -3248,6 +3248,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "سجلات التدقيق",
+    "subtitle": "راجع من فعل ماذا في متجرك، وعلى أي مورد، وكيف انتهى.",
+    "impersonatedBy": "انتحال الهوية بواسطة {{id}}",
+    "outcome": {
+      "succeeded": "نجح",
+      "denied": "مرفوض",
+      "failed": "فشل"
+    },
+    "fields": {
+      "time": "الوقت",
+      "actor": "المنفذ",
+      "actorType": "نوع المنفذ",
+      "actorId": "معرف المنفذ",
+      "impersonatorId": "معرف منتحل الهوية",
+      "action": "الإجراء",
+      "resource": "المورد",
+      "resourceType": "نوع المورد",
+      "resourceId": "معرف المورد",
+      "outcome": "النتيجة",
+      "startedAt": "بدأ في",
+      "endedAt": "انتهى في",
+      "requestData": "بيانات الطلب",
+      "responseData": "بيانات الاستجابة"
+    },
+    "request": {
+      "header": "الطلب",
+      "method": "الطريقة",
+      "route": "المسار",
+      "path": "المسار الكامل",
+      "statusCode": "رمز الحالة",
+      "requestId": "معرف الطلب",
+      "ipAddress": "عنوان IP",
+      "userAgent": "وكيل المستخدم",
+      "none": "لم يتم تسجيل هذا السجل لطلب API."
+    },
+    "list": {
+      "empty": {
+        "heading": "لا توجد سجلات تدقيق بعد",
+        "description": "ستظهر الإجراءات المنفذة في متجرك هنا."
+      },
+      "filtered": {
+        "heading": "لا توجد نتائج",
+        "description": "لا توجد سجلات تدقيق تطابق معايير الفلتر الحالية."
+      },
+      "searchError": {
+        "heading": "فشل البحث"
+      }
+    }
+  },
   "translations": {
     "domain": "الترجمات",
     "settings": {

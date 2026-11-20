@@ -3165,6 +3165,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Журналы аудита",
+    "subtitle": "Просматривайте, кто и что делал в вашем магазине, с каким ресурсом и каков был результат.",
+    "impersonatedBy": "Имитирован пользователем {{id}}",
+    "outcome": {
+      "succeeded": "Успешно",
+      "denied": "Отклонено",
+      "failed": "Ошибка"
+    },
+    "fields": {
+      "time": "Время",
+      "actor": "Актор",
+      "actorType": "Тип актора",
+      "actorId": "ID актора",
+      "impersonatorId": "ID имперсонатора",
+      "action": "Действие",
+      "resource": "Ресурс",
+      "resourceType": "Тип ресурса",
+      "resourceId": "ID ресурса",
+      "outcome": "Результат",
+      "startedAt": "Начато в",
+      "endedAt": "Завершено в",
+      "requestData": "Данные запроса",
+      "responseData": "Данные ответа"
+    },
+    "request": {
+      "header": "Запрос",
+      "method": "Метод",
+      "route": "Маршрут",
+      "path": "Путь",
+      "statusCode": "Код статуса",
+      "requestId": "ID запроса",
+      "ipAddress": "IP-адрес",
+      "userAgent": "User-agent",
+      "none": "Этот журнал аудита не был записан для API-запроса."
+    },
+    "list": {
+      "empty": {
+        "heading": "Журналов аудита пока нет",
+        "description": "Здесь будут отображаться действия, выполненные в вашем магазине."
+      },
+      "filtered": {
+        "heading": "Нет результатов",
+        "description": "Ни один журнал аудита не соответствует текущим критериям фильтра."
+      },
+      "searchError": {
+        "heading": "Поиск не удался"
+      }
+    }
+  },
   "translations": {
     "domain": "Переводы",
     "settings": {

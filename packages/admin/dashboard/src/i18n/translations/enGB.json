@@ -3087,6 +3087,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Audit logs",
+    "subtitle": "Review who did what in your store, on which resource, and how it ended.",
+    "impersonatedBy": "Impersonated by {{id}}",
+    "outcome": {
+      "succeeded": "Succeeded",
+      "denied": "Denied",
+      "failed": "Failed"
+    },
+    "fields": {
+      "time": "Time",
+      "actor": "Actor",
+      "actorType": "Actor type",
+      "actorId": "Actor ID",
+      "impersonatorId": "Impersonator ID",
+      "action": "Action",
+      "resource": "Resource",
+      "resourceType": "Resource type",
+      "resourceId": "Resource ID",
+      "outcome": "Outcome",
+      "startedAt": "Started at",
+      "endedAt": "Ended at",
+      "requestData": "Request data",
+      "responseData": "Response data"
+    },
+    "request": {
+      "header": "Request",
+      "method": "Method",
+      "route": "Route",
+      "path": "Path",
+      "statusCode": "Status code",
+      "requestId": "Request ID",
+      "ipAddress": "IP address",
+      "userAgent": "User agent",
+      "none": "This audit log wasn't recorded for an API request."
+    },
+    "list": {
+      "empty": {
+        "heading": "No audit logs yet",
+        "description": "Actions performed in your store will appear here."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No audit logs match the current filter criteria."
+      },
+      "searchError": {
+        "heading": "Search failed"
+      }
+    }
+  },
   "translations": {
     "domain": "Translations",
     "settings": {

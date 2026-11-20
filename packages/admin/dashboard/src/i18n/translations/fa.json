@@ -3072,6 +3072,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "گزارش‌های حسابرسی",
+    "subtitle": "بررسی کنید چه کسی در فروشگاه شما چه کاری انجام داده، روی کدام منبع، و چگونه پایان یافته.",
+    "impersonatedBy": "جعل هویت توسط {{id}}",
+    "outcome": {
+      "succeeded": "موفق",
+      "denied": "رد شد",
+      "failed": "ناموفق"
+    },
+    "fields": {
+      "time": "زمان",
+      "actor": "عامل",
+      "actorType": "نوع عامل",
+      "actorId": "شناسه عامل",
+      "impersonatorId": "شناسه جاعل هویت",
+      "action": "عملیات",
+      "resource": "منبع",
+      "resourceType": "نوع منبع",
+      "resourceId": "شناسه منبع",
+      "outcome": "نتیجه",
+      "startedAt": "شروع در",
+      "endedAt": "پایان در",
+      "requestData": "داده‌های درخواست",
+      "responseData": "داده‌های پاسخ"
+    },
+    "request": {
+      "header": "درخواست",
+      "method": "متد",
+      "route": "مسیر",
+      "path": "آدرس",
+      "statusCode": "کد وضعیت",
+      "requestId": "شناسه درخواست",
+      "ipAddress": "آدرس IP",
+      "userAgent": "عامل کاربر",
+      "none": "این گزارش حسابرسی برای یک درخواست API ثبت نشده است."
+    },
+    "list": {
+      "empty": {
+        "heading": "هنوز گزارش حسابرسی وجود ندارد",
+        "description": "اقداماتی که در فروشگاه شما انجام می‌شوند اینجا نمایش داده خواهند شد."
+      },
+      "filtered": {
+        "heading": "بدون نتیجه",
+        "description": "هیچ گزارش حسابرسی با معیارهای فیلتر فعلی مطابقت ندارد."
+      },
+      "searchError": {
+        "heading": "جستجو ناموفق بود"
+      }
+    }
+  },
   "translations": {
     "domain": "ترجمه‌ها",
     "settings": {
