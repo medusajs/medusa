@@ -16,7 +16,7 @@ This rule requires subscriber files to default-export the subscriber function.
 
 ## What it Targets
 
-This rule targets files in your project's `src/subscribers` directory. It reports a subscriber file that has no default export.
+This rule targets files at any depth in your project's `src/subscribers` directory, except `index` files, files whose names start with `_`, and `.d.ts` files, which Medusa doesn't load as subscribers. It reports a subscriber file that has no default export.
 
 The following code is reported by the rule:
 

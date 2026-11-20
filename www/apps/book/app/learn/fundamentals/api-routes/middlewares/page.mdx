@@ -147,7 +147,7 @@ export default defineMiddlewares({
 The `defineMiddlewares` function accepts a middleware configurations object that has the property `routes`. `routes`'s value is an array of middleware route objects, each having the following properties:
 
 - `matcher`: the API route path to apply the middleware on. Its value can be one of the following:
-    - A string, which Medusa compiles using [path-to-regexp](https://github.com/pillarjs/path-to-regexp). So, the string can include patterns like `/custom*`.
+    - A string, which Medusa compiles using [path-to-regexp](https://github.com/pillarjs/path-to-regexp). So, the string can include patterns like `/custom*`. Learn more in the [String Matcher Syntax](#string-matcher-syntax) section.
     - A regular expression (`RegExp`), which Medusa matches against the request path directly. For example, `/^\/custom(\/.*)?$/`.
 
 - `middlewares`: An array of global and route middleware functions.
@@ -176,6 +176,43 @@ If the middleware didn't run, make sure you've correctly created the middleware 
 
 ---
 
+## String Matcher Syntax
+
+<Note>
+
+This section is applicable starting from [Medusa v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), where Medusa's server uses Express 5. Previous versions were using Express 4.
+
+</Note>
+
+Medusa's server is based on Express 5, which uses the [path-to-regexp](https://github.com/pillarjs/path-to-regexp) syntax to match string matchers. To match any path under a route, use a named wildcard, such as `{*splat}`:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/custom{*splat}",
+      middlewares: [
+        // ...
+      ],
+    },
+  ],
+})
+```
+
+This middleware applies to `/custom` and any route starting with `/custom`, such as `/custom/products`.
+
+For backward compatibility of Express 4 string matchers, Medusa converts a bare `*` in a string matcher to an optional named wildcard. So, the matchers `/custom*` and `/custom/*` keep working as they did with Express 4. For example, `/custom/*` matches `/custom/` and any nested route, such as `/custom/products/123`.
+
+<Note title="Warning" type="warning">
+
+Express 5 doesn't support other Express 4 string patterns, such as `(products|collections)`, `?`, and `+`. A string matcher that uses these patterns throws an error when the Medusa application starts. Use a [regular expression matcher](#apply-a-middleware-using-a-regular-expression) instead.
+
+</Note>
+
+---
+
 ## Apply a Middleware Using a Regular Expression
 
 You can set the `matcher` property to a regular expression (`RegExp`) to apply a middleware to routes matching a pattern.
@@ -184,7 +221,7 @@ A `RegExp` matcher must account for the full request path, including the leading
 
 ### Global Middleware
 
-For a global middleware (a middleware without a `method`), Medusa registers the `RegExp` using Express's [app.use](https://expressjs.com/en/4x/api.html#app.use) method. Express matches a `RegExp` in `app.use` only if the pattern matches from the start of the request path.
+For a global middleware (a middleware without a `method`), Medusa registers the `RegExp` using Express's [app.use](https://expressjs.com/en/5x/api.html#app.use) method. Express matches a `RegExp` in `app.use` only if the pattern matches from the start of the request path.
 
 So, you must anchor the pattern with `^` and include the leading slash:
 
@@ -431,8 +468,8 @@ The global middleware runs first, then the route middleware, and finally the rou
 
 On top of the previous ordering, Medusa sorts global and route middlewares based on their matcher pattern in the following order:
 
-1. Wildcard matchers. For example, `/custom*`.
-2. Regex matchers. For example, `/custom/(products|collections)`.
+1. Wildcard matchers. For example, `/custom*` or `/custom/{*splat}`.
+2. Regex matchers. For example, `/^\/custom\/(products|collections)$/`.
 3. Static matchers without parameters. For example, `/custom`.
 4. Static matchers with parameters. For example, `/custom/:id`.
 

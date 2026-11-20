@@ -22,7 +22,7 @@ This rule is available since [Medusa v2.19.0](https://github.com/medusajs/medusa
 
 ## What it Targets
 
-This rule targets subscriber files in your project. It reports usages of internal module events (such as `ProductEvents.PRODUCT_CATEGORY_DELETED`) in the `event` property of the exported `config` object, and suggests the equivalent workflow event enum instead.
+This rule targets subscriber files at any depth in your project's `src/subscribers` directory, except `index` files, files whose names start with `_`, and `.d.ts` files. It reports usages of internal module events (such as `ProductEvents.PRODUCT_CATEGORY_DELETED`) in the `event` property of the exported `config` object, and suggests the equivalent workflow event enum instead.
 
 The following code is reported by the rule:
 

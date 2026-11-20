@@ -62,7 +62,9 @@ If the key is missing or doesn't cover the `rbac` feature, the Medusa applicatio
 
 ### 2. Register the RBAC Module
 
-Medusa doesn't register the RBAC Module by default. To use it, add it to the `modules` array in `medusa-config.ts`:
+Since Medusa v2.23.0, Medusa registers the RBAC Module by default if the license key is set and covers the `rbac` feature.
+
+To use it in previous versions, add it to the `modules` array in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({

@@ -62,6 +62,16 @@ If the cart's region has only one country, Medusa sets that country as the cart'
 
 </Note>
 
+### Cart Completion Requires a Shipping Address Country
+
+Since Medusa v2.23.0, the [completeCartWorkflow](/references/medusa-workflows/completeCartWorkflow) checks that the cart's shipping address has a country before it places the order. The workflow throws an error if all of the following are true:
+
+- The cart's region has `automatic_taxes` enabled and has at least one country.
+- The cart has shipping methods or line items that aren't gift cards.
+- The cart has a shipping address without a `country_code`.
+
+This prevents Medusa from placing an order without tax lines. So, make sure your storefront sets the shipping address's country before completing the cart.
+
 ### Tax Recalculation by Cart Operation
 
 The following table explains how each cart operation affects the cart's tax lines when `automatic_taxes` is enabled:
@@ -144,6 +154,8 @@ The following table explains how each cart operation affects the cart's tax line
 <Note>
 
 To force Medusa to recalculate a cart's tax lines, even when `automatic_taxes` is disabled, send a request to the [Calculate Cart Taxes API route](!api!/store/carts/calculate-taxes). This also triggers a fresh calculation from your third-party tax provider, if you use one.
+
+Since Medusa v2.23.0, the Calculate Cart Taxes API route also refreshes the cart's payment collection, so its amount matches the cart's new total. If you run the `updateTaxLinesWorkflow` in your customizations, pass the `force_refresh_payment_collection: true` input to refresh the payment collection after updating the tax lines.
 
 </Note>
 

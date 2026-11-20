@@ -16,7 +16,7 @@ This rule requires scheduled job files to export a `config` object with `name` a
 
 ## What it Targets
 
-This rule targets files in your project's `src/jobs` directory. It reports a scheduled job file that's missing the named `config` export, or whose `config` object doesn't declare both a `name` and a `schedule` property.
+This rule targets files at any depth in your project's `src/jobs` directory, except `index` files, files whose names start with `_`, and `.d.ts` files, which Medusa doesn't load as scheduled jobs. It reports a scheduled job file that's missing the named `config` export, or whose `config` object doesn't declare both a `name` and a `schedule` property.
 
 The following code is reported by the rule:
 

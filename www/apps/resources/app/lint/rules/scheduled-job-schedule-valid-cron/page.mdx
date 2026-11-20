@@ -16,7 +16,7 @@ This rule requires a scheduled job's `config.schedule` string to be a valid cron
 
 ## What it Targets
 
-This rule targets files in your project's `src/jobs` directory. It reports a `config.schedule` whose string value isn't a valid cron expression. Interval-based schedules, such as `{ interval: 60000 }`, aren't checked.
+This rule targets files at any depth in your project's `src/jobs` directory, except `index` files, files whose names start with `_`, and `.d.ts` files, which Medusa doesn't load as scheduled jobs. It reports a `config.schedule` whose string value isn't a valid cron expression. Interval-based schedules, such as `{ interval: 60000 }`, aren't checked.
 
 The following code is reported by the rule:
 

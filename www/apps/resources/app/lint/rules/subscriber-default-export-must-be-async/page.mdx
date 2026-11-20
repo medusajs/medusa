@@ -16,7 +16,7 @@ This rule requires the default-exported subscriber handler function to be async.
 
 ## What it Targets
 
-This rule targets files in your project's `src/subscribers` directory. It reports a default-exported subscriber handler that isn't an async function.
+This rule targets files at any depth in your project's `src/subscribers` directory, except `index` files, files whose names start with `_`, and `.d.ts` files, which Medusa doesn't load as subscribers. It reports a default-exported subscriber handler that isn't an async function.
 
 The following code is reported by the rule:
 
