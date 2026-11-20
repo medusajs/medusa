@@ -875,6 +875,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateCartStep/page.json"
   },
   {
+    "origSlug": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateCartTaxCountryStep",
+    "newSlug": "/references/medusa-workflows/steps/validateCartTaxCountryStep",
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateCartTaxCountryStep/page.json"
+  },
+  {
     "origSlug": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateLineItemPricesStep",
     "newSlug": "/references/medusa-workflows/steps/validateLineItemPricesStep",
     "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateLineItemPricesStep/page.json"
