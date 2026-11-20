@@ -11,6 +11,7 @@ import {
 import {
   getCallerFilePath,
   isString,
+  MedusaError,
   Modules,
   OrchestrationUtils,
   registerDevServerResource,
@@ -274,11 +275,30 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
         }
 
         if (workflowEngine && isAsync) {
-          await workflowEngine.cancel(name, {
-            transactionId: executionContext.transactionId,
-            context: executionContext,
-          })
+          try {
+            await workflowEngine.cancel(name, {
+              transactionId: executionContext.transactionId,
+              context: executionContext,
+            })
+          } catch (error) {
+            const isNotFound =
+              MedusaError.isMedusaError(error) &&
+              error.type === MedusaError.Types.NOT_FOUND
+
+            // A failed sub workflow already reverted itself and isn't stored. With compensateAsync,
+            // the parent would wait forever for that missing sub workflow to report back.
+            if (
+              !isNotFound ||
+              stepContext[" stepDefinition"]?.compensateAsync
+            ) {
+              throw error
+            }
+          }
         } else {
+          if (!transaction) {
+            return
+          }
+
           await workflow(container).cancel({
             transaction: ((transaction as WorkflowResult<any>) ?? {})
               ?.transaction,
