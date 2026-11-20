@@ -19,7 +19,7 @@ module.exports = defineConfig({
 
 ## Architecture
 
-- `src/admin/routes/draft-orders/`: list page (`page.tsx`, `defineRouteConfig({ label: "Drafts", nested: "/orders" })`), `@create` modal, and `[id]` detail with parallel `@<section>` routes (items, shipping, addresses, promotions, email, metadata, sales-channel, transfer-ownership, custom-items).
+- `src/admin/routes/draft-orders/`: list page (`page.tsx`, `defineRouteConfig({ label: "draftOrders.domain", translationNs: "translation", nested: "/orders" })`), `@create` modal, and `[id]` detail with parallel `@<section>` routes (items, shipping, addresses, promotions, email, metadata, sales-channel, transfer-ownership, custom-items).
 - RBAC: the core `/admin/draft-orders` routes are guarded by the `order` resource. Every page declares its permissions (`config.permissions` on the list, `export const handle = { permissions }` on the others) and actions are gated with `usePermissions` from `@medusajs/dashboard/hooks`. Shared permission sets live in `src/admin/lib/permissions.ts`, so an action and the route it opens check the same list. Child routes repeat `order:read`, since the deepest route's permissions replace the parent's.
 - `src/admin/hooks/api/`: React Query hooks wrapping `sdk.admin.*` calls; `draft-orders.tsx` covers the edit flow (`beginEdit`, `requestEdit`, `cancelEdit`, `convertToOrder`, action-item updates).
 - `src/admin/lib/queries/sdk.ts`: JS SDK client configured from the admin build globals `__BACKEND_URL__`, `__AUTH_TYPE__`, `__JWT_TOKEN_STORAGE_KEY__` (declared in `src/admin/vite-env.d.ts`).
@@ -34,7 +34,7 @@ yarn build:plugin          # medusa plugin:build -> .medusa/server (the only pub
 yarn dev                   # medusa plugin:develop (watch + publish to local registry)
 ```
 
-- Pure admin helpers (e.g. `src/admin/lib/utils/metadata-utils.ts`) have Jest unit tests in `__tests__/` beside them; run them with `npx jest` from the package directory (there's no `test` script). Draft-order behaviour is covered by HTTP integration tests in `integration-tests/http/__tests__/draft-order/admin/`, which exercise the core routes.
+- Pure admin helpers (e.g. `src/admin/lib/utils/metadata-utils.ts`) and admin components (`.spec.tsx`, rendered with `react-dom/server`) have Jest unit tests in `__tests__/` beside them; run them with `npx jest` from the package directory (there's no `test` script). Draft-order behaviour is covered by HTTP integration tests in `integration-tests/http/__tests__/draft-order/admin/`, which exercise the core routes.
 - Root `yarn build` runs `build:plugin` through turbo, after `@medusajs/medusa#build`.
 - Plugin docs: https://docs.medusajs.com/learn/fundamentals/plugins.md
 
@@ -44,4 +44,5 @@ yarn dev                   # medusa plugin:develop (watch + publish to local reg
 - `tsconfig.json` excludes `src/admin`; admin code is type-checked with `src/admin/tsconfig.json` (bundler resolution, `noEmit`, strict) and bundled by `plugin:build`.
 - There is no Tailwind config: the app's admin build compiles the plugin's classes with Tailwind 4, so use v4 class names.
 - The `exports` map lists `./workflows`, `./modules/*` and `./providers/*` from the plugin template, but none exist in `src/`. Only `./admin` resolves to real code.
+- UI strings come from the dashboard's i18n resources: use `useTranslation()` from `react-i18next` with keys from `packages/admin/dashboard/src/i18n/translations/en.json` instead of hardcoded English.
 - A UI change that needs new backend behaviour usually means changing the core route, workflow, JS SDK method and `HttpTypes` together, and adding changesets for those packages too.

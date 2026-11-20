@@ -1,12 +1,15 @@
 import { createDataTableFilterHelper } from "@medusajs/ui"
 import { subDays, subMonths } from "date-fns"
 import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 
 import { getFullDate } from "../../lib/utils/date-utils"
 
 const filterHelper = createDataTableFilterHelper<any>()
 
 const useDateFilterOptions = () => {
+  const { t } = useTranslation()
+
   const today = useMemo(() => {
     const date = new Date()
     date.setHours(0, 0, 0, 0)
@@ -16,40 +19,41 @@ const useDateFilterOptions = () => {
   return useMemo(() => {
     return [
       {
-        label: "Today",
+        label: t("filters.date.today"),
         value: {
           $gte: today.toISOString(),
         },
       },
       {
-        label: "Last 7 days",
+        label: t("filters.date.lastSevenDays"),
         value: {
           $gte: subDays(today, 7).toISOString(), // 7 days ago
         },
       },
       {
-        label: "Last 30 days",
+        label: t("filters.date.lastThirtyDays"),
         value: {
           $gte: subDays(today, 30).toISOString(), // 30 days ago
         },
       },
       {
-        label: "Last 90 days",
+        label: t("filters.date.lastNinetyDays"),
         value: {
           $gte: subDays(today, 90).toISOString(), // 90 days ago
         },
       },
       {
-        label: "Last 12 months",
+        label: t("filters.date.lastTwelveMonths"),
         value: {
           $gte: subMonths(today, 12).toISOString(), // 12 months ago
         },
       },
     ]
-  }, [today])
+  }, [today, t])
 }
 
 export const useDataTableDateFilters = (disableRangeOption?: boolean) => {
+  const { t } = useTranslation()
   const dateFilterOptions = useDateFilterOptions()
 
   const rangeOptions = useMemo(() => {
@@ -60,18 +64,18 @@ export const useDataTableDateFilters = (disableRangeOption?: boolean) => {
     }
 
     return {
-      rangeOptionStartLabel: "Starting",
-      rangeOptionEndLabel: "Ending",
-      rangeOptionLabel: "Custom",
+      rangeOptionStartLabel: t("filters.date.starting"),
+      rangeOptionEndLabel: t("filters.date.ending"),
+      rangeOptionLabel: t("filters.date.custom"),
       options: dateFilterOptions,
     }
-  }, [disableRangeOption, dateFilterOptions])
+  }, [disableRangeOption, t, dateFilterOptions])
 
   return useMemo(() => {
     return [
       filterHelper.accessor("created_at", {
         type: "date",
-        label: "Created at",
+        label: t("fields.createdAt"),
         format: "date",
         formatDateValue: (date) => getFullDate({ date }),
         options: dateFilterOptions,
@@ -79,12 +83,12 @@ export const useDataTableDateFilters = (disableRangeOption?: boolean) => {
       }),
       filterHelper.accessor("updated_at", {
         type: "date",
-        label: "Updated at",
+        label: t("fields.updatedAt"),
         format: "date",
         formatDateValue: (date) => getFullDate({ date }),
         options: dateFilterOptions,
         ...rangeOptions,
       }),
     ]
-  }, [dateFilterOptions, getFullDate, rangeOptions])
+  }, [t, dateFilterOptions, getFullDate, rangeOptions])
 }
