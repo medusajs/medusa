@@ -71,7 +71,11 @@ export const addDraftOrderPromotionWorkflow = createWorkflow(
       ttl: 10,
     })
 
-    const order: OrderDTO = useRemoteQueryStep({
+    const order: OrderDTO & {
+      promotions?: {
+        id: string
+      }[]
+    } = useRemoteQueryStep({
       entry_point: "orders",
       fields: draftOrderFieldsForRefreshSteps,
       variables: {
@@ -120,16 +124,22 @@ export const addDraftOrderPromotionWorkflow = createWorkflow(
     const orderChangeActionInput = transform(
       { order, orderChange, promotions },
       ({ order, orderChange, promotions }) => {
-        return promotions.map((promotion) => ({
-          action: ChangeActionType.PROMOTION_ADD,
-          reference: "order_promotion",
-          order_change_id: orderChange.id,
-          reference_id: promotion.id,
-          order_id: order.id,
-          details: {
-            added_code: promotion.code,
-          },
-        }))
+        const linkedPromotionIds = new Set(
+          (order.promotions ?? []).map((promotion) => promotion.id)
+        )
+
+        return promotions
+          .filter((promotion) => !linkedPromotionIds.has(promotion.id))
+          .map((promotion) => ({
+            action: ChangeActionType.PROMOTION_ADD,
+            reference: "order_promotion",
+            order_change_id: orderChange.id,
+            reference_id: promotion.id,
+            order_id: order.id,
+            details: {
+              added_code: promotion.code,
+            },
+          }))
       }
     )
 
