@@ -150,6 +150,13 @@ export const generatedSidebars = [
                 "title": "License",
                 "path": "/organizations/license",
                 "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Audit Logs",
+                "path": "/organizations/audit-logs",
+                "children": []
               }
             ]
           },
