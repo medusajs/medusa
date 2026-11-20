@@ -1689,7 +1689,7 @@ describe("defineConfig", function () {
           "workflows": {
             "options": {
               "redis": {
-                "url": "redis://localhost:6379",
+                "redisUrl": "redis://localhost:6379",
               },
             },
             "resolve": "@medusajs/medusa/workflow-engine-redis",
@@ -2183,7 +2183,7 @@ describe("defineConfig", function () {
           "workflows": {
             "options": {
               "redis": {
-                "url": "redis://localhost:6379",
+                "redisUrl": "redis://localhost:6379",
               },
             },
             "resolve": "@medusajs/medusa/workflow-engine-redis",
@@ -2467,7 +2467,7 @@ describe("defineConfig", function () {
           "workflows": {
             "options": {
               "redis": {
-                "url": "redis://localhost:6379",
+                "redisUrl": "redis://localhost:6379",
               },
             },
             "resolve": "@medusajs/medusa/workflow-engine-redis",

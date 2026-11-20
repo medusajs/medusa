@@ -434,7 +434,7 @@ function resolveModules(
           resolve:
             TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ENGINE],
           options: {
-            redis: { url: process.env.REDIS_URL },
+            redis: { redisUrl: process.env.REDIS_URL },
           },
         },
         {
