@@ -37,6 +37,7 @@ import {
   updateCartsStep,
   validateCartItemsStep,
   validateCartPaymentsStep,
+  validateCartTaxCountryStep,
   validateShippingStep,
 } from "../steps"
 import { compensatePaymentIfNeededStep } from "../steps/compensate-payment-if-needed"
@@ -430,6 +431,8 @@ export const completeCartWorkflow = createWorkflow(
         cart: cartData.data,
         shippingOptions: shippingOptionsData.data,
       })
+
+      validateCartTaxCountryStep({ cart: cartData.data })
 
       const { variants, sales_channel_id } = transform(
         { cart: cartData.data },
