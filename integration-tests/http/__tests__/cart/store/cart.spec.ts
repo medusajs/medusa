@@ -3426,6 +3426,137 @@ medusaIntegrationTestRunner({
             )
           })
 
+          it("should fail to complete a cart if the promotion's campaign has ended", async () => {
+            const product = (
+              await api.post(
+                `/admin/products`,
+                {
+                  status: ProductStatus.PUBLISHED,
+                  title: "Product for ended campaign",
+                  description: "test",
+                  options: [
+                    {
+                      title: "Type",
+                      values: ["L"],
+                    },
+                  ],
+                  variants: [
+                    {
+                      title: "L",
+                      sku: "ended-campaign-product-l",
+                      options: {
+                        Type: "L",
+                      },
+                      manage_inventory: false,
+                      prices: [
+                        {
+                          amount: 300,
+                          currency_code: "usd",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                adminHeaders
+              )
+            ).data.product
+
+            const campaign = (
+              await api.post(
+                `/admin/campaigns`,
+                {
+                  name: "ENDING-CAMPAIGN",
+                  campaign_identifier: "ENDING_CAMPAIGN",
+                },
+                adminHeaders
+              )
+            ).data.campaign
+
+            const promotion = (
+              await api.post(
+                `/admin/promotions`,
+                {
+                  code: "ENDING_PROMO",
+                  type: PromotionType.STANDARD,
+                  status: PromotionStatus.ACTIVE,
+                  is_automatic: false,
+                  application_method: {
+                    target_type: "items",
+                    type: "fixed",
+                    allocation: "across",
+                    currency_code: "usd",
+                    value: 100,
+                  },
+                  campaign_id: campaign.id,
+                },
+                adminHeaders
+              )
+            ).data.promotion
+
+            const promoCart = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                  items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+                  promo_codes: [promotion.code],
+                },
+                storeHeadersWithCustomer
+              )
+            ).data.cart
+
+            expect(promoCart.promotions).toEqual([
+              expect.objectContaining({ code: promotion.code }),
+            ])
+
+            const paymentCollection = (
+              await api.post(
+                `/store/payment-collections`,
+                { cart_id: promoCart.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            await api.post(
+              `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+              { provider_id: "pp_system_default" },
+              storeHeaders
+            )
+
+            await api.post(
+              `/admin/campaigns/${campaign.id}`,
+              { ends_at: new Date(Date.now() - 1000) },
+              adminHeaders
+            )
+
+            const response = await api
+              .post(`/store/carts/${promoCart.id}/complete`, {}, storeHeaders)
+              .catch((e) => e)
+
+            expect(response.response.status).toEqual(400)
+            expect(response.response.data).toEqual(
+              expect.objectContaining({
+                type: "not_allowed",
+                message: `Promotion ${promotion.code} is not active.`,
+              })
+            )
+
+            const [cartAfter, promotionAfter] = await Promise.all([
+              api
+                .get(`/store/carts/${promoCart.id}`, storeHeaders)
+                .then((res) => res.data.cart),
+              api
+                .get(`/admin/promotions/${promotion.id}`, adminHeaders)
+                .then((res) => res.data.promotion),
+            ])
+
+            expect(cartAfter.completed_at).toBeNull()
+            expect(promotionAfter.used).toEqual(0)
+          })
+
           it("should successfully complete cart without shipping for digital products", async () => {
             /**
              * Product has a shipping profile so cart item should not require shipping
