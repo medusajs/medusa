@@ -22,6 +22,11 @@ export type ExportOrdersDTO = {
    * The filters to select which orders to export.
    */
   filter?: FilterableOrderProps
+  /**
+   * The user id or email to send the notification to. If not provided, the
+   * notification will be sent to all admin users.
+   */
+  to?: string
 }
 
 export const exportOrdersWorkflowId = "export-orders"
@@ -97,8 +102,7 @@ export const exportOrdersWorkflow = createWorkflow(
     const failureNotification = transform({ input }, (data) => {
       return [
         {
-          // We don't need the recipient here for now, but if we want to push feed notifications to a specific user we could add it.
-          to: "",
+          to: data.input.to ?? "",
           channel: "feed",
           template: "admin-ui",
           data: {
@@ -117,11 +121,10 @@ export const exportOrdersWorkflow = createWorkflow(
       list: false,
     })
 
-    const notifications = transform({ fileDetails, file }, (data) => {
+    const notifications = transform({ fileDetails, file, input }, (data) => {
       return [
         {
-          // We don't need the recipient here for now, but if we want to push feed notifications to a specific user we could add it.
-          to: "",
+          to: data.input.to ?? "",
           channel: "feed",
           template: "admin-ui",
           data: {
