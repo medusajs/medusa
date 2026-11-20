@@ -329,7 +329,7 @@ export const generatedEditDates = {
   "app/infrastructure-modules/analytics/posthog/page.mdx": "2025-08-21T05:30:12.983Z",
   "app/integrations/guides/segment/page.mdx": "2025-06-26T12:56:50.931Z",
   "app/integrations/guides/slack/page.mdx": "2026-06-12T12:59:08.464Z",
-  "app/integrations/guides/sentry/page.mdx": "2026-10-20T14:46:43.931Z",
+  "app/integrations/guides/sentry/page.mdx": "2026-11-20T07:43:44.891Z",
   "app/integrations/guides/mailchimp/page.mdx": "2026-01-12T12:02:36.772Z",
   "app/how-to-tutorials/tutorials/first-purchase-discounts/page.mdx": "2026-01-12T12:21:16.880Z",
   "app/how-to-tutorials/tutorials/gift-message/page.mdx": "2026-10-05T08:39:15.341Z",
