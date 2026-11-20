@@ -3093,6 +3093,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Audit-Protokolle",
+    "subtitle": "Überprüfen Sie, wer was in Ihrem Shop getan hat, an welcher Ressource und wie es endete.",
+    "impersonatedBy": "Personifiziert von {{id}}",
+    "outcome": {
+      "succeeded": "Erfolgreich",
+      "denied": "Abgelehnt",
+      "failed": "Fehlgeschlagen"
+    },
+    "fields": {
+      "time": "Zeit",
+      "actor": "Akteur",
+      "actorType": "Akteurtyp",
+      "actorId": "Akteur-ID",
+      "impersonatorId": "Personifikator-ID",
+      "action": "Aktion",
+      "resource": "Ressource",
+      "resourceType": "Ressourcentyp",
+      "resourceId": "Ressourcen-ID",
+      "outcome": "Ergebnis",
+      "startedAt": "Gestartet um",
+      "endedAt": "Beendet um",
+      "requestData": "Anfragedaten",
+      "responseData": "Antwortdaten"
+    },
+    "request": {
+      "header": "Anfrage",
+      "method": "Methode",
+      "route": "Route",
+      "path": "Pfad",
+      "statusCode": "Statuscode",
+      "requestId": "Anfrage-ID",
+      "ipAddress": "IP-Adresse",
+      "userAgent": "Benutzeragent",
+      "none": "Dieses Audit-Protokoll wurde nicht für eine API-Anfrage aufgezeichnet."
+    },
+    "list": {
+      "empty": {
+        "heading": "Noch keine Audit-Protokolle",
+        "description": "Aktionen, die in Ihrem Shop durchgeführt wurden, werden hier angezeigt."
+      },
+      "filtered": {
+        "heading": "Keine Ergebnisse",
+        "description": "Keine Audit-Protokolle entsprechen den aktuellen Filterkriterien."
+      },
+      "searchError": {
+        "heading": "Suche fehlgeschlagen"
+      }
+    }
+  },
   "translations": {
     "domain": "Übersetzungen",
     "settings": {

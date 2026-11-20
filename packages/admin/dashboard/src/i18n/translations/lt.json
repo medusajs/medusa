@@ -3170,6 +3170,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Audito žurnalai",
+    "subtitle": "Peržiūrėkite, kas ką padarė jūsų parduotuvėje, su kokiu ištekliu ir kaip tai baigėsi.",
+    "impersonatedBy": "Apsimetė {{id}}",
+    "outcome": {
+      "succeeded": "Pavyko",
+      "denied": "Atmesta",
+      "failed": "Nepavyko"
+    },
+    "fields": {
+      "time": "Laikas",
+      "actor": "Veikėjas",
+      "actorType": "Veikėjo tipas",
+      "actorId": "Veikėjo ID",
+      "impersonatorId": "Apsimetančiojo ID",
+      "action": "Veiksmas",
+      "resource": "Išteklius",
+      "resourceType": "Ištekliaus tipas",
+      "resourceId": "Ištekliaus ID",
+      "outcome": "Rezultatas",
+      "startedAt": "Pradėta",
+      "endedAt": "Baigta",
+      "requestData": "Užklausos duomenys",
+      "responseData": "Atsakymo duomenys"
+    },
+    "request": {
+      "header": "Užklausa",
+      "method": "Metodas",
+      "route": "Maršrutas",
+      "path": "Kelias",
+      "statusCode": "Būsenos kodas",
+      "requestId": "Užklausos ID",
+      "ipAddress": "IP adresas",
+      "userAgent": "Naudotojo agentas",
+      "none": "Šis audito žurnalo įrašas nebuvo fiksuotas API užklausai."
+    },
+    "list": {
+      "empty": {
+        "heading": "Dar nėra audito žurnalų",
+        "description": "Čia bus rodomi jūsų parduotuvėje atlikti veiksmai."
+      },
+      "filtered": {
+        "heading": "Nėra rezultatų",
+        "description": "Nė vienas audito žurnalo įrašas neatitinka dabartinių filtro kriterijų."
+      },
+      "searchError": {
+        "heading": "Paieška nepavyko"
+      }
+    }
+  },
   "translations": {
     "domain": "Vertimai",
     "settings": {

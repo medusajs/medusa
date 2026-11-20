@@ -3078,6 +3078,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "稽核日誌",
+    "subtitle": "查看您的商店中誰做了什麼、對哪個資源操作，以及結果如何。",
+    "impersonatedBy": "由 {{id}} 代理操作",
+    "outcome": {
+      "succeeded": "成功",
+      "denied": "拒絕",
+      "failed": "失敗"
+    },
+    "fields": {
+      "time": "時間",
+      "actor": "操作者",
+      "actorType": "操作者類型",
+      "actorId": "操作者 ID",
+      "impersonatorId": "代理者 ID",
+      "action": "操作",
+      "resource": "資源",
+      "resourceType": "資源類型",
+      "resourceId": "資源 ID",
+      "outcome": "結果",
+      "startedAt": "開始時間",
+      "endedAt": "結束時間",
+      "requestData": "請求資料",
+      "responseData": "回應資料"
+    },
+    "request": {
+      "header": "請求",
+      "method": "方法",
+      "route": "路由",
+      "path": "路徑",
+      "statusCode": "狀態碼",
+      "requestId": "請求 ID",
+      "ipAddress": "IP 位址",
+      "userAgent": "用戶代理",
+      "none": "此稽核日誌並未記錄 API 請求。"
+    },
+    "list": {
+      "empty": {
+        "heading": "尚無稽核日誌",
+        "description": "在您的商店中執行的操作將顯示於此。"
+      },
+      "filtered": {
+        "heading": "沒有結果",
+        "description": "沒有稽核日誌符合目前的篩選條件。"
+      },
+      "searchError": {
+        "heading": "搜尋失敗"
+      }
+    }
+  },
   "translations": {
     "domain": "翻譯",
     "settings": {

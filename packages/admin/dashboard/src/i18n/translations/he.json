@@ -3167,6 +3167,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "יומני ביקורת",
+    "subtitle": "סקור מי עשה מה בחנות שלך, על איזה משאב, וכיצד הסתיים.",
+    "impersonatedBy": "התחזה על ידי {{id}}",
+    "outcome": {
+      "succeeded": "הצליח",
+      "denied": "נדחה",
+      "failed": "נכשל"
+    },
+    "fields": {
+      "time": "זמן",
+      "actor": "שחקן",
+      "actorType": "סוג שחקן",
+      "actorId": "מזהה שחקן",
+      "impersonatorId": "מזהה מתחזה",
+      "action": "פעולה",
+      "resource": "משאב",
+      "resourceType": "סוג משאב",
+      "resourceId": "מזהה משאב",
+      "outcome": "תוצאה",
+      "startedAt": "התחיל בשעה",
+      "endedAt": "הסתיים בשעה",
+      "requestData": "נתוני בקשה",
+      "responseData": "נתוני תגובה"
+    },
+    "request": {
+      "header": "בקשה",
+      "method": "שיטה",
+      "route": "נתיב",
+      "path": "נתיב",
+      "statusCode": "קוד סטטוס",
+      "requestId": "מזהה בקשה",
+      "ipAddress": "כתובת IP",
+      "userAgent": "סוכן משתמש",
+      "none": "יומן ביקורת זה לא הוקלט עבור בקשת API."
+    },
+    "list": {
+      "empty": {
+        "heading": "אין יומני ביקורת עדיין",
+        "description": "פעולות שבוצעו בחנות שלך יופיעו כאן."
+      },
+      "filtered": {
+        "heading": "אין תוצאות",
+        "description": "אין יומני ביקורת התואמים את קריטריוני הסינון הנוכחיים."
+      },
+      "searchError": {
+        "heading": "החיפוש נכשל"
+      }
+    }
+  },
   "translations": {
     "domain": "תרגומים",
     "settings": {

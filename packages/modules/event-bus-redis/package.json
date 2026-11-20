@@ -37,12 +37,12 @@
   "scripts": {
     "watch": "yarn run -T tsc --build --watch",
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
-    "test": "../../../node_modules/.bin/jest --silent --bail --forceExit",
+    "test": "../../../node_modules/.bin/jest --silent --bail --forceExit --testPathPatterns=src",
     "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --no-cache --bail --detectOpenHandles --forceExit --logHeapUsage --testPathPatterns=\"integration-tests/__tests__/.*\\.spec\\.ts\""
   },
   "dependencies": {
-    "bullmq": "5.13.0",
-    "ioredis": "^5.11.1"
+    "bullmq": "6.7.6",
+    "ioredis": "^6.0.0"
   },
   "peerDependencies": {
     "@medusajs/framework": "2.22.7"

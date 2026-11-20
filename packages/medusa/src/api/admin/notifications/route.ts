@@ -4,6 +4,7 @@ import {
   refetchEntities,
 } from "@medusajs/framework/http"
 import { HttpTypes } from "@medusajs/framework/types"
+import { scopeFeedToActor } from "./helpers"
 
 export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminNotificationListParams>,
@@ -11,7 +12,7 @@ export const GET = async (
 ) => {
   const { data: notifications, metadata } = await refetchEntities({
     entity: "notification",
-    idOrFilter: req.filterableFields,
+    idOrFilter: scopeFeedToActor(req, req.filterableFields),
     scope: req.scope,
     fields: req.queryConfig.fields,
     pagination: req.queryConfig.pagination,

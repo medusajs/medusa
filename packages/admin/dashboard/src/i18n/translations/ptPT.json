@@ -3087,6 +3087,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Registos de auditoria",
+    "subtitle": "Veja quem fez o quê na sua loja, em que recurso e como terminou.",
+    "impersonatedBy": "Representado por {{id}}",
+    "outcome": {
+      "succeeded": "Com sucesso",
+      "denied": "Negado",
+      "failed": "Falhou"
+    },
+    "fields": {
+      "time": "Hora",
+      "actor": "Ator",
+      "actorType": "Tipo de ator",
+      "actorId": "ID do ator",
+      "impersonatorId": "ID do representante",
+      "action": "Ação",
+      "resource": "Recurso",
+      "resourceType": "Tipo de recurso",
+      "resourceId": "ID do recurso",
+      "outcome": "Resultado",
+      "startedAt": "Iniciado em",
+      "endedAt": "Terminado em",
+      "requestData": "Dados do pedido",
+      "responseData": "Dados da resposta"
+    },
+    "request": {
+      "header": "Pedido",
+      "method": "Método",
+      "route": "Rota",
+      "path": "Caminho",
+      "statusCode": "Código de estado",
+      "requestId": "ID do pedido",
+      "ipAddress": "Endereço IP",
+      "userAgent": "Agente de utilizador",
+      "none": "Este registo de auditoria não foi registado para um pedido de API."
+    },
+    "list": {
+      "empty": {
+        "heading": "Sem registos de auditoria",
+        "description": "As ações realizadas na tua loja aparecerão aqui."
+      },
+      "filtered": {
+        "heading": "Sem resultados",
+        "description": "Nenhum registo de auditoria corresponde aos critérios de filtro atuais."
+      },
+      "searchError": {
+        "heading": "Falha na pesquisa"
+      }
+    }
+  },
   "translations": {
     "domain": "Traduções",
     "settings": {

@@ -91,7 +91,7 @@ export const importProductsAsChunksWorkflowId = "import-products-as-chunks"
 export const importProductsAsChunksWorkflow = createWorkflow(
   importProductsAsChunksWorkflowId,
   (
-    input: WorkflowData<{ fileKey: string; filename: string }>
+    input: WorkflowData<{ fileKey: string; filename: string; to?: string }>
   ): WorkflowResponse<WorkflowTypes.ProductWorkflow.ImportProductsSummary> => {
     const batchRequest = normalizeCsvToChunksStep(input.fileKey)
 
@@ -101,8 +101,7 @@ export const importProductsAsChunksWorkflow = createWorkflow(
     const failureNotification = transform({ input }, (data) => {
       return [
         {
-          // We don't need the recipient here for now, but if we want to push feed notifications to a specific user we could add it.
-          to: "",
+          to: data.input.to ?? "",
           channel: "feed",
           template: "admin-ui",
           data: {
@@ -119,8 +118,7 @@ export const importProductsAsChunksWorkflow = createWorkflow(
     const notifications = transform({ input }, (data) => {
       return [
         {
-          // We don't need the recipient here for now, but if we want to push feed notifications to a specific user we could add it.
-          to: "",
+          to: data.input.to ?? "",
           channel: "feed",
           template: "admin-ui",
           data: {

@@ -7,6 +7,7 @@ import type { ModuleOptions } from "@medusajs/types"
 
 import {
   BulkJobOptions,
+  DeduplicationOptions,
   Job,
   JobsOptions,
   QueueOptions,
@@ -20,17 +21,25 @@ export type JobData<T> = {
   completedSubscriberIds?: string[] | undefined
 }
 
-export type Options = BulkJobOptions & {
-  groupedEventsTTL?: number
-  internal?: boolean
+export type LegacyJobOptions = {
+  /**
+   * @deprecated Use `deduplication` instead.
+   */
+  debounce?: DeduplicationOptions
 }
+
+export type Options = BulkJobOptions &
+  LegacyJobOptions & {
+    groupedEventsTTL?: number
+    internal?: boolean
+  }
 
 export type BullJob<T> = {
   data: JobData<T>
   opts: Job["opts"] & Options
 } & Job
 
-export type EmitOptions = JobsOptions
+export type EmitOptions = JobsOptions & LegacyJobOptions
 
 export type EventBusRedisModuleOptions = {
   /**

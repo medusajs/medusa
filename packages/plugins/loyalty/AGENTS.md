@@ -38,7 +38,7 @@ module.exports = defineConfig({
 - `src/subscribers/create-gift-card.ts`: on `order.placed`, creates one gift card per unit of each line item whose product has `is_giftcard`.
 - `src/workflows/hooks/`: handlers on core hooks: `completeCartWorkflow.hooks.orderCreated` and `.beforePaymentAuthorization`, `createOrderCreditLinesWorkflow.hooks.creditLinesCreated`, `refreshCartItemsWorkflow.hooks.beforeRefreshingPaymentCollection`.
 - `src/links/`: cart and order to gift cards (list links), gift card to store credit account, plus read-only links (account `customer_id` to customer; gift card `line_item_id` to `OrderLineItem`).
-- `src/api/middlewares.ts`: aggregates route middlewares and uses `allowFields` so `gift_cards.*` can be requested on core `/store/carts` and `/store/orders` routes.
+- `src/api/middlewares.ts`: aggregates route middlewares and uses `allowFields` so individual gift card fields (e.g. `gift_cards.code`) can be requested on core `/store/carts` and `/store/orders` routes. `*gift_cards` is deliberately not allowed: it would select `reference_id`, the purchasing order's id.
 - `src/admin/`: routes (Gift Cards, Gift Card Products, Store Credits) and widgets in `customer.details.side.after`, `order.details.side.after`, and `sales_channel.details.after`.
 
 ## Development
