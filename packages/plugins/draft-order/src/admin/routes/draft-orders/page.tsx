@@ -27,8 +27,14 @@ import { useTranslation } from "react-i18next"
 
 const PAGE_SIZE = 20
 
+const Breadcrumb = () => {
+  const { t } = useTranslation()
+
+  return <>{t("draftOrders.domain")}</>
+}
+
 export const handle = {
-  breadcrumb: () => "Draft Orders",
+  breadcrumb: () => <Breadcrumb />,
 }
 
 const List = () => {
@@ -104,7 +110,8 @@ const List = () => {
 }
 
 export const config = defineRouteConfig({
-  label: "Drafts",
+  label: "draftOrders.domain",
+  translationNs: "translation",
   nested: "/orders",
   permissions: VIEW_DRAFT_ORDER_PERMISSIONS,
 })
@@ -112,17 +119,19 @@ export const config = defineRouteConfig({
 const columnHelper = createDataTableColumnHelper<HttpTypes.AdminOrder>()
 
 const useColumns = () => {
+  const { t } = useTranslation()
+
   return useMemo(
     () => [
       columnHelper.accessor("display_id", {
-        header: "Display ID",
+        header: t("orders.fields.displayId"),
         cell: ({ getValue }) => {
           return `#${getValue()}`
         },
         enableSorting: true,
       }),
       columnHelper.accessor("created_at", {
-        header: "Date",
+        header: t("fields.date"),
         cell: ({ getValue }) => {
           return (
             <Tooltip
@@ -135,32 +144,33 @@ const useColumns = () => {
         enableSorting: true,
       }),
       columnHelper.accessor("customer_id", {
-        header: "Customer",
+        header: t("fields.customer"),
         cell: ({ row }) => {
           return row.original.customer?.email || "-"
         },
         enableSorting: true,
       }),
       columnHelper.accessor("sales_channel_id", {
-        header: "Sales Channel",
+        header: t("fields.salesChannel"),
         cell: ({ row }) => {
           return row.original.sales_channel?.name || "-"
         },
         enableSorting: true,
       }),
       columnHelper.accessor("region_id", {
-        header: "Region",
+        header: t("fields.region"),
         cell: ({ row }) => {
           return row.original.region?.name || "-"
         },
         enableSorting: true,
       }),
     ],
-    []
+    [t]
   )
 }
 
 const useFilters = (): DataTableFilter[] => {
+  const { t } = useTranslation()
   const dateFilterOptions = useDataTableDateFilters()
   const { hasPermission } = usePermissions()
   const canReadCustomers = hasPermission("customer:read")
@@ -203,7 +213,7 @@ const useFilters = (): DataTableFilter[] => {
     if (canReadCustomers) {
       filters.push({
         id: "customer_id",
-        label: "Customer",
+        label: t("fields.customer"),
         options:
           customers
             ?.filter(
@@ -221,7 +231,7 @@ const useFilters = (): DataTableFilter[] => {
     if (canReadSalesChannels) {
       filters.push({
         id: "sales_channel_id",
-        label: "Sales Channel",
+        label: t("fields.salesChannel"),
         options:
           sales_channels?.map((sales_channel) => ({
             label: sales_channel.name,
@@ -234,7 +244,7 @@ const useFilters = (): DataTableFilter[] => {
     if (canReadRegions) {
       filters.push({
         id: "region_id",
-        label: "Region",
+        label: t("fields.region"),
         options:
           regions?.map((region) => ({
             label: region.name,
@@ -246,6 +256,7 @@ const useFilters = (): DataTableFilter[] => {
 
     return [...filters, ...dateFilterOptions]
   }, [
+    t,
     canReadCustomers,
     canReadSalesChannels,
     canReadRegions,
