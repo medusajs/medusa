@@ -1,5 +1,13 @@
 # Change Log
 
+## 2.23.0
+
+### Minor Changes
+
+- [#17596](https://github.com/medusajs/medusa/pull/17596) [`2086f3d`](https://github.com/medusajs/medusa/commit/2086f3d573a1357815007c53f6a842227731898f) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps,framework,medusa): update OpenTelemetry to SDK 3.0 (`@opentelemetry/sdk-node` 0.301, `@opentelemetry/resources` 3, `@opentelemetry/instrumentation-pg` 0.78, `@opentelemetry/api` 1.10). `@opentelemetry/sdk-trace-node` is replaced by `@opentelemetry/sdk-trace`, so the `@medusajs/framework/opentelemetry/sdk-trace-node` subpath is renamed to `@medusajs/framework/opentelemetry/sdk-trace`. Use `TracerProvider` instead of `NodeTracerProvider`, and pass `{ exporter }` to `SimpleSpanProcessor` and `BatchSpanProcessor`. Exporters passed to `registerOtel` must target SDK 3.0. Traces now also include the `os.*` and `service.instance.id` resource attributes, which the SDK detects by default.
+
+- [#17568](https://github.com/medusajs/medusa/pull/17568) [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps): update pinned dependencies (fdir 6.5.0, http-errors 2.0.1, radix-ui 1.8.1, react-hook-form 7.92.0, react-router-dom 7.18.5, @tanstack/react-query 5.107.1, zod 4.6.7, i18next 27.1.1, react-i18next 18.0.1, i18next-browser-languagedetector 8.3.0), fix new data table filter popovers staying hidden with radix-ui 1.8.1, forward all mutation callback arguments in admin hooks, and translate loyalty plugin validation messages with the dashboard's i18n instance
+
 ## 2.22.7
 
 ## 2.22.6

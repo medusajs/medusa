@@ -1,5 +1,24 @@
 # @medusajs/ui
 
+## 4.3.0
+
+### Minor Changes
+
+- [#17628](https://github.com/medusajs/medusa/pull/17628) [`b1911eb`](https://github.com/medusajs/medusa/commit/b1911ebf3aef01dfebe897133dd8c4a320d297a1) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,ui,icons,medusa,draft-order,loyalty-plugin): update react to v19
+
+- [#17672](https://github.com/medusajs/medusa/pull/17672) [`940553e`](https://github.com/medusajs/medusa/commit/940553ec2da5d6cb157c3380106e121b79b1a082) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(ui,dashboard,loyalty-plugin): update @tanstack/react-table to v9
+
+### Patch Changes
+
+- [#17568](https://github.com/medusajs/medusa/pull/17568) [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps): update pinned dependencies (fdir 6.5.0, http-errors 2.0.1, radix-ui 1.8.1, react-hook-form 7.92.0, react-router-dom 7.18.5, @tanstack/react-query 5.107.1, zod 4.6.7, i18next 27.1.1, react-i18next 18.0.1, i18next-browser-languagedetector 8.3.0), fix new data table filter popovers staying hidden with radix-ui 1.8.1, forward all mutation callback arguments in admin hooks, and translate loyalty plugin validation messages with the dashboard's i18n instance
+
+- [#17819](https://github.com/medusajs/medusa/pull/17819) [`cc31b24`](https://github.com/medusajs/medusa/commit/cc31b247bce8640a634aadf7ece469cbda020c8c) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(ui): give the toast dismiss button an accessible name
+
+- [#17818](https://github.com/medusajs/medusa/pull/17818) [`19a7e08`](https://github.com/medusajs/medusa/commit/19a7e083dcb8727cfe3e1c0a1cfdfb4b86595d33) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(ui): forward onDismiss and onAutoClose callbacks from toast utilities
+
+- Updated dependencies [[`b1911eb`](https://github.com/medusajs/medusa/commit/b1911ebf3aef01dfebe897133dd8c4a320d297a1)]:
+  - @medusajs/icons@2.23.0
+
 ## 4.2.14
 
 ### Patch Changes

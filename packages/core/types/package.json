@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/types",
-  "version": "2.22.7",
+  "version": "2.23.0",
   "description": "Medusa Types definition",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -42,7 +42,7 @@
     "bignumber.js": "^11.1.5"
   },
   "devDependencies": {
-    "@medusajs/deps": "2.22.7"
+    "@medusajs/deps": "2.23.0"
   },
   "peerDependencies": {
     "express": "^5.3.0",

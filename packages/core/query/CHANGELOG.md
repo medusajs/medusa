@@ -1,5 +1,15 @@
 # @medusajs/query
 
+## 2.23.0
+
+### Patch Changes
+
+- [#17862](https://github.com/medusajs/medusa/pull/17862) [`f9ae213`](https://github.com/medusajs/medusa/commit/f9ae213adfa74e833a47ddc8eb81f6cb0bc7bfca) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(query): clone the expand once in getAllFieldsAndRelations instead of at every nesting level
+
+- Updated dependencies [[`182cf74`](https://github.com/medusajs/medusa/commit/182cf748cb162ec177df8d9e912319a77ee83111), [`a0c4da4`](https://github.com/medusajs/medusa/commit/a0c4da4ddd112d663679d09b7ba759ca006b7314), [`d42343a`](https://github.com/medusajs/medusa/commit/d42343ac7c17f6c79b4999feb49d6574b23cbde3), [`45ab5b6`](https://github.com/medusajs/medusa/commit/45ab5b68c954ea7c000952a5e3263c60deadfa99), [`2086f3d`](https://github.com/medusajs/medusa/commit/2086f3d573a1357815007c53f6a842227731898f), [`6d76b3b`](https://github.com/medusajs/medusa/commit/6d76b3b55154896d732d4f8ac6fc948bd36d958c), [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50)]:
+  - @medusajs/utils@2.23.0
+  - @medusajs/deps@2.23.0
+
 ## 2.22.7
 
 ### Patch Changes
