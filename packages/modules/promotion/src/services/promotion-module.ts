@@ -425,7 +425,7 @@ export default class PromotionModuleService
       if (inactivePromotion) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          `Promotion ${inactivePromotion.code} is no longer active.`
+          `Promotion ${inactivePromotion.code} is not active.`
         )
       }
     }

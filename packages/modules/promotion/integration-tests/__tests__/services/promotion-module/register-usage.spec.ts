@@ -229,7 +229,7 @@ moduleIntegrationTestRunner({
           expect(response).toEqual(undefined)
         })
 
-        it("should throw and not register usage when the promotion is no longer active", async () => {
+        it("should throw and not register usage when the promotion is not active", async () => {
           const createdPromotion = await createDefaultPromotion(service, {
             limit: 1,
           })
@@ -248,7 +248,7 @@ moduleIntegrationTestRunner({
 
           expect(error.type).toEqual("not_allowed")
           expect(error.message).toEqual(
-            `Promotion ${createdPromotion.code} is no longer active.`
+            `Promotion ${createdPromotion.code} is not active.`
           )
 
           const [promotion, campaign] = await Promise.all([
@@ -281,7 +281,7 @@ moduleIntegrationTestRunner({
 
           expect(error.type).toEqual("not_allowed")
           expect(error.message).toEqual(
-            `Promotion ${createdPromotion.code} is no longer active.`
+            `Promotion ${createdPromotion.code} is not active.`
           )
         })
 
@@ -299,7 +299,7 @@ moduleIntegrationTestRunner({
 
           expect(error.type).toEqual("not_allowed")
           expect(error.message).toEqual(
-            `Promotion ${createdPromotion.code} is no longer active.`
+            `Promotion ${createdPromotion.code} is not active.`
           )
         })
 
