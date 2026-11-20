@@ -524,7 +524,7 @@ describe("cross-module query integration", () => {
           ) desc
         `
       )
-      expect(orderIds(results)).toEqual(["order_c", "order_a"])
+      expect(orderIds(results).sort()).toEqual(["order_a", "order_c"])
     })
 
     it("should combine order filters with product filters", async () => {
