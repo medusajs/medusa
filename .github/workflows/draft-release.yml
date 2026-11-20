@@ -166,7 +166,7 @@ jobs:
           cache-dependency-path: www/utils/yarn.lock
 
       - name: Install release-banner dependencies
-        run: yarn install
+        run: ./ci-install.sh
         working-directory: www/utils
 
       - name: Build release-banner

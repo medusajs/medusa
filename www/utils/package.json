@@ -5,7 +5,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
+    "build": "turbo run build --filter=!persona-journeys",
     "watch": "turbo run watch",
     "lint": "turbo run lint",
     "generate:references": "turbo run generate:references",
