@@ -1,0 +1,78 @@
+import { InlineIcon } from "docs-ui"
+import { Funnel } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Audit Logs`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to view and filter your organization's audit logs in Cloud.
+
+<Note>
+
+Audit logs are currently available only to select organizations. If audit logs aren't available to your organization, Cloud redirects you away from the Audit Logs page.
+
+</Note>
+
+## What are Audit Logs?
+
+Audit logs are a record of actions that members and access keys perform within your organization. You can use them to review who did what, which resource they affected, and whether the action succeeded.
+
+---
+
+## View Audit Logs
+
+To view your organization's audit logs:
+
+1. If you're in a different organization, [switch to the organization](../page.mdx#switch-organization) whose audit logs you want to view.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. In the sidebar, click **Settings** > **Audit Logs**.
+
+The page shows a paginated table of recorded actions. Each row shows the following details:
+
+- **Time**: The date and time the action started.
+- **Actor**: The name of the member or access key that performed the action. If the member or access key was removed or deleted, the table shows its ID instead. If an impersonator performed the action, the row shows an **Impersonated** badge.
+- **Action**: The type of action performed.
+- **Resource**: The identifier or type of the resource that the action affected.
+- **Outcome**: The result of the action. It's one of the following:
+  - **Succeeded**: The action completed successfully.
+  - **Denied**: The actor wasn't allowed to perform the action.
+  - **Failed**: The action failed.
+
+### View Action Details
+
+To view more details about an action, expand its row in the table. The detail panel shows the following fields, when available:
+
+- Actor ID
+- Resource ID
+- The associated project
+- The associated environment
+- The HTTP request method and path
+- The HTTP status code
+- The duration of the action in milliseconds
+- The IP address
+- The user agent
+- The request ID
+
+---
+
+## Filter Audit Logs
+
+You can narrow down the audit logs using the controls at the top of the page:
+
+- **Search**: Enter text in the search field to search the audit logs.
+- **Project**: Select a project from the dropdown to only show actions related to that project.
+- **Outcome**: Select **All Outcomes**, **Succeeded**, **Denied**, or **Failed** to filter actions by their outcome.
+- **Time range**: Select the period to show actions from. You can choose 1 day, 7 days, 30 days, or 90 days. By default, the page shows actions from the last 7 days.
+
+When you change a filter, the table goes back to its first page.
+
+### Filter by Actor or Resource
+
+To only show actions performed by a specific actor or on a specific resource:
+
+1. Expand the row of an action performed by that actor or on that resource.
+2. In the detail panel, click the <InlineIcon Icon={Funnel} alt="filter" /> icon next to the **Actor ID** or **Resource ID** field.
+
+The filter appears as a chip above the table. To remove the filter, click its chip.
