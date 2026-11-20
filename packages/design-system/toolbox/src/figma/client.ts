@@ -1,5 +1,11 @@
-import axios, { AxiosInstance, AxiosRequestConfig, Method } from "axios"
-import axiosRetry from "axios-retry"
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  Method,
+} from "axios"
+
+const IDEMPOTENT_METHODS = ["GET", "HEAD", "OPTIONS", "PUT", "DELETE"]
 
 export type ClientArgs = {
   accessToken: string
@@ -9,22 +15,51 @@ export type ClientArgs = {
 
 class Client {
   private _axios: AxiosInstance
+  private _maxRetries: number
 
   constructor({ accessToken, baseURL, maxRetries = 3 }: ClientArgs) {
-    const instance = axios.create({
+    this._axios = axios.create({
       baseURL,
       headers: {
         "X-FIGMA-TOKEN": accessToken,
       },
     })
+    this._maxRetries = maxRetries
+  }
 
-    // Typecast to any because our monorepo is using an older version of axios-retry and axios
-    axiosRetry(instance as any, {
-      retries: maxRetries,
-      retryDelay: axiosRetry.exponentialDelay,
-    })
+  private isRetryable(error: AxiosError, method: Method) {
+    if (error.code === "ECONNABORTED") {
+      return false
+    }
 
-    this._axios = instance
+    if (!error.response) {
+      return Boolean(error.code)
+    }
+
+    const { status } = error.response
+    const isServerError = status === 429 || (status >= 500 && status <= 599)
+
+    return isServerError && IDEMPOTENT_METHODS.includes(method.toUpperCase())
+  }
+
+  private async requestWithRetry(config: AxiosRequestConfig, method: Method) {
+    for (let retry = 1; ; retry++) {
+      try {
+        return await this._axios.request(config)
+      } catch (error) {
+        if (
+          retry > this._maxRetries ||
+          !axios.isAxiosError(error) ||
+          !this.isRetryable(error, method)
+        ) {
+          throw error
+        }
+        const delay = 2 ** retry * 100
+        await new Promise((resolve) =>
+          setTimeout(resolve, delay + Math.random() * delay * 0.2)
+        )
+      }
+    }
   }
 
   async request(
@@ -43,7 +78,7 @@ class Client {
       requestConfig.data = payload
     }
 
-    const response = await this._axios.request(requestConfig)
+    const response = await this.requestWithRetry(requestConfig, method)
 
     if (Math.floor(response.status / 100) !== 2) {
       throw response.statusText
