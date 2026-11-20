@@ -20,4 +20,9 @@ export interface ExportInventoryItemsDTO {
    * The batch size to use for querying inventory items.
    */
   batch_size?: number | string
+  /**
+   * The user id or email to send the notification to. If not provided, the
+   * notification will be sent to all admin users.
+   */
+  to?: string
 }
