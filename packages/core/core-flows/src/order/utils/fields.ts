@@ -18,6 +18,7 @@ export const productVariantsFields = [
   "product.collection.title",
   "product.handle",
   "product.discountable",
+  "product.shipping_profile.id",
   "inventory_items.inventory_item_id",
   "inventory_items.inventory.id",
   "inventory_items.required_quantity",
@@ -39,15 +40,11 @@ export const productVariantsFields = [
  * `productVariantsFields` above (optionally combined with
  * `requiredVariantFieldsForInventoryConfirmation`). Must be passed with
  * `computeAutomaticTags: true`.
- *
- * Deliberately kept separate from the cart module's equivalent: these fields never
- * read a shipping profile, so tagging this response with
- * `LinkProductShippingProfile:list:*` would evict it every time a product's shipping
- * profile is attached or detached, for no coverage.
  */
 export const productVariantsCacheTags = [
   // Reservations adjust inventory levels without emitting inventory level events.
   "ReservationItem:list:*",
   "LinkProductVariantInventoryItem:list:*",
+  "LinkProductShippingProfile:list:*",
   "LinkSalesChannelStockLocation:list:*",
 ]
