@@ -105,8 +105,7 @@ export const importProductsWorkflow = createWorkflow(
     const failureNotification = transform({ input }, (data) => {
       return [
         {
-          // We don't need the recipient here for now, but if we want to push feed notifications to a specific user we could add it.
-          to: "",
+          to: data.input.to ?? "",
           channel: "feed",
           template: "admin-ui",
           data: {
@@ -126,8 +125,7 @@ export const importProductsWorkflow = createWorkflow(
     const notifications = transform({ input }, (data) => {
       return [
         {
-          // We don't need the recipient here for now, but if we want to push feed notifications to a specific user we could add it.
-          to: "",
+          to: data.input.to ?? "",
           channel: "feed",
           template: "admin-ui",
           data: {

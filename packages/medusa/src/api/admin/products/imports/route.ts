@@ -19,6 +19,7 @@ export const POST = async (
     input: {
       filename: req.validatedBody.originalname,
       fileKey: req.validatedBody.file_key,
+      to: req.auth_context.actor_id,
     },
   })
 

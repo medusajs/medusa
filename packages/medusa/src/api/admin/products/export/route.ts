@@ -11,7 +11,11 @@ export const POST = async (
   res: MedusaResponse<HttpTypes.AdminExportProductResponse>
 ) => {
   const selectFields = remapKeysForProduct(req.queryConfig.fields ?? [])
-  const input = { select: selectFields, filter: req.filterableFields }
+  const input = {
+    select: selectFields,
+    filter: req.filterableFields,
+    to: req.auth_context.actor_id,
+  }
 
   const { transaction } = await exportProductsWorkflow(req.scope).run({
     input,

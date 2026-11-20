@@ -121,6 +121,7 @@ export const completeCartFields = [
   "shipping_address.*",
   "billing_address.*",
   "region.*",
+  "region.countries.iso_2",
   "credit_lines.*",
   "payment_collection.*",
   "payment_collection.payment_sessions.*",
