@@ -262,9 +262,9 @@ export default class PaymentModuleService
         {
           id: idOrSelector,
           ...data,
-          ...(data.currency_code ? 
-            { currency_code: normalizeCurrencyCode(data.currency_code) } :
-            {}),
+          ...(data.currency_code
+            ? { currency_code: normalizeCurrencyCode(data.currency_code) }
+            : {}),
         },
       ]
     } else {
@@ -277,10 +277,9 @@ export default class PaymentModuleService
       updateData = collections.map((c) => ({
         id: c.id,
         ...data,
-        ...(data.currency_code ?
-          { currency_code: normalizeCurrencyCode(data.currency_code) } :
-          {}
-        ),
+        ...(data.currency_code
+          ? { currency_code: normalizeCurrencyCode(data.currency_code) }
+          : {}),
       }))
     }
 
@@ -337,10 +336,9 @@ export default class PaymentModuleService
       )
       .map((element) => ({
         ...element,
-        ...(element.currency_code ? 
-          { currency_code: normalizeCurrencyCode(element.currency_code) } :
-          {}
-        )
+        ...(element.currency_code
+          ? { currency_code: normalizeCurrencyCode(element.currency_code) }
+          : {}),
       }))
     const forCreate = input
       .filter(
@@ -348,10 +346,9 @@ export default class PaymentModuleService
       )
       .map((element) => ({
         ...element,
-        ...(element.currency_code ? 
-          { currency_code: normalizeCurrencyCode(element.currency_code) } :
-          {}
-        )
+        ...(element.currency_code
+          ? { currency_code: normalizeCurrencyCode(element.currency_code) }
+          : {}),
       }))
 
     const operations: Promise<InferEntityType<typeof PaymentCollection>[]>[] =
@@ -568,6 +565,13 @@ export default class PaymentModuleService
 
     // this method needs to be idempotent
     if (session.payment && session.authorized_at) {
+      if (session.payment.canceled_at) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `The payment of session: ${session.id} was canceled. Create a new payment session.`
+        )
+      }
+
       return await this.baseRepository_.serialize<PaymentDTO>(session.payment)
     }
 
@@ -838,9 +842,12 @@ export default class PaymentModuleService
       { select: ["id"], relations: ["captures.raw_amount"] },
       sharedContext
     )
-    const capturedAmount = lockedPayment.captures.reduce((captureAmount, next) => {
-      return MathBN.add(captureAmount, next.raw_amount as BigNumberInput)
-    }, MathBN.convert(0))
+    const capturedAmount = lockedPayment.captures.reduce(
+      (captureAmount, next) => {
+        return MathBN.add(captureAmount, next.raw_amount as BigNumberInput)
+      },
+      MathBN.convert(0)
+    )
 
     const authorizedAmount = new BigNumber(payment.raw_amount as BigNumberInput)
     const newCaptureAmount = new BigNumber(data.amount)
@@ -1122,10 +1129,15 @@ export default class PaymentModuleService
       return { refund: resume!, alreadyRefunded: true }
     }
 
-    const capturedAmount = lockedPayment.captures.reduce((captureAmount, next) => {
-      const amountAsBigNumber = new BigNumber(next.raw_amount as BigNumberInput)
-      return MathBN.add(captureAmount, amountAsBigNumber)
-    }, MathBN.convert(0))
+    const capturedAmount = lockedPayment.captures.reduce(
+      (captureAmount, next) => {
+        const amountAsBigNumber = new BigNumber(
+          next.raw_amount as BigNumberInput
+        )
+        return MathBN.add(captureAmount, amountAsBigNumber)
+      },
+      MathBN.convert(0)
+    )
     // The refund being resumed is excluded: a soft-deleted one counts for
     // nothing already, and a stale pending one is this same refund rather than
     // an additional one, so leaving it in would double-count `data.amount`.
@@ -1222,7 +1234,15 @@ export default class PaymentModuleService
   ): Promise<PaymentDTO> {
     const payment = await this.paymentService_.retrieve(
       paymentId,
-      { select: ["id", "data", "provider_id"] },
+      {
+        select: [
+          "id",
+          "data",
+          "provider_id",
+          "payment_session_id",
+          "payment_collection_id",
+        ],
+      },
       sharedContext
     )
 
@@ -1238,6 +1258,23 @@ export default class PaymentModuleService
 
     await this.paymentService_.update(
       { id: paymentId, canceled_at: new Date(), data },
+      sharedContext
+    )
+
+    // A canceled payment can't back an order, so its session must not be
+    // processable anymore (e.g. when retrying a cart completion).
+    if (payment.payment_session_id) {
+      await this.paymentSessionService_.update(
+        {
+          id: payment.payment_session_id,
+          status: PaymentSessionStatus.CANCELED,
+        },
+        sharedContext
+      )
+    }
+
+    await this.maybeUpdatePaymentCollection_(
+      payment.payment_collection_id,
       sharedContext
     )
 
@@ -1260,7 +1297,11 @@ export default class PaymentModuleService
         // right after sessions/captures/refunds were created, and select-in
         // does not otherwise re-populate collections that are already loaded on
         // the managed entities in the shared context.
-        relations: ["payment_sessions", "payments.captures", "payments.refunds"],
+        relations: [
+          "payment_sessions",
+          "payments.captures",
+          "payments.refunds",
+        ],
         options: { refresh: true },
       },
       sharedContext
@@ -1293,10 +1334,15 @@ export default class PaymentModuleService
       refundedAmount = MathBN.add(refundedAmount, refund.amount)
     }
 
-    let status =
-      paymentSessions.length === 0
-        ? PaymentCollectionStatus.NOT_PAID
-        : PaymentCollectionStatus.AWAITING
+    const hasActiveSession = [...paymentSessions].some(
+      (ps) =>
+        ps.status !== PaymentSessionStatus.CANCELED &&
+        ps.status !== PaymentSessionStatus.ERROR
+    )
+
+    let status = hasActiveSession
+      ? PaymentCollectionStatus.AWAITING
+      : PaymentCollectionStatus.NOT_PAID
 
     if (MathBN.gt(authorizedAmount, 0)) {
       status = MathBN.gte(
@@ -1327,6 +1373,11 @@ export default class PaymentModuleService
     ) {
       status = PaymentCollectionStatus.COMPLETED
       completedAt = new Date()
+    }
+
+    // A canceled collection stays canceled, only its amounts are refreshed
+    if (paymentCollection.status === PaymentCollectionStatus.CANCELED) {
+      status = PaymentCollectionStatus.CANCELED
     }
 
     await this.paymentCollectionService_.update(
