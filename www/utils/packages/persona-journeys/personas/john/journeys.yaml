@@ -1,0 +1,74 @@
+- description: Get started from the homepage
+  vars:
+    goal: You want an online store. Find how to create your Medusa store and get it running.
+  assert:
+    - type: javascript
+      metric: Cloud-first
+      value: visitedAny
+      config:
+        paths: [/cloud/sign-up, /cloud/first-project, /start]
+    - type: javascript
+      metric: Findability
+      value: withinPageBudget
+      config:
+        budget: 3
+
+- description: Use my AI agent
+  vars:
+    goal: You build everything with Claude. Find how to connect Claude to Medusa so it can build and manage the store for you.
+  assert:
+    - type: javascript
+      metric: Agent-first
+      value: visitedAny
+      config:
+        paths: [/cloud/ai-toolkit]
+    - type: javascript
+      metric: Findability
+      value: withinPageBudget
+      config:
+        budget: 3
+
+- description: Accept payments
+  vars:
+    goal: Your store is created on Medusa Cloud. Find how to accept card payments with Stripe.
+  assert:
+    - type: javascript
+      metric: Findability
+      value: visitedAny
+      config:
+        paths: [/resources/commerce-modules/payment/payment-provider/stripe, /cloud/integrations]
+    - type: javascript
+      metric: Findability
+      value: withinPageBudget
+      config:
+        budget: 5
+
+- description: Add a custom feature
+  vars:
+    goal: Your store is on Medusa Cloud. Find how to add a loyalty points program to it.
+  assert:
+    - type: javascript
+      metric: Findability
+      value: visitedAny
+      config:
+        paths: [/resources/how-to-tutorials/tutorials/loyalty-points, /cloud/setup-locally]
+    - type: javascript
+      metric: Findability
+      value: withinPageBudget
+      config:
+        budget: 5
+
+- description: Go live
+  vars:
+    goal: Your store is ready. Find what you must do before launching to real customers.
+  assert:
+    - type: javascript
+      metric: Findability
+      value: visitedAny
+      config:
+        paths: [/cloud/going-live]
+    - type: javascript
+      metric: Findability
+      value: withinPageBudget
+      config:
+        budget: 3
