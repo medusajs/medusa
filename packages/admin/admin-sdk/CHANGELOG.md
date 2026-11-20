@@ -1,5 +1,16 @@
 # @medusajs/admin-sdk
 
+## 2.23.0
+
+### Minor Changes
+
+- [#17568](https://github.com/medusajs/medusa/pull/17568) [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps): update pinned dependencies (fdir 6.5.0, http-errors 2.0.1, radix-ui 1.8.1, react-hook-form 7.92.0, react-router-dom 7.18.5, @tanstack/react-query 5.107.1, zod 4.6.7, i18next 27.1.1, react-i18next 18.0.1, i18next-browser-languagedetector 8.3.0), fix new data table filter popovers staying hidden with radix-ui 1.8.1, forward all mutation callback arguments in admin hooks, and translate loyalty plugin validation messages with the dashboard's i18n instance
+
+### Patch Changes
+
+- Updated dependencies [[`f70d4c7`](https://github.com/medusajs/medusa/commit/f70d4c7bbdcccac69ebf0629fb00e11468f068c1)]:
+  - @medusajs/admin-shared@2.23.0
+
 ## 2.22.7
 
 ### Patch Changes

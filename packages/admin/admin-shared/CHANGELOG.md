@@ -1,5 +1,11 @@
 # @medusajs/admin-shared
 
+## 2.23.0
+
+### Patch Changes
+
+- [#17919](https://github.com/medusajs/medusa/pull/17919) [`f70d4c7`](https://github.com/medusajs/medusa/commit/f70d4c7bbdcccac69ebf0629fb00e11468f068c1) Thanks [@sradevski](https://github.com/sradevski)! - feat(dashboard): audit log pages
+
 ## 2.22.7
 
 ### Patch Changes

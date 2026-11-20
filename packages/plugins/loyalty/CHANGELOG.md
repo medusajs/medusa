@@ -1,5 +1,33 @@
 # @medusajs/loyalty-plugin
 
+## 2.23.0
+
+### Minor Changes
+
+- [#17628](https://github.com/medusajs/medusa/pull/17628) [`b1911eb`](https://github.com/medusajs/medusa/commit/b1911ebf3aef01dfebe897133dd8c4a320d297a1) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,ui,icons,medusa,draft-order,loyalty-plugin): update react to v19
+
+- [#17813](https://github.com/medusajs/medusa/pull/17813) [`64532b8`](https://github.com/medusajs/medusa/commit/64532b8845c343c05e69349e0f64632e0f8511ca) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(loyalty-plugin): disallow reference retrieval + `*gift_cards` on store routes
+
+- [#17632](https://github.com/medusajs/medusa/pull/17632) [`4f1baa0`](https://github.com/medusajs/medusa/commit/4f1baa07fb117a900400a61ebb2e7c6729717e04) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update to Tailwind CSS 4. The admin and admin extensions now compile with Tailwind CSS 4
+
+### Patch Changes
+
+- [#17614](https://github.com/medusajs/medusa/pull/17614) [`6d76b3b`](https://github.com/medusajs/medusa/commit/6d76b3b55154896d732d4f8ac6fc948bd36d958c) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(medusa,framework,utils,types,test-utils,admin-bundler,cli,loyalty-plugin): update express to v5
+
+- [#17672](https://github.com/medusajs/medusa/pull/17672) [`940553e`](https://github.com/medusajs/medusa/commit/940553ec2da5d6cb157c3380106e121b79b1a082) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(ui,dashboard,loyalty-plugin): update @tanstack/react-table to v9
+
+- [#17568](https://github.com/medusajs/medusa/pull/17568) [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps): update pinned dependencies (fdir 6.5.0, http-errors 2.0.1, radix-ui 1.8.1, react-hook-form 7.92.0, react-router-dom 7.18.5, @tanstack/react-query 5.107.1, zod 4.6.7, i18next 27.1.1, react-i18next 18.0.1, i18next-browser-languagedetector 8.3.0), fix new data table filter popovers staying hidden with radix-ui 1.8.1, forward all mutation callback arguments in admin hooks, and translate loyalty plugin validation messages with the dashboard's i18n instance
+
+- Updated dependencies [[`a80733d`](https://github.com/medusajs/medusa/commit/a80733d0aa30dd1b15428b9c52c92eac4723f2b2), [`00516a1`](https://github.com/medusajs/medusa/commit/00516a135a621293c224594378122d2e2e070c3a), [`542caef`](https://github.com/medusajs/medusa/commit/542caefc231959d2f98fefcea4291521b9aef94a), [`00516a1`](https://github.com/medusajs/medusa/commit/00516a135a621293c224594378122d2e2e070c3a), [`f70d4c7`](https://github.com/medusajs/medusa/commit/f70d4c7bbdcccac69ebf0629fb00e11468f068c1), [`45ab5b6`](https://github.com/medusajs/medusa/commit/45ab5b68c954ea7c000952a5e3263c60deadfa99), [`2086f3d`](https://github.com/medusajs/medusa/commit/2086f3d573a1357815007c53f6a842227731898f), [`6d76b3b`](https://github.com/medusajs/medusa/commit/6d76b3b55154896d732d4f8ac6fc948bd36d958c), [`b1911eb`](https://github.com/medusajs/medusa/commit/b1911ebf3aef01dfebe897133dd8c4a320d297a1), [`940553e`](https://github.com/medusajs/medusa/commit/940553ec2da5d6cb157c3380106e121b79b1a082), [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50), [`750659a`](https://github.com/medusajs/medusa/commit/750659aff00ee82bcdf232754a2c4010aed0fad2), [`63b9624`](https://github.com/medusajs/medusa/commit/63b9624a124001966a1b47c68e5dc7652d697de9), [`858968d`](https://github.com/medusajs/medusa/commit/858968de74908cccc17a44ecf318b4d605847b2c), [`43a1935`](https://github.com/medusajs/medusa/commit/43a1935a7fe9773863f8b0803132cfee903b9983), [`5b70bd6`](https://github.com/medusajs/medusa/commit/5b70bd653423ef532b318266b35447f3ef3028a7), [`e4388b6`](https://github.com/medusajs/medusa/commit/e4388b665257736ca1a2f2736c8a8807f257ef15), [`45ab5b6`](https://github.com/medusajs/medusa/commit/45ab5b68c954ea7c000952a5e3263c60deadfa99), [`cc31b24`](https://github.com/medusajs/medusa/commit/cc31b247bce8640a634aadf7ece469cbda020c8c), [`b012802`](https://github.com/medusajs/medusa/commit/b012802716924f04301d12ef49ca71c83c0e5daf), [`0f9793f`](https://github.com/medusajs/medusa/commit/0f9793fbc26f6b9ecf32fc67e6a6084723c08f7a), [`19a7e08`](https://github.com/medusajs/medusa/commit/19a7e083dcb8727cfe3e1c0a1cfdfb4b86595d33), [`4f1baa0`](https://github.com/medusajs/medusa/commit/4f1baa07fb117a900400a61ebb2e7c6729717e04)]:
+  - @medusajs/medusa@2.23.0
+  - @medusajs/dashboard@2.23.0
+  - @medusajs/framework@2.23.0
+  - @medusajs/test-utils@2.23.0
+  - @medusajs/cli@2.23.0
+  - @medusajs/ui@4.3.0
+  - @medusajs/icons@2.23.0
+  - @medusajs/admin-sdk@2.23.0
+
 ## 2.22.7
 
 ### Patch Changes

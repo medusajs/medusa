@@ -1,5 +1,14 @@
 # @medusajs/auth
 
+## 2.23.0
+
+### Patch Changes
+
+- [#17853](https://github.com/medusajs/medusa/pull/17853) [`964ad71`](https://github.com/medusajs/medusa/commit/964ad715d9c74a8966de01e9cca5625f6f3e1ae7) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(auth,modules-sdk): verify MFA challenges under a lock so attempts can't be raced
+
+- Updated dependencies [[`00516a1`](https://github.com/medusajs/medusa/commit/00516a135a621293c224594378122d2e2e070c3a), [`542caef`](https://github.com/medusajs/medusa/commit/542caefc231959d2f98fefcea4291521b9aef94a), [`00516a1`](https://github.com/medusajs/medusa/commit/00516a135a621293c224594378122d2e2e070c3a), [`45ab5b6`](https://github.com/medusajs/medusa/commit/45ab5b68c954ea7c000952a5e3263c60deadfa99), [`2086f3d`](https://github.com/medusajs/medusa/commit/2086f3d573a1357815007c53f6a842227731898f), [`6d76b3b`](https://github.com/medusajs/medusa/commit/6d76b3b55154896d732d4f8ac6fc948bd36d958c), [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50), [`750659a`](https://github.com/medusajs/medusa/commit/750659aff00ee82bcdf232754a2c4010aed0fad2)]:
+  - @medusajs/framework@2.23.0
+
 ## 2.22.7
 
 ### Patch Changes
