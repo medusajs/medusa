@@ -92,7 +92,6 @@ export class DefaultCacheStrategy implements ICachingStrategy {
     }
 
     eventBus.subscribe("*", handleEvent)
-    eventBus.addInterceptor?.(handleEvent)
   }
 
   async computeKey(input: object) {

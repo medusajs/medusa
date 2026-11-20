@@ -30,7 +30,7 @@ export const DataGridCellContainer = ({
     <div className={clx("group/container relative h-full w-full")}>
       <div
         className={clx(
-          "group/cell relative flex h-full w-full gap-x-2 bg-ui-bg-base px-4 py-2.5 outline-none",
+          "group/cell relative flex h-full w-full gap-x-2 bg-ui-bg-base px-4 py-2.5 outline-hidden",
           {
             "items-center": !isMultiLine,
             "items-start": isMultiLine,
@@ -52,14 +52,14 @@ export const DataGridCellContainer = ({
             return (
               <div className="flex items-center justify-center">
                 <Tooltip content={message} delayDuration={0}>
-                  <ExclamationCircle className="z-[3] text-ui-tag-red-icon" />
+                  <ExclamationCircle className="z-3 text-ui-tag-red-icon" />
                 </Tooltip>
               </div>
             )
           }}
         />
         <div
-          className={clx("relative z-[1] flex h-full w-full", {
+          className={clx("relative z-1 flex h-full w-full", {
             "items-center justify-center": !isMultiLine,
             "items-start": isMultiLine,
           })}
@@ -73,7 +73,7 @@ export const DataGridCellContainer = ({
           <div
             {...overlayProps}
             data-cell-overlay="true"
-            className="absolute inset-0 z-[2]"
+            className="absolute inset-0 z-2"
           />
         )}
       </div>

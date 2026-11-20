@@ -16,13 +16,14 @@ const configuration = { visible_columns: ["id"], column_order: ["id"] }
 /**
  * The views routes take their resource from the `:entity` param, so they're
  * guarded at request time: the actor must be able to read the entity. System
- * default configurations apply to every user, so only super admins can
- * create, change, promote to, or delete one.
+ * default configurations apply to every user, so creating, changing,
+ * promoting to, or deleting one needs the matching `view_configuration` policy.
  */
 medusaIntegrationTestRunner({
   env,
   testSuite: ({ dbConnection, api, getContainer, dbUtils }) => {
     const productReaderHeaders = { headers: { ...adminHeaders.headers } }
+    const viewManagerHeaders = { headers: { ...adminHeaders.headers } }
 
     const statusOf = (request: Promise<{ status: number }>) =>
       request
@@ -61,6 +62,28 @@ medusaIntegrationTestRunner({
       await createAdminUser(dbConnection, productReaderHeaders, container, {
         email: "views-product-reader@medusa.js",
         roles: [role.id],
+      })
+
+      const viewPolicies = await rbacModule.listRbacPolicies({
+        resource: "view_configuration",
+        operation: [
+          PolicyOperation.create,
+          PolicyOperation.update,
+          PolicyOperation.delete,
+        ],
+      })
+      const viewManager = await rbacModule.createRbacRoles({
+        name: "Views Default Manager",
+      })
+      await rbacModule.createRbacRolePolicies(
+        [productRead, ...viewPolicies].map((policy) => ({
+          role_id: viewManager.id,
+          policy_id: policy.id,
+        }))
+      )
+      await createAdminUser(dbConnection, viewManagerHeaders, container, {
+        email: "views-default-manager@medusa.js",
+        roles: [viewManager.id],
       })
 
       await dbUtils.snapshot()
@@ -165,7 +188,7 @@ medusaIntegrationTestRunner({
     describe("system default configurations", () => {
       const base = "/admin/views/products/configurations"
 
-      it("only lets a super admin create one", async () => {
+      it("needs view_configuration:create to create one", async () => {
         expect(
           await statusOf(
             api.post(
@@ -176,14 +199,14 @@ medusaIntegrationTestRunner({
           )
         ).toEqual(403)
 
-        const view = await createView("products", adminHeaders, {
+        const view = await createView("products", viewManagerHeaders, {
           is_system_default: true,
         })
         expect(view.is_system_default).toEqual(true)
       })
 
-      it("only lets a super admin update one", async () => {
-        const view = await createView("products", adminHeaders, {
+      it("needs view_configuration:update to update one", async () => {
+        const view = await createView("products", viewManagerHeaders, {
           is_system_default: true,
         })
 
@@ -198,12 +221,16 @@ medusaIntegrationTestRunner({
         ).toEqual(403)
         expect(
           await statusOf(
-            api.post(`${base}/${view.id}`, { name: "Renamed" }, adminHeaders)
+            api.post(
+              `${base}/${view.id}`,
+              { name: "Renamed" },
+              viewManagerHeaders
+            )
           )
         ).toEqual(200)
       })
 
-      it("only lets a super admin promote a view to one", async () => {
+      it("needs view_configuration:update to promote a view to one", async () => {
         const ownView = await createView("products", productReaderHeaders)
         expect(
           await statusOf(
@@ -215,20 +242,20 @@ medusaIntegrationTestRunner({
           )
         ).toEqual(403)
 
-        const adminView = await createView("products", adminHeaders)
+        const managerView = await createView("products", viewManagerHeaders)
         expect(
           await statusOf(
             api.post(
-              `${base}/${adminView.id}`,
+              `${base}/${managerView.id}`,
               { is_system_default: true },
-              adminHeaders
+              viewManagerHeaders
             )
           )
         ).toEqual(200)
       })
 
-      it("only lets a super admin delete one", async () => {
-        const view = await createView("products", adminHeaders, {
+      it("needs view_configuration:delete to delete one", async () => {
+        const view = await createView("products", viewManagerHeaders, {
           is_system_default: true,
         })
 
@@ -236,7 +263,7 @@ medusaIntegrationTestRunner({
           await statusOf(api.delete(`${base}/${view.id}`, productReaderHeaders))
         ).toEqual(403)
         expect(
-          await statusOf(api.delete(`${base}/${view.id}`, adminHeaders))
+          await statusOf(api.delete(`${base}/${view.id}`, viewManagerHeaders))
         ).toEqual(200)
       })
     })

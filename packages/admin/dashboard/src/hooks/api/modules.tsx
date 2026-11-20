@@ -6,6 +6,7 @@ const MODULES_QUERY_KEY = "modules" as const
 export const modulesQueryKeys = queryKeysFactory(MODULES_QUERY_KEY)
 
 export const RBAC_MODULE_KEY = "rbac"
+export const AUDIT_MODULE_KEY = "audit"
 
 export const modulesQueryOptions = {
   queryKey: modulesQueryKeys.list(),

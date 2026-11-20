@@ -120,7 +120,7 @@
     "boxen": "^9.0.0",
     "chokidar": "^6.0.0",
     "compression": "^1.8.2",
-    "express": "^4.21.0",
+    "express": "^5.3.0",
     "fs-exists-cached": "^1.0.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.5.0",
@@ -133,7 +133,7 @@
     "@medusajs/framework": "2.22.7",
     "@swc/core": "^1.7.28",
     "posthog-node": "^5.57.0",
-    "react-dom": "^18.3.1",
+    "react-dom": "^19.3.1",
     "yalc": "^1.0.0-pre.53"
   },
   "peerDependenciesMeta": {

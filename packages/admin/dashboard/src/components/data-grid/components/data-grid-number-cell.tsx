@@ -1,3 +1,4 @@
+import { RowData } from "@tanstack/react-table"
 import { clx } from "@medusajs/ui"
 import { useEffect, useState } from "react"
 import { Controller, ControllerRenderProps } from "react-hook-form"
@@ -6,7 +7,7 @@ import { useDataGridCell, useDataGridCellError } from "../hooks"
 import { DataGridCellProps, InputProps } from "../types"
 import { DataGridCellContainer } from "./data-grid-cell-container"
 
-export const DataGridNumberCell = <TData, TValue = any>({
+export const DataGridNumberCell = <TData extends RowData, TValue = any>({
   context,
   ...rest
 }: DataGridCellProps<TData, TValue> & {
@@ -82,7 +83,7 @@ const Inner = ({
         inputMode="decimal"
         step="any"
         className={clx(
-          "txt-compact-small size-full bg-transparent outline-none",
+          "txt-compact-small size-full bg-transparent outline-hidden",
           "placeholder:text-ui-fg-muted"
         )}
         tabIndex={-1}

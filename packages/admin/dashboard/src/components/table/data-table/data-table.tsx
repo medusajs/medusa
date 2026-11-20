@@ -1,11 +1,12 @@
 import { clx } from "@medusajs/ui"
+import { RowData } from "@tanstack/react-table"
 import { memo } from "react"
 import { NoRecords, NoResultsProps } from "../../common/empty-table-content"
 import { TableSkeleton } from "../../common/skeleton"
 import { DataTableQuery, DataTableQueryProps } from "./data-table-query"
 import { DataTableRoot, DataTableRootProps } from "./data-table-root"
 
-interface DataTableProps<TData>
+interface DataTableProps<TData extends RowData>
   extends
     Omit<DataTableRootProps<TData>, "noResults">,
     DataTableQueryProps<TData> {
@@ -22,7 +23,7 @@ const MemoizedDataTableQuery = memo(DataTableQuery) as typeof DataTableQuery
 /**
  * @deprecated Use the DataTable component from "/components/data-table" instead
  */
-export const _DataTable = <TData,>({
+export const _DataTable = <TData extends RowData>({
   table,
   columns,
   pagination,

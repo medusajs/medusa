@@ -3051,6 +3051,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Audit logs",
+    "subtitle": "Review who did what in your store, on which resource, and how it ended.",
+    "impersonatedBy": "Impersonated by {{id}}",
+    "outcome": {
+      "succeeded": "Succeeded",
+      "denied": "Denied",
+      "failed": "Failed"
+    },
+    "fields": {
+      "time": "Time",
+      "actor": "Actor",
+      "actorType": "Actor type",
+      "actorId": "Actor ID",
+      "impersonatorId": "Impersonator ID",
+      "action": "Action",
+      "resource": "Resource",
+      "resourceType": "Resource type",
+      "resourceId": "Resource ID",
+      "outcome": "Outcome",
+      "startedAt": "Started at",
+      "endedAt": "Ended at",
+      "requestData": "Request data",
+      "responseData": "Response data"
+    },
+    "request": {
+      "header": "Request",
+      "method": "Method",
+      "route": "Route",
+      "path": "Path",
+      "statusCode": "Status code",
+      "requestId": "Request ID",
+      "ipAddress": "IP address",
+      "userAgent": "User agent",
+      "none": "This audit log wasn't recorded for an API request."
+    },
+    "list": {
+      "empty": {
+        "heading": "No audit logs yet",
+        "description": "Actions performed in your store will appear here."
+      },
+      "filtered": {
+        "heading": "No results",
+        "description": "No audit logs match the current filter criteria."
+      },
+      "searchError": {
+        "heading": "Search failed"
+      }
+    }
+  },
   "translations": {
     "domain": "Translations",
     "settings": {
@@ -3649,6 +3699,10 @@
     "domain": "Property Labels",
     "title": "Property Labels",
     "subtitle": "Manage custom property labels for configurable tables of your entities.",
+    "editTitle": "Edit Property Labels",
+    "editDescription": "Customize how property names are displayed for {{entity}}",
+    "customLabel": "Custom Label",
+    "updateSuccess": "Property labels updated successfully",
     "fields": {
       "module": "Module",
       "model": "Model",
@@ -3696,6 +3750,9 @@
   "fields": {
     "actions": "Actions",
     "amount": "Amount",
+    "yes": "Yes",
+    "no": "No",
+    "field": "Field",
     "reference": "Reference",
     "reference_id": "Reference ID",
     "refundAmount": "Refund amount",
@@ -3989,6 +4046,11 @@
       "audit_log": "Audit logs",
       "notification": "Notifications",
       "workflow_execution": "Workflow executions",
+      "search_index": "Search indexes",
+      "search_index_sync": "Search index syncs",
+      "index_engine": "Index Module",
+      "view_configuration": "Default table views",
+      "layout_configuration": "Default page layouts",
       "store_locale": "Store locales",
       "tax_provider": "Tax providers",
       "tax_rate": "Tax rates",

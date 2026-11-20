@@ -1,5 +1,4 @@
 import React from "react"
-import { Column } from "@tanstack/react-table"
 
 import { Checkbox } from "@/components/checkbox"
 import { DropdownMenu } from "@/components/dropdown-menu"
@@ -9,6 +8,7 @@ import { Adjustments } from "@medusajs/icons"
 import { clx } from "@/utils/clx"
 
 import { useDataTableContext } from "../context/use-data-table-context"
+import { DataTableColumn, DataTableRowData } from "../types"
 
 interface DataTableColumnVisibilityMenuProps {
   className?: string
@@ -29,20 +29,27 @@ const DataTableColumnVisibilityMenu = ({
     .getAllColumns()
     .filter((column) => column.getCanHide())
 
-  const handleToggleColumn = (column: Column<any, any>) => {
+  const handleToggleColumn = (column: DataTableColumn<DataTableRowData>) => {
     column.toggleVisibility()
   }
 
   const handleToggleAll = (value: boolean) => {
     instance.setColumnVisibility(
       Object.fromEntries(
-        columns.map((column: Column<any, any>) => [column.id, value])
+        columns.map((column: DataTableColumn<DataTableRowData>) => [
+          column.id,
+          value,
+        ])
       )
     )
   }
 
-  const allColumnsVisible = columns.every((column: Column<any, any>) => column.getIsVisible())
-  const someColumnsVisible = columns.some((column: Column<any, any>) => column.getIsVisible())
+  const allColumnsVisible = columns.every(
+    (column: DataTableColumn<DataTableRowData>) => column.getIsVisible()
+  )
+  const someColumnsVisible = columns.some(
+    (column: DataTableColumn<DataTableRowData>) => column.getIsVisible()
+  )
 
   const Wrapper = tooltip ? Tooltip : React.Fragment
   const wrapperProps = tooltip ? { content: tooltip } : ({} as any)
@@ -74,7 +81,7 @@ const DataTableColumnVisibilityMenu = ({
         </DropdownMenu.Item>
         <DropdownMenu.Separator />
         <div className="max-h-[250px] overflow-y-auto">
-          {columns.map((column: Column<any, any>) => {
+          {columns.map((column: DataTableColumn<DataTableRowData>) => {
             return (
               <DropdownMenu.Item
                 key={column.id}

@@ -1,10 +1,11 @@
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 import { StaticCountry } from "../../../../lib/data/countries"
 
-const columnHelper = createColumnHelper<StaticCountry>()
+const columnHelper = createColumnHelper<DataTableFeatures, StaticCountry>()
 
 export const useCountryTableColumns = () => {
   const { t } = useTranslation()

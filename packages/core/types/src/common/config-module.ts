@@ -4,15 +4,10 @@ import {
   InternalModuleDeclaration,
 } from "../modules-sdk"
 
-import type { RedisOptions } from "ioredis"
+import type { RedisClientOptions } from "redis"
 
 import { ConnectionOptions } from "node:tls"
-// This package emits CommonJS under `moduleResolution: Node16`, while Vite ships
-// ESM-only type declarations, so TypeScript cannot resolve them from here and
-// `InlineConfig` degrades to `any`. Fixing that needs a `resolution-mode` import
-// attribute, which the repo's Prettier (2.8.8) cannot parse.
-// @ts-ignore
-import type { InlineConfig } from "vite"
+import type { InlineConfig } from "vite" with { "resolution-mode": "import" }
 import type { Logger } from "../logger"
 
 /**
@@ -573,15 +568,15 @@ export type ProjectConfigOptions = {
   redisPrefix?: string
 
   /**
-   * This configuration defines options to pass ioredis for the Redis connection used to store the Medusa server's session. Refer to [ioredis’s RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions)
-   * for the list of available options.
+   * This configuration defines options to pass to `redis` (node-redis) for the Redis connection used to store the Medusa server's session. Refer to [node-redis's client configuration documentation](https://github.com/redis/node-redis/blob/master/docs/client-configuration.md)
+   * for the list of available options. The connection URL is always taken from `redisUrl`.
    *
    * @example
    * ```js title="medusa-config.ts"
    * module.exports = defineConfig({
    *   projectConfig: {
    *     redisOptions: {
-   *       connectionName: process.env.REDIS_CONNECTION_NAME ||
+   *       name: process.env.REDIS_CONNECTION_NAME ||
    *         "medusa",
    *     }
    *     // ...
@@ -590,7 +585,7 @@ export type ProjectConfigOptions = {
    * })
    * ```
    */
-  redisOptions?: RedisOptions
+  redisOptions?: Omit<RedisClientOptions, "url">
 
   /**
    * This configuration defines additional options to pass to [express-session](https://www.npmjs.com/package/express-session), which is used to store the Medusa server's session.

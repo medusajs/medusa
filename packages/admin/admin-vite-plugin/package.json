@@ -34,17 +34,17 @@
     "test:watch": "../../../node_modules/.bin/vitest"
   },
   "devDependencies": {
-    "vite": "^7.3.6"
+    "vite": "^8.3.8"
   },
   "peerDependencies": {
-    "vite": "^5.4.21 || ^6.0.0 || ^7.0.0"
+    "vite": "^5.4.21 || ^6.0.0 || ^7.0.0 || ^8.0.0"
   },
   "dependencies": {
     "@babel/parser": "8.0.10",
     "@babel/traverse": "8.0.10",
     "@babel/types": "8.0.10",
     "@medusajs/admin-shared": "2.22.7",
-    "fdir": "6.1.1",
+    "fdir": "6.5.0",
     "magic-string": "1.4.3",
     "outdent": "^0.8.0",
     "picocolors": "^1.1.0"

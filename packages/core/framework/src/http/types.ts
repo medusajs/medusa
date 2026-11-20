@@ -135,6 +135,16 @@ export type AuditRouteConfig<TResponseBody = any> = {
     req: AuditRequest,
     body: TResponseBody | undefined
   ) => Record<string, unknown> | undefined
+  /**
+   * Returns values to add to the record's `metadata`, such as the tenant the
+   * request belongs to. The values the framework sets itself, such as
+   * `auth_identity_id`, take precedence. `body` is the JSON response body,
+   * passed only for a successful response.
+   */
+  metadata?: (
+    req: AuditRequest,
+    body: TResponseBody | undefined
+  ) => Record<string, unknown> | undefined
 }
 
 /**
@@ -162,9 +172,22 @@ export type MiddlewareRoute = {
   middlewares?: MiddlewareFunction[]
 }
 
+/**
+ * Audit settings for every route.
+ */
+export type AuditMiddlewaresConfig = {
+  /**
+   * Path prefixes that are never the resource, such as `/v1/admin`. With it,
+   * `POST /v1/admin/credits` is recorded as `credit.create`. By default, only
+   * the first segment is skipped (`/admin`).
+   */
+  namespaces?: string[]
+}
+
 export type MiddlewaresConfig = {
   errorHandler?: false | MedusaErrorHandlerFunction
   routes?: MiddlewareRoute[]
+  audit?: AuditMiddlewaresConfig
 }
 
 /**

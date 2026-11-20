@@ -27,6 +27,7 @@ import { RouteDrawer, useRouteModal } from "../../../../components/modals"
 import { useUpdateDraftOrder } from "../../../../hooks/api/draft-orders"
 import { useOrder } from "../../../../hooks/api/orders"
 import { EDIT_DRAFT_ORDER_PERMISSIONS } from "../../../../lib/permissions"
+import { parseValues } from "../../../../lib/utils/metadata-utils"
 
 const MetadataFieldSchema = z.object({
   key: z.string(),
@@ -93,7 +94,7 @@ const MetadataForm = ({ orderId, metadata }: MetadataFormProps) => {
   })
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    const parsedData = parseValues(data)
+    const parsedData = parseValues(data, metadata)
 
     await mutateAsync(
       {
@@ -296,7 +297,7 @@ const GridInput = forwardRef<
       {...props}
       autoComplete="off"
       className={clx(
-        "txt-compact-small text-ui-fg-base placeholder:text-ui-fg-muted disabled:text-ui-fg-disabled disabled:bg-ui-bg-base bg-transparent px-2 py-1.5 outline-none",
+        "txt-compact-small text-ui-fg-base placeholder:text-ui-fg-muted disabled:text-ui-fg-disabled disabled:bg-ui-bg-base bg-transparent px-2 py-1.5 outline-hidden",
         className
       )}
     />
@@ -356,56 +357,6 @@ function getDefaultValues(
       original_key: key,
     }
   })
-}
-
-function parseValues(
-  values: z.infer<typeof MetadataSchema>
-): Record<string, any> | null {
-  const metadata = values.metadata
-
-  const isEmpty =
-    !metadata.length ||
-    (metadata.length === 1 && !metadata[0].key && !metadata[0].value)
-
-  if (isEmpty) {
-    return null
-  }
-
-  const update: Record<string, any> = {}
-
-  metadata.forEach((field) => {
-    let key = field.key
-    let value = field.value
-    const disabled = field.disabled
-
-    if (!key || !value) {
-      return
-    }
-
-    if (disabled) {
-      update[key] = value
-      return
-    }
-
-    key = key.trim()
-    value = value.trim()
-
-    // We try to cast the value to a boolean or number if possible
-    if (value === "true") {
-      update[key] = true
-    } else if (value === "false") {
-      update[key] = false
-    } else {
-      const parsedNumber = parseFloat(value)
-      if (!isNaN(parsedNumber)) {
-        update[key] = parsedNumber
-      } else {
-        update[key] = value
-      }
-    }
-  })
-
-  return update
 }
 
 function getHasUneditableRows(metadata?: Record<string, any> | null) {

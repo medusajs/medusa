@@ -8,6 +8,7 @@
  *
  *   - `vite` dropped its CJS Node API in v6
  *   - `@vitejs/plugin-react` dropped its `require` export condition in v5
+ *   - `@tailwindcss/vite` ships no `require` export condition
  *
  * If esbuild downlevels those dynamic imports, the bundle still typechecks and
  * still builds — it only fails at runtime, with `ERR_REQUIRE_ESM`, for every
@@ -18,7 +19,12 @@ import { readFileSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
-const ESM_ONLY_DEPENDENCIES = ["vite", "@vitejs/plugin-react", "get-port"]
+const ESM_ONLY_DEPENDENCIES = [
+  "vite",
+  "@vitejs/plugin-react",
+  "@tailwindcss/vite",
+  "get-port",
+]
 
 const bundlePath = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),

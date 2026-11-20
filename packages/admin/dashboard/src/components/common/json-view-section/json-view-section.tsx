@@ -22,14 +22,14 @@ type JsonViewSectionProps = {
   title?: string
 }
 
-export const JsonViewSection = ({ data }: JsonViewSectionProps) => {
+export const JsonViewSection = ({ data, title }: JsonViewSectionProps) => {
   const { t } = useTranslation()
   const numberOfKeys = Object.keys(data).length
 
   return (
     <Container className="flex items-center justify-between px-6 py-4">
       <div className="flex items-center gap-x-4">
-        <Heading level="h2">{t("json.header")}</Heading>
+        <Heading level="h2">{title ?? t("json.header")}</Heading>
         <Badge size="2xsmall" rounded="full">
           {t("json.numberOfKeys", {
             count: numberOfKeys,
@@ -48,19 +48,28 @@ export const JsonViewSection = ({ data }: JsonViewSectionProps) => {
         </Drawer.Trigger>
         <Drawer.Content
           dir="ltr"
-          className="text-ui-code-fg-subtle overflow-hidden border border-none bg-ui-contrast-bg-base !shadow-elevation-commandbar max-md:inset-x-2 max-md:max-w-[calc(100%-16px)]"
+          className="text-ui-code-fg-subtle overflow-hidden border border-none bg-ui-contrast-bg-base shadow-elevation-commandbar! max-md:inset-x-2 max-md:max-w-[calc(100%-16px)]"
         >
           <div className="bg-ui-code-bg-base flex items-center justify-between px-6 py-4">
             <div className="flex items-center gap-x-4">
               <Drawer.Title asChild>
                 <Heading className="text-ui-contrast-fg-primary">
-                  <Trans
-                    i18nKey="json.drawer.header"
-                    count={numberOfKeys}
-                    components={[
-                      <span key="count-span" className="text-ui-fg-subtle" />,
-                    ]}
-                  />
+                  {title ? (
+                    <>
+                      {title}{" "}
+                      <span className="text-ui-fg-subtle">
+                        · {t("json.numberOfKeys", { count: numberOfKeys })}
+                      </span>
+                    </>
+                  ) : (
+                    <Trans
+                      i18nKey="json.drawer.header"
+                      count={numberOfKeys}
+                      components={[
+                        <span key="count-span" className="text-ui-fg-subtle" />,
+                      ]}
+                    />
+                  )}
                 </Heading>
               </Drawer.Title>
               <Drawer.Description className="sr-only">
@@ -139,7 +148,7 @@ export const JsonViewSection = ({ data }: JsonViewSectionProps) => {
                     }}
                   />
                   <Primitive.Arrow>
-                    <TriangleDownMini className="-ml-[0.5px] text-ui-contrast-fg-secondary" />
+                    <TriangleDownMini className="ml-[-0.5px] text-ui-contrast-fg-secondary" />
                   </Primitive.Arrow>
                   <Primitive.Colon>
                     <span className="mr-1">:</span>

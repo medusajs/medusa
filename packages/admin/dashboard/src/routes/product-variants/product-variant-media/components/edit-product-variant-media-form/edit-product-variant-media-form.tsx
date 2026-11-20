@@ -368,7 +368,7 @@ const MediaGridItem = ({
   return (
     <div
       className={clx(
-        "group relative aspect-square h-auto max-w-full overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-none hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus"
+        "group relative aspect-square h-auto max-w-full overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-hidden hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus"
       )}
     >
       {isThumbnail && (
@@ -410,7 +410,7 @@ const UnassociatedImageItem = ({
   return (
     <div
       className={clx(
-        "group relative aspect-square h-auto max-w-full cursor-pointer overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-none hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus"
+        "group relative aspect-square h-auto max-w-full cursor-pointer overflow-hidden rounded-lg bg-ui-bg-subtle-hover shadow-elevation-card-rest outline-hidden hover:shadow-elevation-card-hover focus-visible:shadow-borders-focus"
       )}
       onClick={onAdd}
     >

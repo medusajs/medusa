@@ -19,6 +19,7 @@ const redisMock = {
   get: jest.fn(),
   set: jest.fn(),
   del: jest.fn(),
+  zrange: jest.fn().mockResolvedValue([]),
   pipeline: jest.fn(() => ({
     exec: jest.fn(),
   })),
@@ -216,8 +217,8 @@ describe("RedisDistributedTransactionStorage", () => {
       })
 
       const mockQueue = {
-        getRepeatableJobs: jest.fn().mockResolvedValue([]),
-        add: jest.fn().mockResolvedValue({}),
+        keys: { repeat: "bull:queue:repeat", delayed: "bull:queue:delayed" },
+        upsertJobScheduler: jest.fn().mockResolvedValue({}),
       }
       ;(storage as any).queue = mockQueue
       ;(storage as any).cleanerQueue_ = mockQueue
@@ -266,8 +267,8 @@ describe("RedisDistributedTransactionStorage", () => {
       })
 
       const mockQueue = {
-        getRepeatableJobs: jest.fn().mockResolvedValue([]),
-        add: jest.fn().mockResolvedValue({}),
+        keys: { repeat: "bull:queue:repeat", delayed: "bull:queue:delayed" },
+        upsertJobScheduler: jest.fn().mockResolvedValue({}),
       }
       ;(storage as any).queue = mockQueue
       ;(storage as any).cleanerQueue_ = mockQueue
@@ -309,13 +310,221 @@ describe("RedisDistributedTransactionStorage", () => {
       })
 
       const mockQueue = {
-        getRepeatableJobs: jest.fn().mockResolvedValue([]),
+        keys: { repeat: "bull:queue:repeat", delayed: "bull:queue:delayed" },
       }
       ;(storage as any).queue = mockQueue
 
       await storage.onApplicationStart()
 
       expect(Worker).not.toHaveBeenCalled()
+    })
+  })
+
+  describe("job ids", () => {
+    const transaction = {
+      modelId: "workflow",
+      transactionId: "trx:with:colons",
+      getFlow: () => ({ metadata: {} }),
+    } as any
+    const step = {
+      id: "_root.step",
+      attempts: 1,
+      definition: {},
+      isCompensating: () => false,
+    } as any
+
+    const createStorage = () => {
+      const storage = new RedisDistributedTransactionStorage({
+        ...baseModuleDeps,
+        redisMainQueueOptions: {},
+        redisMainWorkerOptions: {},
+        redisJobQueueOptions: {},
+        redisJobWorkerOptions: {},
+        redisCleanerQueueOptions: {},
+        redisCleanerWorkerOptions: {},
+      })
+      const queue = {
+        add: jest.fn().mockResolvedValue({}),
+        getJob: jest.fn(),
+      }
+      ;(storage as any).queue = queue
+      return { storage, queue }
+    }
+
+    it("should not use colons in custom job ids", async () => {
+      const { storage, queue } = createStorage()
+
+      await storage.scheduleRetry(transaction, step, Date.now(), 0)
+
+      expect(queue.add).toHaveBeenCalledWith(
+        "retry",
+        expect.any(Object),
+        expect.objectContaining({
+          jobId: "retry|workflow|trx|with|colons|_root.step|1",
+        })
+      )
+    })
+
+    it("should remove jobs enqueued with the legacy colon job id", async () => {
+      const { storage, queue } = createStorage()
+      const legacyJob = { attemptsStarted: 0, remove: jest.fn() }
+      queue.getJob.mockImplementation(async (id: string) =>
+        id === "retry:workflow:trx:with:colons:_root.step:1"
+          ? legacyJob
+          : undefined
+      )
+
+      await storage.clearRetry(transaction, step)
+
+      expect(legacyJob.remove).toHaveBeenCalled()
+    })
+  })
+
+  describe("scheduler", () => {
+    const createStorage = () =>
+      new RedisDistributedTransactionStorage({
+        ...baseModuleDeps,
+        redisMainQueueOptions: {},
+        redisMainWorkerOptions: {},
+        redisJobQueueOptions: {},
+        redisJobWorkerOptions: {},
+        redisCleanerQueueOptions: {},
+        redisCleanerWorkerOptions: {},
+      })
+
+    const createMockQueue = (name: string) => ({
+      keys: { repeat: `bull:${name}:repeat`, delayed: `bull:${name}:delayed` },
+      upsertJobScheduler: jest.fn().mockResolvedValue({}),
+      removeJobScheduler: jest.fn().mockResolvedValue(true),
+      remove: jest.fn().mockResolvedValue(1),
+    })
+
+    const mockSortedSets = (membersByKey: Record<string, string[]>) => {
+      ;(redisMock.zrange as jest.Mock).mockImplementation(
+        async (key: string) => membersByKey[key] ?? []
+      )
+    }
+
+    afterEach(() => {
+      ;(redisMock.zrange as jest.Mock).mockResolvedValue([])
+    })
+
+    it("should upsert job schedulers for cron and interval schedules", async () => {
+      const storage = createStorage()
+      const jobQueue = createMockQueue("jobs")
+      ;(storage as any).jobQueue = jobQueue
+
+      await storage.schedule("workflow", { cron: "*/5 * * * *" })
+      await storage.schedule("other-workflow", { interval: 1000 })
+
+      expect(jobQueue.upsertJobScheduler).toHaveBeenCalledWith(
+        "schedule_workflow",
+        { limit: undefined, pattern: "*/5 * * * *" },
+        expect.objectContaining({
+          name: "schedule",
+          data: {
+            jobId: "workflow",
+            schedulerOptions: { cron: "*/5 * * * *" },
+          },
+        })
+      )
+      expect(jobQueue.upsertJobScheduler).toHaveBeenCalledWith(
+        "schedule_other-workflow",
+        { limit: undefined, every: 1000, startDate: expect.any(Number) },
+        expect.any(Object)
+      )
+    })
+
+    it("should remove a job scheduler by job id", async () => {
+      const storage = createStorage()
+      const jobQueue = createMockQueue("jobs")
+      ;(storage as any).jobQueue = jobQueue
+
+      await storage.remove("workflow")
+
+      expect(jobQueue.removeJobScheduler).toHaveBeenCalledWith(
+        "schedule_workflow"
+      )
+    })
+
+    it("should remove all job schedulers, including legacy repeatable jobs and their pending runs", async () => {
+      const storage = createStorage()
+      const jobQueue = createMockQueue("jobs")
+      ;(storage as any).jobQueue = jobQueue
+      mockSortedSets({
+        "bull:jobs:repeat": ["schedule_a", "schedule::::*/5 * * * *"],
+        "bull:jobs:delayed": ["repeat:7f3a:1793284200000", "retry|wf|trx"],
+      })
+
+      await storage.removeAll()
+
+      expect(jobQueue.removeJobScheduler).toHaveBeenCalledWith("schedule_a")
+      expect(jobQueue.removeJobScheduler).toHaveBeenCalledWith(
+        "schedule::::*/5 * * * *"
+      )
+      expect(jobQueue.remove).toHaveBeenCalledTimes(1)
+      expect(jobQueue.remove).toHaveBeenCalledWith("repeat:7f3a:1793284200000")
+    })
+
+    it("should only read the repeat keys on start when there is nothing to clean up", async () => {
+      const storage = createStorage()
+      const queue = createMockQueue("main")
+      const cleanerQueue = createMockQueue("cleaner")
+      ;(storage as any).queue = queue
+      ;(storage as any).cleanerQueue_ = cleanerQueue
+      mockSortedSets({
+        "bull:cleaner:repeat": ["clear-expired-executions"],
+      })
+
+      await storage.onApplicationStart()
+
+      expect(redisMock.zrange).toHaveBeenCalledTimes(2)
+      expect(redisMock.zrange).not.toHaveBeenCalledWith(
+        expect.stringMatching(/:delayed$/),
+        0,
+        -1
+      )
+      expect(queue.removeJobScheduler).not.toHaveBeenCalled()
+      expect(cleanerQueue.removeJobScheduler).not.toHaveBeenCalled()
+    })
+
+    it("should replace legacy repeatable jobs on the main and cleaner queues on start", async () => {
+      const storage = createStorage()
+      const queue = createMockQueue("main")
+      const cleanerQueue = createMockQueue("cleaner")
+      ;(storage as any).queue = queue
+      ;(storage as any).cleanerQueue_ = cleanerQueue
+      mockSortedSets({
+        "bull:main:repeat": ["schedule_workflow"],
+        "bull:main:delayed": ["repeat:schedule_workflow:1", "retry|wf|trx"],
+        "bull:cleaner:repeat": [
+          "legacy-cleaner-hash",
+          "clear-expired-executions",
+        ],
+        "bull:cleaner:delayed": [
+          "repeat:legacy-cleaner-hash:1",
+          "repeat:clear-expired-executions:2",
+        ],
+      })
+
+      await storage.onApplicationStart()
+
+      expect(queue.removeJobScheduler).toHaveBeenCalledWith("schedule_workflow")
+      expect(queue.remove).toHaveBeenCalledTimes(1)
+      expect(queue.remove).toHaveBeenCalledWith("repeat:schedule_workflow:1")
+      expect(cleanerQueue.removeJobScheduler).toHaveBeenCalledTimes(1)
+      expect(cleanerQueue.removeJobScheduler).toHaveBeenCalledWith(
+        "legacy-cleaner-hash"
+      )
+      expect(cleanerQueue.remove).toHaveBeenCalledTimes(1)
+      expect(cleanerQueue.remove).toHaveBeenCalledWith(
+        "repeat:legacy-cleaner-hash:1"
+      )
+      expect(cleanerQueue.upsertJobScheduler).toHaveBeenCalledWith(
+        "clear-expired-executions",
+        { every: 1000 * 60 * 30, startDate: expect.any(Number) },
+        expect.objectContaining({ name: "cleaner" })
+      )
     })
   })
 })

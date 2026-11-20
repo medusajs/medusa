@@ -3275,6 +3275,9 @@
   },
   "fields": {
     "amount": "Số tiền",
+    "yes": "Có",
+    "no": "Không",
+    "field": "Trường",
     "reference": "Tham chiếu",
     "reference_id": "Mã tham chiếu",
     "refundAmount": "Số tiền hoàn lại",
@@ -3568,8 +3571,14 @@
       "fulfillment_set": "Bộ xử lý giao hàng",
       "service_zone": "Khu vực dịch vụ",
       "file": "Tệp",
+      "audit_log": "Nhật ký kiểm tra",
       "notification": "Thông báo",
       "workflow_execution": "Lần thực thi luồng công việc",
+      "search_index": "Chỉ mục tìm kiếm",
+      "search_index_sync": "Đồng bộ chỉ mục tìm kiếm",
+      "index_engine": "Mô-đun chỉ mục",
+      "view_configuration": "Chế độ xem bảng mặc định",
+      "layout_configuration": "Bố cục trang mặc định",
       "store_locale": "Ngôn ngữ cửa hàng",
       "tax_provider": "Nhà cung cấp thuế",
       "tax_rate": "Thuế suất",
@@ -3683,6 +3692,10 @@
       "propertyCount": "Số Thuộc tính"
     },
     "subtitle": "Quản lý nhãn thuộc tính tùy chỉnh cho các bảng có thể cấu hình của thực thể của bạn.",
+    "editTitle": "Chỉnh sửa Nhãn thuộc tính",
+    "editDescription": "Tùy chỉnh cách hiển thị tên thuộc tính cho {{entity}}",
+    "customLabel": "Nhãn tùy chỉnh",
+    "updateSuccess": "Nhãn thuộc tính đã được cập nhật thành công",
     "title": "Nhãn Thuộc tính"
   },
   "refundReasons": {

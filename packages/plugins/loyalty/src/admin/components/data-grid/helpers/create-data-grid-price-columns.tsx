@@ -1,5 +1,7 @@
+import { DataTableRowData } from "@medusajs/ui";
 import { HttpTypes } from "@medusajs/types";
 import { ColumnDef } from "@tanstack/react-table";
+import { DataGridFeatures } from "../data-grid-features";
 import { FieldPath, FieldValues } from "react-hook-form";
 import { IncludesTaxTooltip } from "../../tax-badge";
 import { DataGridCurrencyCell } from "../components/data-grid-currency-cell";
@@ -8,7 +10,7 @@ import { FieldContext } from "../types";
 import { createDataGridHelper } from "./create-data-grid-column-helper";
 
 type CreateDataGridPriceColumnsProps<
-  TData,
+  TData extends DataTableRowData,
   TFieldValues extends FieldValues
 > = {
   currencies?: string[];
@@ -22,7 +24,7 @@ type CreateDataGridPriceColumnsProps<
 };
 
 export const createDataGridPriceColumns = <
-  TData,
+  TData extends DataTableRowData,
   TFieldValues extends FieldValues
 >({
   currencies,
@@ -30,7 +32,7 @@ export const createDataGridPriceColumns = <
   pricePreferences,
   isReadyOnly,
   getFieldName,
-}: CreateDataGridPriceColumnsProps<TData, TFieldValues>): ColumnDef<
+}: CreateDataGridPriceColumnsProps<TData, TFieldValues>): ColumnDef<DataGridFeatures, 
   TData,
   unknown
 >[] => {

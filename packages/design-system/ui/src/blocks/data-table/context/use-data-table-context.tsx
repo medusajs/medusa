@@ -1,8 +1,11 @@
 import * as React from "react"
 
+import { DataTableRowData } from "../types"
 import { DataTableContext, DataTableContextValue } from "./data-table-context"
 
-const useDataTableContext = <TData,>(): DataTableContextValue<TData> => {
+const useDataTableContext = <
+  TData extends DataTableRowData,
+>(): DataTableContextValue<TData> => {
   const context = React.useContext(DataTableContext)
 
   if (!context) {

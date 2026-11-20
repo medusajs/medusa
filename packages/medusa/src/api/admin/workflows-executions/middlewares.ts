@@ -17,7 +17,7 @@ import { PolicyOperation } from "@medusajs/framework/utils"
 
 export const adminWorkflowsExecutionsMiddlewares: MiddlewareRoute[] = [
   {
-    matcher: "/admin/workflows-executions/*",
+    matcher: "/admin/workflows-executions/{*splat}",
     middlewares: [
       authorize([
         {
@@ -69,8 +69,8 @@ export const adminWorkflowsExecutionsMiddlewares: MiddlewareRoute[] = [
     middlewares: [
       authorize([
         {
-          resource: "*",
-          operation: "*",
+          resource: Entities.workflow_execution,
+          operation: PolicyOperation.create,
         },
       ]),
       validateAndTransformBody(AdminCreateWorkflowsRun),

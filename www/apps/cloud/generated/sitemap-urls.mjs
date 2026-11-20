@@ -56,6 +56,7 @@ export const sitemapUrls = [
   "/monitoring/workers",
   "/notifications",
   "/organizations/connections",
+  "/organizations/license",
   "/organizations",
   "",
   "/pricing",

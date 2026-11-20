@@ -9,6 +9,7 @@ import { SettingsLayout } from "../../components/layout/settings-layout"
 import { ErrorBoundary } from "../../components/utilities/error-boundary"
 import { PermissionsRequirementsProvider } from "../../providers/permissions-provider"
 import { HydrateFallback } from "../../components/utilities/hydrate-fallback"
+import { auditModuleLoader } from "../../routes/audit-logs/common/audit-module-loader"
 
 export function getRouteMap({
   settingsRoutes,
@@ -1789,6 +1790,39 @@ export function getRouteMap({
               ],
             },
             {
+              path: "audit-logs",
+              errorElement: <ErrorBoundary />,
+              element: <RoutePermissionGuard />,
+              loader: auditModuleLoader,
+              handle: {
+                breadcrumb: () => t("auditLogs.domain"),
+                permissions: "audit_log:read",
+              },
+              children: [
+                {
+                  path: "",
+                  lazy: () => import("../../routes/audit-logs/audit-log-list"),
+                },
+                {
+                  path: ":id",
+                  lazy: async () => {
+                    const { Component, Breadcrumb, loader } =
+                      await import("../../routes/audit-logs/audit-log-detail")
+
+                    return {
+                      Component,
+                      loader,
+                      handle: {
+                        breadcrumb: (
+                          match: UIMatch<HttpTypes.AdminAuditLogResponse>
+                        ) => <Breadcrumb {...match} />,
+                      },
+                    }
+                  },
+                },
+              ],
+            },
+            {
               path: "sales-channels",
               errorElement: <ErrorBoundary />,
               element: (
@@ -2250,11 +2284,22 @@ export function getRouteMap({
             {
               path: "search",
               errorElement: <ErrorBoundary />,
+              element: (
+                <PermissionsRequirementsProvider>
+                  <RoutePermissionGuard />
+                </PermissionsRequirementsProvider>
+              ),
               handle: {
                 breadcrumb: () => t("searchIndexes.domain"),
+                permissions: "search_index:read",
               },
-              lazy: () =>
-                import("../../routes/search-indexes/search-index-list"),
+              children: [
+                {
+                  path: "",
+                  lazy: () =>
+                    import("../../routes/search-indexes/search-index-list"),
+                },
+              ],
             },
             {
               path: "product-types",

@@ -360,7 +360,7 @@ export const COMPUTED_COLUMN_FUNCTIONS = {
     return (
       <div className="flex w-full items-center justify-center">
         <Tooltip content={displayName}>
-          <div className="flex size-4 items-center justify-center overflow-hidden rounded-sm">
+          <div className="flex size-4 items-center justify-center overflow-hidden rounded-xs">
             <ReactCountryFlag
               countryCode={countryCode.toUpperCase()}
               svg

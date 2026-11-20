@@ -120,14 +120,14 @@ export const useUpdateMe = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.user.updateMe(payload, query),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: usersQueryKeys.me() })
       queryClient.invalidateQueries({ queryKey: usersQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: usersQueryKeys.detail(data.user.id),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -145,14 +145,14 @@ export const useUpdateUser = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.user.update(id, payload, query),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: usersQueryKeys.detail(id) })
       queryClient.invalidateQueries({ queryKey: usersQueryKeys.lists() })
 
       // We invalidate the me query in case the user updates their own profile
       queryClient.invalidateQueries({ queryKey: usersQueryKeys.me() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -203,14 +203,14 @@ export const useDeleteUser = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.user.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: usersQueryKeys.detail(id) })
       queryClient.invalidateQueries({ queryKey: usersQueryKeys.lists() })
 
       // We invalidate the me query in case the user updates their own profile
       queryClient.invalidateQueries({ queryKey: usersQueryKeys.me() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

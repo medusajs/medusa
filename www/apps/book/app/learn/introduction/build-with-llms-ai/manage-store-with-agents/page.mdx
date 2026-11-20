@@ -31,7 +31,7 @@ Store access for AI agents is in beta access. Before you connect AI agents to yo
 You can connect AI agents to your store in the following ways:
 
 - [Claude Connector](#claude-connector): Add the Claude Connector to Claude.
-- [ChatGPT App](#chatgpt-app): Add the ChatGPT app to ChatGPT.
+- [ChatGPT Plugin](#chatgpt-plugin): Add the ChatGPT plugin to ChatGPT.
 - [Medusa MCP Server](#medusa-mcp-server): Connect the Medusa MCP server to any AI agent that supports MCP servers, such as Claude Code, Codex, or Cursor.
 
 ---
@@ -46,23 +46,19 @@ Refer to the [Claude Connector](!cloud!/medusa-mcp/claude) guide in the Cloud do
 
 ---
 
-## ChatGPT App
+## ChatGPT Plugin
 
-<Note type="soon">
+The [Medusa ChatGPT plugin](https://chatgpt.com/plugins/plugin_asdk_app_6aed956ee81c81919f9ade97457321f1) connects ChatGPT to your stores, so you can ask ChatGPT about your stores in any chat.
 
-The ChatGPT app is under review by OpenAI and isn't available in ChatGPT yet. In the meantime, you can add the Medusa MCP server to ChatGPT as a [custom plugin](!cloud!/medusa-mcp/chatgpt#add-medusa-mcp-as-a-custom-plugin-in-chatgpt) in developer mode.
+The ChatGPT plugin provides a fixed set of tools that retrieve common commerce data, such as orders, products, and customers. To use all of the Medusa MCP server's tools in ChatGPT, including the tools that call your custom API routes, add the Medusa MCP server to ChatGPT as a [custom plugin](!cloud!/medusa-mcp/chatgpt#add-medusa-mcp-as-a-custom-plugin-in-chatgpt) in developer mode.
 
-</Note>
-
-The ChatGPT app connects ChatGPT to your stores, so you can ask ChatGPT about your stores in any chat.
-
-Refer to the [ChatGPT app](!cloud!/medusa-mcp/chatgpt) guide in the Cloud documentation to learn more.
+Refer to the [ChatGPT plugin](!cloud!/medusa-mcp/chatgpt) guide in the Cloud documentation to learn more.
 
 ---
 
 ## Medusa MCP Server
 
-The Medusa MCP server is a remote Model Context Protocol (MCP) server that powers the Claude Connector and the ChatGPT app. You can also connect it to any AI agent that supports MCP servers.
+The Medusa MCP server is a remote Model Context Protocol (MCP) server that powers the Claude Connector and the ChatGPT plugin. You can also connect it to any AI agent that supports MCP servers.
 
 <Note>
 

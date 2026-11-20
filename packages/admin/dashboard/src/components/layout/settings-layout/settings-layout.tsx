@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next"
 import { Link, useLocation } from "react-router-dom"
 
 import {
+  AUDIT_MODULE_KEY,
   RBAC_MODULE_KEY,
   useIsModuleInstalled,
 } from "../../../hooks/api/modules"
@@ -19,6 +20,7 @@ import { Shell } from "../shell"
 import { UserMenu } from "../user-menu"
 import {
   useApiKeyPermissions,
+  useAuditLogPermissions,
   useProductTagPermissions,
   useProductTypePermissions,
   useRbacPolicyPermissions,
@@ -28,6 +30,7 @@ import {
   useResourcePermissions,
   useReturnReasonPermissions,
   useSalesChannelPermissions,
+  useSearchIndexPermissions,
   useStockLocationPermissions,
   useStorePermissions,
   useTaxRegionPermissions,
@@ -46,11 +49,13 @@ export const SettingsLayout = () => {
 
 const useSettingRoutes = (): INavItem[] => {
   const { isInstalled: isRbacEnabled } = useIsModuleInstalled(RBAC_MODULE_KEY)
+  const { isInstalled: isAuditEnabled } = useIsModuleInstalled(AUDIT_MODULE_KEY)
   const isViewConfigEnabled = useFeatureFlag("view_configurations")
   const { t } = useTranslation()
 
   const { canRead: canReadRbacRoles } = useRbacRolePermissions()
   const { canRead: canReadRbacPolicies } = useRbacPolicyPermissions()
+  const { canRead: canReadAuditLogPolicy } = useAuditLogPermissions()
   const { canRead: canReadProductTags } = useProductTagPermissions()
   const { canRead: canReadProductTypes } = useProductTypePermissions()
   const { canRead: canReadRegions } = useRegionPermissions()
@@ -67,6 +72,8 @@ const useSettingRoutes = (): INavItem[] => {
 
   const canReadRoles = isRbacEnabled && canReadRbacRoles
   const canReadPolicies = isRbacEnabled && canReadRbacPolicies
+  // Without RBAC every permission check passes, so only the module gates it.
+  const canReadAuditLogs = isAuditEnabled && canReadAuditLogPolicy
 
   return useMemo(
     () => [
@@ -99,6 +106,14 @@ const useSettingRoutes = (): INavItem[] => {
             {
               label: t("policies.domain"),
               to: "/settings/policies",
+            },
+          ]
+        : []),
+      ...(canReadAuditLogs
+        ? [
+            {
+              label: t("auditLogs.domain"),
+              to: "/settings/audit-logs",
             },
           ]
         : []),
@@ -188,6 +203,7 @@ const useSettingRoutes = (): INavItem[] => {
       canReadTranslations,
       canReadRoles,
       canReadPolicies,
+      canReadAuditLogs,
       canReadProductTags,
       canReadProductTypes,
       canReadRegions,
@@ -206,7 +222,10 @@ const useSettingRoutes = (): INavItem[] => {
 
 const useDeveloperRoutes = (): INavItem[] => {
   const { t } = useTranslation()
-  const { enabled: isSearchEnabled } = useSearchIndexes()
+  const { canRead: canReadSearchIndexes } = useSearchIndexPermissions()
+  const { enabled: isSearchEnabled } = useSearchIndexes({
+    enabled: canReadSearchIndexes,
+  })
 
   const { canRead: canReadApiKeys } = useApiKeyPermissions()
   const { canRead: canReadWorkflows } = useWorkflowExecutionPermissions()
@@ -338,7 +357,7 @@ const Header = () => {
         to={from}
         replace
         className={clx(
-          "flex items-center rounded-md bg-ui-bg-subtle outline-none transition-fg",
+          "flex items-center rounded-md bg-ui-bg-subtle outline-hidden transition-fg",
           "hover:bg-ui-bg-subtle-hover",
           "focus-visible:shadow-borders-focus"
         )}

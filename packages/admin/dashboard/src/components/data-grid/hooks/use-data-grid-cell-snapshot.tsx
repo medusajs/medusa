@@ -1,15 +1,19 @@
+import { RowData } from "@tanstack/react-table"
 import { useCallback, useState } from "react"
 import { FieldValues, Path, UseFormReturn } from "react-hook-form"
 import { DataGridMatrix } from "../models"
 import { DataGridCellSnapshot, DataGridCoordinates } from "../types"
 
-type UseDataGridCellSnapshotOptions<TData, TFieldValues extends FieldValues> = {
+type UseDataGridCellSnapshotOptions<
+  TData extends RowData,
+  TFieldValues extends FieldValues,
+> = {
   matrix: DataGridMatrix<TData, TFieldValues>
   form: UseFormReturn<TFieldValues>
 }
 
 export const useDataGridCellSnapshot = <
-  TData,
+  TData extends RowData,
   TFieldValues extends FieldValues,
 >({
   matrix,

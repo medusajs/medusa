@@ -4,6 +4,7 @@ import { InventoryActions } from "./inventory-actions"
 import { PlaceholderCell } from "../../../../../components/table/table-cells/common/placeholder-cell"
 import { formatQuantity } from "../../../../../lib/format-quantity"
 import { createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -12,7 +13,10 @@ interface ExtendedInventoryItem extends AdminInventoryItem {
   variants?: AdminProductVariant[]
 }
 
-const columnHelper = createColumnHelper<ExtendedInventoryItem>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  ExtendedInventoryItem
+>()
 
 export const useInventoryTableColumns = () => {
   const { t } = useTranslation()

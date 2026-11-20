@@ -24,5 +24,5 @@ export const POST = async (
 
   await indexService.sync({ strategy })
 
-  res.send(200)
+  res.sendStatus(200)
 }

@@ -170,7 +170,7 @@ const Notification = ({
                 </Text>
                 {unread && (
                   <div
-                    className="h-2 w-2 rounded bg-ui-bg-interactive"
+                    className="h-2 w-2 rounded-sm bg-ui-bg-interactive"
                     role="status"
                   />
                 )}

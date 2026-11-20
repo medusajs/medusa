@@ -1,12 +1,72 @@
 import { Logger } from "@medusajs/framework/types"
 import { RedisCacheModuleOptions } from "@types"
-import { Redis } from "ioredis"
+import { ChainableCommander, ClientContext, Redis, Result } from "ioredis"
 import { createGunzip, createGzip } from "zlib"
+
+const CLEAR_BATCH_SIZE = 1000
+
+/**
+ * KEYS[1] is a tag set, KEYS[2..n] are members read from it. Removes the
+ * members whose entry no longer exists (expired by TTL) and returns the live ones.
+ * Runs as a script so a concurrent `set()` cannot recreate an entry between the
+ * existence check and the SREM, which would leave a live entry unindexed.
+ */
+const PRUNE_EXPIRED_TAG_MEMBERS_SCRIPT = `
+local live = {}
+for i = 2, #KEYS do
+  if redis.call('EXISTS', KEYS[i]) == 1 then
+    live[#live + 1] = KEYS[i]
+  else
+    redis.call('SREM', KEYS[1], KEYS[i])
+  end
+end
+return live
+`
+
+/**
+ * KEYS are tag sets, ARGV[1] the entry key to index, ARGV[2] the expiry the
+ * sets need for this entry in seconds (0 = the entry never expires).
+ * A tag set is shared by entries with different TTLs and must outlive all of
+ * them, so its expiry is only ever extended: a plain EXPIRE would let a
+ * short-lived entry expire the set while longer-lived entries still rely on it
+ * for tag invalidation.
+ */
+const INDEX_ENTRY_IN_TAG_SETS_SCRIPT = `
+local ttl = tonumber(ARGV[2])
+for i = 1, #KEYS do
+  local existed = redis.call('EXISTS', KEYS[i]) == 1
+  redis.call('SADD', KEYS[i], ARGV[1])
+  if ttl == 0 then
+    redis.call('PERSIST', KEYS[i])
+  else
+    local current = redis.call('TTL', KEYS[i])
+    if not existed or (current >= 0 and current < ttl) then
+      redis.call('EXPIRE', KEYS[i], ttl)
+    end
+  end
+end
+`
+
+/**
+ * Lua scripts registered on the client with `defineCommand`. `Context` makes a
+ * command return a promise on the client and the pipeline on a pipeline.
+ * Both scripts take a variable number of keys, so the key count is the first argument.
+ */
+type CustomCommands<Context extends ClientContext = { type: "default" }> = {
+  pruneExpiredTagMembers(
+    numberOfKeys: number,
+    ...keys: string[]
+  ): Result<string[], Context>
+  indexEntryInTagSets(
+    numberOfKeys: number,
+    ...keysAndArgs: (string | number)[]
+  ): Result<null, Context>
+}
 
 export class RedisCachingProvider {
   static identifier = "cache-redis"
 
-  protected redisClient: Redis
+  protected redisClient: Redis & CustomCommands
   protected keyNamePrefix: string
   protected defaultTTL: number
   protected compressionThreshold: number
@@ -27,7 +87,15 @@ export class RedisCachingProvider {
     },
     options?: RedisCacheModuleOptions
   ) {
-    this.redisClient = redisClient
+    this.redisClient = redisClient as Redis & CustomCommands
+    // Registered once so ioredis runs them through EVALSHA instead of sending
+    // the script body on every call
+    this.redisClient.defineCommand("pruneExpiredTagMembers", {
+      lua: PRUNE_EXPIRED_TAG_MEMBERS_SCRIPT,
+    })
+    this.redisClient.defineCommand("indexEntryInTagSets", {
+      lua: INDEX_ENTRY_IN_TAG_SETS_SCRIPT,
+    })
     this.keyNamePrefix = prefix
     this.defaultTTL = options?.ttl ?? 3600 // 1 hour default
     this.compressionThreshold = options?.compressionThreshold ?? 2048 // 2KB default
@@ -320,7 +388,8 @@ export class RedisCachingProvider {
       const finalData = await this.#compressData(serializedData)
       const hashedTags = tags?.map((tag) => this.hasher(tag)) ?? []
 
-      const setPipeline = this.redisClient.pipeline()
+      const setPipeline = this.redisClient.pipeline() as ChainableCommander &
+        CustomCommands<{ type: "pipeline" }>
 
       // Main data with conditional operations
       setPipeline.hset(keyName, "data", finalData)
@@ -340,13 +409,15 @@ export class RedisCachingProvider {
           setPipeline.expire(tagsKey, effectiveTTL + 60)
         }
 
-        hashedTags.forEach((hashedTag) => {
-          const tagKey = this.#getTagKey(hashedTag, { isHashed: true })
-          setPipeline.sadd(tagKey, keyName)
-          if (effectiveTTL) {
-            setPipeline.expire(tagKey, effectiveTTL + 60)
-          }
-        })
+        const tagKeys = hashedTags.map((hashedTag) =>
+          this.#getTagKey(hashedTag, { isHashed: true })
+        )
+        setPipeline.indexEntryInTagSets(
+          tagKeys.length,
+          ...tagKeys,
+          keyName,
+          effectiveTTL ? effectiveTTL + 60 : 0
+        )
       }
 
       await setPipeline.exec()
@@ -387,69 +458,30 @@ export class RedisCachingProvider {
           return
         }
 
-        // Get all keys associated with the tags
-        const pipeline = this.redisClient.pipeline()
-        tags.forEach((tag) => {
+        if (options && options.autoInvalidate !== true) {
+          return
+        }
+
+        // Iterate tag members in batches so memory stays bounded for large tags
+        for (const tag of tags) {
           const tagKey = this.#getTagKey(tag)
-          pipeline.smembers(tagKey)
-        })
+          let cursor = "0"
 
-        const tagResults = await pipeline.exec()
+          do {
+            const [nextCursor, keyNames] = await this.redisClient.sscan(
+              tagKey,
+              cursor,
+              "COUNT",
+              CLEAR_BATCH_SIZE
+            )
+            cursor = nextCursor
 
-        const allKeys = new Set<string>()
-
-        tagResults?.forEach((result) => {
-          if (result && result[1]) {
-            ;(result[1] as string[]).forEach((key) => allKeys.add(key))
-          }
-        })
-
-        if (allKeys.size) {
-          // If no options provided (user explicit call), clear everything
-          if (!options) {
-            await this.#deleteEntries(Array.from(allKeys))
-            return
-          }
-
-          // If autoInvalidate is true (strategy call), only clear entries with autoInvalidate=true (default)
-          if (options.autoInvalidate === true) {
-            const optionsPipeline = this.redisClient.pipeline()
-
-            Array.from(allKeys).forEach((key) => {
-              optionsPipeline.hget(key, "options")
-            })
-
-            const optionsResults = await optionsPipeline.exec()
-            const keysToDelete: string[] = []
-
-            Array.from(allKeys).forEach((key, index) => {
-              const optionsResult = optionsResults?.[index]
-
-              if (optionsResult && optionsResult[1]) {
-                try {
-                  const entryOptions = JSON.parse(optionsResult[1] as string)
-
-                  // Delete if entry has autoInvalidate=true or no setting (default true)
-                  const shouldAutoInvalidate =
-                    entryOptions.autoInvalidate ?? true
-
-                  if (shouldAutoInvalidate) {
-                    keysToDelete.push(key)
-                  }
-                } catch (e) {
-                  // If can't parse options, assume it's safe to delete (default true)
-                  keysToDelete.push(key)
-                }
-              } else {
-                // No options stored, default to true
-                keysToDelete.push(key)
-              }
-            })
-
-            if (keysToDelete.length) {
-              await this.#deleteEntries(keysToDelete)
-            }
-          }
+            const liveKeyNames = await this.#pruneExpiredTagMembers(
+              tagKey,
+              keyNames
+            )
+            await this.#clearTaggedEntries(liveKeyNames, options)
+          } while (cursor !== "0")
         }
       }
     } catch (error) {
@@ -463,6 +495,75 @@ export class RedisCachingProvider {
       }
       throw error
     }
+  }
+
+  /**
+   * Redis expiry deletes an entry but leaves its key in the forward tag sets.
+   * Drop those members here, otherwise every clear of the tag walks them again.
+   */
+  async #pruneExpiredTagMembers(
+    tagKey: string,
+    keyNames: string[]
+  ): Promise<string[]> {
+    if (!keyNames.length) {
+      return keyNames
+    }
+
+    return await this.redisClient.pruneExpiredTagMembers(
+      keyNames.length + 1,
+      tagKey,
+      ...keyNames
+    )
+  }
+
+  async #clearTaggedEntries(
+    keyNames: string[],
+    options?: { autoInvalidate?: boolean }
+  ): Promise<void> {
+    if (!keyNames.length) {
+      return
+    }
+
+    // If no options provided (user explicit call), clear everything
+    if (!options) {
+      await this.#deleteEntries(keyNames)
+      return
+    }
+
+    // autoInvalidate is true (strategy call), only clear entries with autoInvalidate=true (default)
+    const optionsPipeline = this.redisClient.pipeline()
+
+    keyNames.forEach((key) => {
+      optionsPipeline.hget(key, "options")
+    })
+
+    const optionsResults = await optionsPipeline.exec()
+    const keysToDelete: string[] = []
+
+    keyNames.forEach((key, index) => {
+      const optionsResult = optionsResults?.[index]
+
+      if (optionsResult && optionsResult[1]) {
+        try {
+          const entryOptions = JSON.parse(optionsResult[1] as string)
+
+          // Delete if entry has autoInvalidate=true or no setting (default true)
+          const shouldAutoInvalidate = entryOptions.autoInvalidate ?? true
+
+          if (shouldAutoInvalidate) {
+            keysToDelete.push(key)
+          }
+        } catch (e) {
+          // If can't parse options, assume it's safe to delete (default true)
+          keysToDelete.push(key)
+        }
+      } else {
+        // No options stored, default to true
+        keysToDelete.push(key)
+      }
+    })
+
+    await this.#deleteEntries(keysToDelete)
   }
 
   async flush(): Promise<void> {

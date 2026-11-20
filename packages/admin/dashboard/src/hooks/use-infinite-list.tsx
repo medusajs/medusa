@@ -52,7 +52,6 @@ export const useInfiniteList = <
       TResponse,
       TError,
       InfiniteData<TResponse, number>,
-      TResponse,
       TQueryKey,
       number
     >,

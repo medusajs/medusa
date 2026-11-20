@@ -115,7 +115,9 @@ Select the `medusa-commerce` server and choose **Authenticate**.
 
 #### ChatGPT
 
-The [ChatGPT app](./chatgpt/page.mdx) is under review by OpenAI. In the meantime, add the Medusa MCP server as a custom plugin in ChatGPT's developer mode, as explained in the [ChatGPT app](./chatgpt/page.mdx#add-medusa-mcp-as-a-custom-plugin-in-chatgpt) guide.
+Add the [Medusa plugin in ChatGPT](https://chatgpt.com/plugins/plugin_asdk_app_6aed956ee81c81919f9ade97457321f1), as explained in the [ChatGPT plugin](./chatgpt/page.mdx) guide. The ChatGPT plugin uses [static mode](#static-mode), so it only provides a fixed set of commerce tools.
+
+To use all of the Medusa MCP server's tools in ChatGPT, add the Medusa MCP server as a custom plugin in ChatGPT's developer mode instead, as explained in the [ChatGPT plugin](./chatgpt/page.mdx#add-medusa-mcp-as-a-custom-plugin-in-chatgpt) guide.
 
 #### Cursor
 
@@ -510,6 +512,216 @@ The AI tool uses these tools to answer general questions about Medusa and to sha
       </Table.Cell>
       <Table.Cell>
         Sends your feedback to the Medusa team. The AI tool only sends feedback when you ask it to, or after you approve the message.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Static Mode
+
+By default, the Medusa MCP server provides [commerce tools](#commerce-tools) that find and call any of your store's API routes, including your custom API routes. Some AI tools work better with a smaller, fixed set of tools. For these AI tools, the Medusa MCP server provides a static mode.
+
+In static mode, the Medusa MCP server replaces the `find_commerce_api`, `describe_commerce_api`, `read_admin_api`, and `read_store_api` tools with tools that each retrieve specific commerce data from your store's Admin API routes. The other tools, such as the [Cloud tools](#cloud-tools) and the [documentation and feedback tools](#documentation-and-feedback-tools), are available in both modes.
+
+The [ChatGPT plugin](./chatgpt/page.mdx) uses static mode.
+
+### Use Static Mode
+
+To use static mode, add the `mode=static` query parameter to the Medusa MCP server's URL when you connect your AI tool:
+
+```text
+https://cloud.medusajs.com/mcp?mode=static
+```
+
+For example, to connect Claude Code in static mode:
+
+```bash
+claude mcp add --transport http medusa-commerce \
+  "https://cloud.medusajs.com/mcp?mode=static"
+```
+
+<Note>
+
+In static mode, the AI tool can't call your store's custom API routes or Store API routes. To access them, connect your AI tool to the Medusa MCP server without the `mode` query parameter.
+
+</Note>
+
+### Static Tools
+
+Static tools require Medusa [v2.15.2](https://github.com/medusajs/medusa/releases/tag/v2.15.2) or later in the environment's Medusa application. In static mode, the AI tool can use the following tools to retrieve data from your stores, in addition to the `list_connected_environments` and `list_medusa_publishable_keys` tools:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Tool
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_orders`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's orders, filtered by status, customer, sales channel, region, or creation date.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_order`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves an order's details, including its items, totals, addresses, and payment and fulfillment statuses.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_products`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's products, filtered by search text, status, collection, category, sales channel, or creation date.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_product`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves a product's details, including its options and variants.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_product_variants`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists product variants across products, filtered by search text, SKU, or barcode.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_inventory_items`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's inventory items with their stocked and reserved quantities across all stock locations.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_inventory_levels`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves an inventory item's stocked, reserved, incoming, and available quantities in each stock location.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_customers`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's customers, filtered by search text, email, whether they have an account, or sign-up date.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_customer`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves a customer's details, including their addresses and customer groups.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_promotions`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's promotions, filtered by code or campaign, with their status and usage.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_promotion`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves a promotion's details, including its discount value and what it applies to.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_regions`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's regions with their currencies and countries.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_sales_channels`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's sales channels.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_shipping_options`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's shipping options, including the options used for returns.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_returns`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's returns, filtered by status, order, or creation date.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_return`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves a return's details, including its status, refund amount, and returned items.
       </Table.Cell>
     </Table.Row>
   </Table.Body>

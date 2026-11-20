@@ -15,6 +15,7 @@ describe("jest preset", () => {
     expect(jestPreset).toEqual({
       testEnvironment: "node",
       transformIgnorePatterns: expect.any(Array),
+      resolver: expect.stringMatching(/jest-resolver\.[jt]s$/),
     })
   })
 
