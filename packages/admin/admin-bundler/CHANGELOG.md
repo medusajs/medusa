@@ -1,5 +1,23 @@
 # @medusajs/admin-bundler
 
+## 2.23.0
+
+### Minor Changes
+
+- [#17614](https://github.com/medusajs/medusa/pull/17614) [`6d76b3b`](https://github.com/medusajs/medusa/commit/6d76b3b55154896d732d4f8ac6fc948bd36d958c) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(medusa,framework,utils,types,test-utils,admin-bundler,cli,loyalty-plugin): update express to v5
+
+- [#17671](https://github.com/medusajs/medusa/pull/17671) [`22a0676`](https://github.com/medusajs/medusa/commit/22a06766e1ecfbbb210b1e3d630230984c2d2508) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(admin-bundler,admin-vite-plugin,types): update vite to 8.3.8 and @vitejs/plugin-react to 6.3.0, and type the `admin.vite` config with Vite's `InlineConfig`
+
+- [#17632](https://github.com/medusajs/medusa/pull/17632) [`4f1baa0`](https://github.com/medusajs/medusa/commit/4f1baa07fb117a900400a61ebb2e7c6729717e04) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update to Tailwind CSS 4. The admin and admin extensions now compile with Tailwind CSS 4
+
+### Patch Changes
+
+- Updated dependencies [[`a80733d`](https://github.com/medusajs/medusa/commit/a80733d0aa30dd1b15428b9c52c92eac4723f2b2), [`f70d4c7`](https://github.com/medusajs/medusa/commit/f70d4c7bbdcccac69ebf0629fb00e11468f068c1), [`b1911eb`](https://github.com/medusajs/medusa/commit/b1911ebf3aef01dfebe897133dd8c4a320d297a1), [`940553e`](https://github.com/medusajs/medusa/commit/940553ec2da5d6cb157c3380106e121b79b1a082), [`22a0676`](https://github.com/medusajs/medusa/commit/22a06766e1ecfbbb210b1e3d630230984c2d2508), [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50), [`63b9624`](https://github.com/medusajs/medusa/commit/63b9624a124001966a1b47c68e5dc7652d697de9), [`858968d`](https://github.com/medusajs/medusa/commit/858968de74908cccc17a44ecf318b4d605847b2c), [`b012802`](https://github.com/medusajs/medusa/commit/b012802716924f04301d12ef49ca71c83c0e5daf), [`4f1baa0`](https://github.com/medusajs/medusa/commit/4f1baa07fb117a900400a61ebb2e7c6729717e04)]:
+  - @medusajs/dashboard@2.23.0
+  - @medusajs/admin-shared@2.23.0
+  - @medusajs/admin-vite-plugin@2.23.0
+  - @medusajs/ui-preset@2.23.0
+
 ## 2.22.7
 
 ### Patch Changes

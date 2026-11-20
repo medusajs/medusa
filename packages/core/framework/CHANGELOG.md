@@ -1,5 +1,37 @@
 # @medusajs/framework
 
+## 2.23.0
+
+### Minor Changes
+
+- [#17588](https://github.com/medusajs/medusa/pull/17588) [`45ab5b6`](https://github.com/medusajs/medusa/commit/45ab5b68c954ea7c000952a5e3263c60deadfa99) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(framework,types,utils): update connect-redis to v11 and use node-redis for the Redis session store. `projectConfig.redisOptions` now takes `redis` (node-redis) client options instead of `ioredis` options.
+
+- [#17596](https://github.com/medusajs/medusa/pull/17596) [`2086f3d`](https://github.com/medusajs/medusa/commit/2086f3d573a1357815007c53f6a842227731898f) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps,framework,medusa): update OpenTelemetry to SDK 3.0 (`@opentelemetry/sdk-node` 0.301, `@opentelemetry/resources` 3, `@opentelemetry/instrumentation-pg` 0.78, `@opentelemetry/api` 1.10). `@opentelemetry/sdk-trace-node` is replaced by `@opentelemetry/sdk-trace`, so the `@medusajs/framework/opentelemetry/sdk-trace-node` subpath is renamed to `@medusajs/framework/opentelemetry/sdk-trace`. Use `TracerProvider` instead of `NodeTracerProvider`, and pass `{ exporter }` to `SimpleSpanProcessor` and `BatchSpanProcessor`. Exporters passed to `registerOtel` must target SDK 3.0. Traces now also include the `os.*` and `service.instance.id` resource attributes, which the SDK detects by default.
+
+- [#17614](https://github.com/medusajs/medusa/pull/17614) [`6d76b3b`](https://github.com/medusajs/medusa/commit/6d76b3b55154896d732d4f8ac6fc948bd36d958c) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(medusa,framework,utils,types,test-utils,admin-bundler,cli,loyalty-plugin): update express to v5
+
+- [#17568](https://github.com/medusajs/medusa/pull/17568) [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps): update pinned dependencies (fdir 6.5.0, http-errors 2.0.1, radix-ui 1.8.1, react-hook-form 7.92.0, react-router-dom 7.18.5, @tanstack/react-query 5.107.1, zod 4.6.7, i18next 27.1.1, react-i18next 18.0.1, i18next-browser-languagedetector 8.3.0), fix new data table filter popovers staying hidden with radix-ui 1.8.1, forward all mutation callback arguments in admin hooks, and translate loyalty plugin validation messages with the dashboard's i18n instance
+
+### Patch Changes
+
+- [#17884](https://github.com/medusajs/medusa/pull/17884) [`00516a1`](https://github.com/medusajs/medusa/commit/00516a135a621293c224594378122d2e2e070c3a) Thanks [@sradevski](https://github.com/sradevski)! - feat(framework): record the impersonator from an `impersonator_id` token claim in audit logs
+
+- [#17854](https://github.com/medusajs/medusa/pull/17854) [`542caef`](https://github.com/medusajs/medusa/commit/542caefc231959d2f98fefcea4291521b9aef94a) Thanks [@sradevski](https://github.com/sradevski)! - feat(framework): add a `metadata` function to a route's `audit` setting, merged into the record's `metadata`
+
+- [#17884](https://github.com/medusajs/medusa/pull/17884) [`00516a1`](https://github.com/medusajs/medusa/commit/00516a135a621293c224594378122d2e2e070c3a) Thanks [@sradevski](https://github.com/sradevski)! - feat(framework): declare audit namespaces so routes under a prefix such as `/v1/admin` get resource-based action names
+
+- [#17902](https://github.com/medusajs/medusa/pull/17902) [`750659a`](https://github.com/medusajs/medusa/commit/750659aff00ee82bcdf232754a2c4010aed0fad2) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(framework,medusa): keep the session and admin middlewares after a backend HMR reload
+
+- Updated dependencies [[`a80733d`](https://github.com/medusajs/medusa/commit/a80733d0aa30dd1b15428b9c52c92eac4723f2b2), [`182cf74`](https://github.com/medusajs/medusa/commit/182cf748cb162ec177df8d9e912319a77ee83111), [`00516a1`](https://github.com/medusajs/medusa/commit/00516a135a621293c224594378122d2e2e070c3a), [`a26679b`](https://github.com/medusajs/medusa/commit/a26679b88e5bdbd52111346eaa54e9b2debe9e66), [`a0c4da4`](https://github.com/medusajs/medusa/commit/a0c4da4ddd112d663679d09b7ba759ca006b7314), [`d42343a`](https://github.com/medusajs/medusa/commit/d42343ac7c17f6c79b4999feb49d6574b23cbde3), [`45ab5b6`](https://github.com/medusajs/medusa/commit/45ab5b68c954ea7c000952a5e3263c60deadfa99), [`2086f3d`](https://github.com/medusajs/medusa/commit/2086f3d573a1357815007c53f6a842227731898f), [`6d76b3b`](https://github.com/medusajs/medusa/commit/6d76b3b55154896d732d4f8ac6fc948bd36d958c), [`22a0676`](https://github.com/medusajs/medusa/commit/22a06766e1ecfbbb210b1e3d630230984c2d2508), [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50), [`1166823`](https://github.com/medusajs/medusa/commit/1166823171588bce9d797864e343061d6f084f29), [`964ad71`](https://github.com/medusajs/medusa/commit/964ad715d9c74a8966de01e9cca5625f6f3e1ae7), [`e4388b6`](https://github.com/medusajs/medusa/commit/e4388b665257736ca1a2f2736c8a8807f257ef15)]:
+  - @medusajs/types@2.23.0
+  - @medusajs/utils@2.23.0
+  - @medusajs/deps@2.23.0
+  - @medusajs/cli@2.23.0
+  - @medusajs/workflows-sdk@2.23.0
+  - @medusajs/modules-sdk@2.23.0
+  - @medusajs/orchestration@2.23.0
+  - @medusajs/telemetry@2.23.0
+
 ## 2.22.7
 
 ### Patch Changes

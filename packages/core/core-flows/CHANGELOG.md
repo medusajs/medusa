@@ -1,5 +1,24 @@
 # @medusajs/core-flows
 
+## 2.23.0
+
+### Patch Changes
+
+- [#17798](https://github.com/medusajs/medusa/pull/17798) [`015dd2a`](https://github.com/medusajs/medusa/commit/015dd2a5733cdf1396f1f412c8a936946eeb397b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(core-flows): keep the cart's shipping country when the address is updated without one
+
+- [#17867](https://github.com/medusajs/medusa/pull/17867) [`6df0683`](https://github.com/medusajs/medusa/commit/6df0683abc1c363ce2bbcb101a345792fe006af8) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(core-flows): update a cart line item's is_tax_inclusive together with its unit_price when it is merged into or re-priced on update
+
+- [#17926](https://github.com/medusajs/medusa/pull/17926) [`9f30e68`](https://github.com/medusajs/medusa/commit/9f30e68d9eec3ee718091ca35a61e898cb5ff110) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(core-flows): keep linked promotions when a draft order edit is cancelled
+
+- [#17901](https://github.com/medusajs/medusa/pull/17901) [`5b70bd6`](https://github.com/medusajs/medusa/commit/5b70bd653423ef532b318266b35447f3ef3028a7) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows,medusa): refresh the cart's payment collection when recalculating taxes, and reject tax recalculation on completed carts
+
+- [#17900](https://github.com/medusajs/medusa/pull/17900) [`065a336`](https://github.com/medusajs/medusa/commit/065a3364a13369c7dbae23a518e4140d62d08a53) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(core-flows): save metadata and description when adding a shipping method
+
+- [#17869](https://github.com/medusajs/medusa/pull/17869) [`e4388b6`](https://github.com/medusajs/medusa/commit/e4388b665257736ca1a2f2736c8a8807f257ef15) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa,core-flows,types): scope admin feed notifications to the requesting user and address export and import notifications to the user who started them
+
+- Updated dependencies [[`00516a1`](https://github.com/medusajs/medusa/commit/00516a135a621293c224594378122d2e2e070c3a), [`542caef`](https://github.com/medusajs/medusa/commit/542caefc231959d2f98fefcea4291521b9aef94a), [`00516a1`](https://github.com/medusajs/medusa/commit/00516a135a621293c224594378122d2e2e070c3a), [`45ab5b6`](https://github.com/medusajs/medusa/commit/45ab5b68c954ea7c000952a5e3263c60deadfa99), [`2086f3d`](https://github.com/medusajs/medusa/commit/2086f3d573a1357815007c53f6a842227731898f), [`6d76b3b`](https://github.com/medusajs/medusa/commit/6d76b3b55154896d732d4f8ac6fc948bd36d958c), [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50), [`750659a`](https://github.com/medusajs/medusa/commit/750659aff00ee82bcdf232754a2c4010aed0fad2)]:
+  - @medusajs/framework@2.23.0
+
 ## 2.22.7
 
 ### Patch Changes
