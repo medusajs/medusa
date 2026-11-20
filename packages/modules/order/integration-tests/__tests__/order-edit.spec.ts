@@ -1233,6 +1233,86 @@ moduleIntegrationTestRunner<IOrderModuleService>({
         expect(v1AdjustmentsAfterRevert[0].code).toBe("VIP_10")
       })
 
+      it("should delete current version adjustments on undo and not duplicate them when the change is confirmed again", async () => {
+        const createdOrder = await service.createOrders(input)
+
+        const item = createdOrder.items?.find(
+          (item) => item.title === "Item 1"
+        )!
+        const shippingMethodId = createdOrder.shipping_methods![0].id
+
+        const orderChange = await service.createOrderChange({
+          order_id: createdOrder.id,
+          description: "changing the order",
+          created_by: "user_123",
+          actions: [
+            {
+              action: ChangeActionType.ITEM_ADD,
+              reference: "order_line_item",
+              reference_id: item.id,
+              amount: item.unit_price * item.quantity,
+              details: {
+                reference_id: item.id,
+                quantity: 2,
+              },
+            },
+          ],
+        })
+
+        await service.confirmOrderChange({
+          id: orderChange.id,
+          confirmed_by: "cx_agent_123",
+        })
+
+        await service.undoLastChange(createdOrder.id, orderChange)
+
+        const undoneOrder = await service.retrieveOrder(createdOrder.id)
+        expect(undoneOrder.version).toBe(1)
+
+        const itemAdjustmentsAfterUndo =
+          await service.listOrderLineItemAdjustments({
+            item_id: item.id,
+          })
+        expect(
+          itemAdjustmentsAfterUndo.filter((adj) => adj.version === 2)
+        ).toHaveLength(0)
+        expect(
+          itemAdjustmentsAfterUndo.filter((adj) => adj.version === 1)
+        ).toHaveLength(1)
+
+        const shippingAdjustmentsAfterUndo =
+          await service.listOrderShippingMethodAdjustments({
+            shipping_method_id: shippingMethodId,
+          })
+        expect(
+          shippingAdjustmentsAfterUndo.filter((adj) => adj.version === 2)
+        ).toHaveLength(0)
+        expect(
+          shippingAdjustmentsAfterUndo.filter((adj) => adj.version === 1)
+        ).toHaveLength(1)
+
+        await service.confirmOrderChange({
+          id: orderChange.id,
+          confirmed_by: "cx_agent_123",
+        })
+
+        const reconfirmedOrder = await service.retrieveOrder(createdOrder.id, {
+          relations: ["items", "items.adjustments"],
+        })
+        expect(reconfirmedOrder.version).toBe(2)
+        expect(
+          reconfirmedOrder.items!.find((i) => i.id === item.id)!.adjustments
+        ).toHaveLength(1)
+
+        const shippingAdjustmentsAfterReconfirm =
+          await service.listOrderShippingMethodAdjustments({
+            shipping_method_id: shippingMethodId,
+          })
+        expect(
+          shippingAdjustmentsAfterReconfirm.filter((adj) => adj.version === 2)
+        ).toHaveLength(1)
+      })
+
       it("should correctly preview an order change when unit_price is set to 0", async function () {
         const createdOrder = await service.createOrders({
           email: "foo@bar.com",
