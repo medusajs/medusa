@@ -1671,6 +1671,143 @@ medusaIntegrationTestRunner({
 
           expect(orders.data).toHaveLength(0)
         })
+
+        it("should NOT lock or complete an unrelated cart when the payment webhook carries a deleted session_id", async () => {
+          const salesChannel = await scModuleService.createSalesChannels({
+            name: "Webshop",
+          })
+
+          const location = await stockLocationModule.createStockLocations({
+            name: "Warehouse",
+          })
+
+          const [product] = await productModule.createProducts([
+            {
+              title: "Test product",
+              status: ProductStatus.PUBLISHED,
+              variants: [
+                {
+                  title: "Test variant",
+                  manage_inventory: false,
+                },
+              ],
+            },
+          ])
+
+          const priceSet = await pricingModule.createPriceSets({
+            prices: [
+              {
+                amount: 3000,
+                currency_code: "usd",
+              },
+            ],
+          })
+
+          await pricingModule.createPricePreferences({
+            attribute: "currency_code",
+            value: "usd",
+            has_tax_inclusive: true,
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.PRICING]: {
+                price_set_id: priceSet.id,
+              },
+            },
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+            },
+          ])
+
+          const createCartWithSession = async () => {
+            const cart = await cartModuleService.createCarts({
+              currency_code: "usd",
+              sales_channel_id: salesChannel.id,
+            })
+
+            await addToCartWorkflow(appContainer).run({
+              input: {
+                items: [
+                  {
+                    variant_id: product.variants[0].id,
+                    quantity: 1,
+                    requires_shipping: false,
+                  },
+                ],
+                cart_id: cart.id,
+              },
+            })
+
+            await createPaymentCollectionForCartWorkflow(appContainer).run({
+              input: {
+                cart_id: cart.id,
+              },
+            })
+
+            const [payCol] = await remoteQuery(
+              remoteQueryObjectFromString({
+                entryPoint: "cart_payment_collection",
+                variables: { filters: { cart_id: cart.id } },
+                fields: ["payment_collection_id"],
+              })
+            )
+
+            const { result: paymentSession } =
+              await createPaymentSessionsWorkflow(appContainer).run({
+                input: {
+                  payment_collection_id: payCol.payment_collection_id,
+                  provider_id: "pp_system_default",
+                  context: {},
+                  data: {},
+                },
+              })
+
+            return { cart, paymentSession }
+          }
+
+          const { cart: unrelatedCart } = await createCartWithSession()
+          const { paymentSession: deletedSession } =
+            await createCartWithSession()
+
+          await paymentModule.deletePaymentSession(deletedSession.id)
+
+          const lockingModule = appContainer.resolve(Modules.LOCKING)
+          const acquireSpy = jest.spyOn(lockingModule, "acquire")
+
+          await processPaymentWorkflow(appContainer).run({
+            input: {
+              action: "authorized",
+              data: {
+                session_id: deletedSession.id,
+                amount: 3000,
+              },
+            },
+            throwOnError: false,
+          })
+
+          const lockedKeys = acquireSpy.mock.calls.map(([key]) => key)
+          acquireSpy.mockRestore()
+
+          const orders = await query.graph({
+            entity: "order_cart",
+            fields: ["id"],
+            filters: {
+              cart_id: unrelatedCart.id,
+            },
+          })
+
+          expect(orders.data).toHaveLength(0)
+          expect(lockedKeys).not.toContain(unrelatedCart.id)
+        })
       })
     })
   },
