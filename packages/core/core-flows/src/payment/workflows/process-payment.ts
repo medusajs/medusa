@@ -68,29 +68,36 @@ export const processPaymentWorkflow = createWorkflow(
       name: "payment-session-query",
     })
 
-    const cartPaymentCollection = useQueryGraphStep({
+    const cartPaymentCollectionResult = useQueryGraphStep({
       entity: "cart_payment_collection",
       fields: ["cart_id"],
       filters: {
         payment_collection_id:
-          paymentSessionResult.data[0].payment_collection_id,
+          paymentSessionResult.data[0]?.payment_collection_id,
       },
     }).config({
       name: "cart-payment-query",
     })
 
-    const cartId = transform(
-      { cartPaymentCollection, input },
-      ({ cartPaymentCollection, input }) => {
-        // A webhook action without a session id cannot be tied to a specific
-        // payment session, and therefore not to a specific cart. The queries
+    const cartPaymentCollection = transform(
+      { cartPaymentCollectionResult, paymentSessionResult, input },
+      ({ cartPaymentCollectionResult, paymentSessionResult, input }) => {
+        // A webhook action without a session id, or with the id of a session
+        // that no longer exists, cannot be tied to a specific cart. The query
         // above would otherwise resolve to an arbitrary cart (an undefined
-        // filter value matches every row), so we bail out here to avoid
-        // acting on an unrelated cart.
-        if (!input.data?.session_id) {
-          return undefined
+        // filter value matches every row), so we ignore its result here to
+        // avoid acting on an unrelated cart.
+        if (!input.data?.session_id || !paymentSessionResult.data[0]) {
+          return { data: [] as typeof cartPaymentCollectionResult.data }
         }
 
+        return cartPaymentCollectionResult
+      }
+    )
+
+    const cartId = transform(
+      { cartPaymentCollection },
+      ({ cartPaymentCollection }) => {
         return cartPaymentCollection.data[0]?.cart_id
       }
     )
