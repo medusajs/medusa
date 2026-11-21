@@ -90,3 +90,34 @@ describe("toast callbacks", () => {
     expect(external?.onAutoClose).toBe(onAutoClose)
   })
 })
+
+describe("toast.custom", () => {
+  afterEach(() => {
+    vi.mocked(sonnerToast.custom).mockClear()
+  })
+
+  it("should forward custom render function and props to sonner", () => {
+    const customJsx = () => <div>Custom Content</div>
+    const onDismiss = vi.fn()
+    const onAutoClose = vi.fn()
+
+    toast.custom(customJsx, {
+      duration: 3000,
+      dismissable: true,
+      onDismiss,
+      onAutoClose,
+    })
+
+    const [renderToast, external] =
+      vi.mocked(sonnerToast.custom).mock.lastCall!
+
+    expect(renderToast).toBe(customJsx)
+    expect(external).toEqual({
+      position: "top-right",
+      duration: 3000,
+      dismissible: true,
+      onDismiss,
+      onAutoClose,
+    })
+  })
+})

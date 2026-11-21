@@ -67,8 +67,29 @@ function message(
   return create("message", title, props)
 }
 
-function custom() {
-  return create("message", "Custom")
+function custom(
+  /**
+   * Render function or JSX element to display in the custom toast.
+   */
+  jsx: (id: string | number) => React.ReactElement,
+  /**
+   * The props of the toast.
+   */
+  props: BaseToastProps = {}
+) {
+  const external: ExternalToast = {
+    position: props.position ?? DEFAULT_TOAST_POSITION,
+    duration: props.duration,
+    dismissible: props.dismissable,
+    onDismiss: props.onDismiss,
+    onAutoClose: props.onAutoClose,
+  }
+
+  if (props.id) {
+    external.id = props.id
+  }
+
+  return toastFn.custom(jsx, external)
 }
 
 interface VariantToastProps extends Omit<ToastProps, "icon"> {}
@@ -246,5 +267,6 @@ export const toast = Object.assign(message, {
   success,
   promise,
   loading,
+  custom,
   dismiss: toastFn.dismiss,
 })
