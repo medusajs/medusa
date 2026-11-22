@@ -44,3 +44,4 @@ yarn test src/__tests__/transaction/transaction-orchestrator.ts
 - The context is `JSON.stringify`-ed on every checkpoint; non-serializable workflow input or step output throws `NonSerializableCheckPointError` (errors are sanitized instead of throwing).
 - Re-registering a workflow id with a different step definition throws `Workflow with id "<id>" and step definition already exists.` (step `uuid`s are ignored in the comparison).
 - Step `timeout` is not an execution timeout: the handler keeps running, and the workflow reverts once the response arrives.
+- `WorkflowManager.getWorkflow` and `LocalWorkflow` load a workflow (and its hook files) a build manifest deferred, on first use. Look workflows up by id through `getWorkflow`, not `WorkflowManager.workflows`, or a not-yet-loaded workflow looks missing.

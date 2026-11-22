@@ -1,6 +1,6 @@
 import createHttpError from "http-errors"
 
-import { MedusaError } from "@medusajs/utils"
+import { DeferredLoadError, MedusaError } from "@medusajs/utils"
 import { errorHandler, getHttpResponseFromError } from "../error-handler"
 
 describe("getHttpResponseFromError", () => {
@@ -132,6 +132,52 @@ describe("errorHandler", () => {
       code: "unknown_error",
       type: "unknown_error",
       message: "An unknown error occurred.",
+    })
+  })
+
+  it("should respond generically to a DeferredLoadError, without logging it again", () => {
+    const logger = { error: jest.fn(), info: jest.fn() }
+    const req = { path: "/admin/things", scope: { resolve: () => logger } }
+    const res = createResponse()
+    const cause = Object.assign(new Error("Cannot find module 'secret-pkg'"), {
+      code: "MODULE_NOT_FOUND",
+    })
+
+    errorHandler()(
+      new DeferredLoadError(
+        { kind: "route", target: "GET /srv/app/route.js", file: "/srv/app" },
+        cause
+      ) as any,
+      req as any,
+      res,
+      jest.fn()
+    )
+
+    expect(res.statusCode).toEqual(500)
+    expect(res.body).toEqual({
+      code: "unknown_error",
+      type: "unknown_error",
+      message: "An unknown error occurred.",
+    })
+    expect(JSON.stringify(res.body)).not.toMatch(/secret-pkg|srv\/app|bundle/)
+    expect(logger.error).not.toHaveBeenCalled()
+  })
+
+  it("should map a DeferredLoadError to the generic 500 response", () => {
+    expect(
+      getHttpResponseFromError(
+        new DeferredLoadError(
+          { kind: "module", target: "product" },
+          new Error("x")
+        )
+      )
+    ).toEqual({
+      statusCode: 500,
+      body: {
+        code: "unknown_error",
+        type: "unknown_error",
+        message: "An unknown error occurred.",
+      },
     })
   })
 

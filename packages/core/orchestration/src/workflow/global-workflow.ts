@@ -44,11 +44,11 @@ export class GlobalWorkflow extends WorkflowManager {
   }
 
   async run(workflowId: string, uniqueTransactionId: string, input?: unknown) {
-    if (!WorkflowManager.workflows.has(workflowId)) {
+    // Goes through the accessor so a workflow a build manifest deferred loads
+    const workflow = WorkflowManager.getWorkflow(workflowId)
+    if (!workflow) {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
-
-    const workflow = WorkflowManager.workflows.get(workflowId)!
 
     const orchestrator = workflow.orchestrator
 
@@ -84,11 +84,11 @@ export class GlobalWorkflow extends WorkflowManager {
     idempotencyKey: string,
     response?: unknown
   ): Promise<DistributedTransactionType> {
-    if (!WorkflowManager.workflows.has(workflowId)) {
+    // Goes through the accessor so a workflow a build manifest deferred loads
+    const workflow = WorkflowManager.getWorkflow(workflowId)
+    if (!workflow) {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
-
-    const workflow = WorkflowManager.workflows.get(workflowId)!
     const orchestrator = workflow.orchestrator
     orchestrator.once("resume", (transaction) => {
       if (this.subscribe.onStepBegin) {
@@ -116,11 +116,11 @@ export class GlobalWorkflow extends WorkflowManager {
     idempotencyKey: string,
     error?: Error | any
   ): Promise<DistributedTransactionType> {
-    if (!WorkflowManager.workflows.has(workflowId)) {
+    // Goes through the accessor so a workflow a build manifest deferred loads
+    const workflow = WorkflowManager.getWorkflow(workflowId)
+    if (!workflow) {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
-
-    const workflow = WorkflowManager.workflows.get(workflowId)!
     const orchestrator = workflow.orchestrator
     orchestrator.once("resume", (transaction) => {
       if (this.subscribe.onStepBegin) {

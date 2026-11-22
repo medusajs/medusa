@@ -16,10 +16,12 @@ import {
 } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
+  getBuildManifest,
   getResolvedPlugins,
   GraphQLSchema,
   mergePluginModules,
   promiseAll,
+  setDeferredLoadLogger,
   validateModuleName,
 } from "@medusajs/framework/utils"
 import { WorkflowLoader } from "@medusajs/framework/workflows"
@@ -176,6 +178,12 @@ export default async ({
   )
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
+  // Failures to load what a build manifest deferred to first use surface long
+  // after boot: report them through the app's logger
+  if (getBuildManifest()) {
+    setDeferredLoadLogger(logger)
+  }
+
   const plugins = await getResolvedPlugins(rootDirectory, configModule, true)
   mergePluginModules(configModule, plugins, rootDirectory)
 
@@ -217,7 +225,13 @@ export default async ({
     ? () => {}
     : await loadEntrypoints(plugins, container, expressApp, rootDirectory)
 
-  const { createDefaultsWorkflow } = await import("@medusajs/core-flows")
+  // With a build manifest, import only the defaults workflow: the package root
+  // evaluates every workflow in core-flows, which isn't needed to boot. Without
+  // one, keep the root import: worker processes rely on it to register the core
+  // workflows when the app is unbundled.
+  const { createDefaultsWorkflow } = getBuildManifest()
+    ? await import("@medusajs/core-flows/defaults")
+    : await import("@medusajs/core-flows")
   await createDefaultsWorkflow(container).run()
   await onApplicationStart()
 

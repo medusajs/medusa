@@ -5,6 +5,7 @@ Library of Medusa's prebuilt workflows and steps (cart, order, product, payment,
 ## Using this package
 
 - Import from `@medusajs/medusa/core-flows` in apps and plugins (re-export of this package). Inside the monorepo, `packages/medusa` imports `@medusajs/core-flows` directly.
+- `@medusajs/core-flows/defaults` exports only the `defaults` domain (`createDefaultsWorkflow`), without evaluating every other workflow; the Medusa boot sequence uses it when a build manifest is set.
 - Every workflow and step has an exported ID constant next to it: `createProductsWorkflow` / `createProductsWorkflowId`, `createProductsStep` / `createProductsStepId`.
 - Find the right workflow: read the matching API route in `packages/medusa/src/api/{admin,store}/...` to see which workflow it runs, or browse https://docs.medusajs.com/resources/medusa-workflows-reference.md (generated from the TSDoc in this package).
 

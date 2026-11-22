@@ -121,3 +121,4 @@ yarn workspace @medusajs/workflows-sdk test:run   # runs dist/utils/_playground.
 
 - Hook handlers are wrapped in the same `when` condition as the hook if declared inside one.
 - `runAsStep` of an async workflow runs it via the workflow engine as a nested transaction with id `<name>-as-step-<parentTransactionId>`; its compensation cancels that nested transaction, or does nothing if the nested transaction failed (it already reverted itself).
+- `MedusaWorkflow.getWorkflow` loads a workflow a build manifest deferred. Look workflows up through it, not `MedusaWorkflow.workflows`.

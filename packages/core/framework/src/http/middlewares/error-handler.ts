@@ -2,7 +2,11 @@ import { ErrorRequestHandler, NextFunction, Response } from "express"
 import createHttpError from "http-errors"
 import { fromZodIssue } from "zod-validation-error"
 
-import { ContainerRegistrationKeys, MedusaError } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  DeferredLoadError,
+  MedusaError,
+} from "@medusajs/utils"
 import { MedusaRequest } from "../types"
 import { formatException } from "./exception-formatter"
 
@@ -30,6 +34,19 @@ export type ErrorHttpResponse = {
  * without duplicating it.
  */
 export function getHttpResponseFromError(err: any): ErrorHttpResponse {
+  // A failure to load something deferred by a build manifest is logged in full
+  // where it happens. Nothing about it (target, file, hint, cause) is exposed.
+  if (DeferredLoadError.isDeferredLoadError(err)) {
+    return {
+      statusCode: 500,
+      body: {
+        code: "unknown_error",
+        type: "unknown_error",
+        message: "An unknown error occurred.",
+      },
+    }
+  }
+
   // errors from body-parser and other express internals
   if (createHttpError.isHttpError(err)) {
     return {
@@ -116,6 +133,12 @@ export function errorHandler() {
     }
 
     const { statusCode, body } = getHttpResponseFromError(err)
+
+    // Already logged in full by the deferred load wrapper
+    if (DeferredLoadError.isDeferredLoadError(err)) {
+      res.status(statusCode).json(body)
+      return
+    }
 
     // handle errors from body-parser
     if (createHttpError.isHttpError(err)) {

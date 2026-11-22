@@ -1,4 +1,8 @@
-import { OrchestrationUtils } from "@medusajs/utils"
+import {
+  getCallerFilePath,
+  HOOK_REGISTRATIONS_KEY,
+  OrchestrationUtils,
+} from "@medusajs/utils"
 import {
   CompensateFn,
   createStep,
@@ -137,6 +141,13 @@ export function createHook<Name extends string, TInvokeInput, TInvokeOutput>(
 
       this.hooks_.registered.push(name)
       this.handlers.set(name, handlers)
+
+      // Build-time collection of which file registers which hook
+      global[HOOK_REGISTRATIONS_KEY]?.push({
+        workflowId: this.workflowId,
+        hook: name,
+        file: getCallerFilePath(),
+      })
     }
 
     return hook

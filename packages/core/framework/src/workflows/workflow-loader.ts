@@ -1,5 +1,5 @@
 import { MedusaContainer } from "@medusajs/types"
-import { isFileSkipped } from "@medusajs/utils"
+import { getBuildManifest, isFileSkipped } from "@medusajs/utils"
 import { MedusaWorkflow } from "@medusajs/workflows-sdk"
 import { logger } from "../logger"
 import { ResourceLoader } from "../utils/resource-loader"
@@ -9,6 +9,17 @@ export class WorkflowLoader extends ResourceLoader {
 
   constructor(sourceDir: string | string[], container: MedusaContainer) {
     super(sourceDir, container)
+  }
+
+  /**
+   * Files that only define workflows aren't imported at boot: the workflow
+   * registries load them on first use.
+   */
+  protected exportsFromBuildManifest(path: string) {
+    if (getBuildManifest()?.lazyWorkflowFiles?.includes(path)) {
+      return {}
+    }
+    return
   }
 
   protected async onFileLoaded(

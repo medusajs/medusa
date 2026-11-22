@@ -15,6 +15,7 @@ import {
   Modules,
   OrchestrationUtils,
   registerDevServerResource,
+  setWorkflowBeingDefined,
 } from "@medusajs/utils"
 import { ulid } from "ulid"
 import { exportWorkflow, WorkflowResult } from "../../helper"
@@ -116,6 +117,7 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
 ): ReturnWorkflow<TData, TResult, THooks> {
   const fileSourcePath = getCallerFilePath() as string
   const name = isString(nameOrConfig) ? nameOrConfig : nameOrConfig.name
+  setWorkflowBeingDefined(name, true)
   const options = isString(nameOrConfig) ? {} : nameOrConfig
 
   registerDevServerResource({
@@ -219,6 +221,7 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
 
   mainFlow.getName = () => name
   mainFlow.run = mainFlow().run
+  setWorkflowBeingDefined(name, false)
   mainFlow.runAsStep = ({
     input,
   }: {
