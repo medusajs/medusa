@@ -19,6 +19,15 @@ const TERMINAL_SIZE = process.stdout.columns
 const cliPath = path.resolve(MEDUSA_CLI_PATH, "..", "..", "cli.js")
 
 /**
+ * Run from a bundled build (`medusa build --bundle`), the commands run through
+ * the bundle's launcher, since the CLI and the packages it loads aren't
+ * installed next to it.
+ */
+function getCliPath(): string {
+  return (globalThis as any).__MEDUSA_BUNDLE_LAUNCHER__ ?? cliPath
+}
+
+/**
  * A low-level utility to migrate the database. This util should
  * never exit the process implicitly.
  */
@@ -155,7 +164,7 @@ async function runCliCommand(
   directory: string,
   args: string[] = []
 ): Promise<number> {
-  const childProcess = fork(cliPath, [command, ...args], {
+  const childProcess = fork(getCliPath(), [command, ...args], {
     cwd: directory,
     env: process.env,
   })
