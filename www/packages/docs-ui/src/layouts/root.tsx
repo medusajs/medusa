@@ -1,6 +1,6 @@
 import React from "react"
 import clsx from "clsx"
-import { RootProviders, Sidebar, SidebarProps } from "@/components"
+import { MainNav, RootProviders, Sidebar, SidebarProps } from "@/components"
 import { MainContentLayout, MainContentLayoutProps } from "./main-content"
 import { AiAssistantChatWindow } from "../components/AiAssistant/ChatWindow"
 import { TechArticleJsonLd } from "../components/TechArticleJsonLd"
@@ -26,20 +26,28 @@ export const RootLayout = ({
       <AgentDirective />
       <div
         className={clsx(
-          "bg-medusa-bg-subtle font-base text-medium w-full",
+          "bg-medusa-bg-base font-base text-medium w-full",
           "text-medusa-fg-base",
           "h-full overflow-hidden",
-          "grid grid-cols-1 lg:mx-auto lg:grid-cols-[221px_1fr]",
-          bodyClassName
+          "flex flex-col"
         )}
-        id="root-layout"
       >
         <RootProviders>
           <ProvidersComponent>
-            <Sidebar {...sidebarProps} />
-            <div className={clsx("relative", "h-screen", "flex")}>
-              <MainContentLayout {...mainProps} />
-              <AiAssistantChatWindow />
+            <MainNav />
+            <div
+              className={clsx(
+                "w-full flex-1 min-h-0",
+                "grid grid-cols-1 lg:mx-auto lg:grid-cols-[221px_1fr]",
+                bodyClassName
+              )}
+              id="root-layout"
+            >
+              <Sidebar {...sidebarProps} />
+              <div className={clsx("relative", "h-full min-h-0", "flex")}>
+                <MainContentLayout {...mainProps} />
+                <AiAssistantChatWindow />
+              </div>
             </div>
             <TechArticleJsonLd />
             <WebMcpTools />

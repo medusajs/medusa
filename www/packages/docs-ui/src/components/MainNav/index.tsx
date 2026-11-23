@@ -41,7 +41,7 @@ export const MainNav = ({ className, itemsClassName }: MainNavProps) => {
     >
       <div
         className={clsx(
-          "flex justify-between items-center px-docs_1 w-full gap-docs_0.5",
+          "flex justify-between items-center px-docs_1 w-full gap-docs_1.5",
           "border-b border-medusa-border-base relative z-50"
         )}
         data-testid="main-nav-content"

@@ -5,7 +5,6 @@ import clsx from "clsx"
 import {
   getOsShortcut,
   Kbd,
-  MainNav,
   Tooltip,
   useAiAssistant,
   useIsBrowser,
@@ -95,8 +94,6 @@ export const MainContentLayout = ({
         "relative max-w-full",
         "h-full flex-1",
         "flex flex-col",
-        "gap-docs_0.5 lg:py-docs_0.25 lg:mr-docs_0.25 scroll-m-docs_0.25",
-        !desktopSidebarOpen && "lg:ml-docs_0.25",
         mainWrapperClasses
       )}
     >
@@ -106,14 +103,11 @@ export const MainContentLayout = ({
           "flex-col items-center",
           "h-full w-full",
           "overflow-y-scroll overflow-x-hidden",
-          "md:rounded-docs_DEFAULT",
-          "shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark",
           mainWrapperClasses
         )}
         id="main"
         ref={mainContentRef}
       >
-        <MainNav />
         {/* Sidebar + content menu collapser */}
         {sidebarCollapser("left-docs_0.25")}
         <div
@@ -134,7 +128,7 @@ export const MainContentLayout = ({
         {showContentMenu && (
           <>
             {sidebarCollapser(
-              desktopSidebarOpen ? "right-[242px]" : "right-docs_0.25"
+              desktopSidebarOpen ? "right-[238px]" : "right-docs_0.25"
             )}
             {desktopSidebarOpen && <ContentMenu />}
           </>
