@@ -7,6 +7,20 @@ import isTruthy from "./is-truthy"
 
 const MEDUSA_TELEMETRY_VERBOSE = process.env.MEDUSA_TELEMETRY_VERBOSE || false
 const MAX_RETRIES = 3
+const NON_RETRYABLE_ERROR_CODES = new Set([
+  "ECONNABORTED",
+  "ENOTFOUND",
+  "ENETUNREACH",
+  "CERT_HAS_EXPIRED",
+  "CERT_NOT_YET_VALID",
+  "CERT_REVOKED",
+  "CERT_UNTRUSTED",
+  "DEPTH_ZERO_SELF_SIGNED_CERT",
+  "SELF_SIGNED_CERT_IN_CHAIN",
+  "UNABLE_TO_GET_ISSUER_CERT_LOCALLY",
+  "UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+  "ERR_TLS_CERT_ALTNAME_INVALID",
+])
 
 class TelemetryDispatcher {
   constructor(options) {
@@ -98,7 +112,11 @@ class TelemetryDispatcher {
 
   isErrorRetryable_(error) {
     // Retry Network Errors.
-    if (!error.response && error.code && error.code !== "ECONNABORTED") {
+    if (
+      !error.response &&
+      error.code &&
+      !NON_RETRYABLE_ERROR_CODES.has(error.code)
+    ) {
       return true
     }
 
