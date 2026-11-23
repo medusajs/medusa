@@ -1,0 +1,96 @@
+import { InlineIcon, Note } from "docs-ui"
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Medusa Payments Account`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to set up, onboard, and close a Medusa Payments account.
+
+## What is a Medusa Payments Account?
+
+A Medusa Payments account is a Stripe account that Medusa creates and runs for you, so you don't need a Stripe account. You onboard and manage it in the Cloud dashboard.
+
+A Medusa Payments account is the recommended way to take payments on Cloud, especially if you're starting fresh:
+
+- **Save setup time**: You don't create a Stripe account, generate API keys, or configure a payment provider in your Medusa application. You set up the account with one click and share your business details with Stripe in a form in the Cloud dashboard.
+- **Keep payments next to your projects**: You manage the account, its documents, transactions, payouts, and disputes in the same dashboard as your projects and environments, without switching to a separate Stripe dashboard.
+- **No keys to manage**: Cloud configures your Medusa application and sets the Medusa Payments publishable key in your deployed storefronts automatically.
+- **Turn on live payments with a toggle**: Once the account is active, you turn it on in an environment's **Payments** page and redeploy the environment. Each environment also gets its own test account to test your checkout first.
+
+<Note title="Tip">
+
+If your business already takes payments with Stripe and you want to keep using your existing account, [connect your Stripe account](../stripe/page.mdx) instead.
+
+</Note>
+
+Learn how it compares to the other payment account types in the [Differences Between Payment Account Types](../page.mdx#differences-between-payment-account-types) section.
+
+---
+
+## Set Up Medusa Payments
+
+You set up a Medusa Payments account from your organization's payment settings. Your organization can't have a Medusa Payments account and its own Stripe accounts at the same time, so this option is only available while your organization has no live payment account.
+
+To set up Medusa Payments:
+
+1. If you're in a different organization, [switch to the organization](../../../organizations/page.mdx#switch-organization) whose payments you want to manage.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Payments** > **Overview** in the sidebar.
+4. In the **Managed** card, click **Set up Medusa Payments**.
+5. Medusa creates the account, which usually takes a few seconds. Then, the page shows the account's card with your email, the label "Medusa Payments, powered by Stripe", the account's ID, and the **Onboarding** status.
+6. Complete the account's onboarding, as explained in the next section.
+
+### Complete Medusa Payments Onboarding
+
+Before a Medusa Payments account can accept payments, you share your business details with Stripe. Stripe uses them to verify your business and to send payouts to your bank account.
+
+You complete the onboarding in the Cloud dashboard, since Medusa Payments accounts have no Stripe dashboard. To complete it:
+
+1. If you're in a different organization, [switch to the organization](../../../organizations/page.mdx#switch-organization) whose payments you want to manage.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Payments** > **Overview** in the sidebar. While the account needs your details, its card shows the **Onboarding** status and the message "Share a few details with Stripe below to start accepting payments."
+4. In the **Add information to start accepting money** section below the account's card, click **Add information**.
+5. Choose your business type, then click **Continue**.
+6. Fill out the details Stripe asks for in each of the next steps, such as your business information, personal details, and the bank account to receive payouts to, and click **Continue** to move to the next step.
+7. Submit your details in the last step.
+
+You can leave the onboarding form at any point and continue it later from the same page.
+
+After you submit your details, the account shows the **In review** status while Stripe verifies them. This usually takes a few minutes, but can take up to a few business days. The page updates on its own once the account can accept payments, or if Stripe needs more information. If Stripe needs more information, the account goes back to the **Onboarding** status, and you provide it in the form.
+
+Once Stripe approves your details, the account shows the **Active** status, and you can [turn it on in your environments](../../environments/page.mdx#switch-to-live-mode).
+
+### Manage an Active Medusa Payments Account
+
+Once the account is active, the **Payments > Overview** page shows the following below the account's card:
+
+- **Account** tab: Your business type, professional details, public details, personal details, and payout details. Click **Edit** next to a section to change its details.
+- **Documents** tab: The documents Stripe has for the account.
+- **Balance**: The account's available and pending balance, and its latest payout.
+
+If Stripe needs more information about an active account later, for example, to keep payouts running, a notification shows on the **Payments > Overview** page with the details to provide.
+
+---
+
+## Close a Medusa Payments Account
+
+<Note type="warning">
+
+Closing a Medusa Payments account is irreversible. You can't reopen the account, and your stores stop accepting payments with it right away.
+
+</Note>
+
+When you close a Medusa Payments account, your stores stop accepting payments with it right away. Medusa closes the account once its balance is paid out and its open disputes are resolved. Until then, the account shows the **Closing** status, and you can still manage its refunds, disputes, and payout requirements.
+
+After the account closes, you can set up Medusa Payments again, or [connect your own Stripe account](../stripe/page.mdx) instead.
+
+To close a Medusa Payments account:
+
+1. If you're in a different organization, [switch to the organization](../../../organizations/page.mdx#switch-organization) whose payments you want to manage.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Payments** > **Overview** in the sidebar.
+4. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon on the account's card.
+5. Click **Close account**, then confirm.

@@ -29,6 +29,12 @@ export type WhatsNewItem = {
 
 export const whatsNewItems: WhatsNewItem[] = [
   {
+    title: "Medusa Payments",
+    tag: "Medusa Cloud",
+    earlyAccess: true,
+    link: "https://docs.medusajs.com/cloud/payments",
+  },
+  {
     title: "Medusa ChatGPT plugin",
     tag: "Medusa Cloud",
     date: "2026-11-19",
