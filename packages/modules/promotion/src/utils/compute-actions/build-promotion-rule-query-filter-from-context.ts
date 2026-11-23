@@ -156,11 +156,13 @@ export async function buildPromotionRuleQueryFilterFromContext(
   })
 
   // Handle the case where context has no attributes at all, it means
-  // that any promotion that have a rule cant be satisfied by the context
+  // that any promotion that have a non-'ne' rule cant be satisfied by the context
   if (attributeValueMap.size === 0) {
-    // If context has no attributes, exclude all promotions that have any rules (promotion rules, target rules, or buy rules)
+    // If context has no attributes, exclude all promotions that have any non-'ne' rules (promotion rules, target rules, or buy rules)
     return {
-      [raw((alias) => excludePromotionsWithRuleMatching(alias, "TRUE"))]: [],
+      [raw((alias) =>
+        excludePromotionsWithRuleMatching(alias, "pr.operator <> 'ne'")
+      )]: [],
     }
   }
 
@@ -176,10 +178,10 @@ export async function buildPromotionRuleQueryFilterFromContext(
   const attributes = Array.from(attributeValueMap.keys())
   const attributeKeys = attributes.map(() => "?").join(",")
 
-  // A promotion is excluded if any of its rules targets an attribute missing
+  // A promotion is excluded if any of its non-'ne' rules targets an attribute missing
   // from the context, or targets a context attribute with an unsatisfiable value
   const unsatisfiableRule = `(
-    pr.attribute NOT IN (${attributeKeys})
+    (pr.attribute NOT IN (${attributeKeys}) AND pr.operator <> 'ne')
     OR (pr.attribute IN (${attributeKeys}) AND (${joinedConditions}))
   )`
 
