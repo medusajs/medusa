@@ -54,7 +54,7 @@ jobs:
 
       - name: Install www/utils dependencies
         working-directory: www/utils
-        run: yarn install
+        run: ./ci-install.sh
 
       - name: Build www/utils packages
         working-directory: www/utils

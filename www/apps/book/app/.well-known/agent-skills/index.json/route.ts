@@ -66,11 +66,16 @@ const getDocsSkill = async () => {
 
 const getIndex = unstable_cache(
   async () => {
-    const githubHeaders = { accept: "application/vnd.github+json" }
+    // GitHub rejects API requests without a User-Agent, which Workers' fetch doesn't set
+    const userAgent = { "user-agent": "medusa-docs" }
+    const githubHeaders = {
+      ...userAgent,
+      accept: "application/vnd.github+json",
+    }
     // Pin to a commit so each digest matches the bytes served at its url
     const commitSha = await (
       await fetchOk(`https://api.github.com/repos/${REPO}/commits/main`, {
-        headers: { accept: "application/vnd.github.sha" },
+        headers: { ...userAgent, accept: "application/vnd.github.sha" },
       })
     ).text()
     const { tree } = (await (
