@@ -75,9 +75,6 @@ export abstract class ResourceLoader {
       try {
         await access(sourcePath)
       } catch {
-        this.logger.info(
-          `No ${this.resourceName} to load from ${sourcePath}. skipped.`
-        )
         return
       }
 
