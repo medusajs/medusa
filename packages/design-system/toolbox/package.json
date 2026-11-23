@@ -15,7 +15,6 @@
     "@svgr/plugin-prettier": "8.1.0",
     "@svgr/plugin-svgo": "8.1.0",
     "axios": "^1.20.0",
-    "axios-retry": "^4.5.0",
     "commander": "^15.0.0",
     "dotenv": "^18.0.9",
     "fs-extra": "^11.4.1",

@@ -17,13 +17,13 @@ Anonymous usage telemetry for the Medusa CLI and server. Used internally by `@me
 ## Architecture
 
 - Plain JavaScript (`src/*.js`, compiled via `allowJs`); no types beyond generated declarations.
-- Flow: `track` -> `Telemeter.enqueue_` -> `Store.addEvent` appends a JSON line to `events.json` (`util/outbox-store.js`) next to the `configstore` file named `medusa` -> when `flushAt` (20 events), `maxQueueSize` (500 KB) or `flushInterval` (10 s) is hit, `util/create-flush.js` forks `util/send.js` as a detached, unref'd child -> `util/telemetry-dispatcher.js` POSTs `{ batch, timestamp }` with `axios-retry` (3 retries on network errors, 5xx, 429).
+- Flow: `track` -> `Telemeter.enqueue_` -> `Store.addEvent` appends a JSON line to `events.json` (`util/outbox-store.js`) next to the `configstore` file named `medusa` -> when `flushAt` (20 events), `maxQueueSize` (500 KB) or `flushInterval` (10 s) is hit, `util/create-flush.js` forks `util/send.js` as a detached, unref'd child -> `util/telemetry-dispatcher.js` POSTs `{ batch, timestamp }` with an inline retry loop in `postWithRetry_` (3 retries, exponential backoff on network errors, 5xx, 429; no retry on timeouts, DNS failures, or TLS certificate errors).
 - Every event carries `machine_id` (stored as `telemetry.machine_id`), OS/CI info (`util/is-ci.js`), the resolved `@medusajs/medusa` and `@medusajs/cli` versions, feature flags, modules, and plugins.
 - Env vars: `MEDUSA_DISABLE_TELEMETRY`, `MEDUSA_TELEMETRY_VERBOSE` (logs flush/send errors; also makes the forked sender inherit stdio), `MEDUSA_TELEMETRY_HOST` / `MEDUSA_TELEMETRY_PATH` (default `https://telemetry.medusa-commerce.com` + `/batch`).
 
 ## Development
 
-- `yarn build`, `yarn watch`, `yarn test` (`jest --passWithNoTests src`; there are currently no tests).
+- `yarn build`, `yarn watch`, `yarn test` (`jest --passWithNoTests src`; specs live in `src/**/__tests__`).
 - To debug locally, point `MEDUSA_TELEMETRY_HOST` at a local server and set `MEDUSA_TELEMETRY_VERBOSE=true`.
 
 ## Gotchas
