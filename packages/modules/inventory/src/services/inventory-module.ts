@@ -687,6 +687,33 @@ export default class InventoryModuleService
       context
     )
 
+    const previousLocationData = input
+      .map((data) => ({ data, reservation: reservationMap.get(data.id)! }))
+      .filter(
+        ({ data, reservation }) =>
+          isDefined(data.location_id) &&
+          data.location_id !== reservation.location_id
+      )
+      .map(({ reservation }) => ({
+        inventory_item_id: reservation.inventory_item_id,
+        location_id: reservation.location_id,
+      }))
+
+    if (previousLocationData.length) {
+      const loadedLevelIds = new Set(inventoryLevels.map((level) => level.id))
+      const previousLocationLevels = await this.inventoryLevelService_.list(
+        { $or: previousLocationData },
+        {},
+        context
+      )
+
+      inventoryLevels.push(
+        ...previousLocationLevels.filter(
+          (level) => !loadedLevelIds.has(level.id)
+        )
+      )
+    }
+
     const result = await this.reservationItemService_.update(input, context)
 
     const levelAdjustmentUpdates = inventoryLevels
