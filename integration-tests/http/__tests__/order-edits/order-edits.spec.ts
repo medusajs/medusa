@@ -1200,6 +1200,71 @@ medusaIntegrationTestRunner({
         )
       })
 
+      it("should remove the shipping method added by an order edit when the edit is canceled", async () => {
+        const orderId = order.id
+
+        await api.post(
+          "/admin/order-edits",
+          { order_id: orderId, description: "Test" },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${orderId}/shipping-method`,
+          { shipping_option_id: shippingOption.id, custom_amount: 5 },
+          adminHeaders
+        )
+
+        await api.delete(`/admin/order-edits/${orderId}`, adminHeaders)
+
+        const orderModule = container.resolve(Modules.ORDER)
+        const shippingMethods = await orderModule.listOrderShippingMethods(
+          {},
+          {}
+        )
+
+        expect(shippingMethods).toEqual([
+          expect.objectContaining({ amount: 10 }),
+        ])
+
+        await api.post(
+          "/admin/order-edits",
+          { order_id: orderId, description: "Test" },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${orderId}/shipping-method`,
+          { shipping_option_id: shippingOption.id, custom_amount: 7 },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${orderId}/request`,
+          {},
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${orderId}/confirm`,
+          {},
+          adminHeaders
+        )
+
+        const orderResult = await api.get(
+          `/admin/orders/${orderId}`,
+          adminHeaders
+        )
+
+        expect(orderResult.data.order.shipping_methods).toHaveLength(2)
+        expect(orderResult.data.order.shipping_methods).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({ amount: 10 }),
+            expect.objectContaining({ amount: 7 }),
+          ])
+        )
+      })
+
       it("should store no_notification on the order change and pass it to the order edit events", async () => {
         const eventBus = container.resolve(Modules.EVENT_BUS)
         const requestedSubscriber = jest.fn()

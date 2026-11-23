@@ -892,6 +892,14 @@ medusaIntegrationTestRunner({
 
         await api.delete(`/admin/returns/${returnId}/request`, adminHeaders)
 
+        const returnShippingMethods = await getContainer()
+          .resolve(Modules.ORDER)
+          .listOrderShippingMethods({
+            shipping_option_id: returnShippingOption.id,
+          })
+
+        expect(returnShippingMethods).toHaveLength(0)
+
         result = await api
           .post(`/admin/returns/${returnId}/request`, {}, adminHeaders)
           .catch((e) => e)
