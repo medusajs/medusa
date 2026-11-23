@@ -116,6 +116,7 @@ const withMDX = mdx({
 const nextConfig = {
   // Configure `pageExtensions` to include MDX files
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+  agentRules: false,
 
   transpilePackages: ["docs-ui"],
   async rewrites() {
