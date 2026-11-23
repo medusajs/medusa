@@ -59,6 +59,17 @@ To associate a reservation with an order's item so that the fulfillment flow can
 
 ---
 
+## When Medusa Updates a Reservation
+
+You can update a reservation's quantity or location using the [updateReservationsWorkflow](/references/medusa-workflows/updateReservationsWorkflow). Medusa keeps the `reserved_quantity` of the affected inventory levels in sync with the update:
+
+- If you change the reservation's quantity, Medusa adjusts the `reserved_quantity` of the inventory level by the difference between the new and old quantities.
+- If you move the reservation to another location, Medusa decreases the `reserved_quantity` of the inventory level in the old location and increases the `reserved_quantity` of the inventory level in the new location. So, the reserved stock becomes available again in the old location.
+
+Before updating the reservation, Medusa checks that the inventory item has an inventory level in the reservation's location. If you increase the reservation's quantity, Medusa also checks that there's sufficient available quantity for the increase, unless the reservation allows backorders.
+
+---
+
 ## When Medusa Releases a Reservation
 
 A reservation is temporary. Medusa releases the reservation, making the quantity available again, in the following cases.
