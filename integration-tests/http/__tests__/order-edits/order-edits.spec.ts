@@ -575,6 +575,68 @@ medusaIntegrationTestRunner({
         expect(result[0].status).toEqual("confirmed")
         expect(result[0].confirmed_by).toEqual(expect.stringContaining("user_"))
       })
+
+      it("should require shipping for a new item without managed inventory whose product has a shipping profile", async () => {
+        const product = (
+          await api.post(
+            "/admin/products",
+            {
+              title: "Shirt",
+              status: ProductStatus.PUBLISHED,
+              options: [{ title: "size", values: ["S"] }],
+              shipping_profile_id: shippingProfile.id,
+              variants: [
+                {
+                  title: "S",
+                  manage_inventory: false,
+                  options: { size: "S" },
+                  prices: [{ currency_code: "usd", amount: 10 }],
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.product
+
+        await api.post(
+          "/admin/order-edits",
+          { order_id: order.id, description: "Test" },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${order.id}/items`,
+          {
+            items: [
+              { variant_id: product.variants[0].id, quantity: 1 },
+            ],
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${order.id}/items/item/${order.items[0].id}`,
+          { quantity: 0 },
+          adminHeaders
+        )
+
+        await api.post(`/admin/order-edits/${order.id}/request`, {}, adminHeaders)
+        await api.post(`/admin/order-edits/${order.id}/confirm`, {}, adminHeaders)
+
+        const updatedOrder = (
+          await api.get(
+            `/admin/orders/${order.id}?fields=*items`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(updatedOrder.items).toEqual([
+          expect.objectContaining({
+            variant_id: product.variants[0].id,
+            requires_shipping: true,
+          }),
+        ])
+      })
     })
 
     describe("Order Edit Inventory", () => {
