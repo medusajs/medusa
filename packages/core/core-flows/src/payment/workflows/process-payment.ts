@@ -68,12 +68,17 @@ export const processPaymentWorkflow = createWorkflow(
       name: "payment-session-query",
     })
 
+    const paymentCollectionId = transform(
+      { paymentSessionResult },
+      ({ paymentSessionResult }) =>
+        paymentSessionResult.data[0]?.payment_collection_id
+    )
+
     const cartPaymentCollectionResult = useQueryGraphStep({
       entity: "cart_payment_collection",
       fields: ["cart_id"],
       filters: {
-        payment_collection_id:
-          paymentSessionResult.data[0]?.payment_collection_id,
+        payment_collection_id: paymentCollectionId,
       },
     }).config({
       name: "cart-payment-query",
