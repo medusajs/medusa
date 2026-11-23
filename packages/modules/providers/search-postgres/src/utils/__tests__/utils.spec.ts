@@ -342,6 +342,24 @@ describe("postgres search utils", () => {
       expect(existsPart).toContain("IS NULL OR")
     })
 
+    it("casts date filter values from Date, ISO string, or epoch ms", () => {
+      const plan = buildIndexPlan(baseDefinition())
+      const iso = "2026-12-01T00:00:00Z"
+      const epoch = Date.parse(iso)
+
+      for (const value of [new Date(iso), iso, epoch, String(epoch)]) {
+        const where = toWhereClause({ deleted_at: { $gte: value } }, plan)
+        expect(where?.params).toEqual([epoch])
+      }
+    })
+
+    it("rejects unparseable date filter values", () => {
+      const plan = buildIndexPlan(baseDefinition())
+      expect(() =>
+        toWhereClause({ deleted_at: { $gte: "not-a-date" } }, plan)
+      ).toThrow(/Cannot cast/)
+    })
+
     it("rejects range operators on array fields", () => {
       const plan = buildIndexPlan(baseDefinition())
       expect(() => toWhereClause({ tags: { $gt: "a" } }, plan)).toThrow(
