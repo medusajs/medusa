@@ -34077,7 +34077,7 @@ Learn more about using the publishable API key in the [Storefront Development gu
 
 In this chapter, you'll learn about updating your Medusa application and packages.
 
-Medusa's current version is v2.22.7. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+Medusa's current version is v2.23. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.23.0).
 
 ## Medusa Versioning
 
@@ -157264,7 +157264,7 @@ import { DatePicker } from "@medusajs/ui"
 - onKeyDown: (signature) Handler that is called when a key is pressed.
 - onKeyUp: (signature) Handler that is called when a key is released.
 - onOpenChange: (signature) Handler that is called when the overlay's open state changes.
-- pageBehavior: (PageBehavior) Controls the behavior of paging. Pagination either works by advancing the visible page by
+- pageBehavior: (union) Controls the behavior of paging. Pagination either works by advancing the visible page by
   visibleDuration (default) or one unit of visibleDuration.
 - placeholderValue: (union) A placeholder date that influences the format of the placeholder shown when no value is
   selected. Defaults to today's date at midnight.
@@ -158086,8 +158086,8 @@ import { FocusModal } from "@medusajs/ui"
 This component is based on the \[Radix UI Dialog]\(https://www.radix-ui.com/primitives/docs/components/dialog) primitives.
 
 - defaultOpen: (boolean) Whether the modal is opened by default.
-- open: (boolean) Whether the modal is opened.
 - onOpenChange: (signature) A function to handle when the modal is opened or closed.
+- open: (boolean) Whether the modal is opened.
 
 ### FocusModal.Trigger Props
 
@@ -159571,7 +159571,7 @@ This component is based on the \[Radix UI Tabs]\(https://radix-ui.com/primitives
 
 - activationMode: (union) Whether a tab is activated automatically or manually.
 - defaultValue: (string) The value of the tab to select by default, if uncontrolled
-- dir: (Direction) The direction of navigation between toolbar items.
+- dir: (union) The direction of navigation between toolbar items.
 - onValueChange: (signature) A function called when a new tab is selected
 - orientation: (union) The orientation the tabs are layed out.
   Mainly so arrow navigation is done accordingly (left & right vs. up & down)
@@ -161042,7 +161042,7 @@ This component is based on the \[Radix UI Tabs]\(https://radix-ui.com/primitives
 
 - activationMode: (union) Whether a tab is activated automatically or manually.
 - defaultValue: (string) The value of the tab to select by default, if uncontrolled
-- dir: (Direction) The direction of navigation between toolbar items.
+- dir: (union) The direction of navigation between toolbar items.
 - onValueChange: (signature) A function called when a new tab is selected
 - orientation: (union) The orientation the tabs are layed out.
   Mainly so arrow navigation is done accordingly (left & right vs. up & down)

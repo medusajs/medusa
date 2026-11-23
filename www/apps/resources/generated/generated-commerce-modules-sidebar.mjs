@@ -9681,6 +9681,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "title": "updateRegionsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRegionsWorkflow",
                       "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateTaxLinesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateTaxLinesWorkflow",
+                      "children": []
                     }
                   ]
                 },
