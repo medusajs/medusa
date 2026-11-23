@@ -96,6 +96,7 @@
     "@medusajs/notification": "2.23.0",
     "@medusajs/notification-local": "2.23.0",
     "@medusajs/notification-sendgrid": "2.23.0",
+    "@medusajs/notification-ses": "2.23.0",
     "@medusajs/order": "2.23.0",
     "@medusajs/payment": "2.23.0",
     "@medusajs/payment-adyen": "2.23.0",
