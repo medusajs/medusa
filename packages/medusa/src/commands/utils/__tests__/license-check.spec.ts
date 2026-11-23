@@ -89,6 +89,22 @@ describe("startLicenseRemoteCheck", () => {
     )
   })
 
+  it("posts to MEDUSA_LICENSE_CHECK_URL when set", async () => {
+    mockResponse(200, { status: "active" })
+    process.env.MEDUSA_LICENSE_CHECK_URL = "http://localhost:9999/check"
+
+    try {
+      await run(license)
+    } finally {
+      delete process.env.MEDUSA_LICENSE_CHECK_URL
+    }
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      "http://localhost:9999/check",
+      expect.anything()
+    )
+  })
+
   it("stays silent on an active license", async () => {
     mockResponse(200, { status: "active" })
 
