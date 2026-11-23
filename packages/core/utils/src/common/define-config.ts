@@ -98,7 +98,7 @@ export function defineConfig(config: InputConfig = {}): ConfigModule {
     projectConfig?.cloud
   )
   applyCloudOptionsToModules(modules, projectConfig?.cloud, adminConfig)
-  const plugins = resolvePlugins(config.plugins)
+  const plugins = resolvePlugins(config.plugins, options)
 
   return {
     projectConfig,
@@ -235,25 +235,28 @@ function applyDefaultAuthMfaOptions(
 }
 
 function resolvePlugins(
-  configPlugins: InputConfig["plugins"]
+  configPlugins: InputConfig["plugins"],
+  { isCloud }: { isCloud: boolean }
 ): ConfigModule["plugins"] {
   const defaultPlugins: Map<string, ConfigModule["plugins"][number]> = new Map([
     [
       "@medusajs/draft-order",
       { resolve: "@medusajs/draft-order", options: {} },
     ],
-    [
-      "@medusajs/cloud",
-      {
-        resolve: "@medusajs/cloud",
-        options: {
-          apiUrl: process.env.MEDUSA_CLOUD_API_URL,
-          organizationId: process.env.MEDUSA_CLOUD_ORGANIZATION_ID,
-          planHandle: process.env.MEDUSA_CLOUD_PLAN_HANDLE,
-        },
-      },
-    ],
   ])
+
+  // The Cloud plugin is only a default on Medusa Cloud. Self-hosted projects
+  // opt in by listing it in `plugins`.
+  if (isCloud) {
+    defaultPlugins.set("@medusajs/cloud", {
+      resolve: "@medusajs/cloud",
+      options: {
+        apiUrl: process.env.MEDUSA_CLOUD_API_URL,
+        organizationId: process.env.MEDUSA_CLOUD_ORGANIZATION_ID,
+        planHandle: process.env.MEDUSA_CLOUD_PLAN_HANDLE,
+      },
+    })
+  }
 
   if (configPlugins?.length) {
     configPlugins.forEach((plugin) => {

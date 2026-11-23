@@ -17,7 +17,16 @@ Adds Medusa Cloud features, such as in-app announcements, to the Medusa Admin.
 
 ## Usage
 
-The plugin is added automatically to every Medusa project, whether it runs on [Medusa Cloud](https://docs.medusajs.com/cloud) or is self-hosted. You don't need to install or configure it.
+The plugin is added automatically to projects that run on [Medusa Cloud](https://docs.medusajs.com/cloud). You don't need to install or configure it there.
+
+Self-hosted projects don't load it by default. To opt in, add it to `plugins` in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  plugins: ["@medusajs/cloud"],
+})
+```
 
 It adds a "What's new" button to the Medusa Admin topbar that lists the latest Medusa Cloud announcements, and shows new announcements in a card at the bottom of the sidebar until you dismiss them. An announcement with more content opens in a details drawer. Some announcements target an admin page, such as a tip on the Orders page about what you can ask an AI tool connected to the [Medusa MCP server](https://docs.medusajs.com/cloud/medusa-mcp). Others can be shown on any page.
 
@@ -32,7 +41,7 @@ If you use role-based access control (RBAC), add the `cloud_announcement:read` p
 | `apiUrl` | `MEDUSA_CLOUD_API_URL` | Base URL of the Medusa Cloud API. Defaults to `https://api.prod.medusajs.cloud`. |
 | `organizationId` | `MEDUSA_CLOUD_ORGANIZATION_ID` | Medusa Cloud organization ID, used to link announcements to your organization's Cloud dashboard. |
 | `planHandle` | `MEDUSA_CLOUD_PLAN_HANDLE` | Handle of your Medusa Cloud plan, used to include announcements targeted at the plan. |
-| `disabled` | none | Set to `true` to disable the plugin. It isn't loaded, so no announcements, admin widgets, or settings page are added. |
+| `disabled` | none | Set to `true` to disable the plugin, for example on Medusa Cloud. It isn't loaded, so no announcements, admin widgets, or settings page are added. |
 
 ## Resources
 
