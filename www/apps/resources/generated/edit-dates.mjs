@@ -49,7 +49,7 @@ export const generatedEditDates = {
   "app/commerce-modules/promotion/actions/page.mdx": "2026-11-10T15:36:37.183Z",
   "app/commerce-modules/promotion/application-method/page.mdx": "2026-11-06T14:03:08.829Z",
   "app/commerce-modules/promotion/campaign/page.mdx": "2025-10-13T07:34:59.008Z",
-  "app/commerce-modules/promotion/concepts/page.mdx": "2026-07-14T11:56:14.260Z",
+  "app/commerce-modules/promotion/concepts/page.mdx": "2026-11-23T13:54:03.101Z",
   "app/commerce-modules/promotion/page.mdx": "2025-04-17T08:48:14.643Z",
   "app/commerce-modules/region/page.mdx": "2025-04-17T08:48:22.808Z",
   "app/commerce-modules/sales-channel/publishable-api-keys/page.mdx": "2025-04-25T14:22:42.329Z",
