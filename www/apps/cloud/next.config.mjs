@@ -123,6 +123,7 @@ const withMDX = mdx({
 const nextConfig = {
   // Configure `pageExtensions` to include MDX files
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+  agentRules: false,
 
   transpilePackages: ["docs-ui"],
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/cloud",

@@ -37,6 +37,11 @@ export const navDropdownItems: NavigationItem[] = [
       },
       {
         type: "link",
+        title: "Using Agents",
+        link: "/cloud/ai-toolkit",
+      },
+      {
+        type: "link",
         title: "Recipes",
         link: "/resources/recipes",
         sidebar_id: "recipes",
@@ -47,18 +52,6 @@ export const navDropdownItems: NavigationItem[] = [
         link: "/resources/how-to-tutorials",
         sidebar_id: "how-to-tutorials",
       },
-    ],
-  },
-  {
-    type: "link",
-    title: "Merchant Guide",
-    link: "/user-guide",
-    sidebar_id: "user-guide",
-  },
-  {
-    type: "dropdown",
-    title: "Developer Resources",
-    children: [
       {
         type: "sub-menu",
         title: "Tools",
@@ -113,86 +106,93 @@ export const navDropdownItems: NavigationItem[] = [
           },
         ],
       },
+    ],
+  },
+  {
+    type: "dropdown",
+    title: "References",
+    link: "/resources/references-overview",
+    children: [
       {
-        type: "sub-menu",
-        title: "References",
-        link: "/resources/references-overview",
-        items: [
-          {
-            type: "link",
-            title: "Admin API",
-            link: "/api/admin",
-            sidebar_id: "admin",
-          },
-          {
-            type: "link",
-            title: "Store API",
-            link: "/api/store",
-            sidebar_id: "store",
-          },
-          {
-            type: "divider",
-          },
-          {
-            type: "link",
-            title: "Admin Injection Zones",
-            link: "/resources/admin-widget-injection-zones",
-          },
-          {
-            type: "link",
-            title: "Container Resources",
-            link: "/resources/medusa-container-resources",
-          },
-          {
-            type: "link",
-            title: "Core Workflows",
-            link: "/resources/medusa-workflows-reference",
-            sidebar_id: "core-flows",
-          },
-          {
-            type: "link",
-            title: "Data Model Language",
-            link: "/resources/references/data-model",
-            sidebar_id: "dml-reference",
-          },
-          {
-            type: "link",
-            title: "Data Model Repository",
-            link: "/resources/data-model-repository-reference",
-            sidebar_id: "data-model-repository-reference",
-          },
-          {
-            type: "link",
-            title: "Events Reference",
-            link: "/resources/references/events",
-          },
-          {
-            type: "link",
-            title: "Helper Steps",
-            link: "/resources/references/helper-steps",
-            sidebar_id: "helper-steps-reference",
-          },
-          {
-            type: "link",
-            title: "Service Factory",
-            link: "/resources/service-factory-reference",
-            sidebar_id: "service-factory-reference",
-          },
-          {
-            type: "link",
-            title: "Testing Framework",
-            link: "/resources/test-tools-reference",
-            sidebar_id: "test-tools-reference",
-          },
-          {
-            type: "link",
-            title: "Workflows SDK",
-            link: "/resources/references/workflows",
-            sidebar_id: "workflows-sdk-reference",
-          },
-        ],
+        type: "link",
+        title: "Admin API",
+        link: "/api/admin",
+        sidebar_id: "admin",
+      },
+      {
+        type: "link",
+        title: "Store API",
+        link: "/api/store",
+        sidebar_id: "store",
+      },
+      {
+        type: "divider",
+      },
+      {
+        type: "link",
+        title: "Admin Injection Zones",
+        link: "/resources/admin-widget-injection-zones",
+      },
+      {
+        type: "link",
+        title: "Container Resources",
+        link: "/resources/medusa-container-resources",
+      },
+      {
+        type: "link",
+        title: "Core Workflows",
+        link: "/resources/medusa-workflows-reference",
+        sidebar_id: "core-flows",
+      },
+      {
+        type: "link",
+        title: "Data Model Language",
+        link: "/resources/references/data-model",
+        sidebar_id: "dml-reference",
+      },
+      {
+        type: "link",
+        title: "Data Model Repository",
+        link: "/resources/data-model-repository-reference",
+        sidebar_id: "data-model-repository-reference",
+      },
+      {
+        type: "link",
+        title: "Events Reference",
+        link: "/resources/references/events",
+      },
+      {
+        type: "link",
+        title: "Helper Steps",
+        link: "/resources/references/helper-steps",
+        sidebar_id: "helper-steps-reference",
+      },
+      {
+        type: "link",
+        title: "Service Factory",
+        link: "/resources/service-factory-reference",
+        sidebar_id: "service-factory-reference",
+      },
+      {
+        type: "link",
+        title: "Testing Framework",
+        link: "/resources/test-tools-reference",
+        sidebar_id: "test-tools-reference",
+      },
+      {
+        type: "link",
+        title: "Workflows SDK",
+        link: "/resources/references/workflows",
+        sidebar_id: "workflows-sdk-reference",
       },
     ],
+  },
+
+  {
+    type: "link",
+    title: "Merchant Guide",
+    link: "/user-guide",
+    sidebar_id: "user-guide",
   },
 ]
 

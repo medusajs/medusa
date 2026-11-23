@@ -7,7 +7,6 @@ import { HomepageHorizontalDottedSeparator } from "../../DottedSeparator/Horizon
 import HomepageEdges from "../../Edges"
 import CloudSectionDeploymentsIllustration from "../Illustrations/deployments"
 import CloudSectionPreviewEnvironmentsIllustration from "../Illustrations/preview-environments"
-import CloudSectionManagedResourcesIllustration from "../Illustrations/managed-resources"
 import CloudSectionSearchIllustration from "../Illustrations/search"
 import CloudSectionEmailsIllustration from "../Illustrations/emails"
 import CloudSectionMonitoringIllustration from "../Illustrations/monitoring"
@@ -34,13 +33,6 @@ const tabs: Tab[] = [
       "Every pull request gets its own live environment, so you can review changes before they ship.",
     link: "https://docs.medusajs.com/cloud/environments/preview",
     Illustration: CloudSectionPreviewEnvironmentsIllustration,
-  },
-  {
-    title: "Managed resources",
-    content:
-      "Postgres, Redis, S3, and caching, set up for every project. No servers to manage.",
-    link: "https://docs.medusajs.com/cloud/features#managed-resources-and-services",
-    Illustration: CloudSectionManagedResourcesIllustration,
   },
   {
     title: "Medusa Search",

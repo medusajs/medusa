@@ -19,7 +19,7 @@ const HomepageLinksSection = () => {
         },
         {
           link: "https://docs.medusajs.com/cloud/first-project",
-          text: "Create your first project",
+          text: "Create your first store",
         },
         {
           link: "https://docs.medusajs.com/cloud/migrate-self-hosted",
@@ -28,7 +28,7 @@ const HomepageLinksSection = () => {
       ],
     },
     {
-      tag: "Customize Medusa",
+      tag: "Extend Medusa",
       links: [
         {
           link: "/learn",
@@ -40,7 +40,7 @@ const HomepageLinksSection = () => {
         },
         {
           link: "/learn/fundamentals/admin",
-          text: "Extend the Admin",
+          text: "Extend the admin dashboard",
         },
       ],
     },
