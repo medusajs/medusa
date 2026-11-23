@@ -3160,7 +3160,7 @@ export default class OrderModuleService
         order_id: order.id,
         version: currentVersion,
       },
-      { select: ["id", "version"] },
+      { select: ["id", "version", "item_id"] },
       sharedContext
     )
     const orderItemIds = orderItems.map((summary) => summary.id)
@@ -3175,7 +3175,7 @@ export default class OrderModuleService
         order_id: order.id,
         version: currentVersion,
       },
-      { select: ["id", "version"] },
+      { select: ["id", "version", "shipping_method_id"] },
       sharedContext
     )
     const orderShippingIds = orderShippings.map((sh) => sh.id)
@@ -3183,6 +3183,58 @@ export default class OrderModuleService
     updatePromises.push(
       this.orderShippingService_.softDelete(orderShippingIds, sharedContext)
     )
+
+    const itemIds = orderItems.map((orderItem) => orderItem.item_id)
+
+    if (itemIds.length) {
+      const lineItemAdjustments =
+        await this.orderLineItemAdjustmentService_.list(
+          {
+            item_id: itemIds,
+            version: currentVersion,
+          },
+          { select: ["id"] },
+          sharedContext
+        )
+      const lineItemAdjustmentIds = lineItemAdjustments.map((adj) => adj.id)
+
+      if (lineItemAdjustmentIds.length) {
+        updatePromises.push(
+          this.orderLineItemAdjustmentService_.softDelete(
+            lineItemAdjustmentIds,
+            sharedContext
+          )
+        )
+      }
+    }
+
+    const shippingMethodIds = orderShippings.map(
+      (orderShipping) => orderShipping.shipping_method_id
+    )
+
+    if (shippingMethodIds.length) {
+      const shippingMethodAdjustments =
+        await this.orderShippingMethodAdjustmentService_.list(
+          {
+            shipping_method_id: shippingMethodIds,
+            version: currentVersion,
+          },
+          { select: ["id"] },
+          sharedContext
+        )
+      const shippingMethodAdjustmentIds = shippingMethodAdjustments.map(
+        (adj) => adj.id
+      )
+
+      if (shippingMethodAdjustmentIds.length) {
+        updatePromises.push(
+          this.orderShippingMethodAdjustmentService_.softDelete(
+            shippingMethodAdjustmentIds,
+            sharedContext
+          )
+        )
+      }
+    }
 
     // Order Credit Lines
     const orderCreditLines = await this.orderCreditLineService_.list(
