@@ -73,15 +73,28 @@ export default class LinkModuleService implements ILinkModule {
     return {} as ModuleJoinerConfig
   }
 
+  private extractScalarId(data: any): any {
+    if (typeof data === "object" && data !== null) {
+      return data.id ?? Object.values(data)[0] ?? data
+    }
+    return data
+  }
+
   private buildData(
     primaryKeyData: string | string[],
     foreignKeyData: string,
     extra: Record<string, unknown> = {}
   ) {
+    const cleanPrimaryKey = Array.isArray(primaryKeyData)
+      ? primaryKeyData.map((pk) => this.extractScalarId(pk))
+      : this.extractScalarId(primaryKeyData)
+
+    const cleanForeignKey = this.extractScalarId(foreignKeyData)
+
     if (this.primaryKey_.length > 1) {
       if (
-        !Array.isArray(primaryKeyData) ||
-        primaryKeyData.length !== this.primaryKey_.length
+        !Array.isArray(cleanPrimaryKey) ||
+        cleanPrimaryKey.length !== this.primaryKey_.length
       ) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -92,8 +105,8 @@ export default class LinkModuleService implements ILinkModule {
 
     const pk = this.primaryKey_.join(",")
     return {
-      [pk]: primaryKeyData,
-      [this.foreignKey_]: foreignKeyData,
+      [pk]: cleanPrimaryKey,
+      [this.foreignKey_]: cleanForeignKey,
       ...extra,
     }
   }
@@ -315,8 +328,6 @@ export default class LinkModuleService implements ILinkModule {
 
     let mappedCascadedEntitiesMap
     if (returnLinkableKeys) {
-      // Map internal table/column names to their respective external linkable keys
-      // eg: product.id = product_id, variant.id = variant_id
       mappedCascadedEntitiesMap = mapObjectTo<Record<string, string[]>>(
         cascadedEntitiesMap,
         entityNameToLinkableKeysMap,
@@ -373,8 +384,6 @@ export default class LinkModuleService implements ILinkModule {
 
     let mappedCascadedEntitiesMap
     if (returnLinkableKeys) {
-      // Map internal table/column names to their respective external linkable keys
-      // eg: product.id = product_id, variant.id = variant_id
       mappedCascadedEntitiesMap = mapObjectTo<Record<string, string[]>>(
         cascadedEntitiesMap,
         entityNameToLinkableKeysMap,
