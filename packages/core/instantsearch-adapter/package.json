@@ -38,7 +38,7 @@
   "llmsFull": "https://docs.medusajs.com/llms-full.txt",
   "mcpServer": "https://docs.medusajs.com/mcp",
   "author": "Medusa",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "scripts": {
     "build": "yarn run -T tsup",
     "watch": "yarn run -T tsup --watch",

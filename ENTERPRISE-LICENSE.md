@@ -39,84 +39,21 @@ and attorneys' fees where available.
 
 ## Enterprise Materials
 
-RBAC (role-based access control) and SSO (single sign-on) are Medusa Enterprise Edition features. The following repository paths, including all files below a listed directory, are Enterprise Materials:
+RBAC (role-based access control), SSO (single sign-on), and audit logs are Medusa Enterprise Edition features. The following repository paths, including all files below a listed directory, are Enterprise Materials:
 
-### RBAC module and backend behavior
-
-- `packages/modules/rbac/`
-- `packages/core/core-flows/src/rbac/`
-- `packages/medusa/src/api/rbac/`
-- `packages/core/types/src/rbac/`
-- `packages/core/types/src/http/rbac/`
-- `packages/core/framework/src/policies/`
-- `packages/core/framework/src/http/middlewares/authorize.ts`
-- `packages/core/framework/src/http/utils/build-authz-context.ts`
-- `packages/core/framework/src/http/utils/resolve-roles.ts`
-- `packages/core/framework/src/http/utils/policies/rbac-field-filter.ts`
-- `packages/core/utils/src/policies/`
-- `packages/medusa/src/modules/rbac.ts`
-- `packages/medusa/src/migration-scripts/create-super-admin-role.ts`
-- `packages/medusa/src/migration-scripts/migrate-rbac-role-assignments.ts`
-- `packages/medusa/src/api/admin/views/[entity]/columns/helpers.ts`
-- `packages/modules/link-modules/src/definitions/invite-rbac-role.ts`
-- `packages/modules/link-modules/src/definitions/invite-rbac-role-assignment.ts`
-- `packages/modules/link-modules/src/definitions/user-rbac-role.ts`
-- `packages/modules/link-modules/src/definitions/user-rbac-role-assignment.ts`
-
-### RBAC user and invite workflows and APIs
-
-- `packages/core/core-flows/src/invite/steps/get-invite-roles.ts`
-- `packages/medusa/src/api/admin/users/[id]/roles/`
-
-### SDK and Admin dashboard
-
-- `packages/core/js-sdk/src/admin/rbac-policy.ts`
-- `packages/core/js-sdk/src/admin/rbac-role.ts`
-- `packages/admin/dashboard/src/routes/policies/`
-- `packages/admin/dashboard/src/routes/roles/`
-- `packages/admin/dashboard/src/routes/no-permissions/`
-- `packages/admin/dashboard/src/routes/users/user-detail/components/user-role-section/`
-- `packages/admin/dashboard/src/hooks/api/rbac-policies.tsx`
-- `packages/admin/dashboard/src/hooks/api/rbac-roles.tsx`
-- `packages/admin/dashboard/src/hooks/use-require-rbac-feature.tsx`
-- `packages/admin/dashboard/src/hooks/use-resource-permissions.tsx`
-- `packages/admin/dashboard/src/components/authentication/route-permission-guard/`
-- `packages/admin/dashboard/src/components/common/permission-guard/`
-- `packages/admin/dashboard/src/components/common/role-guard/`
-- `packages/admin/dashboard/src/components/common/required-permissions-section/`
-- `packages/admin/dashboard/src/dashboard-app/routes/wrap-route-loaders.ts`
-- `packages/admin/dashboard/src/lib/permissions/`
-- `packages/admin/dashboard/src/providers/permissions-provider/`
-
-### RBAC-specific tests
-
-- `packages/modules/rbac/integration-tests/`
-- `packages/core/framework/src/http/__fixtures__/routers-rbac/`
-- `packages/core/framework/src/http/middlewares/__tests__/authorize.spec.ts`
-- `packages/core/framework/src/http/utils/__tests__/build-authz-context.spec.ts`
-- `packages/core/framework/src/http/utils/__tests__/resolve-roles.spec.ts`
-- `packages/core/framework/src/http/utils/policies/__tests__/rbac-field-filter.spec.ts`
-- `integration-tests/http/__tests__/rbac/`
-- `integration-tests/http/__tests__/modules/admin/modules-rbac.spec.ts`
-- `integration-tests/modules/__tests__/rbac/`
-- `integration-tests/modules/__tests__/rbac-match-endpoint-entities.spec.ts`
-
-### SSO provider and OIDC authentication
-
-- `packages/modules/providers/auth-oidc/`
-- `packages/medusa/src/modules/auth-oidc.ts`
-- `packages/core/types/src/auth/providers/oidc.ts`
-- `packages/medusa/src/api/auth/[auth_provider]/user/route.ts`
-- `packages/admin/dashboard/src/routes/login/components/sso-login.tsx`
+- `packages/modules/rbac/`, published as `@medusajs/rbac`
+- `packages/modules/providers/auth-oidc/`, published as `@medusajs/auth-oidc`
+- `packages/modules/audit/`, published as `@medusajs/audit`
 
 Generated, compiled, bundled, or otherwise transformed versions of the files
 listed above are also Enterprise Materials, even if emitted to another path.
 
-Files outside this list remain under the MIT License in `LICENSE`, including
-generic authentication, generic auth provider registration and discovery,
-generic user and invite management, shared HTTP and workflow infrastructure,
-and incidental integration points that only register, configure, export, or
-display the availability of an Enterprise feature.
+Everything outside these paths remains under the MIT License in `LICENSE`.
+This includes the code in other packages that integrates with an Enterprise
+feature, such as HTTP middleware, workflows, types, SDK resources, module link
+definitions, admin dashboard pages, tests, and license validation. The MIT
+License on that code does not grant any right to the Enterprise Materials
+themselves.
 
 UNLESS A COMMERCIAL AGREEMENT WITH MEDUSAJS, INC. EXPRESSLY STATES OTHERWISE:
 THE ENTERPRISE MATERIALS ARE PROVIDED "AS IS" AND "AS AVAILABLE," WITHOUT
