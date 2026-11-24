@@ -24,7 +24,9 @@ Cloud supports two types of access keys:
 
 ## Manage Organization Access Keys
 
-Organization access keys allow API access to organization-level resources such as projects, environments, and billing information. These keys can be managed by any organization member.
+<RolesBadge roles={["developer"]} />
+
+Organization access keys allow API access to organization-level resources such as projects, environments, and billing information. Members with the **Admin** or **Developer** role can manage these keys. Learn more in the [Roles and Permissions](../organizations/roles/page.mdx) guide.
 
 To manage organization access keys:
 
@@ -36,15 +38,20 @@ From this page, you can view all organization access keys, including their names
 
 ### Create Organization Access Key
 
+<RolesBadge roles={["developer"]} />
+
 To create a new organization access key:
 
 1. In the Organization Access Keys page, click **Create Access Key**.
 2. In the modal that appears, enter a **Name** for your access key. Choose a descriptive name that helps you identify the key's purpose.
-3. Click **Create**.
+3. Choose the key's role from the **Role** dropdown. Requests authenticated with the key can only perform the actions that the role allows. You can only choose a role whose permissions you have. Learn more in the [Roles and Permissions](../organizations/roles/page.mdx) guide.
+4. Click **Create**.
 
 After creation, the full access key token will be displayed with a copy button. Make sure to copy and store this token before closing the modal, as it won't be shown again.
 
 ### Rename Organization Access Key
+
+<RolesBadge roles={["developer"]} />
 
 To rename an existing organization access key:
 
@@ -54,6 +61,8 @@ To rename an existing organization access key:
 4. Enter the new name and click **Save**.
 
 ### Delete Organization Access Key
+
+<RolesBadge roles={["developer"]} />
 
 <Note type="warning">
 

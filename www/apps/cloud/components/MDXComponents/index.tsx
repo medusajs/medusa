@@ -5,11 +5,13 @@ import {
   InlineIcon,
   H1,
 } from "docs-ui"
+import { RolesBadge } from "../RolesBadge"
 
 const MDXComponents: MDXComponentsType = {
   ...UiMdxComponents,
   InlineThemeImage,
   InlineIcon,
+  RolesBadge,
   h1: (props) => <H1 variant="content" {...props} />,
 }
 
