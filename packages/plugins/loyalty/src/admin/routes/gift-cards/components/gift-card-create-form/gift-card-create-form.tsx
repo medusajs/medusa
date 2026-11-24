@@ -44,15 +44,22 @@ export const GiftCardCreateForm = ({
   const { mutateAsync: createGiftCard, isPending } = useCreateGiftCard()
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    await createGiftCard({ ...data, value: data.value.float! }, {
-      onSuccess: (data) => {
-        toast.success("Gift card was successfully created")
-        handleSuccess(`../${data.gift_card.id}`)
+    await createGiftCard(
+      {
+        ...data,
+        value: data.value.float!,
+        expires_at: data.expires_at?.toISOString() ?? null,
       },
-      onError: (error) => {
-        toast.error(error.message)
-      },
-    })
+      {
+        onSuccess: (data) => {
+          toast.success("Gift card was successfully created")
+          handleSuccess(`../${data.gift_card.id}`)
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        },
+      }
+    )
   })
 
   // Set up currency options
