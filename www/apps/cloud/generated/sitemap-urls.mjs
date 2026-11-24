@@ -58,6 +58,7 @@ export const sitemapUrls = [
   "/organizations/connections",
   "/organizations/license",
   "/organizations",
+  "/organizations/roles",
   "",
   "/pricing",
   "/projects/clone-locally",

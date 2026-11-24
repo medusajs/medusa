@@ -36,6 +36,8 @@ So, if you're testing scheduled jobs or events, they may not work as expected in
 
 ## View Preview Environments
 
+<RolesBadge roles={["developer"]} />
+
 To view the preview environments for a project, go to the [project's dashboard](../../projects/page.mdx#open-project-dashboard). You'll see a "Previews" card with all the preview environments for the project.
 
 ---
@@ -71,6 +73,8 @@ This will increase the concurrent previews limit across projects in your organiz
 
 ## Pending Preview Environments
 
+<RolesBadge roles={["developer"]} />
+
 A preview environment is pending when Medusa hasn't provisioned it yet. You can provision a pending preview environment by clicking the **Provision** button, either in its row in the project dashboard's "Previews" table or on the environment's dashboard:
 
 - If your organization has reached its concurrent previews limit, the button takes you to a page where you can [increase the limit](#increase-preview-environment-limits).
@@ -86,6 +90,8 @@ To open a pending preview environment's dashboard, click its row in the "Preview
 ---
 
 ## Open Preview Environment Dashboard
+
+<RolesBadge roles={["developer"]} />
 
 Similar to long-lived environments, you can open a preview environment's dashboard to view its details, logs, and edit its settings.
 
@@ -130,6 +136,8 @@ Cloud doesn't add a `noindex` directive to preview environment URLs, so search e
 
 ## Manage Domains
 
+<RolesBadge roles={["developer"]} />
+
 Your preview environment has two types of domains:
 
 - **Medusa-provided subdomains**: The default `medusajs.app` (backend) and `medusajs.site` (storefront) subdomains assigned to the environment. For example, `acme.medusajs.app` and `acme.medusajs.site`.
@@ -140,6 +148,8 @@ To update these domains, see the [Subdomains](../subdomains/page.mdx) and [Custo
 ---
 
 ## Manage Shared Previews Settings
+
+<RolesBadge roles={["developer"]} />
 
 While you can manage each preview environment's settings individually, you can also manage shared settings between all preview environments in the project. By using the shared settings, you don't need to replicate the same settings for each preview environment.
 
@@ -183,6 +193,8 @@ You can change the environment from which the preview environment's database is 
 ---
 
 ## Delete Preview Environment
+
+<RolesBadge roles={["developer"]} />
 
 Preview environments are automatically deleted when their PR is merged or closed. However, you can also delete them manually if needed.
 

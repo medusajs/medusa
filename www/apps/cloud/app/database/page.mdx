@@ -31,6 +31,8 @@ Medusa automatically configures the database for your environments on Cloud. So,
 
 ## Cloud Database Backups
 
+<RolesBadge roles={["developer"]} />
+
 Medusa provides automatic backups for your environment databases on Cloud. The retention period depends on your plan:
 
 <Table>
@@ -103,6 +105,8 @@ The **Database Backups** section shows a table of available backups with the fol
 
 ### Download a Backup
 
+<RolesBadge roles={["developer"]} />
+
 To download a backup to your device:
 
 1. In the **Database Backups** table, find the backup you want to download.
@@ -115,6 +119,8 @@ pg_restore --no-acl --no-owner --no-privileges --clean --if-exists -d 'postgres:
 ```
 
 ### Restore a Backup
+
+<RolesBadge roles={["developer"]} />
 
 <Note type="warning">
 
@@ -145,6 +151,8 @@ You can't restore a backup while a database import is in progress.
 
 ### Trigger a Manual Backup
 
+<RolesBadge roles={["developer"]} />
+
 A manual backup is triggered when you export a database dump from the environment settings. Learn how to do that in the [Import/Export Cloud Database Dumps](#importexport-cloud-database-dumps) section below.
 
 ---
@@ -156,6 +164,8 @@ In some cases, you may need to access your Cloud project's database directly, su
 Medusa gives you read access to your Cloud project's database, which is useful when you need to export data, perform analytics, or troubleshoot issues.
 
 ### Get Read-Only Connection String
+
+<RolesBadge roles={["developer"]} />
 
 To get the read-only connection string for an environment's database:
 
@@ -181,6 +191,8 @@ psql "postgresql://..."
 After connecting to the database, you can run SQL queries to interact with your data.
 
 ### Rotate Read Password
+
+<RolesBadge roles={["developer"]} />
 
 You can rotate the password for the read-only connection string from the **Database read-only connection string** section. To do that:
 
@@ -239,6 +251,8 @@ Medusa generates a new write connection string. Update any tools or scripts that
 
 ### Restrict Database Access by IP Address
 
+<RolesBadge roles={["developer"]} />
+
 The **IP Allowlist** section of an environment's database settings lets you control which IP addresses can connect to the environment's database. You can restrict public access to the database entirely, or allow access only from specific IP addresses.
 
 To restrict public access to an environment's database:
@@ -267,6 +281,8 @@ After saving, you can connect to the database using the [read-only](#get-read-on
 ---
 
 ## Import/Export Cloud Database Dumps
+
+<RolesBadge roles={["developer"]} />
 
 Medusa allows you to export and import database dumps for any environment on Cloud. This is useful for seeding the database with initial data, migrating from other hosting platforms, or debugging issues locally.
 

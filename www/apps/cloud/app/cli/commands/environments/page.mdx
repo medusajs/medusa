@@ -10,6 +10,8 @@ In this guide, you'll learn how to manage your Cloud environments using the CLI.
 
 ## environments list
 
+<RolesBadge roles={["developer"]} />
+
 List all environments in a project.
 
 <CodeTabs group="cli-auth">
@@ -123,6 +125,8 @@ List all environments in a project.
 ---
 
 ## environments get
+
+<RolesBadge roles={["developer"]} />
 
 Retrieve a single environment by its ID, handle, or name. This is useful if you want to retrieve the environment's details, such as its status or tracked branch.
 
@@ -379,6 +383,8 @@ Returns the following information:
 
 ## environments create
 
+<RolesBadge roles={["developer"]} />
+
 Create a new [long-lived environment](../../../environments/long-lived/page.mdx) for a project. You must already have a branch in your repository to track. The environment will be deployed and updated with every push to the tracked branch.
 
 <CodeTabs group="cli-auth">
@@ -565,6 +571,8 @@ Create a new [long-lived environment](../../../environments/long-lived/page.mdx)
 ---
 
 ## environments delete
+
+<RolesBadge roles={["developer"]} />
 
 Delete an environment by its ID, handle, or name.
 
@@ -777,6 +785,8 @@ deployments and resources. Production environments cannot be deleted.
 
 ## environments redeploy
 
+<RolesBadge roles={["developer"]} />
+
 Redeploy an environment using its current active deployment build. This is useful when you want to roll back to a previous deployment or re-run the active deployment without triggering a new build.
 
 <CodeTabs group="cli-auth">
@@ -959,6 +969,8 @@ The environment must already have an active deployment. If it doesn't, run [`mcl
 ---
 
 ## environments trigger-build
+
+<RolesBadge roles={["developer"]} />
 
 Start a new build for an environment from its tracked branch. This is the equivalent of pushing a commit to the tracked branch but without requiring a Git push.
 

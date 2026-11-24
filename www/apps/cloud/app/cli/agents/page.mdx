@@ -204,6 +204,8 @@ mcloud use --clear
 
 ## Inspect Deployments
 
+<RolesBadge roles={["developer"]} />
+
 The deployment table returned by [`mcloud deployments list`](../commands/deployments/page.mdx#deployments-list) carries two computed status fields per row that AI agents should route on:
 
 - `backend_status`: lifecycle of the backend (build + rollout)
@@ -234,6 +236,8 @@ mcloud deployments get bld_01ABC123 --json
 ---
 
 ## Debug a Failed Deployment
+
+<RolesBadge roles={["developer"]} />
 
 The right log source depends on the failure mode. AI agents should route on `backend_status` (or `storefront_status`):
 
@@ -407,6 +411,8 @@ mcloud logs --deployment "$DEPLOYMENT_ID" --json | jq '.[] | {timestamp, source,
 
 ## Rerun a Deployment
 
+<RolesBadge roles={["developer"]} />
+
 After fixing the underlying issue, AI agents have two options. They are not interchangeable:
 
 <Table>
@@ -479,6 +485,8 @@ mcloud deployments list --environment env_123 --limit 5 --json \
 
 ## Manage Environment Variables
 
+<RolesBadge roles={["developer"]} />
+
 Environment variables are scoped to a single environment. AI agents should pass `--reveal` to print plaintext secret values only when the user has explicitly asked to see them.
 
 ```bash
@@ -512,6 +520,8 @@ mcloud variables list --reveal --json \
 ---
 
 ## Manage Environments
+
+<RolesBadge roles={["developer"]} />
 
 Use this flow when creating a preview environment for a feature branch or tearing down environments after a pull request closes:
 
