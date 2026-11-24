@@ -32,7 +32,7 @@
   "llmsFull": "https://docs.medusajs.com/llms-full.txt",
   "mcpServer": "https://docs.medusajs.com/mcp",
   "author": "Medusa",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "scripts": {
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",
     "watch": "yarn run -T tsc --build --watch",

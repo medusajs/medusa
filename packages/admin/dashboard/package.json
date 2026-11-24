@@ -1,7 +1,7 @@
 {
   "name": "@medusajs/dashboard",
   "version": "2.23.0",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "scripts": {
     "typecheck": "yarn run -T tsc --noEmit -p tsconfig.typecheck.json",
     "generate:static": "node ./scripts/generate-currencies.js && prettier --write ./src/lib/currencies.ts",
