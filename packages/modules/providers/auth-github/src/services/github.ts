@@ -3,6 +3,7 @@ import {
   AuthenticationInput,
   AuthenticationResponse,
   AuthIdentityProviderService,
+  AuthProviderTokens,
   GithubAuthProviderOptions,
   Logger,
 } from "@medusajs/framework/types"
@@ -125,7 +126,7 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
         return r.json()
       })
 
-      const providerMetadata = {
+      const providerTokens: Required<AuthProviderTokens> = {
         access_token: response.access_token,
         refresh_token: response.refresh_token,
         // The response is in seconds
@@ -137,14 +138,19 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
         ).toISOString(),
       }
 
-      const { authIdentity, success } = await this.upsert_(
-        providerMetadata,
+      const { authIdentity, success, error } = await this.upsert_(
+        providerTokens,
         authIdentityService
       )
+
+      if (!success) {
+        return { success, error }
+      }
 
       return {
         success,
         authIdentity,
+        providerTokens,
       }
     } catch (error) {
       return { success: false, error: error.message }
@@ -152,22 +158,17 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
   }
 
   async upsert_(
-    providerMetadata: {
-      access_token: string
-      refresh_token: string
-      access_token_expires_at: string
-      refresh_token_expires_at: string
-    },
+    providerTokens: Required<AuthProviderTokens>,
     authIdentityService: AuthIdentityProviderService
   ) {
-    if (!providerMetadata?.access_token) {
+    if (!providerTokens?.access_token) {
       return { success: false, error: "No access token found" }
     }
 
     const user = await fetch("https://api.github.com/user", {
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${providerMetadata.access_token}`,
+        Authorization: `Bearer ${providerTokens.access_token}`,
       },
     }).then((r) => r.json())
 
@@ -180,6 +181,11 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
       company: user.company,
       two_factor_authentication: user.two_factor_authentication ?? false,
     }
+
+    // Without stored tokens, the metadata is cleared, so a login also removes
+    // tokens stored before the option was turned off
+    const providerMetadata =
+      this.config_.storeTokens === false ? {} : providerTokens
 
     let authIdentity
 

@@ -38,13 +38,13 @@ GitHub Auth Module Provider for Medusa: lets users and customers log in with the
 
 ## At a glance
 
-| | |
-| --- | --- |
-| Package | `@medusajs/auth-github` |
-| Type | Module Provider (Auth Module) |
-| Provider ID | `github` |
-| Registered by default | No |
-| Import from | `@medusajs/medusa/auth-github` |
+|                       |                                |
+| --------------------- | ------------------------------ |
+| Package               | `@medusajs/auth-github`        |
+| Type                  | Module Provider (Auth Module)  |
+| Provider ID           | `github`                       |
+| Registered by default | No                             |
+| Import from           | `@medusajs/medusa/auth-github` |
 
 ## Installation
 
@@ -88,17 +88,18 @@ The provider's `id` is the one used in authentication routes, such as `/auth/cus
 
 ## Configuration
 
-| Option | Type | Description | Default |
-| --- | --- | --- | --- |
-| `clientId` | `string` | Required. The OAuth client ID of your GitHub app. | - |
-| `clientSecret` | `string` | Required. The OAuth client secret of your GitHub app. | - |
-| `callbackUrl` | `string` | Required. The URL GitHub redirects to after authentication. Can be overridden per request with a `callback_url` body parameter. | - |
+| Option         | Type      | Description                                                                                                                                                                                                           | Default |
+| -------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| `clientId`     | `string`  | Required. The OAuth client ID of your GitHub app.                                                                                                                                                                     | -       |
+| `clientSecret` | `string`  | Required. The OAuth client secret of your GitHub app.                                                                                                                                                                 | -       |
+| `callbackUrl`  | `string`  | Required. The URL GitHub redirects to after authentication. Can be overridden per request with a `callback_url` body parameter.                                                                                       | -       |
+| `storeTokens`  | `boolean` | Whether to store the user's GitHub access and refresh tokens in the provider identity's `provider_metadata`. When `false`, they're only passed to the `authCallbackValidated` hook of `validateAuthCallbackWorkflow`. | `true`  |
 
-| Environment variable | Description |
-| --- | --- |
-| `GITHUB_CLIENT_ID` | Value for `clientId`, as used in the example above. |
+| Environment variable   | Description                                             |
+| ---------------------- | ------------------------------------------------------- |
+| `GITHUB_CLIENT_ID`     | Value for `clientId`, as used in the example above.     |
 | `GITHUB_CLIENT_SECRET` | Value for `clientSecret`, as used in the example above. |
-| `GITHUB_CALLBACK_URL` | Value for `callbackUrl`, as used in the example above. |
+| `GITHUB_CALLBACK_URL`  | Value for `callbackUrl`, as used in the example above.  |
 
 ## Resources
 

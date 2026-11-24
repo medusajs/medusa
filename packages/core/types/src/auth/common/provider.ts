@@ -39,6 +39,41 @@ export type AuthenticationResponse = {
    * specified location.
    */
   location?: string
+
+  /**
+   * The tokens the provider received from a third party while authenticating,
+   * such as an OAuth access token. They're passed to the
+   * `authCallbackValidated` hook of the `validateAuthCallbackWorkflow` and
+   * never sent to the client.
+   */
+  providerTokens?: AuthProviderTokens
+}
+
+/**
+ * @interface
+ *
+ * Tokens a provider received from a third party while authenticating.
+ */
+export type AuthProviderTokens = {
+  /**
+   * The access token.
+   */
+  access_token: string
+
+  /**
+   * The refresh token, if the third party issued one.
+   */
+  refresh_token?: string
+
+  /**
+   * When the access token expires, as an ISO 8601 date.
+   */
+  access_token_expires_at?: string
+
+  /**
+   * When the refresh token expires, as an ISO 8601 date.
+   */
+  refresh_token_expires_at?: string
 }
 
 /**
