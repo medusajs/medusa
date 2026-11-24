@@ -48,6 +48,8 @@ git push origin staging # push branch to remote
 
 ### Steps to Create a Long-Lived Environment
 
+<RolesBadge roles={["developer"]} />
+
 To create a long-lived environment:
 
 <Note title="Tip">
@@ -111,6 +113,8 @@ Learn more about how to access an environment's deployment in the [Access Deploy
 
 ## Open Environment Dashboard
 
+<RolesBadge roles={["developer"]} />
+
 On the environment's dashboard, you can view its details, logs, and settings. You can also manage the environment's variables, deployment rules, and database dump.
 
 To open an environment's dashboard:
@@ -142,6 +146,8 @@ Aside from the subdomain you set when [creating the environment](../../environme
 
 ## Promote Environment to Production
 
+<RolesBadge roles={["developer"]} />
+
 You can promote a long-lived environment to Production in Cloud. This is useful when you want to make the environment's deployment the live application for your users, or when you want to switch the Production environment to a different branch.
 
 <Note title="Caution" type="warning">
@@ -167,6 +173,8 @@ This will promote the environment's deployment to Production, making it the live
 
 ## View Environment Logs
 
+<RolesBadge roles={["developer"]} />
+
 You can view build and runtime logs for an environment in the "Logs" section of the environment's dashboard. These logs help you debug issues in your Medusa application and storefront.
 
 Learn more in the [Logs guide](../../logs/page.mdx).
@@ -175,6 +183,8 @@ Learn more in the [Logs guide](../../logs/page.mdx).
 
 ## Monitor Environment Performance
 
+<RolesBadge roles={["developer"]} />
+
 You can monitor the performance of your environment in the "Monitoring" section of the environment's dashboard. This includes monitoring HTTP requests, background jobs, and more.
 
 Learn more in the [Monitoring guide](../../monitoring/page.mdx).
@@ -182,6 +192,8 @@ Learn more in the [Monitoring guide](../../monitoring/page.mdx).
 ---
 
 ## Manage Environment Variables
+
+<RolesBadge roles={["developer"]} />
 
 In the environment's **Environment variables** settings, you can manage the environment variables for the environment's Medusa application and storefront. Environment variables are key-value pairs that store sensitive information, such as API keys, or configurations that your application needs to run.
 
@@ -200,6 +212,8 @@ This redeploys the environment's live deployment with the updated environment va
 
 ## Manage Domains
 
+<RolesBadge roles={["developer"]} />
+
 Your long-lived environment has two types of domains:
 
 - **Medusa-provided subdomains**: The default `medusajs.app` (backend) and `medusajs.site` (storefront) subdomains assigned to the environment. For example, `acme.medusajs.app` and `acme.medusajs.site`.
@@ -210,6 +224,8 @@ To update these domains, see the [Subdomains](../subdomains/page.mdx) and [Custo
 ---
 
 ## Rename an Environment
+
+<RolesBadge roles={["developer"]} />
 
 You can change the name of any environment in your project, including the Production environment.
 
@@ -224,6 +240,8 @@ The environment's new name appears in the project's dashboard and the environmen
 ---
 
 ## Change Environment's Branch
+
+<RolesBadge roles={["developer"]} />
 
 You can't change the branch of preview environments. You can only change it for long-lived environments, such as Production or Staging.
 
@@ -243,6 +261,8 @@ The next time you push a commit to the new branch, Medusa will create a new depl
 
 ## Import and Export Environment's Database Dump
 
+<RolesBadge roles={["developer"]} />
+
 In the environment's **Database** settings, you can export a database dump of the environment. This is useful for backing up the environment's data, debugging issues, or migrating the data to another environment.
 
 You can also import a database dump to use existing data that you have, or to restore the environment to a previous state.
@@ -252,6 +272,8 @@ Learn more in the [Database](../../database/page.mdx) guide.
 ---
 
 ## Change Infrastructure Specifications for Long-Lived Environment
+
+<RolesBadge roles={["developer"]} />
 
 By default, long-lived environments that aren't the Production environment use the specs of the **Develop** plan. This is useful to reduce costs on those environments, but that means it may not be fitting for high-traffic or complex operations.
 
@@ -276,6 +298,8 @@ The Production environment's specs follow the project's infrastructure specs. To
 ---
 
 ## Delete an Environment
+
+<RolesBadge roles={["developer"]} />
 
 <Note title="Danger" type="warning">
 

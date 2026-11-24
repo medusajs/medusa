@@ -4,7 +4,7 @@ export const generatedEditDates = {
   "app/tips/lists/page.mdx": "2026-07-10T06:21:44.183Z",
   "app/settings/sales-channels/page.mdx": "2026-07-31T12:45:34.271Z",
   "app/settings/users/page.mdx": "2026-08-20T07:43:17.621Z",
-  "app/page.mdx": "2025-02-26T14:18:27.755Z",
+  "app/page.mdx": "2026-11-24T08:41:03.951Z",
   "app/settings/page.mdx": "2026-11-13T07:37:39.406Z",
   "app/products/export/page.mdx": "2026-04-10T09:45:36.841Z",
   "app/settings/return-reasons/page.mdx": "2025-05-30T13:31:05.596Z",
@@ -73,6 +73,8 @@ export const generatedEditDates = {
   "app/tips/table-views/page.mdx": "2026-11-17T14:55:29.968Z",
   "app/inventory/export/page.mdx": "2026-07-28T15:35:53.767Z",
   "app/settings/search/page.mdx": "2026-11-17T14:55:25.784Z",
-  "app/settings/roles/page.mdx": "2026-11-12T17:43:44.092Z",
-  "app/settings/announcements/page.mdx": "2026-11-13T07:37:39.112Z"
+  "app/settings/roles/page.mdx": "2026-11-24T08:41:03.950Z",
+  "app/settings/announcements/page.mdx": "2026-11-13T07:37:39.112Z",
+  "app/settings/policies/page.mdx": "2026-11-24T08:41:03.950Z",
+  "app/settings/roles/common-roles/page.mdx": "2026-11-24T08:41:03.950Z"
 }
