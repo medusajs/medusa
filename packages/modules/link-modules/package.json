@@ -29,7 +29,7 @@
     "node": ">=22.22.0"
   },
   "author": "Medusa",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "scripts": {
     "watch": "yarn run -T tsc --build --watch",
     "watch:test": "yarn run -T tsc --build tsconfig.spec.json --watch",
