@@ -30962,12 +30962,6 @@ The agent will call the tool whenever it needs information from the documentatio
 
 If the tool can't find relevant documentation for your question, that's a documentation gap worth reporting. Ask your agent to [submit feedback](undefined/learn/introduction/build-with-llms-ai/docs-mcp-server/submit-feedback) so the Medusa team can add coverage.
 
-***
-
-## Not a Docs MCP server user?
-
-If you don't use the Docs MCP server but have questions about Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-ask-medusa-question) for other options.
-
 
 # Extend Products with the Docs MCP Server
 
@@ -31036,12 +31030,6 @@ Attach downloadable digital assets to products.
 5. If you asked for it, it adds an admin widget so merchants can manage the data from the Medusa Admin.
 
 Tell your agent whether the data is per product, per variant, or per option, and whether a product can have many of them. These choices determine the link target and cardinality, which are much cheaper to get right up front than to change after migrations have run.
-
-***
-
-## Not a Docs MCP server user?
-
-If you don't use the Docs MCP server but need help extending products with custom data and features, [contact our team](https://medusajs.com/contact?type=mcp-server-extend-products) for other options.
 
 
 # Integrate Providers with the Docs MCP Server
@@ -31133,12 +31121,6 @@ Create a plugin that integrates Adyen payments with Medusa.
 5. It walks you through enabling the provider in the Medusa Admin and verifying the integration with a full checkout, or a checkout and order fulfillment for fulfillment providers.
 
 Tell your agent whether you want the provider inside your Medusa application or as a reusable plugin. The file structure and the `resolve` path in `medusa-config.ts` differ between the two.
-
-***
-
-## Not a Docs MCP server user?
-
-If you don't use the Docs MCP server but need help integrating a payment or fulfillment provider with Medusa, [contact our team](https://medusajs.com/contact?type=mcp-server-integration) for other options.
 
 
 # Migrate from Magento (Adobe Commerce) to Medusa
@@ -31236,15 +31218,6 @@ We're switching from Magento. Move our products and customers over to Medusa.
 
 If you're migrating multiple data types, ask your agent to start with products. Other entities, such as orders and inventory, reference products, so migrating products first avoids unresolved references.
 
-***
-
-## Not a Docs MCP server user?
-
-If you don't use the Docs MCP server but need help migrating your store's data to Medusa, contact our team for other options:
-
-1. [Magento Migration](https://medusajs.com/contact?type=mcp-server-magento-migration)
-2. [Other Platform Migration](https://medusajs.com/contact?type=mcp-server-other-platform-migration)
-
 
 # Migrate from Shopify to Medusa
 
@@ -31341,15 +31314,6 @@ We're switching from Shopify. Move our products and customers over to Medusa.
 
 If you're migrating multiple data types, ask your agent to start with products. Other entities, such as orders and inventory, reference products, so migrating products first avoids unresolved references.
 
-***
-
-## Not a Docs MCP server user?
-
-If you don't use the Docs MCP server but need help migrating your store's data to Medusa, contact our team for other options:
-
-1. [Shopify Migration](https://medusajs.com/contact?type=mcp-server-shopify-migration)
-2. [Other Platform Migration](https://medusajs.com/contact?type=mcp-server-other-platform-migration)
-
 
 # Migrate from WooCommerce to Medusa
 
@@ -31445,15 +31409,6 @@ We're switching from WooCommerce. Move our products and customers over to Medusa
 4. It guides you through running the import and verifying the migrated data.
 
 If you're migrating multiple data types, ask your agent to start with products. Other entities, such as orders and inventory, reference products, so migrating products first avoids unresolved references.
-
-***
-
-## Not a Docs MCP server user?
-
-If you don't use the Docs MCP server but need help migrating your store's data to Medusa, contact our team for other options:
-
-1. [WooCommerce Migration](https://medusajs.com/contact?type=mcp-server-woocommerce-migration)
-2. [Other Platform Migration](https://medusajs.com/contact?type=mcp-server-other-platform-migration)
 
 
 # Docs MCP Server
@@ -31774,12 +31729,6 @@ Update my Medusa application to v2.18.0.
 6. It builds and typechecks the project, including your storefront if you have one, and reports the result of each verification step.
 
 Always upgrade on a branch with a clean working tree, and review the resulting diff before merging. Upgrades touch configuration, dependencies, and database migrations.
-
-***
-
-## Not a Docs MCP server user?
-
-If you don't use the Docs MCP server but need help upgrading your Medusa project, [contact our team](https://medusajs.com/contact?type=mcp-server-upgrade-instructions) for other options.
 
 
 # Medusa MCP: Manage Store with Agents
