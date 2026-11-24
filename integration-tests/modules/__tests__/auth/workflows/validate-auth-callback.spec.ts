@@ -8,11 +8,15 @@ import { Modules } from "@medusajs/utils"
 
 jest.setTimeout(100000)
 
-const providerTokens = {
-  access_token: "gho_access",
-  refresh_token: "ghr_refresh",
-  access_token_expires_at: "2030-01-01T00:00:00.000Z",
-  refresh_token_expires_at: "2030-06-01T00:00:00.000Z",
+const providerData = {
+  token: {
+    access_token: "ghu_access",
+    expires_in: 28800,
+    refresh_token: "ghr_refresh",
+    refresh_token_expires_in: 15811200,
+    token_type: "bearer",
+  },
+  user: { id: 1, login: "octocat" },
 }
 
 medusaIntegrationTestRunner({
@@ -44,17 +48,17 @@ medusaIntegrationTestRunner({
           },
         })
 
-      it("passes the provider's tokens to the hook and leaves them out of the result", async () => {
+      it("passes what the provider received to the hook and leaves it out of the result", async () => {
         const authIdentity = { id: "authid_1" } as any
         jest
           .spyOn(authModule, "validateCallback")
-          .mockResolvedValue({ success: true, authIdentity, providerTokens })
+          .mockResolvedValue({ success: true, authIdentity, providerData })
 
         const { result } = await run()
 
         expect(result).toEqual({ success: true, authIdentity })
         expect(JSON.stringify(result)).not.toContain(
-          providerTokens.access_token
+          providerData.token.access_token
         )
         expect(hookCalls).toEqual([
           {
@@ -62,7 +66,7 @@ medusaIntegrationTestRunner({
             auth_provider: "github",
             auth_identity: authIdentity,
             mfa_required: false,
-            provider_tokens: providerTokens,
+            provider_data: providerData,
           },
         ])
       })
@@ -72,7 +76,7 @@ medusaIntegrationTestRunner({
           success: true,
           authIdentity: { id: "authid_1" } as any,
           mfaChallenge: { id: "mfa_1" } as any,
-          providerTokens,
+          providerData,
         })
 
         await run()
@@ -80,7 +84,7 @@ medusaIntegrationTestRunner({
         expect(hookCalls).toEqual([
           expect.objectContaining({
             mfa_required: true,
-            provider_tokens: providerTokens,
+            provider_data: providerData,
           }),
         ])
       })
@@ -100,7 +104,7 @@ medusaIntegrationTestRunner({
         jest.spyOn(authModule, "validateCallback").mockResolvedValue({
           success: true,
           authIdentity: { id: "authid_1" } as any,
-          providerTokens,
+          providerData,
         })
 
         await run()

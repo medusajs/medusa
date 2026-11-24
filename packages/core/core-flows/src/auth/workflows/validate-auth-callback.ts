@@ -1,7 +1,6 @@
 import type {
   AuthenticationResponse,
   AuthIdentityDTO,
-  AuthProviderTokens,
 } from "@medusajs/framework/types"
 import {
   createHook,
@@ -49,10 +48,15 @@ export type AuthCallbackValidatedHookInput = {
    */
   mfa_required: boolean
   /**
-   * The tokens the provider received from the third party, if any, such as
-   * GitHub's access and refresh tokens. They're secret: don't log them.
+   * What the provider received from the third party, as returned, keyed by the
+   * call that returned it. For example, GitHub sets `token` and `user`, and
+   * Google, Medusa Cloud and OIDC providers set `token` and `claims`. See each
+   * provider's documentation for its keys.
+   *
+   * It's secret: it can hold access, refresh and ID tokens. Don't log it, and
+   * don't pass it to a stored workflow, which would keep it in its execution.
    */
-  provider_tokens?: AuthProviderTokens
+  provider_data?: Record<string, unknown>
 }
 
 /**
@@ -76,8 +80,8 @@ export const validateAuthCallbackWorkflowId = "validate-auth-callback"
  * such as GitHub's or Google's. It's used by the
  * `/auth/{actor_type}/{auth_provider}/callback` API route.
  *
- * The workflow isn't stored, so the provider's tokens aren't kept in workflow
- * executions. Its result never includes them.
+ * The workflow isn't stored, so what the provider received (its tokens) isn't
+ * kept in workflow executions. Its result never includes it.
  *
  * @example
  * const { result } = await validateAuthCallbackWorkflow(container).run({
@@ -97,20 +101,21 @@ export const validateAuthCallbackWorkflowId = "validate-auth-callback"
  * @property hooks.authCallbackValidated - This hook is executed after the
  * provider validated the callback, before a token is issued. The login can
  * still be refused afterwards, for example when the auth identity isn't
- * associated with an actor of the type. You can consume this hook to keep the
- * provider's tokens, such as GitHub's, in your own storage.
+ * associated with an actor of the type. You can consume this hook to keep what
+ * the provider received, such as GitHub's tokens, in your own storage.
  *
  * ```ts
  * import { validateAuthCallbackWorkflow } from "@medusajs/medusa/core-flows"
  *
  * validateAuthCallbackWorkflow.hooks.authCallbackValidated(
- *   async ({ auth_identity, auth_provider, provider_tokens }, { container }) => {
- *     // store the tokens
+ *   async ({ auth_identity, auth_provider, provider_data }, { container }) => {
+ *     // keep provider_data.token, encrypted, in your own storage
  *   }
  * )
  * ```
  *
- * An error thrown in the hook fails the login.
+ * An error thrown in the hook fails the login. `provider_data` is secret: don't
+ * log it, and don't pass it to a stored workflow.
  *
  * @since 2.23.1
  */
@@ -119,7 +124,7 @@ export const validateAuthCallbackWorkflow = createWorkflow(
   (
     input: WorkflowData<ValidateAuthCallbackWorkflowInput>
   ): WorkflowResponse<
-    Omit<AuthenticationResponse, "providerTokens">,
+    Omit<AuthenticationResponse, "providerData">,
     [AuthCallbackValidatedHook]
   > => {
     const result = validateAuthCallbackStep({
@@ -132,7 +137,7 @@ export const validateAuthCallbackWorkflow = createWorkflow(
       auth_provider: input.auth_provider,
       auth_identity: result.authIdentity!,
       mfa_required: !!result.mfaChallenge,
-      provider_tokens: result.providerTokens,
+      provider_data: result.providerData,
     }))
 
     let authCallbackValidated!: AuthCallbackValidatedHook
@@ -145,7 +150,7 @@ export const validateAuthCallbackWorkflow = createWorkflow(
     })
 
     const response = transform({ result }, ({ result }) => {
-      const { providerTokens, ...rest } = result
+      const { providerData, ...rest } = result
       return rest
     })
 

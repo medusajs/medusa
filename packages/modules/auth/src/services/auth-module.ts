@@ -761,7 +761,7 @@ export default class AuthModuleService
       success: true,
       mfaChallenge: mfaChallenge,
       authIdentity: response.authIdentity,
-      providerTokens: response.providerTokens,
+      providerData: response.providerData,
     }
   }
 

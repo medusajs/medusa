@@ -3,7 +3,6 @@ import {
   AuthenticationInput,
   AuthenticationResponse,
   AuthIdentityProviderService,
-  AuthProviderTokens,
   GithubAuthProviderOptions,
   Logger,
 } from "@medusajs/framework/types"
@@ -126,7 +125,7 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
         return r.json()
       })
 
-      const providerTokens: Required<AuthProviderTokens> = {
+      const providerMetadata = {
         access_token: response.access_token,
         refresh_token: response.refresh_token,
         // The response is in seconds
@@ -138,8 +137,8 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
         ).toISOString(),
       }
 
-      const { authIdentity, success, error } = await this.upsert_(
-        providerTokens,
+      const { authIdentity, success, error, user } = await this.upsert_(
+        providerMetadata,
         authIdentityService
       )
 
@@ -150,7 +149,7 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
       return {
         success,
         authIdentity,
-        providerTokens,
+        providerData: { token: response, user },
       }
     } catch (error) {
       return { success: false, error: error.message }
@@ -158,17 +157,22 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
   }
 
   async upsert_(
-    providerTokens: Required<AuthProviderTokens>,
+    providerMetadata: {
+      access_token: string
+      refresh_token: string
+      access_token_expires_at: string
+      refresh_token_expires_at: string
+    },
     authIdentityService: AuthIdentityProviderService
   ) {
-    if (!providerTokens?.access_token) {
+    if (!providerMetadata?.access_token) {
       return { success: false, error: "No access token found" }
     }
 
     const user = await fetch("https://api.github.com/user", {
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${providerTokens.access_token}`,
+        Authorization: `Bearer ${providerMetadata.access_token}`,
       },
     }).then((r) => r.json())
 
@@ -184,15 +188,15 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
 
     // Without stored tokens, the metadata is cleared, so a login also removes
     // tokens stored before the option was turned off
-    const providerMetadata =
-      this.config_.storeTokens === false ? {} : providerTokens
+    const storedMetadata =
+      this.config_.storeTokens === false ? {} : providerMetadata
 
     let authIdentity
 
     try {
       // Update throws if auth identity not found
       authIdentity = await authIdentityService.update(entity_id, {
-        provider_metadata: providerMetadata,
+        provider_metadata: storedMetadata,
         user_metadata: userMetadata,
       })
     } catch (error) {
@@ -200,7 +204,7 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
         const createdAuthIdentity = await authIdentityService.create({
           entity_id,
           user_metadata: userMetadata,
-          provider_metadata: providerMetadata,
+          provider_metadata: storedMetadata,
         })
         authIdentity = createdAuthIdentity
       } else {
@@ -211,6 +215,7 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
     return {
       success: true,
       authIdentity,
+      user,
     }
   }
 

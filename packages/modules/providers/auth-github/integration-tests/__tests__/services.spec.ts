@@ -87,11 +87,21 @@ const server = setupServer(
   })
 )
 
-const providerTokens = {
+const storedTokens = {
   access_token: "test",
   refresh_token: "test",
   access_token_expires_at: expect.any(String),
   refresh_token_expires_at: expect.any(String),
+}
+
+const providerData = {
+  token: {
+    access_token: "test",
+    expires_in: 3600,
+    refresh_token: "test",
+    refresh_token_expires_in: 7200,
+  },
+  user: sampleIdPayload,
 }
 
 describe("Github auth provider", () => {
@@ -271,10 +281,10 @@ describe("Github auth provider", () => {
           },
         ],
       },
-      providerTokens,
+      providerData,
     })
     expect(authServiceSpies.create).toHaveBeenCalledWith(
-      expect.objectContaining({ provider_metadata: providerTokens })
+      expect.objectContaining({ provider_metadata: storedTokens })
     )
   })
 
@@ -338,7 +348,7 @@ describe("Github auth provider", () => {
           },
         ],
       },
-      providerTokens,
+      providerData,
     })
   })
 
@@ -379,7 +389,7 @@ describe("Github auth provider", () => {
     expect(res).toEqual({
       success: true,
       authIdentity: { id: "authid_1" },
-      providerTokens,
+      providerData,
     })
     expect(authServiceSpies.update).toHaveBeenCalledWith(
       "1",

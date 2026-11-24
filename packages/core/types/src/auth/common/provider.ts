@@ -41,39 +41,16 @@ export type AuthenticationResponse = {
   location?: string
 
   /**
-   * The tokens the provider received from a third party while authenticating,
-   * such as an OAuth access token. They're passed to the
-   * `authCallbackValidated` hook of the `validateAuthCallbackWorkflow` and
-   * never sent to the client.
+   * What the provider received from a third party while authenticating, as
+   * returned, keyed by the call that returned it. For example, the GitHub
+   * provider sets `token` (the token exchange's response) and `user` (the
+   * `GET /user` response). Each provider documents its keys.
+   *
+   * It's secret: it can hold access, refresh and ID tokens. It's passed to the
+   * `authCallbackValidated` hook of the `validateAuthCallbackWorkflow` and never
+   * sent to the client.
    */
-  providerTokens?: AuthProviderTokens
-}
-
-/**
- * @interface
- *
- * Tokens a provider received from a third party while authenticating.
- */
-export type AuthProviderTokens = {
-  /**
-   * The access token.
-   */
-  access_token: string
-
-  /**
-   * The refresh token, if the third party issued one.
-   */
-  refresh_token?: string
-
-  /**
-   * When the access token expires, as an ISO 8601 date.
-   */
-  access_token_expires_at?: string
-
-  /**
-   * When the refresh token expires, as an ISO 8601 date.
-   */
-  refresh_token_expires_at?: string
+  providerData?: Record<string, unknown>
 }
 
 /**
