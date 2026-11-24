@@ -1,0 +1,77 @@
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `Audit Logs`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to turn on, view, and turn off audit logs for your Cloud organization.
+
+## What are Audit Logs?
+
+Audit logs record the actions that actors perform in your organization, such as members and access keys. You can use them to review who made a change and when.
+
+Audit logs are a paid feature with a recurring monthly fee. Your organization's audit log usage is shown on the [Usage](../../usage/page.mdx) page.
+
+---
+
+## Open Audit Logs Settings
+
+To open your organization's audit logs settings:
+
+1. If you're in a different organization, [switch to the organization](../page.mdx#switch-organization).
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Settings** > **Audit Logs** in the sidebar.
+
+The page you see depends on whether your organization's plan includes audit logs and whether they're turned on:
+
+- **Plan upgrade required**: If your organization's plan doesn't include audit logs, the page shows a callout with a link to change your plan. Learn more in the [Manage Plans](../../billing/plans/page.mdx#change-plan) guide.
+- **Not turned on**: If your plan includes audit logs but they aren't turned on, the page shows a card describing the pricing and how long Medusa retains the logs, with a **Turn on** button.
+- **Turned on**: The page shows the audit logs table and its filters.
+
+---
+
+## Turn On Audit Logs
+
+<Note>
+
+Only users with permission to update the organization's subscription can turn on audit logs. Other users see a message asking them to contact an admin.
+
+</Note>
+
+To turn on audit logs:
+
+1. [Open the audit logs settings](#open-audit-logs-settings).
+2. Review the pricing and log retention period in the card, then click **Turn on**.
+
+You can also turn on audit logs from the **Paid Features** section of the organization's add-ons settings. Learn more in the [Billing](../../billing/page.mdx#enable-or-disable-paid-features) guide.
+
+---
+
+## View Audit Logs
+
+Once audit logs are turned on, the audit logs settings show a table of the logs, along with controls to filter them.
+
+The actor column of each log shows who performed the action:
+
+- For users, the user's name and email.
+- For access keys, the access key's title.
+
+---
+
+## Turn Off Audit Logs
+
+<Note>
+
+Only users with permission to update the organization's subscription can turn off audit logs.
+
+</Note>
+
+To turn off audit logs:
+
+1. [Open the audit logs settings](#open-audit-logs-settings).
+2. Click the **Turn off** button in the page header.
+3. Confirm turning off audit logs in the dialog that appears.
+
+You can also turn off audit logs from the **Paid Features** section of the organization's add-ons settings.

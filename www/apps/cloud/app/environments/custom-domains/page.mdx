@@ -157,6 +157,12 @@ The page is organized into check sections:
 
 Each section shows whether the corresponding DNS records have been verified. The domain header also shows when the most recent verification check ran.
 
+### Domains Proxied Through Cloudflare
+
+If you route your domain through Cloudflare's proxy, enable the **Cloudflare Proxy** toggle in the **Proxy** section of the DNS configuration detail page. Medusa saves the change immediately.
+
+When the toggle is enabled, the **Proxy** section hides its DNS records and shows a message explaining that Medusa skips the proxy check, since Cloudflare handles the proxying. To show the proxy DNS records again, disable the toggle.
+
 ### Provisioning Failure
 
 If the domain's status is **Provisioning failed**, the DNS detail page replaces the DNS configuration instructions with an alert explaining the failure. The **Check records** and **Restart verification** buttons are not available when provisioning has failed. Contact support if you encounter this state.
