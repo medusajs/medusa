@@ -53,7 +53,7 @@ const buffer = await fileModule.getAsBuffer(id)
 - `createFiles(data | data[])` -> `{ id, url }`
 - `deleteFiles(id | ids)`
 - `retrieveFile(id)`, `listFiles({ id })`, `listAndCountFiles({ id })`: return presigned download URLs
-- `getUploadFileUrls({ filename, mimeType?, access? })`: presigned upload URLs (provider must implement `getPresignedUploadUrl`)
+- `getUploadFileUrls({ filename, mimeType?, access?, size? })`: presigned upload URLs (provider must implement `getPresignedUploadUrl`). `size` is the exact byte length; providers that support it (S3) only accept an upload of that size, others ignore it
 - Streams and buffers: `getDownloadStream(id)`, `getAsBuffer(id)`, `getUploadStream({ filename, mimeType, ... })` -> `{ writeStream, promise, url, fileKey }`
 - `getProvider()`: the internal `FileProviderService`
 
