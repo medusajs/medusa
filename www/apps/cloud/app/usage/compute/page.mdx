@@ -24,6 +24,7 @@ Compute hours are based on the **CPU allocated to your environment**, not on the
 - Cloud multiplies the allocated CPU by the time the environment runs to calculate the compute hours consumed in that hour.
 - An environment accrues compute hours **even when it's idle**. As long as it's running, its allocated CPU is billable. Traffic levels don't change the accrual, but keeping the environment online does.
 - An environment with no running processes, such as a suspended environment, doesn't accrue compute hours.
+- A project's preview template doesn't accrue compute hours. It only holds the configuration that [preview environments](../../environments/preview/page.mdx) are created from, and doesn't run any processes. Each preview environment created from it accrues compute hours while it runs.
 
 ---
 
