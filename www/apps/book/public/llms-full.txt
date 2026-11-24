@@ -60751,6 +60751,33 @@ module.exports = defineConfig({
 
 ***
 
+## Restrict Presigned Upload URLs to a File Size
+
+Signing the file size into presigned upload URLs is available since Medusa [v2.23.1](https://github.com/medusajs/medusa/releases/tag/v2.23.1).
+
+The File Module's `getUploadFileUrls` method returns a presigned URL that a client uses to upload a file directly to S3. When you pass the `size` property, the S3 File Module Provider signs the file size, in bytes, into the URL. S3 then rejects any upload whose size is different from the signed size.
+
+For example:
+
+```ts
+import { Modules } from "@medusajs/framework/utils"
+
+// in a step...
+const fileModuleService = container.resolve(
+  Modules.FILE
+)
+
+const { url, key } = await fileModuleService.getUploadFileUrls({
+  filename: "image.png",
+  mimeType: "image/png",
+  size: 1024,
+})
+```
+
+A presigned URL only enforces an exact file size, not a maximum size. So, validate the file size against your limit before you retrieve the presigned URL.
+
+***
+
 ## Troubleshooting
 
 
