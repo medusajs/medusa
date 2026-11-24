@@ -14,6 +14,18 @@ Medusa Payments is in beta. Its features and behavior may change.
 
 </Note>
 
+## Set Up and Test Medusa Payments with an AI Agent
+
+If you use an AI agent, such as Claude Code or Codex, ask it to fetch the [Add Medusa Payments to Your Storefront](./storefront/page.mdx) guide:
+
+```bash
+Fetch https://docs.medusajs.com/cloud/payments/storefront and follow the instructions to set up and test Medusa Payments in my storefront.
+```
+
+The agent receives a prompt that checks whether your storefront already supports Medusa Payments, adds the support if it doesn't, and walks you through placing a test order.
+
+---
+
 ## What is Medusa Payments?
 
 Medusa Payments lets your Cloud stores accept payments without installing or configuring a payment provider yourself. Payments are powered by Stripe, and Medusa sets up the payment provider in each environment's Medusa application and storefront.
@@ -21,10 +33,10 @@ Medusa Payments lets your Cloud stores accept payments without installing or con
 Medusa Payments includes the following features:
 
 - **Zero configuration**: Cloud configures the payment provider in your Medusa application and sets the publishable key in your deployed storefronts. You don't manage any API keys or webhooks.
-- **Test payments in every environment**: Once your payment account is active, every environment gets its own test account, so you can test your checkout with Stripe's test cards before you take real payments.
+- **Test payments in every environment**: Every environment gets its own test account, so you can test your checkout with Stripe's test cards before you set up a payment account and take real payments.
 - **Live payments without a Stripe account**: Set up a [Medusa Payments account](./accounts/medusa-payments/page.mdx) that Medusa creates and runs for you, and share your business details with Stripe in a form in the Cloud dashboard.
 - **Bring your own Stripe account**: If your business already uses Stripe, [connect your Stripe accounts](./accounts/stripe/page.mdx) and keep managing them in Stripe.
-- **Turn on live payments with a toggle**: Turn on a payment account on an [environment's **Payments** page](./environments/page.mdx) to take real payments, then redeploy the environment.
+- **Go live with one click**: Choose a payment account on an [environment's **Payments** page](./environments/page.mdx) to take real payments, then redeploy the environment.
 - **Payments next to your projects**: View transactions, balances, payouts, and disputes in the Cloud dashboard, alongside your projects and environments.
 - **Storefront support in starters**: All Medusa starters support Medusa Payments since [Medusa v2.22.3](https://github.com/medusajs/medusa/releases/tag/v2.22.3). For other storefronts, an [AI agent prompt](./storefront/page.mdx) adds the support for you.
 
@@ -34,13 +46,31 @@ Medusa Payments is available on all plans.
 
 ## Get Started with Medusa Payments on Cloud
 
-Your storefront's checkout must support Medusa Payments, which all starters do since [Medusa v2.22.3](https://github.com/medusajs/medusa/releases/tag/v2.22.3). For older storefronts, follow the [Add Medusa Payments to Your Storefront](./storefront/page.mdx) guide first.
+Every environment has a test account that takes test payments, so you can test your checkout before you set up a payment account. Follow these steps to test payments and take live payments in your store.
 
-Then, follow these steps to set up a payment account and take payments in your store.
+### 1. Add Medusa Payments to Your Storefront
 
-### 1. Set Up a Payment Account
+Your storefront's checkout must support Medusa Payments, which all starters do since [Medusa v2.22.3](https://github.com/medusajs/medusa/releases/tag/v2.22.3). For older storefronts, follow the [Add Medusa Payments to Your Storefront](./storefront/page.mdx) guide.
 
-Before an environment can take payments, your organization needs a payment account. Set up a Medusa Payments account or connect your own Stripe account:
+### 2. Test Payments in an Environment
+
+Each environment gets its own test account, without you setting up a payment account. The environment is in test mode by default, so it takes payments with its test account, and nothing is charged.
+
+To place a test payment:
+
+1. In the [environment's dashboard](../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar, and check that the test account under **Test** shows the **Active** badge.
+2. [Redeploy the environment](../environments/long-lived/page.mdx#redeploy-environment) so that it takes payments with its test account.
+3. In the environment's Medusa Admin, enable the **Medusa Payments** payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide.
+4. Open the environment's storefront, add a product to the cart, and go to checkout.
+5. In the payment step, choose **Credit card** and enter one of [Stripe's test cards](https://docs.stripe.com/testing#cards), such as `4242 4242 4242 4242`, with any future expiry date and any CVC.
+6. Place the test order.
+7. In the [environment's dashboard](../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar, then scroll down to the **Transactions** section to find the payment.
+
+Learn more in the [Set up Medusa Payments in Environments](./environments/page.mdx#how-test-accounts-work) guide.
+
+### 3. Set Up a Payment Account
+
+To take live payments, your organization needs a payment account. Set up a Medusa Payments account or connect your own Stripe account:
 
 1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization) whose payments you want to manage.
 2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
@@ -55,39 +85,21 @@ Before an environment can take payments, your organization needs a payment accou
 
 Learn more in the [Payment Accounts](./accounts/page.mdx) guide.
 
-### 2. Test Payments in an Environment
+### 4. Take Live Payments in an Environment
 
-Once your payment account is active, each environment gets its own test account, and its **Payments** page shows a **Test mode** toggle. While test mode is on, the environment takes payments with its test account, and nothing is charged.
-
-To place a test payment:
-
-1. In the [environment's dashboard](../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar, and check that the page shows the **Test mode** badge.
-2. [Redeploy the environment](../environments/long-lived/page.mdx#redeploy-environment) so that it takes payments with its test account.
-3. In the environment's Medusa Admin, enable the payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide. The provider's name is:
-   - **Medusa Payments** if you use a Medusa Payments account.
-   - **Stripe** if you connected your own Stripe account.
-4. Open the environment's storefront, add a product to the cart, and go to checkout.
-5. In the payment step, choose **Credit card** and enter one of [Stripe's test cards](https://docs.stripe.com/testing#cards), such as `4242 4242 4242 4242`, with any future expiry date and any CVC.
-6. Place the test order.
-7. In the [environment's dashboard](../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar, then scroll down to the **Transactions** section to find the payment.
-
-Learn more in the [Environment Payments](./environments/page.mdx#how-test-accounts-work) guide.
-
-### 3. Take Live Payments in an Environment
-
-Only take live payments in environments that customers purchase through, such as your production environment or a long-lived environment. Keep other environments, such as preview environments, in test mode.
+Only take live payments in environments that customers purchase through, such as your production environment or a long-lived environment. Keep other environments, such as preview environments, on their test account.
 
 To take live payments in an environment:
 
 1. In the [environment's dashboard](../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar.
-2. If the page shows the **Test mode** badge, click the **Test mode** toggle at the top right of the page, then confirm the switch. Switching to live mode turns on your organization's live accounts for the environment.
-3. If the page doesn't show the **Test mode** toggle, turn on the toggle of the account the environment takes payments with.
+2. In the **Account** section, find your payment account under **Live**, and click **Use this account**.
+3. Confirm the switch.
 4. [Redeploy the environment](../environments/long-lived/page.mdx#redeploy-environment). The environment takes payments with the account from its next deployment.
 5. In the environment's Medusa Admin, enable the payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide. The provider's name is:
    - **Medusa Payments** if you use a Medusa Payments account.
    - **Stripe** if you connected your own Stripe account.
 
-Once the deployment finishes, the page shows the **Live** badge, and your store takes real payments from your customers. Learn more in the [Environment Payments](./environments/page.mdx#switch-to-live-mode) guide.
+Once the deployment finishes, your store takes real payments from your customers. Learn more in the [Set up Medusa Payments in Environments](./environments/page.mdx#use-a-live-account) guide.
 
 ---
 
@@ -101,11 +113,11 @@ Learn more about each option and how to manage them in the [Payment Accounts](./
 
 ## Test Mode
 
-Once your organization's payment account is active, every environment gets its own test account and a **Test mode** toggle on its **Payments** page. While an environment is in test mode, it takes payments with its test account, and no customer is charged. You pay with [Stripe's test cards](https://docs.stripe.com/testing#cards) at checkout to test your payment flows.
+Every environment gets its own test account, even before your organization sets up a payment account. While an environment is in test mode, it takes payments with its test account, and no customer is charged. You pay with [Stripe's test cards](https://docs.stripe.com/testing#cards) at checkout to test your payment flows.
 
-When you're ready to take real payments, you switch the environment out of test mode and turn on your payment account in it.
+When you're ready to take real payments, you switch the environment from its test account to your live payment account.
 
-Learn more in the [Environment Payments](./environments/page.mdx#how-test-accounts-work) guide.
+Learn more in the [Set up Medusa Payments in Environments](./environments/page.mdx#how-test-accounts-work) guide.
 
 ---
 

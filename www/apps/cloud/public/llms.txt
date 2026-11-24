@@ -69,7 +69,7 @@
 - [Adyen Account](http://localhost:3000/cloud/payments/accounts/adyen)
 - [Medusa Payments Account](http://localhost:3000/cloud/payments/accounts/medusa-payments)
 - [Stripe Account](http://localhost:3000/cloud/payments/accounts/stripe)
-- [Environment Payments](http://localhost:3000/cloud/payments/environments)
+- [Set up Medusa Payments in Environments](http://localhost:3000/cloud/payments/environments)
 - [Add Medusa Payments to Your Storefront](http://localhost:3000/cloud/payments/storefront)
 - [Plans & Pricing](http://localhost:3000/cloud/pricing)
 - [Create Projects and Deploy to Cloud](http://localhost:3000/cloud/projects)

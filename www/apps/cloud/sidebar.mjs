@@ -297,7 +297,7 @@ export const sidebar = [
           },
           {
             type: "link",
-            title: "Environment Payments",
+            title: "Set up Medusa Payments in Environments",
             path: "/payments/environments",
           },
           {

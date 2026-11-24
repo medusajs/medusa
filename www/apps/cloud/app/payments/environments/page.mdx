@@ -1,7 +1,7 @@
-import { Note, Table } from "docs-ui"
+import { Note } from "docs-ui"
 
 export const metadata = {
-  title: `Environment Payments`,
+  title: `Set up Medusa Payments in Environments`,
 }
 
 # {metadata.title}
@@ -14,62 +14,18 @@ An environment's **Payments** page only covers the payment accounts that Cloud i
 
 </Note>
 
-## Environment Payments Overview
+## How Payments Work in an Environment
 
-An environment takes payments with the payment accounts you turn on for it. Before you can turn on an account, your organization must [set up a payment account](../accounts/page.mdx), and the account must be active. Once it's active, the environment also gets a test account that it takes payments with while it's in test mode.
+An environment takes payments with one account at a time: its own test account, or one of your organization's live payment accounts. Every environment gets a test account, so you can test payments before you set up a payment account. To take live payments, your organization must [set up a payment account](../accounts/page.mdx), and the environment must use it once it's active.
 
 To view an environment's payments, in the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar.
 
-Each environment has a payment mode: test mode, where it takes test payments with its test account, or live mode, where it takes real payments with your live accounts. The payment mode only affects the environment's payments.
+The **Account** section of the **Payments** page lists the accounts the environment can use:
 
-The **Payments** page shows a badge with the environment's payment mode:
+- **Live**: your organization's live payment accounts. An account that can't take payments yet shows its status and a button to finish setting it up, such as **Continue setup**, **View account**, or **Open in Stripe**.
+- **Test**: the environment's test account.
 
-<Table>
-  <Table.Header>
-    <Table.Row>
-      <Table.HeaderCell>
-        Badge
-      </Table.HeaderCell>
-      <Table.HeaderCell>
-        Description
-      </Table.HeaderCell>
-    </Table.Row>
-  </Table.Header>
-  <Table.Body>
-    <Table.Row>
-      <Table.Cell>
-        Test mode
-      </Table.Cell>
-      <Table.Cell>
-        Payments go to the environment's test account, and nothing is charged.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-        Live
-      </Table.Cell>
-      <Table.Cell>
-        The environment takes real payments from your customers.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-        Not in use
-      </Table.Cell>
-      <Table.Cell>
-        Your organization has a payment account, but no account is turned on for the environment, so it takes no payments.
-      </Table.Cell>
-    </Table.Row>
-    <Table.Row>
-      <Table.Cell>
-        Not set up
-      </Table.Cell>
-      <Table.Cell>
-        Your organization has no payment account, so the environment takes no payments.
-      </Table.Cell>
-    </Table.Row>
-  </Table.Body>
-</Table>
+The account that the environment uses is highlighted and shows the **Active** badge. While the environment uses its test account, it's in test mode and nothing is charged. While it uses a live account, it's in live mode and takes real payments from your customers.
 
 ---
 
@@ -77,16 +33,16 @@ The **Payments** page shows a badge with the environment's payment mode:
 
 To take payments in an environment:
 
-1. Set up a Medusa Payments account or connect your own Stripe account in your organization's payment settings, and finish its onboarding until it shows the **Active** status. Learn how in the [Payment Accounts](../accounts/page.mdx) guide.
+1. Test payments in the environment, which uses its test account by default, as explained in the [How Test Accounts Work](#how-test-accounts-work) section. You don't need a payment account for this.
+2. Set up a Medusa Payments account or connect your own Stripe account in your organization's payment settings, and finish its onboarding until it shows the **Active** status. Learn how in the [Payment Accounts](../accounts/page.mdx) guide.
     -  If your organization has no payment account yet, click **Set up live account** at the top right of the environment's **Payments** page to go to your organization's payment settings.
-2. Test payments in the environment, which is in test mode by default, as explained in the [How Test Accounts Work](#how-test-accounts-work) section.
-3. When you're ready to take real payments, [switch the environment to live mode](#switch-to-live-mode).
+3. When you're ready to take real payments, [use a live account in the environment](#use-a-live-account).
 
 ### How Test Accounts Work
 
-Once your organization's payment account is active, each environment gets its own test account, and its **Payments** page shows a **Test mode** toggle at the top right. The environment is in test mode by default, so its store takes payments with the test account, and nothing is charged.
+Each environment gets its own test account, even before your organization sets up a payment account. The environment uses the test account by default, so its store takes test payments, and nothing is charged.
 
-Before you take test payments, [redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment), then enable the payment provider (named **Medusa Payments** for a Medusa Payments account, or **Stripe** for your own Stripe account) in the regions of the environment's Medusa Admin. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide.
+Before you take test payments, [redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment), then enable the **Medusa Payments** payment provider in the regions of the environment's Medusa Admin. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide.
 
 To pay at checkout in test mode, use [Stripe's test cards](https://docs.stripe.com/testing#cards), such as `4242 4242 4242 4242`.
 
@@ -96,63 +52,41 @@ Preview environments share one test account and only take test payments. Their *
 
 ---
 
-## Switch to Live Mode
+## Use a Live Account
 
-Only switch to live mode in environments that customers purchase through, such as your production environment or a long-lived environment. Keep other environments, such as preview environments, in test mode.
+Only use a live account in environments that customers purchase through, such as your production environment or a long-lived environment. Keep other environments, such as preview environments, on their test account.
 
-To switch an environment to live mode:
-
-1. In the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar.
-2. Click the **Test mode** toggle at the top right of the page.
-3. Confirm the switch.
-4. If you connected more than one Stripe account, switching to live mode turns all of them on for the environment. Turn off the toggle of any account the environment shouldn't take payments with, as explained in the [Choose Live Accounts](#choose-live-stripe-accounts) section.
-5. [Redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment). You can also redeploy from the notification shown after the switch.
-6. In the environment's Medusa Admin, enable the payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide. The provider's name is:
-   - **Medusa Payments** if you use a Medusa Payments account.
-   - **Stripe** if you connected your own Stripe account.
-
-Once the deployment finishes, the page shows the **Live** badge, and customers can pay with your live accounts at checkout.
-
-If the environment doesn't have a test account, its **Payments** page doesn't show the **Test mode** toggle. Instead, turn on the toggle of the account the environment takes payments with, [redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment), and enable the payment provider (named **Medusa Payments** for a Medusa Payments account, or **Stripe** for your own Stripe account) in the regions of the environment's Medusa Admin.
-
-<Note type="warning">
-
-Payments move to the other account within a few minutes, and checkout fails until you redeploy the environment. Payments that aren't captured yet can't be captured after you switch modes.
-
-</Note>
-
-### Switch Back to Test Mode
-
-To switch an environment back to test mode:
+To use a live account in an environment:
 
 1. In the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar.
-2. Click the **Test mode** toggle at the top right of the page.
+2. In the **Account** section, find the account under **Live**, and click **Use this account**. The button only shows on active accounts.
 3. Confirm the switch.
 4. [Redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment). You can also redeploy from the notification shown after the switch.
 5. In the environment's Medusa Admin, enable the payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide. The provider's name is:
    - **Medusa Payments** if you use a Medusa Payments account.
    - **Stripe** if you connected your own Stripe account.
 
-The environment then stops taking payments with all of your organization's live accounts.
+Once the deployment finishes, customers can pay with the live account at checkout.
 
----
+If your organization has more than one live account, such as several connected Stripe accounts, follow the same steps to switch the environment to another one. The environment stops taking payments with the account it used before.
 
-## Choose Live Stripe Accounts
+<Note type="warning">
 
-If you connected more than one Stripe account, you can choose which of them an environment takes payments with. When you switch the environment's payments to live mode, all of your Stripe accounts are turned on for it.
+Payments move to the other account within a few minutes, and checkout fails until you redeploy the environment. Payments that aren't captured yet can't be captured after you switch accounts.
 
-To choose the accounts:
+</Note>
+
+### Switch Back to the Test Account
+
+To switch an environment back to its test account:
 
 1. In the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar.
-2. Turn off the toggle of each account the environment shouldn't take payments with, or turn it back on. You can only turn on active accounts.
-3. [Redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment) to apply the change.
-4. In the environment's Medusa Admin, enable the payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide. The provider's name is:
-   - **Medusa Payments** if you use a Medusa Payments account.
-   - **Stripe** if you connected your own Stripe account.
+2. In the **Account** section, find the account under **Test**, and click **Use this account**.
+3. Confirm the switch.
+4. [Redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment). You can also redeploy from the notification shown after the switch.
+5. In the environment's Medusa Admin, enable the **Medusa Payments** payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide.
 
-### Multiple Live Accounts
-
-When you turn on more than one live account, the store's default payment provider takes payments with the account marked **Default**. To take payments with the other accounts, enable them in your store's region settings in the Medusa Admin. Learn more in the [Regions](!user-guide!/settings/regions) user guide.
+The environment then stops taking payments with your organization's live accounts.
 
 ---
 

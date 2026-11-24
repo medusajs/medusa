@@ -146,12 +146,12 @@ Adyen is configured separately in your Medusa application, so you can use it alo
       </Table.Cell>
       <Table.Cell>
 
-        Not needed. The environment's **Test mode** toggle alone decides whether it takes live payments with the account.
+        Click **Use this account** on the account's card in an environment's **Payments** page.
 
       </Table.Cell>
       <Table.Cell>
 
-        Switching an environment to live mode turns on all accounts. Turn off the ones an environment shouldn't use on its **Payments** page.
+        Click **Use this account** on the account's card in an environment's **Payments** page. An environment uses one account at a time.
 
       </Table.Cell>
       <Table.Cell>
@@ -295,7 +295,7 @@ The **Transactions** page lists the account's payments with their date, status, 
 
 <Note>
 
-The **Transactions** page doesn't include payments taken in test mode. To view those, check the transactions of the environment that took them. Learn more in the [Environment Payments](../environments/page.mdx#view-environment-transactions) guide.
+The **Transactions** page doesn't include payments taken in test mode. To view those, check the transactions of the environment that took them. Learn more in the [Set up Medusa Payments in Environments](../environments/page.mdx#view-environment-transactions) guide.
 
 </Note>
 
@@ -354,4 +354,4 @@ Respond to a dispute before its respond-by date. Otherwise, the bank usually dec
 
 After you set up a payment account, you choose which environments take live payments with it from each environment's **Payments** page.
 
-Learn more in the [Environment Payments](../environments/page.mdx#set-up-payments-in-an-environment) guide.
+Learn more in the [Set up Medusa Payments in Environments](../environments/page.mdx#set-up-payments-in-an-environment) guide.
