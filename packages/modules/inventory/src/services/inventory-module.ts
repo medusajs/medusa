@@ -634,7 +634,7 @@ export default class InventoryModuleService
             update.location_id,
             MathBN.add(
               updateLocationAdjustment,
-              update.quantity || reservation.quantity
+              update.quantity ?? reservation.quantity
             )
           )
         } else if (
