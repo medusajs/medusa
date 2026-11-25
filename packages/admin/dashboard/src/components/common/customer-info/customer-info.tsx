@@ -121,8 +121,8 @@ const AddressPrint = ({
           : t("addresses.billingAddress.label")}
       </Text>
       {address ? (
-        <div className="grid grid-cols-[1fr_20px] items-start gap-x-2">
-          <Text size="small" leading="compact">
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_20px] items-start gap-x-2">
+          <Text size="small" leading="compact" className="min-w-0">
             {getFormattedAddress({ address }).map((line, i) => {
               return (
                 <span key={i} className="wrap-break-word">
