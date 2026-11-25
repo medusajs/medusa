@@ -6,19 +6,20 @@ export const metadata = {
 
 # {metadata.title}
 
-In this chapter, you'll learn how to connect AI agents like Claude and ChatGPT to your stores deployed on [Cloud](!cloud!), so you can ask them about your store's commerce data.
+In this chapter, you'll learn how to connect AI agents like Claude and ChatGPT to your stores deployed on [Cloud](!cloud!), so you can ask them about your store's commerce data or ask them to change it.
 
 ## What Can AI Agents Do with Your Store?
 
-Medusa allows AI agents to read data from your Cloud stores, so you can ask questions about your store in natural language. For example:
+Medusa allows AI agents to read and change data in your Cloud stores, so you can ask questions about your store or ask for changes in natural language. For example:
 
 - "Show me the 5 most recent orders in my store, with each order's total and status."
 - "How many orders are waiting to be fulfilled?"
 - "What products are available to shoppers in my B2B sales channel?"
+- "Create a 10% off promotion with the code `WINTER10` in my staging store."
 
-Your AI agent then retrieves the relevant data from your store and presents it to you in a human-readable format.
+Your AI agent then retrieves or changes the relevant data in your store and presents the result to you in a human-readable format.
 
-The agent's access is read-only. It can retrieve data from your store, but it can't create, update, or delete data.
+When you connect an agent, you choose for each environment whether the agent has read-only access or write as well. The agent can only create, update, or delete data in environments with read and write access, and it asks you to confirm before it changes data in a production environment. Learn more in the [Medusa MCP](!cloud!/medusa-mcp#read-and-write-access) guide.
 
 <Note>
 
@@ -62,7 +63,7 @@ The Medusa MCP server is a remote Model Context Protocol (MCP) server that power
 
 <Note>
 
-The Medusa MCP server is different from the [Docs MCP server](../docs-mcp-server/page.mdx). The Docs MCP server helps you build with Medusa using the documentation and implementation guides, while the Medusa MCP server reads data from your stores.
+The Medusa MCP server is different from the [Docs MCP server](../docs-mcp-server/page.mdx). The Docs MCP server helps you build with Medusa using the documentation and implementation guides, while the Medusa MCP server reads and changes data in your stores.
 
 </Note>
 

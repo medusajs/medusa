@@ -140,7 +140,7 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "type": "link",
-                "title": "Connections",
+                "title": "MCP and Connectors",
                 "path": "/organizations/connections",
                 "children": []
               },
