@@ -60,6 +60,7 @@ module.exports = defineConfig({
 ## Gotchas
 
 - Client errors are always the generic `"Authentication failed"`; the real cause is only logged server-side with the `[auth-oidc]` prefix. Check logs when debugging.
+- Nothing is stored in `provider_metadata`. `validateCallback` returns `providerData: { token, claims }`: the engine's token set (`id_token`, `access_token`, `refresh_token`, `expires_at` in seconds, `token_type`, `scope`) and the validated ID-token claims, which the callback route passes to the `authCallbackValidated` hook of `validateAuthCallbackWorkflow`.
 - `require_verified_email` defaults to `true`; IdPs or scope sets that don't return `email_verified: true` fail every login until it's set to `false`.
 - Keep `openid` when overriding `scopes`, or no ID token is returned.
 - `allowed_callback_urls` is opt-in; without it, any body `callback_url` override is accepted and only the IdP validates it.
