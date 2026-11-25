@@ -29,6 +29,12 @@ export type WhatsNewItem = {
 
 export const whatsNewItems: WhatsNewItem[] = [
   {
+    title: "Medusa Payments",
+    tag: "Medusa Cloud",
+    date: "2026-11-25",
+    link: "https://docs.medusajs.com/cloud/payments",
+  },
+  {
     title: "Roles and permissions in Cloud",
     tag: "Medusa Cloud",
     date: "2026-11-24",
@@ -45,47 +51,5 @@ export const whatsNewItems: WhatsNewItem[] = [
     tag: "Medusa Cloud",
     date: "2026-11-13",
     link: "https://docs.medusajs.com/cloud/migrate-self-hosted",
-  },
-  {
-    title: "RBAC & SSO",
-    tag: "Enterprise",
-    date: "2026-11-04",
-    link: "https://docs.medusajs.com/resources/enterprise",
-  },
-  {
-    title: "Medusa MCP",
-    tag: "Medusa Cloud",
-    date: "2026-10-20",
-    link: "https://docs.medusajs.com/cloud/medusa-mcp",
-  },
-  {
-    title: "Medusa Security",
-    date: "2026-11-04",
-    link: "https://docs.medusajs.com/cloud/security",
-    tag: "Medusa Cloud",
-  },
-  {
-    title: "Medusa Search",
-    tag: "Medusa Cloud",
-    date: "2026-09-22",
-    link: "https://docs.medusajs.com/cloud/search",
-  },
-  {
-    title: "Exported Admin Components",
-    date: "2026-09-11",
-    link: "https://docs.medusajs.com/resources/admin-components",
-    tag: "Medusa OS",
-  },
-  {
-    title: "Log Drains",
-    date: "2026-08-21",
-    link: "https://docs.medusajs.com/cloud/projects/log-drains",
-    tag: "Medusa Cloud",
-  },
-  {
-    title: "AI Assistant in Dashboard",
-    date: "2026-08-19",
-    link: "https://docs.medusajs.com/cloud/assistant",
-    tag: "Medusa Cloud",
   },
 ]

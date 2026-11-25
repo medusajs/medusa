@@ -1,0 +1,138 @@
+import { Note, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Adyen Account`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to take payments with your own Adyen account in a Medusa application deployed on Cloud.
+
+## Adyen on Cloud
+
+To connect your Adyen account, use Medusa's official [Adyen Module Provider](!resources!/commerce-modules/payment/payment-provider/adyen). You register it in your Medusa application and configure it with your Adyen credentials in each environment's variables. The provider identifies every payment it sends to Adyen as processed through Medusa, so it automatically connects your Adyen payments to your Cloud account.
+
+If you use your own Adyen provider instead, it must identify its requests the same way. Learn more in the [Use a Custom Adyen Provider](#use-a-custom-adyen-provider) section.
+
+Learn how it compares to the other payment account types in the [Differences Between Payment Account Types](../page.mdx#differences-between-payment-account-types) section.
+
+{/* TODO: explain why users should use their own Adyen account instead of setting up Medusa Payments.
+
+## Why Use Your Adyen Account?
+
+---
+
+*/}
+
+---
+
+## Set Up Adyen in Your Medusa Application
+
+<Prerequisites
+  items={[
+    {
+      text: "Adyen account",
+      link: "https://www.adyen.com/",
+    },
+    {
+      text: "Adyen API key and merchant account",
+      link: "https://docs.adyen.com/development-resources/api-credentials/",
+    },
+  ]}
+/>
+
+### 1. Register the Adyen Module Provider
+
+Add the Adyen Module Provider to the Payment Module's providers in your Medusa application's `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/payment",
+      options: {
+        providers: [
+          {
+            resolve: "@medusajs/medusa/payment-adyen",
+            id: "adyen",
+            options: {
+              apiKey: process.env.ADYEN_API_KEY,
+              merchantAccount:
+                process.env.ADYEN_MERCHANT_ACCOUNT,
+              hmacKey: process.env.ADYEN_WEBHOOK_HMAC_KEY,
+              returnUrl: process.env.ADYEN_RETURN_URL,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+Refer to the [Adyen Module Provider](!resources!/commerce-modules/payment/payment-provider/adyen#module-options) guide for all of its options, such as `environment` to take live payments, and `capture` to capture payments automatically.
+
+### 2. Set Up the Adyen Webhook
+
+In Adyen's Customer Area, add a standard webhook that points to the URL `{backend_url}/hooks/payment/adyen_adyen`, where `{backend_url}` is the environment's Medusa backend URL, which you can find in [the environment's dashboard](../../../environments/long-lived/page.mdx#find-environment-details). The `adyen_adyen` part assumes the provider's `id` is `adyen`.
+
+The environment's backend URL doesn't change when you deploy, so you can add the webhook before deploying your changes. Copy the webhook's HMAC key to set it in the next step. Learn more in the [Adyen Module Provider](!resources!/commerce-modules/payment/payment-provider/adyen#setup-adyen-webhooks) guide.
+
+<Note>
+
+Adyen's webhook test fails until you deploy the changes. You can test the webhook after the deployment.
+
+</Note>
+
+### 3. Set the Environment Variables on Cloud
+
+Add the environment variables that the provider's options use to each environment that takes payments with Adyen, including:
+
+- `ADYEN_API_KEY` and `ADYEN_MERCHANT_ACCOUNT`: Your Adyen API key and merchant account.
+- `ADYEN_WEBHOOK_HMAC_KEY`: The HMAC key of the webhook you added in the previous step.
+- `ADYEN_RETURN_URL`: The storefront URL that customers return to after a redirect, such as a 3D Secure challenge.
+
+Learn how to add them in the [Environment Variables](../../../environments/environment-variables/page.mdx#add-environment-variables-on-cloud) guide.
+
+Use your Adyen test credentials in environments that customers don't purchase through, such as preview environments. Only use live credentials in environments that customers purchase through, such as your production environment.
+
+### 4. Deploy Your Changes
+
+Push the changes to your project's repository to deploy them. Learn more in the [Deployments](../../../deployments/page.mdx) guide.
+
+If you change the environment variables later, [redeploy the environment](../../../environments/long-lived/page.mdx#redeploy-environment) to apply them.
+
+### 5. Enable Adyen in Your Regions
+
+In the environment's Medusa Admin, enable the Adyen payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide.
+
+### 6. Accept Adyen Payments in Your Storefront
+
+Your storefront accepts Adyen payments with Adyen's Drop-in component. Learn how to integrate it in the [Adyen Module Provider](!resources!/commerce-modules/payment/payment-provider/adyen#accept-adyen-payments-in-the-storefront) guide.
+
+---
+
+## Use a Custom Adyen Provider
+
+If you implement your own Adyen payment provider instead of using the official Adyen Module Provider, pass an `applicationInfo` object with the following `externalPlatform` details in every request to Adyen that accepts it.
+
+For example, using Adyen's [Node.js API library](https://github.com/Adyen/adyen-node-api-library) to create a payment:
+
+```ts highlights={[["7"], ["8"], ["9"], ["10"], ["11"], ["12"]]}
+const response = await checkout.PaymentsApi.payments({
+  merchantAccount: process.env.ADYEN_MERCHANT_ACCOUNT!,
+  amount: { currency: "EUR", value: 1000 },
+  reference: "order_123",
+  paymentMethod,
+  returnUrl,
+  applicationInfo: {
+    externalPlatform: {
+      name: "Medusa",
+      integrator: "medusajs",
+    },
+  },
+})
+```
+
+This object identifies the payments as processed through Medusa, which connects them to your Cloud account. Pass the values exactly as shown, since Adyen matches them exactly.

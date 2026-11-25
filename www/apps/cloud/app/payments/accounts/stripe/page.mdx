@@ -1,0 +1,98 @@
+import { InlineIcon, Note } from "docs-ui"
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Stripe Account`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to connect your own Stripe accounts to take payments with them on Cloud.
+
+## How Stripe Account Connection Works
+
+Connecting your own Stripe account is for businesses that already take payments with Stripe and want to keep using their existing account, along with its settings, history, and Stripe dashboard.
+
+<Note title="Tip">
+
+If you're starting fresh without a Stripe account, set up a [Medusa Payments account](../medusa-payments/page.mdx) instead. Medusa creates and runs the Stripe account for you, and you onboard and manage it in the Cloud dashboard.
+
+</Note>
+
+When you connect your Stripe account:
+
+- You authorize Medusa to take payments on your account through Stripe. Medusa doesn't change your account's settings or capabilities, and it never deletes your account.
+- You don't set any Stripe API keys. Cloud configures your Medusa application and sets the Medusa Payments publishable key in your deployed storefronts, the same as with a Medusa Payments account. Don't use your Stripe account's own publishable key in the storefront, since Medusa Payments uses its own key along with your account's ID.
+- While an environment is in test mode, it takes test payments with its own test account, not your Stripe account.
+- Payments go to your Stripe account's balance, and Stripe pays them out to the bank account you set up in Stripe.
+- You manage the account, such as its business details, payouts, and disputes, in the Stripe dashboard. You can also view its transactions, payouts, and disputes in the Cloud dashboard.
+
+Learn how it compares to the other payment account types in the [Differences Between Payment Account Types](../page.mdx#differences-between-payment-account-types) section.
+
+<Note>
+
+Connecting your Stripe account in the Cloud dashboard is different from registering Medusa's [Stripe Module Provider](!resources!/commerce-modules/payment/payment-provider/stripe) in your Medusa application. With the Stripe Module Provider, you configure your Stripe API keys yourself, and the account doesn't show in the Cloud dashboard.
+
+</Note>
+
+{/* TODO: explain why users should connect their own Stripe account instead of setting up Medusa Payments.
+
+### Why Connect Your Stripe Account?
+
+*/}
+
+---
+
+## Connect Your Stripe Account
+
+To connect your Stripe account:
+
+1. If you're in a different organization, [switch to the organization](../../../organizations/page.mdx#switch-organization) whose payments you want to manage.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Payments** > **Overview** in the sidebar.
+4. In the **Your Stripe account** card, click **Connect Stripe**.
+5. Sign in to Stripe and choose the account to connect.
+
+After you connect the account, you're redirected back to the Cloud dashboard, and the account's card shows the **Setting up** status while Medusa sets up payments for it.
+
+### Finish Setting Up a Connected Stripe Account
+
+A Stripe account you connect may need more information before it can accept payments, for example, if you created it recently. You provide that information in Stripe, since you manage the account there.
+
+To finish setting up a connected Stripe account:
+
+1. If you're in a different organization, [switch to the organization](../../../organizations/page.mdx#switch-organization) whose payments you want to manage.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Payments** > **Overview** in the sidebar. If Stripe needs more information, the account's card shows the **Onboarding** status.
+4. Click **Open in Stripe** on the account's card. The Stripe dashboard opens in a new tab.
+5. Provide the information Stripe asks for in its dashboard.
+
+Once Stripe can accept payments with the account, its card shows the **Active** status in the Cloud dashboard, and you can use it in your environments.
+
+If the card shows the **Rejected** status, Stripe can't accept payments with the account. Click **Open in Stripe** to see why.
+
+### Connect Another Stripe Account
+
+You can connect more than one Stripe account, for example, to take payments in different regions with different accounts.
+
+To connect another Stripe account:
+
+1. If you're in a different organization, [switch to the organization](../../../organizations/page.mdx#switch-organization) whose payments you want to manage.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Payments** > **Overview** in the sidebar.
+4. Click **Connect another account** at the top right.
+5. Choose the account to connect in Stripe.
+
+---
+
+## Disconnect a Stripe Account
+
+When you disconnect a Stripe account, your stores stop accepting payments with it. Your Stripe account and its data aren't affected.
+
+To disconnect a Stripe account:
+
+1. If you're in a different organization, [switch to the organization](../../../organizations/page.mdx#switch-organization) whose payments you want to manage.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Payments** > **Overview** in the sidebar.
+4. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon on the account's card.
+5. Click **Disconnect**, then confirm.

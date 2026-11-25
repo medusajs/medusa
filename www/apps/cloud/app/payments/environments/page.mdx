@@ -1,0 +1,176 @@
+import { Note } from "docs-ui"
+
+export const metadata = {
+  title: `Set up Medusa Payments in Environments`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to manage payments in an environment, including test mode, live accounts, and using payments in your storefront.
+
+<Note>
+
+An environment's **Payments** page only covers the payment accounts that Cloud integrates with: [Medusa Payments](../accounts/medusa-payments/page.mdx) and [Stripe](../accounts/stripe/page.mdx) accounts. It doesn't cover [Adyen](../accounts/adyen/page.mdx), which you configure in your Medusa application instead. So, the environment's test mode and transactions don't apply to Adyen payments.
+
+</Note>
+
+## How Payments Work in an Environment
+
+An environment takes payments with one account at a time: its own test account, or one of your organization's live payment accounts. Every environment gets a test account, so you can test payments before you set up a payment account. To take live payments, your organization must [set up a payment account](../accounts/page.mdx), and the environment must use it once it's active.
+
+To view an environment's payments, in the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar.
+
+The **Account** section of the **Payments** page lists the accounts the environment can use:
+
+- **Live**: your organization's live payment accounts. An account that can't take payments yet shows its status and a button to finish setting it up, such as **Continue setup**, **View account**, or **Open in Stripe**.
+- **Test**: the environment's test account.
+
+The account that the environment uses is highlighted and shows the **Active** badge. While the environment uses its test account, it's in test mode and nothing is charged. While it uses a live account, it's in live mode and takes real payments from your customers.
+
+---
+
+## Set Up Payments in an Environment
+
+To take payments in an environment:
+
+1. Test payments in the environment, which uses its test account by default, as explained in the [How Test Accounts Work](#how-test-accounts-work) section. You don't need a payment account for this.
+2. Set up a Medusa Payments account or connect your own Stripe account in your organization's payment settings, and finish its onboarding until it shows the **Active** status. Learn how in the [Payment Accounts](../accounts/page.mdx) guide.
+    -  If your organization has no payment account yet, click **Set up live account** at the top right of the environment's **Payments** page to go to your organization's payment settings.
+3. When you're ready to take real payments, [use a live account in the environment](#use-a-live-account).
+
+### How Test Accounts Work
+
+Each environment gets its own test account, even before your organization sets up a payment account. The environment uses the test account by default, so its store takes test payments, and nothing is charged.
+
+Before you take test payments, [redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment), then enable the **Medusa Payments** payment provider in the regions of the environment's Medusa Admin. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide.
+
+To pay at checkout in test mode, use [Stripe's test cards](https://docs.stripe.com/testing#cards), such as `4242 4242 4242 4242`.
+
+### Test Accounts in Preview Environments
+
+Preview environments share one test account and only take test payments. Their **Payments** page shows that test account and its payments.
+
+---
+
+## Use a Live Account
+
+Only use a live account in environments that customers purchase through, such as your production environment or a long-lived environment. Keep other environments, such as preview environments, on their test account.
+
+To use a live account in an environment:
+
+1. In the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar.
+2. In the **Account** section, find the account under **Live**, and click **Use this account**. The button only shows on active accounts.
+3. Confirm the switch.
+4. [Redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment). You can also redeploy from the notification shown after the switch.
+5. In the environment's Medusa Admin, enable the payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide. The provider's name is:
+   - **Medusa Payments** if you use a Medusa Payments account.
+   - **Stripe** if you connected your own Stripe account.
+
+Once the deployment finishes, customers can pay with the live account at checkout.
+
+If your organization has more than one live account, such as several connected Stripe accounts, follow the same steps to switch the environment to another one. The environment stops taking payments with the account it used before.
+
+<Note type="warning">
+
+Payments move to the other account within a few minutes, and checkout fails until you redeploy the environment. Payments that aren't captured yet can't be captured after you switch accounts.
+
+</Note>
+
+### Switch Back to the Test Account
+
+To switch an environment back to its test account:
+
+1. In the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar.
+2. In the **Account** section, find the account under **Test**, and click **Use this account**.
+3. Confirm the switch.
+4. [Redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment). You can also redeploy from the notification shown after the switch.
+5. In the environment's Medusa Admin, enable the **Medusa Payments** payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide.
+
+The environment then stops taking payments with your organization's live accounts.
+
+---
+
+## Use Payments in Your Storefront
+
+Medusa sets the Medusa Payments publishable key in each environment's deployed storefront, in the `NEXT_PUBLIC_MEDUSA_PAYMENTS_PUBLISHABLE_KEY` and `VITE_MEDUSA_PAYMENTS_PUBLISHABLE_KEY` environment variables. The key matches the environment's payment mode, and the storefront gets it on its next deployment.
+
+To use the key in a storefront that you run locally, turn on [local development](#use-medusa-payments-in-local-development) for the environment.
+
+Your storefront's checkout must also support Medusa Payments. All starters support it since [Medusa v2.22.3](https://github.com/medusajs/medusa/releases/tag/v2.22.3). For older or custom storefronts, follow the [Add Medusa Payments to Your Storefront](../storefront/page.mdx) guide.
+
+---
+
+## Use Medusa Payments in Local Development
+
+You can let a Medusa application and storefront that you run on your machine take test payments with an environment's test account. This lets you test your checkout locally without deploying it.
+
+Local applications only take test payments. They can't take payments with your live accounts, even if the environment's payments are in live mode.
+
+<Note>
+
+Local development is only available once the environment has a test account, as explained in the [How Test Accounts Work](#how-test-accounts-work) section.
+</Note>
+
+### Turn On Local Development
+
+To turn on local development for an environment:
+
+1. In the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar.
+2. In the **Local development** section, turn on the toggle.
+   - On the production environment, only the organization's owner can turn on the toggle. For other members, the toggle is disabled. Ask the owner to turn it on, or use another environment, such as a long-lived environment.
+3. If the environment is the production environment, click **Allow** to confirm.
+4. The section expands to show the environment variables to add. Copy them now, since they include a key that won't be shown again:
+   - **Medusa application** tab: Add the variables to your Medusa application's `.env` file.
+   - **Storefront** tab: Add the variables to your storefront's `.env` file.
+5. Restart your Medusa application and storefront locally.
+
+Your Medusa application then registers the Medusa Payments payment provider with the environment's test account. You don't need to change `medusa-config.ts`.
+
+Before you place a test order, enable the provider in the regions of your local Medusa Admin. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide.
+
+After you turn on local development or regenerate its key, the key can take up to a few minutes to start working. If your local application's payments fail right after, wait a few minutes and try again. Similarly, after you turn off local development or regenerate the key, the previous key can keep working for a few minutes.
+
+<Note type="warning">
+
+Anyone with the key can take test payments with the environment's test account. Keep the key out of your repository, and regenerate it if you shared it by mistake.
+
+</Note>
+
+### Local Development Limitations
+
+Stripe doesn't send payment events, such as payment updates and disputes, to local applications. So, your local Medusa application doesn't receive updates that Stripe sends after the checkout.
+
+### Regenerate the Local Development Key
+
+If you lost the environment variables or the key leaked, regenerate the key:
+
+1. In the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar.
+2. In the **Local development** section, click **Regenerate key** next to the toggle, then click **Regenerate** to confirm.
+   - On the production environment, only the organization's owner can regenerate the key. For other members, the **Regenerate key** button is disabled.
+3. Copy the new environment variables from the **Medusa application** and **Storefront** tabs into your local `.env` files, and restart your Medusa application and storefront.
+
+Local applications that use the previous key stop taking payments until you update them with the new key.
+
+### Turn Off Local Development
+
+To stop local applications from taking payments with the environment's test account:
+
+1. In the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar.
+2. In the **Local development** section, turn off the toggle.
+   - On the production environment, only the organization's owner can turn off the toggle. For other members, the toggle is disabled.
+
+Turning off local development revokes the key.
+
+---
+
+## View Environment Transactions
+
+The **Transactions** section of the environment's **Payments** page shows the payments taken with the account the environment currently uses.
+
+To view an environment's transactions:
+
+1. In the [environment's dashboard](../../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar.
+2. Scroll down to the **Transactions** section at the bottom of the page.
+3. To view the payments of another account, such as the test account while the environment is live, choose the account from the selector next to the section's title. The selector only shows when there's more than one account with activity.
+
+Payouts and disputes belong to the payment account, so you view them in your organization's payment settings. Learn more in the [View Payouts](../accounts/page.mdx#view-payouts) and [View Disputes](../accounts/page.mdx#view-disputes) sections of the Payment Accounts guide.

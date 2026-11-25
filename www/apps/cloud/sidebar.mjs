@@ -271,11 +271,50 @@ export const sidebar = [
       },
       {
         type: "category",
+        title: "Payments",
+        children: [
+          {
+            type: "link",
+            title: "Medusa Payments",
+            path: "/payments",
+          },
+          {
+            type: "link",
+            title: "Payment Accounts",
+            path: "/payments/accounts",
+            children: [
+              {
+                type: "link",
+                title: "Medusa Payments",
+                path: "/payments/accounts/medusa-payments",
+              },
+              {
+                type: "link",
+                title: "Stripe",
+                path: "/payments/accounts/stripe",
+              },
+              {
+                type: "link",
+                title: "Adyen",
+                path: "/payments/accounts/adyen",
+              },
+            ],
+          },
+          {
+            type: "link",
+            title: "Set up Medusa Payments in Environments",
+            path: "/payments/environments",
+          },
+          {
+            type: "link",
+            title: "Add to Storefront",
+            path: "/payments/storefront",
+          },
+        ],
+      },
+      {
+        type: "category",
         title: "Search",
-        badge: {
-          variant: "green",
-          text: "New",
-        },
         children: [
           {
             type: "link",
