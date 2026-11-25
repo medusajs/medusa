@@ -168,14 +168,19 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
         return r.json()
       })
 
-      const { authIdentity, success } = await this.verify_(
+      const { authIdentity, success, error, claims } = await this.verify_(
         response.id_token as string,
         authIdentityService
       )
 
+      if (!success) {
+        return { success, error }
+      }
+
       return {
         success,
         authIdentity,
+        providerData: { token: response, claims },
       }
     } catch (error) {
       return { success: false, error: error.message }
@@ -252,6 +257,7 @@ export class GoogleAuthService extends AbstractAuthModuleProvider {
     return {
       success: true,
       authIdentity,
+      claims: payload,
     }
   }
 

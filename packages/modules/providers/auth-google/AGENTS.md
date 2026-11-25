@@ -53,6 +53,6 @@ module.exports = defineConfig({
 
 - `entity_id` is the `sub` claim, not the email. `user_metadata` (`name`, `email`, `picture`, `given_name`, `family_name`) is only written when the identity is first created; later logins don't refresh it.
 - Login is rejected unless `email_verified` is true in the ID token.
-- Tokens aren't stored (no `provider_metadata`), unlike `auth-github`.
+- Tokens aren't stored (no `provider_metadata`), unlike `auth-github`. `validateCallback` returns `providerData: { token, claims }` (the token endpoint's response and the verified `id_token` claims), which the callback route passes to the `authCallbackValidated` hook of `validateAuthCallbackWorkflow`.
 - A body `callback_url` overrides `callbackUrl` per request with no allowlist; it must also be registered as a redirect URI in Google Cloud.
 - For Google Workspace SSO with domain restrictions, `@medusajs/auth-oidc` (`allowed_email_domains`) is the better fit.

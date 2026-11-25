@@ -39,6 +39,18 @@ export type AuthenticationResponse = {
    * specified location.
    */
   location?: string
+
+  /**
+   * What the provider received from a third party while authenticating, as
+   * returned, keyed by the call that returned it. For example, the GitHub
+   * provider sets `token` (the token exchange's response) and `user` (the
+   * `GET /user` response). Each provider documents its keys.
+   *
+   * It's secret: it can hold access, refresh and ID tokens. It's passed to the
+   * `authCallbackValidated` hook of the `validateAuthCallbackWorkflow` and never
+   * sent to the client.
+   */
+  providerData?: Record<string, unknown>
 }
 
 /**

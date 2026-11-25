@@ -165,7 +165,7 @@ export class OidcAuthService extends AbstractAuthModuleProvider {
     }
 
     try {
-      const { claims } = await this.engine_.exchangeCode({
+      const { claims, tokens } = await this.engine_.exchangeCode({
         // Forward the full authorization-response params.
         params: { ...body, ...query },
         nonce: state.nonce as string,
@@ -197,7 +197,11 @@ export class OidcAuthService extends AbstractAuthModuleProvider {
         }
       }
 
-      return { success: true, authIdentity }
+      return {
+        success: true,
+        authIdentity,
+        providerData: { token: tokens, claims },
+      }
     } catch (error) {
       this.logger_?.error(
         `[auth-oidc] Could not validate authentication callback: ${error.message}`
