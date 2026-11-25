@@ -3,6 +3,7 @@ import { tmpdir } from "os"
 import path from "path"
 import {
   addPackageExportResolutions,
+  coldJsonModule,
   packagesResolvedByName,
 } from "../bundle-backend"
 
@@ -118,5 +119,15 @@ describe("packagesResolvedByName", () => {
         dynamicImport(path.join(dir, "x"));
       `)
     ).toEqual([])
+  })
+})
+
+describe("coldJsonModule", () => {
+  it("exports what requiring the JSON file returns", () => {
+    const json = '{ "get": { "arity": 2 }, "a-b": [1, "\\u2028"], "default": null }'
+    const module = { exports: {} as unknown }
+    new Function("module", coldJsonModule(json))(module)
+
+    expect(module.exports).toEqual(JSON.parse(json))
   })
 })

@@ -503,7 +503,7 @@ export async function bundleBackend({
     ...moduleDirs.map(packageDistOf),
     ...medusaPackageDists,
   ])
-  for (const dir of dirs) {
+  const addDir = (dir: string) => {
     for (const file of readdirSync(dir, { recursive: true } as any)) {
       const absolute = path.join(dir, String(file))
       if (
@@ -516,6 +516,7 @@ export async function bundleBackend({
       }
     }
   }
+  dirs.forEach(addDir)
   loaded.forEach(add)
 
   // Packages first-party code loads or resolves by name only under some
@@ -525,25 +526,46 @@ export async function bundleBackend({
   // if it didn't load them. They're resolved from the file naming them, as
   // Node would: at run time that file may not be able to (a pnpm install only
   // links a package's dependencies next to the package itself).
-  for (const file of [...registry.values()]) {
-    if (
-      !file.endsWith(".js") ||
-      !readPackageName(findPackageRoot(file) ?? "")?.startsWith("@medusajs/")
-    ) {
-      continue
+  //
+  // A first-party package found this way is a module or provider the build's
+  // configuration didn't enable (S3 or RBAC on Medusa Cloud, the Redis
+  // modules): its whole folder is bundled like a loaded module's, as loading
+  // it scans that folder for models, services, loaders and migrations.
+  const scanned = new Set<string>()
+  for (;;) {
+    const files = [...registry.values()].filter((file) => !scanned.has(file))
+    if (!files.length) {
+      break
     }
-    for (const request of packagesResolvedByName(
-      readFileSync(file, "utf8")
-    )) {
-      if (request in resolutions) {
+    files.forEach((file) => scanned.add(file))
+    for (const file of files) {
+      if (
+        !file.endsWith(".js") ||
+        !readPackageName(findPackageRoot(file) ?? "")?.startsWith("@medusajs/")
+      ) {
         continue
       }
-      try {
-        const resolved = createRequire(file).resolve(request)
-        resolutions[request] = resolved
-        add(resolved)
-      } catch {
-        // Not installed: an optional dependency this app doesn't use
+      for (const request of packagesResolvedByName(
+        readFileSync(file, "utf8")
+      )) {
+        if (request in resolutions) {
+          continue
+        }
+        try {
+          const resolved = createRequire(file).resolve(request)
+          resolutions[request] = resolved
+          add(resolved)
+          const root = findPackageRoot(resolved)
+          if (root && readPackageName(root)?.startsWith("@medusajs/")) {
+            const dist = packageDistOf(root)
+            if (!dirs.has(dist)) {
+              dirs.add(dist)
+              addDir(dist)
+            }
+          }
+        } catch {
+          // Not installed: an optional dependency this app doesn't use
+        }
       }
     }
   }
@@ -754,8 +776,20 @@ export async function bundleBackend({
           .update(toKey(file))
           .digest("hex")
           .slice(0, 16)
-        entryPoints[name] = file
         coldFiles.set(file, `${COLD_DIR}/${name}.js`)
+        // JSON is written as a module directly: built as an entry point,
+        // esbuild turns its keys into named exports, which the CommonJS
+        // output only declares (the file would export nothing)
+        if (file.endsWith(".json")) {
+          mkdirSync(path.join(outDir, COLD_DIR), { recursive: true })
+          await writeFile(
+            path.join(outDir, COLD_DIR, `${name}.js`),
+            coldJsonModule(await readFile(file, "utf8"))
+          )
+          bundledFiles.add(file)
+          continue
+        }
+        entryPoints[name] = file
       }
     }
     coldPending.clear()
@@ -971,6 +1005,13 @@ const DYNAMIC_IMPORT_OF_PACKAGE =
 // `require.resolve("pkg")` with a package name
 const REQUIRE_RESOLVE_OF_PACKAGE =
   /(?<![\w$.])require\.resolve\(\s*"((?:@[\w.-]+\/)?[a-z0-9][\w./-]*)"\s*\)/g
+
+/**
+ * A JSON file as a first-use module: what `require` of the file returns.
+ */
+export function coldJsonModule(json: string): string {
+  return `module.exports=${JSON.stringify(JSON.parse(json))};`
+}
 
 /**
  * The packages a compiled file loads (`dynamicImport`) or resolves
