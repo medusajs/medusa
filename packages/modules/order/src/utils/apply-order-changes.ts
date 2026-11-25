@@ -158,7 +158,7 @@ export async function applyChangesToOrder(
             return (
               sm.action === ChangeActionType.SHIPPING_ADD && sm.reference_id
             )
-          })
+          })?.reference_id
           hasShippingMethod = !!associatedMethodId
         } else {
           associatedMethodId = shippingMethod_?.detail?.shipping_method_id
