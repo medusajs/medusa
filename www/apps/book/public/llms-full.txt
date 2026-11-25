@@ -31415,81 +31415,31 @@ If you're migrating multiple data types, ask your agent to start with products. 
 
 The Medusa documentation provides a remote Model Context Protocol (MCP) server that allows you to find information from the Medusa documentation right in your IDEs or AI tools, such as Cursor.
 
-Medusa hosts a Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` that you can add to AI agents supporting MCP server connections.
-
-## Authentication
-
-The Docs MCP server is available for [Cloud](undefined/cloud) users only. It requires authenticating with your Cloud account to use it.
-
-The Docs MCP server supports two authentication methods:
-
-1. OAuth: This is the recommended authentication method. It allows you to authenticate with your Cloud account without generating a token manually. When you connect to the Docs MCP server, you will be prompted to log into your Cloud account in a browser window to authenticate.
-2. [Personal Access Key](undefined/cloud/access-keys#manage-personal-access-keys): Use your Cloud personal access key as a Bearer token in the Authorization header when connecting to the Docs MCP server. This method is useful if you face issues with OAuth or prefer to use a token for authentication.
+Medusa hosts a public Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` that you can add to AI agents supporting MCP server connections.
 
 ***
 
 ## Connect to the Docs MCP Server
 
-### Prerequisites
-
-- [Cloud account](undefined/cloud)
-
 ### Claude Code
 
 To connect to the Docs MCP server in Claude Code, run the following command in your terminal:
-
-### OAuth
 
 ```bash
 claude mcp add --transport http medusa https://docs.medusajs.com/mcp
 ```
 
-### Personal Access Key
-
-```bash
-claude mcp add --transport http medusa https://docs.medusajs.com/mcp --header "Authorization: Bearer {token}"
-```
-
-Then, start Claude Code and authenticate with your Cloud account:
-
-```sh
-claude
-/mcp # for oauth
-```
-
-If you're connecting with OAuth, select the `medusa` MCP server and choose "Authenticate". This will open a browser window where you can log into your Cloud account to authenticate.
-
 ### Codex
 
-To connect to the Docs MCP server in Codex, use one of the following methods:
-
-### OAuth
+To connect to the Docs MCP server in Codex, run the following command in your terminal:
 
 ```bash
 codex mcp add medusa --url https://docs.medusajs.com/mcp
 ```
 
-### Personal Access Key
-
-```toml title="~/.codex/config.toml"
-[mcp_servers.medusa]
-url = "https://docs.medusajs.com/mcp"
-bearer_token_env_var = "{token}"
-```
-
-If you're connecting with OAuth, run the following command in your terminal to authenticate with your Cloud account:
-
-```bash
-codex mcp login medusa
-```
-
-This will open a browser window where you can log into your Cloud account to authenticate.
-
 ### Cursor
 
 Add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://cursor.com/docs/mcp):
-
-### OAuth
 
 ```json title=".cursor/mcp.json"
 {
@@ -31500,23 +31450,6 @@ Add the following to your `.cursor/mcp.json` file or Cursor settings, as explain
   }
 }
 ```
-
-### Personal Access Key
-
-```json title=".cursor/mcp.json"
-{
-  "mcpServers": {
-    "medusa": {
-      "url": "https://docs.medusajs.com/mcp",
-      "headers": {
-        "Authorization": "Bearer {token}"
-      }
-    }
-  }
-}
-```
-
-If you're connecting with OAuth, open Settings -> Tools & MCPs and click "Connect" next to the `medusa` MCP server. This will open a browser window where you can log into your Cloud account to authenticate.
 
 ### VS Code
 
@@ -31524,8 +31457,6 @@ If you're connecting with OAuth, open Settings -> Tools & MCPs and click "Connec
 
 To manually connect to the Docs MCP server in VSCode, add the following to your `.vscode/mcp.json` file in your workspace:
 
-### OAuth
-
 ```json title=".vscode/mcp.json"
 {
   "servers": {
@@ -31536,31 +31467,11 @@ To manually connect to the Docs MCP server in VSCode, add the following to your 
   }
 }
 ```
-
-### Personal Access Key
-
-```json title=".vscode/mcp.json"
-{
-  "servers": {
-    "medusa": {
-      "type": "http",
-      "url": "https://docs.medusajs.com/mcp",
-      "headers": {
-        "Authorization": "Bearer {token}"
-      }
-    }
-  }
-}
-```
-
-If you're connecting with OAuth, once you start the MCP server connection, you will be prompted to authenticate with your Cloud account in a browser window. Log in to authenticate and start using the Docs MCP server in VSCode.
 
 ### OpenCode
 
 Add the following to your [OpenCode config file](https://opencode.ai/docs/config/) (for example, `~/.config/opencode/opencode.json`):
 
-### OAuth
-
 ```json title="~/.config/opencode/opencode.json"
 {
   "$schema": "https://opencode.ai/config.json",
@@ -31569,35 +31480,9 @@ Add the following to your [OpenCode config file](https://opencode.ai/docs/config
       "type": "remote",
       "url": "https://docs.medusajs.com/mcp"
     }
-  },
+  }
 }
 ```
-
-### Personal Access Key
-
-```json title="~/.config/opencode/opencode.json"
-{
-  "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "medusa": {
-      "type": "remote",
-      "url": "https://docs.medusajs.com/mcp",
-      "headers": {
-        "Authorization": "Bearer {token}"
-      },
-      "oauth": false
-    }
-  },
-}
-```
-
-If you're connecting with OAuth, run the following command in your terminal to authenticate with your Cloud account:
-
-```bash
-opencode mcp auth medusa
-```
-
-This will open a browser window where you can log into your Cloud account to authenticate.
 
 ***
 
@@ -34714,6 +34599,8 @@ For providers like Google, the `query` object contains the query parameters from
 
 If the returned `success` property is `true`, the authentication with the third-party provider was successful.
 
+The returned object may also have a `providerData` property that holds the data the provider received from the third-party service, such as access tokens. This property is available since [Medusa v2.23.1](https://github.com/medusajs/medusa/releases/tag/v2.23.1). The Medusa application never sends it to the client. Instead, the `/auth/{actor_type}/{provider}/callback` route passes it to the `authCallbackValidated` hook of the `validateAuthCallbackWorkflow`. Learn more in the [Auth Flows with Routes](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#access-the-providers-data-after-validation) guide.
+
 ![Diagram showcasing the second part of the third-party authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711375123/Medusa%20Resources/third-party-auth-2_kmjxju.jpg)
 
 ***
@@ -34943,6 +34830,9 @@ GITHUB_CALLBACK_URL=<YOUR_GITHUB_CALLBACK_URL>
 |`clientId`|A string indicating the client ID of your GitHub app.|Yes|
 |`clientSecret`|A string indicating the client secret of your GitHub app.|Yes|
 |`callbackUrl`|A string indicating the URL to redirect to in your frontend after the user completes their authentication in GitHub. At this URL, the frontend will receive a `code` query parameter. It then sends that  `code` query parameter to the Medusa application's `/auth/{actor_type}/github/callback` route.|Yes|
+|`storeTokens`|A boolean indicating whether to store the user's GitHub access and refresh tokens, in plaintext, in the auth identity's `provider_metadata`. Logging in doesn't need these tokens. If disabled, the provider doesn't store the tokens, and a login clears tokens stored previously. Learn how to store the tokens yourself in the [Access GitHub Tokens](#access-github-tokens) section. This option is available since [Medusa v2.23.1](https://github.com/medusajs/medusa/releases/tag/v2.23.1).|No. Default is `true`.|
+
+The default value of the `storeTokens` option will change to `false` in a future minor release. Set it to `false` now, and use the `authCallbackValidated` hook explained in the [Access GitHub Tokens](#access-github-tokens) section if you need the tokens.
 
 ***
 
@@ -34979,6 +34869,42 @@ Don't add `github` to the `user` actor type. Any GitHub account can authenticate
 In many cases, you may have different callback URLs for actor types. For example, you may redirect admin users to a different URL than customers after authentication.
 
 The [Authenticate or Login API Route](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#login-route) accepts a `callback_url` body parameter to override the provider's `callbackUrl` option. Learn more in the [Auth Flows with Routes guide](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#login-route).
+
+***
+
+## Access GitHub Tokens
+
+This feature is available since [Medusa v2.23.1](https://github.com/medusajs/medusa/releases/tag/v2.23.1).
+
+If you need the user's GitHub tokens, for example, to send requests to the GitHub API on their behalf, set the `storeTokens` option to `false` and consume the `authCallbackValidated` hook of the [validateAuthCallbackWorkflow](undefined/references/medusa-workflows/validateAuthCallbackWorkflow). The workflow runs when the frontend sends a request to the `/auth/{actor_type}/github/callback` route.
+
+The hook receives a `provider_data` property with the following data:
+
+- `token`: The response of GitHub's token exchange, which holds the access and refresh tokens.
+- `user`: The response of GitHub's `GET /user` request.
+
+For example:
+
+```ts title="src/workflows/hooks/auth-callback-validated.ts"
+import { 
+  validateAuthCallbackWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+validateAuthCallbackWorkflow.hooks.authCallbackValidated(
+  async (
+    { auth_identity, auth_provider, provider_data },
+    { container }
+  ) => {
+    if (auth_provider !== "github") {
+      return
+    }
+    // TODO store provider_data.token, encrypted,
+    // in your own storage
+  }
+)
+```
+
+`provider_data` is secret, so don't log it. Learn more about the hook in the [Auth Flows with Routes](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#access-the-providers-data-after-validation) guide.
 
 ***
 
@@ -35093,6 +35019,42 @@ Don't add `google` to the `user` actor type. Any Google account can authenticate
 In many cases, you may have different callback URLs for actor types. For example, you may redirect admin users to a different URL than customers after authentication.
 
 The [Authenticate or Login API Route](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#login-route) can accept a `callback_url` body parameter to override the provider's `callbackUrl` option. Learn more in [this documentation](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#login-route).
+
+***
+
+## Access Google Tokens
+
+This feature is available since [Medusa v2.23.1](https://github.com/medusajs/medusa/releases/tag/v2.23.1).
+
+If you need the user's Google tokens, for example, to send requests to Google APIs on their behalf, consume the `authCallbackValidated` hook of the [validateAuthCallbackWorkflow](undefined/references/medusa-workflows/validateAuthCallbackWorkflow). The workflow runs when the frontend sends a request to the `/auth/{actor_type}/google/callback` route.
+
+The hook receives a `provider_data` property with the following data:
+
+- `token`: The response of Google's token exchange, which holds the access, refresh, and ID tokens.
+- `claims`: The claims of the verified ID token.
+
+For example:
+
+```ts title="src/workflows/hooks/auth-callback-validated.ts"
+import { 
+  validateAuthCallbackWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+validateAuthCallbackWorkflow.hooks.authCallbackValidated(
+  async (
+    { auth_identity, auth_provider, provider_data },
+    { container }
+  ) => {
+    if (auth_provider !== "google") {
+      return
+    }
+    // TODO store provider_data.token, encrypted,
+    // in your own storage
+  }
+)
+```
+
+`provider_data` is secret, so don't log it. Learn more about the hook in the [Auth Flows with Routes](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/authentication-route#access-the-providers-data-after-validation) guide.
 
 ***
 
@@ -35437,6 +35399,51 @@ The decoded data may look like this:
   // other fields...
 }
 ```
+
+### Access the Provider's Data After Validation
+
+The `validateAuthCallbackWorkflow` and its `authCallbackValidated` hook are available since [Medusa v2.23.1](https://github.com/medusajs/medusa/releases/tag/v2.23.1).
+
+The Validate Callback Route runs the [validateAuthCallbackWorkflow](undefined/references/medusa-workflows/validateAuthCallbackWorkflow) to validate the callback with the provider.
+
+The workflow has an `authCallbackValidated` hook that runs after the provider validates the callback and before the route issues the token. The hook receives the data that the provider received from the third-party service, such as access and refresh tokens. So, you can consume the hook to store that data in your own storage. For example, to call the GitHub API on the customer's behalf later.
+
+Consume the hook in a file under `src/workflows/hooks`:
+
+```ts title="src/workflows/hooks/auth-callback-validated.ts"
+import { 
+  validateAuthCallbackWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+validateAuthCallbackWorkflow.hooks.authCallbackValidated(
+  async (
+    { auth_identity, auth_provider, provider_data },
+    { container }
+  ) => {
+    if (auth_provider !== "github") {
+      return
+    }
+    // TODO store provider_data.token, encrypted,
+    // in your own storage
+  }
+)
+```
+
+The hook's handler receives an object with the following properties:
+
+- `actor_type`: The type of actor logging in, such as `customer`.
+- `auth_provider`: The ID of the auth provider, such as `github`.
+- `auth_identity`: The [auth identity](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-identity-and-actor-types) that logged in.
+- `mfa_required`: Whether the user still needs to complete an [MFA challenge](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/mfa).
+- `provider_data`: The data that the provider received from the third-party service, keyed by the call that returned it. Its keys differ for each provider:
+  - [GitHub](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/github): `token` holds the token exchange's response, and `user` holds the response of GitHub's `GET /user` request.
+  - [Google](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/commerce-modules/auth/auth-providers/google), Cloud, and [OIDC](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/enterprise/sso) providers: `token` holds the token exchange's response, and `claims` holds the ID token's claims.
+
+`provider_data` is secret, as it can hold access, refresh, and ID tokens. Don't log it, and don't pass it to a [long-running workflow](undefined/docs/learn/fundamentals/workflows/long-running-workflow), which stores its execution. The workflow never returns `provider_data` in its result, and the route never sends it to the client.
+
+If the hook's handler throws an error, the login fails. The login can also still fail after the hook runs. For example, the route refuses the login if the auth identity isn't associated with an actor of the specified type and the actor type requires an association.
+
+Learn more about consuming hooks in the [Workflow Hooks](undefined/docs/learn/fundamentals/workflows/workflow-hooks) chapter.
 
 ***
 

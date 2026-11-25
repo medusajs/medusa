@@ -140,8 +140,35 @@ GITHUB_CALLBACK_URL=<YOUR_GITHUB_CALLBACK_URL>
       
       </Table.Cell>
     </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `storeTokens`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A boolean indicating whether to store the user's GitHub access and refresh tokens, in plaintext, in the auth identity's `provider_metadata`. Logging in doesn't need these tokens.
+
+      If disabled, the provider doesn't store the tokens, and a login clears tokens stored previously. Learn how to store the tokens yourself in the [Access GitHub Tokens](#access-github-tokens) section.
+
+      This option is available since [Medusa v2.23.1](https://github.com/medusajs/medusa/releases/tag/v2.23.1).
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No. Default is `true`.
+      
+      </Table.Cell>
+    </Table.Row>
   </Table.Body>
 </Table>
+
+<Note title="Deprecation Notice" type="warning">
+
+The default value of the `storeTokens` option will change to `false` in a future minor release. Set it to `false` now, and use the `authCallbackValidated` hook explained in the [Access GitHub Tokens](#access-github-tokens) section if you need the tokens.
+
+</Note>
 
 ---
 
@@ -182,6 +209,46 @@ Don't add `github` to the `user` actor type. Any GitHub account can authenticate
 In many cases, you may have different callback URLs for actor types. For example, you may redirect admin users to a different URL than customers after authentication.
 
 The [Authenticate or Login API Route](../../authentication-route/page.mdx#login-route) accepts a `callback_url` body parameter to override the provider's `callbackUrl` option. Learn more in the [Auth Flows with Routes guide](../../authentication-route/page.mdx#login-route).
+
+---
+
+## Access GitHub Tokens
+
+<Note>
+
+This feature is available since [Medusa v2.23.1](https://github.com/medusajs/medusa/releases/tag/v2.23.1).
+
+</Note>
+
+If you need the user's GitHub tokens, for example, to send requests to the GitHub API on their behalf, set the `storeTokens` option to `false` and consume the `authCallbackValidated` hook of the [validateAuthCallbackWorkflow](/references/medusa-workflows/validateAuthCallbackWorkflow). The workflow runs when the frontend sends a request to the `/auth/{actor_type}/github/callback` route.
+
+The hook receives a `provider_data` property with the following data:
+
+- `token`: The response of GitHub's token exchange, which holds the access and refresh tokens.
+- `user`: The response of GitHub's `GET /user` request.
+
+For example:
+
+```ts title="src/workflows/hooks/auth-callback-validated.ts"
+import { 
+  validateAuthCallbackWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+validateAuthCallbackWorkflow.hooks.authCallbackValidated(
+  async (
+    { auth_identity, auth_provider, provider_data },
+    { container }
+  ) => {
+    if (auth_provider !== "github") {
+      return
+    }
+    // TODO store provider_data.token, encrypted,
+    // in your own storage
+  }
+)
+```
+
+`provider_data` is secret, so don't log it. Learn more about the hook in the [Auth Flows with Routes](../../authentication-route/page.mdx#access-the-providers-data-after-validation) guide.
 
 ---
 

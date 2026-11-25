@@ -274,6 +274,59 @@ The decoded data may look like this:
 }
 ```
 
+### Access the Provider's Data After Validation
+
+<Note>
+
+The `validateAuthCallbackWorkflow` and its `authCallbackValidated` hook are available since [Medusa v2.23.1](https://github.com/medusajs/medusa/releases/tag/v2.23.1).
+
+</Note>
+
+The Validate Callback Route runs the [validateAuthCallbackWorkflow](/references/medusa-workflows/validateAuthCallbackWorkflow) to validate the callback with the provider.
+
+The workflow has an `authCallbackValidated` hook that runs after the provider validates the callback and before the route issues the token. The hook receives the data that the provider received from the third-party service, such as access and refresh tokens. So, you can consume the hook to store that data in your own storage. For example, to call the GitHub API on the customer's behalf later.
+
+Consume the hook in a file under `src/workflows/hooks`:
+
+```ts title="src/workflows/hooks/auth-callback-validated.ts"
+import { 
+  validateAuthCallbackWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+validateAuthCallbackWorkflow.hooks.authCallbackValidated(
+  async (
+    { auth_identity, auth_provider, provider_data },
+    { container }
+  ) => {
+    if (auth_provider !== "github") {
+      return
+    }
+    // TODO store provider_data.token, encrypted,
+    // in your own storage
+  }
+)
+```
+
+The hook's handler receives an object with the following properties:
+
+- `actor_type`: The type of actor logging in, such as `customer`.
+- `auth_provider`: The ID of the auth provider, such as `github`.
+- `auth_identity`: The [auth identity](../auth-identity-and-actor-types/page.mdx) that logged in.
+- `mfa_required`: Whether the user still needs to complete an [MFA challenge](../mfa/page.mdx).
+- `provider_data`: The data that the provider received from the third-party service, keyed by the call that returned it. Its keys differ for each provider:
+  - [GitHub](../auth-providers/github/page.mdx): `token` holds the token exchange's response, and `user` holds the response of GitHub's `GET /user` request.
+  - [Google](../auth-providers/google/page.mdx), Cloud, and [OIDC](../../../enterprise/sso/page.mdx) providers: `token` holds the token exchange's response, and `claims` holds the ID token's claims.
+
+<Note title="Warning" type="warning">
+
+`provider_data` is secret, as it can hold access, refresh, and ID tokens. Don't log it, and don't pass it to a [long-running workflow](!docs!/learn/fundamentals/workflows/long-running-workflow), which stores its execution. The workflow never returns `provider_data` in its result, and the route never sends it to the client.
+
+</Note>
+
+If the hook's handler throws an error, the login fails. The login can also still fail after the hook runs. For example, the route refuses the login if the auth identity isn't associated with an actor of the specified type and the actor type requires an association.
+
+Learn more about consuming hooks in the [Workflow Hooks](!docs!/learn/fundamentals/workflows/workflow-hooks) chapter.
+
 ---
 
 ## Refresh Token Route
