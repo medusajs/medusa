@@ -16,9 +16,10 @@ type Setup = {
 const UI_SRC = path.join(__dirname, "../src")
 const CONFIG = path.join(__dirname, "tailwind.config.ts")
 
-const COMPARED_FAMILIES = /^-?(rounded|outline|ring|shadow|blur)(-|$)/
+const COMPARED_FAMILIES =
+  /^-?(rounded|outline|ring|shadow|blur|grid-cols|grid-rows)(-|$)/
 const COMPARED_PROPERTIES =
-  /^(border(-[a-z]+)*-radius|outline(-[a-z]+)?|--tw-ring-color|--tw-ring-width|--tw-shadow(-color)?|--tw-blur)$/
+  /^(border(-[a-z]+)*-radius|outline(-[a-z]+)?|grid-template-(columns|rows)|--tw-ring-color|--tw-ring-width|--tw-shadow(-color)?|--tw-blur)$/
 
 const unescape = (value: string) =>
   value.replace(/\\([0-9a-f]{1,6} ?|.)/gi, (_, char: string) =>
