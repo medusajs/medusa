@@ -17,7 +17,7 @@ export interface CreateApiKeyDTO {
   /**
    * Who created the API key.
    * If the API key type is `secret`, the user can use the created API key's token to authenticate
-   * as explained in the [API Reference](https://docs.medusajs.com/api/admin#2-api-token).
+   * as explained in the [API Reference](https://docs.medusajs.com/api/admin/authentication#2-api-token).
    */
   created_by: string
   // We could add revoked_at as a parameter (or expires_at that gets mapped to revoked_at internally) in order to support expiring tokens

@@ -11,11 +11,10 @@ import {
 import { defineFileConfig, Modules } from "@medusajs/framework/utils"
 
 /**
- * @ignore
- * TODO: remove the ignore tag and add a `@since` tag when the audit feature is fully released
+ * @since 2.23.0
  */
 export const GET = async (
-  req: AuthenticatedMedusaRequest,
+  req: AuthenticatedMedusaRequest<undefined, HttpTypes.AdminAuditLogParams>,
   res: MedusaResponse<HttpTypes.AdminAuditLogResponse>
 ) => {
   const auditModuleService = req.scope.resolve<IAuditModuleService>(
