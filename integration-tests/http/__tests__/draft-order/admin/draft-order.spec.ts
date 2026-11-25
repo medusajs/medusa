@@ -1164,6 +1164,143 @@ medusaIntegrationTestRunner({
         })
       })
 
+      describe("with shipping promotions", () => {
+        let product
+        let promotion
+
+        beforeEach(async () => {
+          product = (
+            await api.post(
+              "/admin/products",
+              {
+                title: "Shipping promo product",
+                status: ProductStatus.PUBLISHED,
+                sales_channels: [{ id: salesChannel.id }],
+                options: [{ title: "size", values: ["large"] }],
+                variants: [
+                  {
+                    title: "L shirt",
+                    options: { size: "large" },
+                    manage_inventory: false,
+                    prices: [{ currency_code: "usd", amount: 10 }],
+                  },
+                ],
+              },
+              adminHeaders
+            )
+          ).data.product
+
+          promotion = (
+            await api.post(
+              "/admin/promotions",
+              {
+                code: "FREE-SHIPPING",
+                type: "standard",
+                status: "active",
+                is_automatic: false,
+                application_method: {
+                  type: "percentage",
+                  target_type: "shipping_methods",
+                  allocation: "each",
+                  currency_code: "usd",
+                  value: 100,
+                  max_quantity: 1,
+                },
+              },
+              adminHeaders
+            )
+          ).data.promotion
+        })
+
+        it("should apply and remove shipping method adjustments for a shipping promotion", async () => {
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit`,
+            {},
+            adminHeaders
+          )
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/items`,
+            { items: [{ variant_id: product.variants[0].id, quantity: 1 }] },
+            adminHeaders
+          )
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/shipping-methods`,
+            { shipping_option_id: shippingOption.id },
+            adminHeaders
+          )
+
+          const preview = (
+            await api.post(
+              `/admin/draft-orders/${testDraftOrder.id}/edit/promotions`,
+              { promo_codes: [promotion.code] },
+              adminHeaders
+            )
+          ).data.draft_order_preview
+
+          expect(preview.shipping_methods[0].adjustments).toEqual([
+            expect.objectContaining({
+              code: promotion.code,
+              amount: 5,
+              promotion_id: promotion.id,
+            }),
+          ])
+
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/confirm`,
+            {},
+            adminHeaders
+          )
+
+          const fields =
+            "+promotions.code,+shipping_discount_total,+shipping_methods.adjustments.*"
+
+          let draftOrder = (
+            await api.get(
+              `/admin/draft-orders/${testDraftOrder.id}?fields=${fields}`,
+              adminHeaders
+            )
+          ).data.draft_order
+
+          expect(draftOrder.promotions).toEqual([
+            expect.objectContaining({ code: promotion.code }),
+          ])
+          expect(draftOrder.shipping_discount_total).toBeGreaterThan(0)
+          expect(draftOrder.shipping_methods[0].adjustments).toEqual([
+            expect.objectContaining({
+              code: promotion.code,
+              amount: 5,
+              promotion_id: promotion.id,
+            }),
+          ])
+
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit`,
+            {},
+            adminHeaders
+          )
+          await api.delete(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/promotions`,
+            { data: { promo_codes: [promotion.code] }, ...adminHeaders }
+          )
+          await api.post(
+            `/admin/draft-orders/${testDraftOrder.id}/edit/confirm`,
+            {},
+            adminHeaders
+          )
+
+          draftOrder = (
+            await api.get(
+              `/admin/draft-orders/${testDraftOrder.id}?fields=${fields}`,
+              adminHeaders
+            )
+          ).data.draft_order
+
+          expect(draftOrder.promotions).toEqual([])
+          expect(draftOrder.shipping_discount_total).toBe(0)
+          expect(draftOrder.shipping_methods[0].adjustments).toEqual([])
+        })
+      })
+
       describe("when cancelling an edit", () => {
         let promotion
 
