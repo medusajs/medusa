@@ -54,7 +54,13 @@ class Store {
   }
 
   setConfig(path, val) {
-    return this.config_.set(path, val)
+    try {
+      return this.config_.set(path, val)
+    } catch (e) {
+      // e.g. EPERM when running as root and the config file can't be chowned
+      this.config_ = new InMemoryConfigStore()
+      return this.config_.set(path, val)
+    }
   }
 }
 

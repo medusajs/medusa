@@ -61,12 +61,19 @@ export async function dbCreate({
   }
 
   /**
+   * Parse connection string specified as "DATABASE_URL" inside the
+   * .env file and create a client instance from it.
+   */
+  const connectionOptions = parseConnectionString(dbConnectionString)
+
+  /**
    * Use default value + prompt only when the dbName is not
    * provided via a flag
    */
   if (!dbName) {
     const defaultValue =
-      envEditor.get("DB_NAME") ?? `medusa-${slugify(basename(directory))}`
+      envEditor.get("DB_NAME") ??
+      (connectionOptions.database || `medusa-${slugify(basename(directory))}`)
     if (interactive) {
       const { default: input } = await import("@inquirer/input")
       dbName = await input({
@@ -78,12 +85,6 @@ export async function dbCreate({
       dbName = defaultValue
     }
   }
-
-  /**
-   * Parse connection string specified as "DATABASE_URL" inside the
-   * .env file and create a client instance from it.
-   */
-  const connectionOptions = parseConnectionString(dbConnectionString)
 
   /**
    * The following client config is without any database name. This is because

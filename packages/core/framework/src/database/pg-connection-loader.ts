@@ -42,6 +42,14 @@ export async function pgConnectionLoader(): Promise<
 
   // Share a knex connection to be consumed by the shared modules
   const connectionString = configModule.projectConfig.databaseUrl
+  if (!connectionString && !(process.env.PGHOST && process.env.PGDATABASE)) {
+    throw new Error(
+      withDbTroubleshootingLink(
+        `The database URL isn't set. Set the "DATABASE_URL" environment variable or the "projectConfig.databaseUrl" option in medusa-config.ts.`
+      )
+    )
+  }
+
   const driverOptions: any = {
     ...(configModule.projectConfig.databaseDriverOptions || {}),
   }
