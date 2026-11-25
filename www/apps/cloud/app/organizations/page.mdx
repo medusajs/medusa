@@ -102,6 +102,8 @@ You can also navigate to an organization's settings from the [command palette](.
 
 ## Delete Organization
 
+<RolesBadge />
+
 <Note type="warning" title="Danger">
 
 Deleting an organization will remove all its projects, resources, and settings. This action is irreversible, and you won't be able to recover any data after deletion.
@@ -127,6 +129,8 @@ You can also navigate to an organization's settings from the [command palette](.
 
 ## View Organization Members
 
+<RolesBadge roles={["developer"]} />
+
 To view the members of an organization:
 
 1. If you're in a different organization, [switch to the organization](#switch-organization) whose settings you want to view.
@@ -137,11 +141,15 @@ This opens the Team page where you can view the members of the organization, the
 
 ### View Available Seats
 
+<RolesBadge roles={["developer"]} />
+
 Based on your organization's plan, you may have a limited number of seats available for members. You can view the number of available seats at the top of the Team page.
 
 If you need more seats, learn more about [other available plans](../pricing/page.mdx) or [purchasing add-on resources](../billing/page.mdx#purchase-add-on-resources).
 
 ### Invite Members to Organization
+
+<RolesBadge roles={["developer"]} />
 
 <Note>
 
@@ -161,10 +169,14 @@ You can also navigate to an organization's team member settings from the [comman
 2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
 3. Click on **Team** in the sidebar.
 4. In the "Invite members" section, enter the email addresses of the users you want to invite. You can enter multiple email addresses separated by commas.
+5. Choose a role for each user from the **Role** dropdown. The role determines what the user can do in the organization. Learn more in the [Roles and Permissions](./roles/page.mdx) guide.
+6. Click **Invite**.
 
 These users will receive an email invitation to join your organization. They can accept the invitation by clicking the link in the email.
 
 ### Resend Invitation
+
+<RolesBadge roles={["developer"]} />
 
 You may need to resend an invitation if a user has lost the invitation email or if the invitation has expired.
 
@@ -185,6 +197,8 @@ You can also navigate to an organization's team member settings from the [comman
 
 ### Revoke Invitation
 
+<RolesBadge roles={["developer"]} />
+
 You can revoke an invitation to a user if you no longer want them to join your organization.
 
 To revoke an invitation:
@@ -204,7 +218,9 @@ You can also navigate to an organization's team member settings from the [comman
 
 ### Remove Members from Organization
 
-Owner and admin users can remove any members from the organization that aren't owners.
+<RolesBadge roles={["developer"]} />
+
+You can remove any member that isn't the organization's owner, as long as your role allows removing members and assigning the member's role. Learn more in the [Roles and Permissions](./roles/page.mdx#which-roles-can-you-assign) guide.
 
 To remove a member from your organization:
 
@@ -220,6 +236,12 @@ You can also navigate to an organization's team member settings from the [comman
 4. In the "Organization members" section, find the member you want to remove.
 5. Click the <InlineIcon alt="ellipsis" Icon={EllipsisHorizontal} /> button at the end of the member's row.
 6. Choose **Remove from organization** from the dropdown.
+
+### Update a Member's Role
+
+<RolesBadge roles={["developer"]} />
+
+Each member has a role that determines what they can view and do in the organization. Learn how to update a member's role in the [Roles and Permissions](./roles/page.mdx#update-a-members-role) guide.
 
 ### Promote a Member to Owner
 

@@ -137,14 +137,19 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
         ).toISOString(),
       }
 
-      const { authIdentity, success } = await this.upsert_(
+      const { authIdentity, success, error, user } = await this.upsert_(
         providerMetadata,
         authIdentityService
       )
 
+      if (!success) {
+        return { success, error }
+      }
+
       return {
         success,
         authIdentity,
+        providerData: { token: response, user },
       }
     } catch (error) {
       return { success: false, error: error.message }
@@ -181,12 +186,17 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
       two_factor_authentication: user.two_factor_authentication ?? false,
     }
 
+    // Without stored tokens, the metadata is cleared, so a login also removes
+    // tokens stored before the option was turned off
+    const storedMetadata =
+      this.config_.storeTokens === false ? {} : providerMetadata
+
     let authIdentity
 
     try {
       // Update throws if auth identity not found
       authIdentity = await authIdentityService.update(entity_id, {
-        provider_metadata: providerMetadata,
+        provider_metadata: storedMetadata,
         user_metadata: userMetadata,
       })
     } catch (error) {
@@ -194,7 +204,7 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
         const createdAuthIdentity = await authIdentityService.create({
           entity_id,
           user_metadata: userMetadata,
-          provider_metadata: providerMetadata,
+          provider_metadata: storedMetadata,
         })
         authIdentity = createdAuthIdentity
       } else {
@@ -205,6 +215,7 @@ export class GithubAuthService extends AbstractAuthModuleProvider {
     return {
       success: true,
       authIdentity,
+      user,
     }
   }
 

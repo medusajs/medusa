@@ -115,6 +115,11 @@ export const sidebar = [
                 title: "License",
                 path: "/organizations/license",
               },
+              {
+                type: "link",
+                title: "Roles and Permissions",
+                path: "/organizations/roles",
+              },
             ],
           },
           {

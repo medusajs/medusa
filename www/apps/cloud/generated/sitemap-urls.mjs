@@ -58,6 +58,7 @@ export const sitemapUrls = [
   "/organizations/connections",
   "/organizations/license",
   "/organizations",
+  "/organizations/roles",
   "",
   "/payments/accounts/adyen",
   "/payments/accounts/medusa-payments",

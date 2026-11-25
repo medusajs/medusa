@@ -178,6 +178,8 @@ Refer to the [Set Up React Email Templates](./react-email/page.mdx) guide to lea
 
 ## Add Email Sender Domain to Cloud
 
+<RolesBadge roles={["developer"]} />
+
 <Prerequisites
   items={[
     {
@@ -225,6 +227,8 @@ The domain will then be verified periodically. This process may take a few minut
 
 ### View Domain Verification Status
 
+<RolesBadge roles={["developer"]} />
+
 After adding a sender domain, you can view its verification status on the domain detail page. To open it, click the domain name in the **Sender Domains** list.
 
 The detail page is organized into three sections: **DKIM**, **SPF**, and **DMARC**. Each section shows whether the corresponding DNS records have been verified. The domain header also shows when the most recent verification check ran.
@@ -235,13 +239,19 @@ If the domain's status is **Provisioning failed**, the domain detail page replac
 
 ### Verify DNS Records Manually
 
+<RolesBadge roles={["developer"]} />
+
 You can trigger an immediate DNS check at any time instead of waiting for the next automatic check by clicking the **Check records** button at the top right of the domain detail page.
 
 ### Restart DNS Verification
 
+<RolesBadge roles={["developer"]} />
+
 To restart the verification process from the beginning at any time, click the **Restart Verification** button at the top right of the domain detail page.
 
 ### Diagnose DNS Record Issues
+
+<RolesBadge roles={["developer"]} />
 
 On the domain detail page, you can click the <InlineIcon Icon={TriangleRightMini} alt="expand" /> icon for any record whose verification status is failing. This shows:
 
@@ -317,6 +327,8 @@ The email will be sent from the `no-reply@yourdomain.com` address, assuming it b
 
 ## Monitor Email Sending Activity on Cloud
 
+<RolesBadge roles={["developer"]} />
+
 You can monitor email sending activity like sent emails, delivery rates, open rates, and click rates for your Cloud organization using the Email Activity page in your Cloud dashboard.
 
 To view email sending activity:
@@ -346,6 +358,8 @@ Below the statistics, you'll find a detailed list of sent emails.
 
 ### Change Email Activity Time Range
 
+<RolesBadge roles={["developer"]} />
+
 To change the time range for email activity statistics and the list of sent emails, click the time range dropdown at the top right of the page. You can choose custom ranges or predefined ranges like "Last 7 days" or "Last 30 days".
 
 ![Time range dropdown opened on the Email Activity page](https://res.cloudinary.com/dza7lstvk/image/upload/v1762948832/Cloud/CleanShot_2025-11-12_at_14.00.17_2x_bqlopg.png)
@@ -359,6 +373,8 @@ If you select a start date earlier than what your plan allows, the picker automa
 
 ### Filter Emails by Project
 
+<RolesBadge roles={["developer"]} />
+
 By default, the Email Activity page shows emails from all projects in your Cloud organization.
 
 To filter emails by a specific project, click the "All projects" dropdown at the top right of the page and select the desired project.
@@ -368,6 +384,8 @@ This updates the email sending statistics and list to show only emails from the 
 ![Project filter dropdown opened on the Email Activity page](https://res.cloudinary.com/dza7lstvk/image/upload/v1762948832/Cloud/CleanShot_2025-11-12_at_14.00.17_2x_bqlopg.png)
 
 ### View Email Details
+
+<RolesBadge roles={["developer"]} />
 
 To view an email's details, click the email entry in the list on the Email Activity page.
 

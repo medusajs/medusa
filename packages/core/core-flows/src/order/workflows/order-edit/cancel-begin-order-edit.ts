@@ -145,7 +145,7 @@ export const cancelBeginOrderEditWorkflow = createWorkflow(
       ({ orderChange, input }) => {
         return (orderChange.actions ?? [])
           .filter((a) => a.action === ChangeActionType.SHIPPING_ADD)
-          .map(({ id }) => id)
+          .map(({ reference_id }) => reference_id)
       }
     )
 

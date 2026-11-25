@@ -315,9 +315,7 @@ The `auth.kind` field must not be `"none"`. If it is, retry `mcloud login`.
 
 ## Step 8: Add the Docs MCP Server
 
-The Docs MCP server gives the agent live access to the Medusa documentation. The connection method depends on the agent.
-
-Add the MCP servers but do not authenticate yet or block next steps. In the wrap up, remind the user to authenticate so the agent can use the docs.
+The Docs MCP server gives the agent live access to the Medusa documentation. The server is public and doesn't require authentication. The connection method depends on the agent.
 
 ### Claude Code
 
@@ -325,12 +323,6 @@ Run the following command to add the MCP server to the Claude Code agent:
 
 ```bash
 claude mcp add --transport http medusa https://docs.medusajs.com/mcp
-```
-
-Then instruct the user to authenticate the agent with Medusa Cloud so it can access the MCP server:
-
-```bash
-/mcp
 ```
 
 ### Cursor
@@ -347,8 +339,6 @@ Add the following to `.cursor/mcp.json` (project) or the user's Cursor settings:
 }
 ```
 
-Then ask the user to authenticate with Medusa Cloud from the Cursor settings.
-
 ### VS Code (with MCP support)
 
 Add the following to `.vscode/mcp.json`:
@@ -364,11 +354,9 @@ Add the following to `.vscode/mcp.json`:
 }
 ```
 
-Then ask the user to authenticate with Medusa Cloud from the VS Code MCP extension.
-
 ### Other agents
 
-Configure the agent to connect to the Streamable HTTP MCP server at `https://docs.medusajs.com/mcp`. The MCP server requires an active Medusa Cloud subscription — the `mcloud login` from Step 7 covers this.
+Configure the agent to connect to the Streamable HTTP MCP server at `https://docs.medusajs.com/mcp`.
 
 ---
 
@@ -482,7 +470,6 @@ Tell the user, in one short message:
 
 - Their ecommerce store is live (or running locally, if they skipped Cloud).
 - They can now build features by asking. The installed skills (`medusa-dev`, `ecommerce-storefront`) and the Docs MCP server (if installed) give the agent everything it needs to add modules, API routes, admin UI, storefront pages, and integrations.
-- If MCP was installed, remind the user to authenticate with Medusa Cloud from the MCP settings so the agent can access the documentation.
 - If any step was blocked due to execution mode or permissions, mention them in the message and tell the user how to re-run them.
 - Suggest two or three concrete next prompts the user could try, e.g.:
   - "Add a product reviews module with admin moderation and a customer-facing form on the storefront."

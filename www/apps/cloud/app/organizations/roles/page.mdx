@@ -1,0 +1,209 @@
+import { Note, InlineIcon, Table } from "docs-ui"
+import { EllipsisHorizontal } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Roles and Permissions in Cloud`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn about role-based access control (RBAC) in Cloud, the roles Cloud provides, and how to manage the roles of your organization's members and access keys.
+
+## What is Role-Based Access Control in Cloud?
+
+Role-based access control (RBAC) lets you decide what each member of your organization can view and do in Cloud. Instead of giving every member full access, you assign each member a role, and the role determines the pages they can open and the actions they can perform.
+
+Each member of an organization has exactly one role. Organization [access keys](../../access-keys/page.mdx#manage-organization-access-keys) also have a role, which determines what requests authenticated with the key can do.
+
+When a member opens a page that their role doesn't allow, Cloud shows a **You don't have access to this page** message instead of the page's content. Actions that the member's role doesn't allow are hidden or disabled.
+
+<Note>
+
+Roles in Cloud control access to the Cloud dashboard, the [Cloud CLI](../../cli/page.mdx), and Cloud APIs. They're different from [RBAC in your Medusa application](!resources!/enterprise/rbac) that's available on the **Scale** and **Enterprise** plans, which controls what admin users can do in the Medusa Admin.
+
+</Note>
+
+---
+
+## Roles in Cloud
+
+Cloud provides the following roles:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Role
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      [Admin](#admin-role)
+
+      </Table.Cell>
+      <Table.Cell>
+        Full access to the organization, its projects, and its billing.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Developer](#developer-role)
+
+      </Table.Cell>
+      <Table.Cell>
+        Manages projects, environments, deployments, variables, logs, and infrastructure resources.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      [Billing](#billing-role)
+
+      </Table.Cell>
+      <Table.Cell>
+        Manages the organization's plan, payment methods, billing address, and invoices.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+When you create an organization, you become its owner with the **Admin** role. Members and organization access keys that existed before Cloud introduced roles also have the **Admin** role.
+
+### Permissions Shared by All Roles
+
+Regardless of their role, every member of an organization can:
+
+- View the organization's details.
+- View the organization's plan and the features it includes.
+- View and update their [notifications](../../notifications/page.mdx).
+- [Leave the organization](../page.mdx#leave-organization).
+
+### Admin Role
+
+The Admin role has full access to the organization. Members with this role can:
+
+- View, create, update, and delete all projects, environments, and storefronts, and all of their resources.
+- Trigger builds and deployments, and view logs.
+- Manage environment variables, vault secrets, custom domains, webhooks, emails, payment accounts, and integration connections.
+- Create and manage database exports.
+- Manage the organization's plan, add-ons, payment methods, billing address, and invoices.
+- View the organization's usage, trial, and credits.
+- Invite, update, and remove members, and assign any role to them.
+- Create and manage organization access keys with any role.
+- View the organization's audit logs.
+- Update the organization's details.
+
+### Developer Role
+
+The Developer role is for members who build and deploy the organization's projects. Members with this role can:
+
+- View, create, update, and delete projects and environments.
+- Trigger builds and deployments, and view logs.
+- Create, update, and delete storefronts. They can create and update storefront environments, and view storefront deployments, but they can't delete storefront environments.
+- Manage environment variables, vault secrets, custom domains, webhooks, and integration connections.
+- View emails, and update the email account of an environment.
+- View, create, and update payment accounts.
+- Create and manage database exports.
+- Use the [Cloud Assistant](../../assistant/page.mdx).
+- View the organization's usage and credits.
+- Invite, update, and remove members with the **Developer** role.
+- Create and manage organization access keys with the **Developer** role.
+- Update the organization's details.
+
+Members with the Developer role can't change the organization's plan, buy add-ons, manage payment methods, billing addresses, or invoices, or view audit logs.
+
+### Billing Role
+
+The Billing role is for members who manage the organization's subscription and payments. Members with this role can:
+
+- Change the organization's plan.
+- Manage payment methods and the billing address.
+- View invoices and retry failed payments.
+- View the organization's usage, trial, and credits. They can also view the list of projects to filter the usage by project.
+- Update the organization's details, such as its legal name.
+
+Members with the Billing role can't view or manage project environments, deployments, or their resources. They also can't view the organization's members, manage access keys, or view audit logs.
+
+---
+
+## Which Roles Can You Assign?
+
+You can only assign a role whose permissions you already have. This prevents members from giving others, or themselves, more access than they have.
+
+In practice, this means:
+
+- Members with the **Admin** role can assign any role.
+- Members with the **Developer** role can only assign the **Developer** role.
+
+This rule applies when you invite members, update a member's role, and create organization access keys. The role dropdown only shows the roles you can assign.
+
+If a member or a pending invitation has a role you can't assign, you can't update their role, remove them, resend their invitation, or revoke it.
+
+---
+
+## Assign a Role When Inviting a Member
+
+<RolesBadge roles={["developer"]} />
+
+You choose a member's role when you invite them to the organization. The member gets the role once they accept the invitation.
+
+To invite a member with a role:
+
+1. If you're in a different organization, [switch to the organization](../page.mdx#switch-organization) you want to invite members to.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Team** in the sidebar.
+4. In the **Invite members** section, enter the email address of the user you want to invite.
+5. Choose the member's role from the **Role** dropdown.
+6. Click **Invite**.
+
+Learn more about managing invitations in the [Organizations](../page.mdx#invite-members-to-organization) guide.
+
+---
+
+## Update a Member's Role
+
+<RolesBadge roles={["developer"]} />
+
+You can change the role of an existing member at any time. The member's new role replaces their previous one.
+
+<Note>
+
+You can't change the role of the organization's owner. The owner always has the **Admin** role.
+
+</Note>
+
+To update a member's role:
+
+1. If you're in a different organization, [switch to the organization](../page.mdx#switch-organization) whose members you want to manage.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Team** in the sidebar.
+4. In the **Organization members** section, find the member whose role you want to update.
+5. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the end of the member's row.
+6. Choose **Update role** from the dropdown.
+7. In the modal that opens, choose the new role from the **Role** dropdown.
+8. Click **Save**.
+
+---
+
+## Organization Owner
+
+The organization's owner is the member who created the organization, or the member that the previous owner promoted. The owner has the **Admin** role, and their role can't be changed.
+
+Only the owner can [promote another member to owner](../page.mdx#promote-a-member-to-owner). When the owner promotes a member, that member gets the **Admin** role and becomes the new owner, and the previous owner loses their owner permissions.
+
+---
+
+## Assign a Role to an Organization Access Key
+
+<RolesBadge roles={["developer"]} />
+
+Every organization access key has a role, which you choose when you create the key. Requests authenticated with the key can only perform the actions that the role allows.
+
+Learn how to create an organization access key with a role in the [Access Keys](../../access-keys/page.mdx#create-organization-access-key) guide.

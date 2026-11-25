@@ -87,6 +87,23 @@ const server = setupServer(
   })
 )
 
+const storedTokens = {
+  access_token: "test",
+  refresh_token: "test",
+  access_token_expires_at: expect.any(String),
+  refresh_token_expires_at: expect.any(String),
+}
+
+const providerData = {
+  token: {
+    access_token: "test",
+    expires_in: 3600,
+    refresh_token: "test",
+    refresh_token_expires_in: 7200,
+  },
+  user: sampleIdPayload,
+}
+
 describe("Github auth provider", () => {
   let githubService: GithubAuthService
   beforeAll(() => {
@@ -264,7 +281,11 @@ describe("Github auth provider", () => {
           },
         ],
       },
+      providerData,
     })
+    expect(authServiceSpies.create).toHaveBeenCalledWith(
+      expect.objectContaining({ provider_metadata: storedTokens })
+    )
   })
 
   it("validate callback should return successfully on a correct code for an existing user", async () => {
@@ -327,6 +348,55 @@ describe("Github auth provider", () => {
           },
         ],
       },
+      providerData,
     })
+  })
+
+  it("validate callback doesn't store the tokens when storeTokens is false, but still returns them", async () => {
+    const service = new GithubAuthService(
+      { logger: console as any },
+      {
+        clientId: "test",
+        clientSecret: "test",
+        callbackUrl: `${baseUrl}/auth/github/callback`,
+        storeTokens: false,
+      }
+    )
+    const authServiceSpies = {
+      ...defaultSpies,
+      update: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+      create: jest.fn().mockImplementation(() => ({ id: "authid_1" })),
+    }
+
+    state = {
+      somekey: {
+        callback_url: callbackUrl,
+      },
+    }
+
+    const res = await service.validateCallback(
+      {
+        query: {
+          code: "valid-code",
+          state: "somekey",
+        },
+      },
+      authServiceSpies
+    )
+
+    expect(res).toEqual({
+      success: true,
+      authIdentity: { id: "authid_1" },
+      providerData,
+    })
+    expect(authServiceSpies.update).toHaveBeenCalledWith(
+      "1",
+      expect.objectContaining({ provider_metadata: {} })
+    )
+    expect(authServiceSpies.create).toHaveBeenCalledWith(
+      expect.objectContaining({ provider_metadata: {} })
+    )
   })
 })

@@ -71,7 +71,7 @@
     "access": "public"
   },
   "author": "Medusa",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "scripts": {
     "watch": "yarn run -T tsc --watch ",
     "watch:test": "yarn run -T tsc --watch",

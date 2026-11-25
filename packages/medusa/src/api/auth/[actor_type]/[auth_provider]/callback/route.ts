@@ -1,20 +1,15 @@
+import { validateAuthCallbackWorkflow } from "@medusajs/core-flows"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import {
-  AuthenticationInput,
-  ConfigModule,
-  IAuthModuleService,
-} from "@medusajs/framework/types"
+import { AuthenticationInput, ConfigModule } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
-  Modules,
 } from "@medusajs/framework/utils"
 import { generateJwtTokenWithChecks } from "../../../utils/generate-jwt-token"
 import { isActorAssociationRequired } from "../../../utils/require-actor-association"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { actor_type, auth_provider } = req.params
-  const service: IAuthModuleService = req.scope.resolve(Modules.AUTH)
   const config: ConfigModule = req.scope.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
   )
@@ -31,8 +26,11 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     protocol: req.protocol,
   } as AuthenticationInput
 
-  const { success, error, authIdentity, mfaChallenge } =
-    await service.validateCallback(auth_provider, authData)
+  const {
+    result: { success, error, authIdentity, mfaChallenge },
+  } = await validateAuthCallbackWorkflow(req.scope).run({
+    input: { actor_type, auth_provider, auth_data: authData },
+  })
 
   if (
     success &&

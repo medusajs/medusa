@@ -130,6 +130,14 @@ const server = setupServer(
   })
 )
 
+const providerData = {
+  token: expect.objectContaining({ id_token: expect.any(String) }),
+  claims: expect.objectContaining({
+    sub: "113664482950786663866",
+    email: "test@medusajs.com",
+  }),
+}
+
 describe("Google auth provider", () => {
   let googleService: GoogleAuthService
   beforeAll(() => {
@@ -308,6 +316,7 @@ describe("Google auth provider", () => {
           },
         ],
       },
+      providerData,
     })
   })
 
@@ -379,6 +388,7 @@ describe("Google auth provider", () => {
           },
         ],
       },
+      providerData,
     })
   })
 })
