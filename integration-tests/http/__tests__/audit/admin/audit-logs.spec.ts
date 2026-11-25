@@ -1,3 +1,4 @@
+import { generateResetPasswordTokenWorkflow } from "@medusajs/core-flows"
 import { IAuditModuleService } from "@medusajs/framework/types"
 import { ApiKeyType, Modules } from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
@@ -184,6 +185,38 @@ medusaIntegrationTestRunner({
             actor_type: "anonymous",
             actor_id: null,
             outcome: "denied",
+          }),
+        ])
+        expect(JSON.stringify(audit_logs)).not.toContain("admin@medusa.js")
+      })
+
+      it("records the actor, not the email, of a password update with a reset token", async () => {
+        const { result: token } = await generateResetPasswordTokenWorkflow(
+          getContainer()
+        ).run({
+          input: {
+            entityId: "admin@medusa.js",
+            actorType: "user",
+            provider: "emailpass",
+            secret: "test",
+          },
+        })
+
+        await api.post(
+          "/auth/user/emailpass/update",
+          { password: "new_password" },
+          { headers: { authorization: `Bearer ${token}` } }
+        )
+
+        const { audit_logs } = await listAuditLogs({ action: "auth.update" })
+
+        expect(audit_logs).toEqual([
+          expect.objectContaining({
+            actor_type: "user",
+            actor_id: adminId,
+            outcome: "succeeded",
+            resource_type: "auth",
+            resource_id: "emailpass",
           }),
         ])
         expect(JSON.stringify(audit_logs)).not.toContain("admin@medusa.js")
