@@ -22,7 +22,7 @@ Update this storefront's checkout so customers can pay with Medusa Payments, wit
 
 ## Steps
 
-1. Inspect the storefront and report what it has before you change anything: the framework, the checkout's payment step, where it maps payment provider IDs to titles and icons, where it checks whether a provider is Stripe-based, where it calls `loadStripe`, and how it fetches the region's payment providers.
+1. Inspect the storefront and report what it has before you change anything: the frontend framework, the checkout's payment step, where it maps payment provider IDs to titles and icons, where it checks whether a provider is Stripe-based, where it calls `loadStripe`, and how it fetches the region's payment providers.
 2. If the storefront already matches providers by the `pp_medusa-payments_` prefix and initializes Stripe.js with the payment session's `data.stripe_account`, report that it already supports Medusa Payments and stop.
 3. Read the Medusa Payments publishable key from `NEXT_PUBLIC_MEDUSA_PAYMENTS_PUBLISHABLE_KEY`, or from `VITE_MEDUSA_PAYMENTS_PUBLISHABLE_KEY` in a Vite storefront. Don't add it to an environment template or set it in a deployed environment, since Cloud sets it automatically. Keep any Stripe key in its own variable, and remove the `NEXT_PUBLIC_MEDUSA_PAYMENTS_ACCOUNT_ID` variable if it exists.
 4. Add helpers next to the storefront's payment constants:
@@ -58,7 +58,7 @@ Update this storefront's checkout so customers can pay with Medusa Payments, wit
 
 - If the project has no storefront, report that and stop.
 - If the storefront has no Stripe Payment Element integration, report that and ask the user before installing `@stripe/stripe-js` and `@stripe/react-stripe-js` and adding one.
-- If the storefront isn't built with Next.js or Vite, ask the user which environment variable name its framework exposes to the browser.
+- If the storefront isn't built with Next.js or Vite, ask the user which environment variable name its frontend framework exposes to the browser.
 - If the type check or build fails because of your changes, fix them before you report. If it fails for an unrelated reason, report the failure without fixing it.
 
 ## Manual Follow-Ups
@@ -76,7 +76,7 @@ These steps need the user's Cloud account, so hand them over to the user rather 
 Respond with these Markdown sections:
 
 - **Changes**: a table of every file you created, modified, or deleted, with one sentence on what changed in it.
-- **Manual follow-ups**: the steps in the Manual Follow-Ups section, adapted to the storefront's framework and environment variable names.
+- **Manual follow-ups**: the steps in the Manual Follow-Ups section, adapted to the storefront's frontend framework and environment variable names.
 
 ## Success Criteria
 
