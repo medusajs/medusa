@@ -88,16 +88,16 @@ export const generatedEditDates = {
   "app/medusa-mcp/n8n/page.mdx": "2026-10-08T08:58:01.127Z",
   "app/usage/compute/page.mdx": "2026-10-19T11:11:24.460Z",
   "app/security/data-protection/page.mdx": "2026-11-06T12:26:30.453Z",
- "app/migrate-self-hosted/page.mdx": "2026-11-24T07:54:16.926Z",
+  "app/migrate-self-hosted/page.mdx": "2026-11-24T07:54:16.926Z",
   "app/security/page.mdx": "2026-11-24T07:53:15.475Z",
   "app/organizations/license/page.mdx": "2026-11-24T08:41:03.194Z",
   "app/organizations/roles/page.mdx": "2026-11-24T08:41:03.582Z",
   "app/security/analytics/page.mdx": "2026-11-24T07:53:15.476Z",
-  "app/payments/accounts/page.mdx": "2026-11-24T08:12:14.425Z",
-  "app/payments/environments/page.mdx": "2026-11-24T08:11:57.747Z",
-  "app/payments/page.mdx": "2026-11-24T08:12:06.150Z",
-  "app/payments/storefront/page.mdx": "2026-11-24T08:12:14.426Z",
+  "app/payments/accounts/page.mdx": "2026-11-25T14:05:24.367Z",
+  "app/payments/environments/page.mdx": "2026-11-25T14:05:24.343Z",
+  "app/payments/page.mdx": "2026-11-25T14:05:24.220Z",
+  "app/payments/storefront/page.mdx": "2026-11-25T14:05:24.804Z",
   "app/payments/accounts/adyen/page.mdx": "2026-11-23T16:12:35.686Z",
-  "app/payments/accounts/medusa-payments/page.mdx": "2026-11-24T08:12:14.424Z",
-  "app/payments/accounts/stripe/page.mdx": "2026-11-23T16:12:35.686Z"
+  "app/payments/accounts/medusa-payments/page.mdx": "2026-11-25T14:05:24.463Z",
+  "app/payments/accounts/stripe/page.mdx": "2026-11-25T14:05:24.561Z"
 }
