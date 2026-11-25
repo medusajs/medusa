@@ -1,0 +1,191 @@
+---
+sidebar_label: "Record Custom Audit Logs"
+---
+
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Record Custom Audit Logs`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice />
+
+In this guide, you'll learn how to record audit logs for actions that happen outside API requests, such as in scheduled jobs, subscribers, or workflows.
+
+## When to Record Custom Audit Logs
+
+Medusa [records API requests](../record-api-requests/page.mdx) to admin routes automatically. However, some actions in your application don't happen through an API request, such as:
+
+- A scheduled job that imports products from an ERP system.
+- A subscriber that updates an order when a third-party service sends a webhook.
+- A workflow that you execute from a custom CLI script.
+
+To keep a record of these actions, you record audit logs in the workflows that perform them.
+
+---
+
+## Record an Audit Log
+
+<Prerequisites
+  items={[
+    {
+      text: "Audit Module installed",
+      link: "/enterprise/audit#how-to-use-the-audit-module"
+    }
+  ]}
+/>
+
+Medusa doesn't provide a workflow or step to record audit logs. So, you create a custom step that records the audit log with the Audit Module's service, use it in a [workflow](!docs!/learn/fundamentals/workflows), and execute the workflow from your scheduled job, subscriber, or other custom code.
+
+### 1. Create the Step
+
+Create the step that records an audit log at `src/workflows/steps/record-audit-log.ts`:
+
+export const stepHighlights = [
+  ["15", "resolve", "Resolve the Audit Module's service."],
+  ["17", "createAuditLogs", "Record the audit log."],
+]
+
+```ts title="src/workflows/steps/record-audit-log.ts" highlights={stepHighlights}
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import {
+  CreateAuditLogDTO,
+  IAuditModuleService,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+
+export const recordAuditLogStep = createStep(
+  "record-audit-log",
+  async (input: CreateAuditLogDTO, { container }) => {
+    const auditModuleService: IAuditModuleService =
+      container.resolve(Modules.AUDIT)
+
+    auditModuleService.createAuditLogs(input)
+
+    return new StepResponse()
+  }
+)
+```
+
+The step resolves the Audit Module's service from the [Medusa container](!docs!/learn/fundamentals/medusa-container) and calls its `createAuditLogs` method. The method accepts an audit log object, or an array of them. Each object accepts the following properties:
+
+- `action`: A string indicating the name of the action, such as `product.erp_sync`. It's the only required property.
+- `actor_type`: A string indicating who performed the action, such as `user` or `system`. It's `system` by default.
+- `actor_id`: A string indicating the ID of the actor, such as an admin user's ID.
+- `resource_type`: A string indicating the type of resource acted on, such as `product`.
+- `resource_id`: A string indicating the ID of the resource acted on. Omit it when the action acts on several resources.
+- `outcome`: A string indicating how the action ended. It's `succeeded`, `denied`, or `failed`. It's `succeeded` by default.
+- `started_at`: A date or ISO 8601 string indicating when the action started. It's the time you call the method by default.
+- `ended_at`: A date or ISO 8601 string indicating when the action ended. It's the value of `started_at` by default.
+- `request_data` and `response_data`: Objects holding the input and output fields to keep. Never pass whole request or response bodies.
+- `metadata`: An object holding any other data to attach to the audit log.
+
+The Audit Module always generates the audit log's ID. Refer to the [createAuditLogs reference](/references/audit/createAuditLogs) for more details.
+
+The `createAuditLogs` method returns nothing and never throws, so recording an audit log never breaks or slows down your workflow. It buffers the audit log in memory, and the Audit Module writes buffered audit logs in batches. Learn more in the [Module Options](../module-options/page.mdx#buffer) guide. If an audit log is invalid, such as when it doesn't have an `action`, the Audit Module drops it and logs a warning.
+
+The step doesn't need a compensation function, since audit logs can't be deleted. If a later step fails, the audit log stays as a record of the attempt.
+
+### 2. Use the Step in a Workflow
+
+Next, use the step in the workflow that performs the action. Add it after the steps that perform the action, so that you only record actions that ran.
+
+For example, create a workflow that syncs products from an ERP system at `src/workflows/sync-erp-products.ts`:
+
+```ts title="src/workflows/sync-erp-products.ts"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import { recordAuditLogStep } from "./steps/record-audit-log"
+
+export const syncErpProductsWorkflow = createWorkflow(
+  "sync-erp-products",
+  () => {
+    // TODO add the steps that sync the products
+
+    recordAuditLogStep({
+      action: "product.erp_sync",
+      resource_type: "product",
+      metadata: {
+        source: "erp",
+      },
+    })
+
+    return new WorkflowResponse(void 0)
+  }
+)
+```
+
+The workflow records an audit log with the `product.erp_sync` action after it syncs the products.
+
+### 3. Execute the Workflow
+
+Finally, execute the workflow from your custom code. For example, to execute it in a [scheduled job](!docs!/learn/fundamentals/scheduled-jobs) that runs every day at midnight:
+
+```ts title="src/jobs/sync-erp-products.ts"
+import { MedusaContainer } from "@medusajs/framework/types"
+import {
+  syncErpProductsWorkflow,
+} from "../workflows/sync-erp-products"
+
+export default async function syncErpProductsJob(
+  container: MedusaContainer
+) {
+  await syncErpProductsWorkflow(container).run()
+}
+
+export const config = {
+  name: "sync-erp-products",
+  schedule: "0 0 * * *",
+}
+```
+
+Every time the job runs, the workflow syncs the products and records an audit log. You can view it in the Medusa Admin under **Settings** > **Audit logs**.
+
+---
+
+## Read Audit Logs Right After Recording Them
+
+Since the Audit Module writes audit logs in batches, an audit log isn't available to read right after you record it.
+
+If a later step in your workflow needs to read the audit logs that an earlier step recorded, call the Audit Module service's `flush` method in the recording step. It writes all buffered audit logs:
+
+export const flushHighlights = [
+  ["19", "flush", "Write the buffered audit logs before the step returns."],
+]
+
+```ts title="src/workflows/steps/record-audit-log.ts" highlights={flushHighlights}
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import {
+  CreateAuditLogDTO,
+  IAuditModuleService,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+
+export const recordAuditLogStep = createStep(
+  "record-audit-log",
+  async (input: CreateAuditLogDTO, { container }) => {
+    const auditModuleService: IAuditModuleService =
+      container.resolve(Modules.AUDIT)
+
+    auditModuleService.createAuditLogs(input)
+
+    await auditModuleService.flush()
+
+    return new StepResponse()
+  }
+)
+```
+
+The step now waits for the Audit Module to write the audit log before it returns, so the next steps in the workflow can read it.
+
+You don't need to call `flush` before the application stops, since the Audit Module writes buffered audit logs on shutdown.

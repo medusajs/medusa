@@ -140,6 +140,13 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "type": "link",
+                "title": "Audit Logs",
+                "path": "/organizations/audit-logs",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
                 "title": "Connections",
                 "path": "/organizations/connections",
                 "children": []

@@ -65,6 +65,46 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/api_key_models/variables/api_key_models.ApiKey/page.json"
   },
   {
+    "origSlug": "/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.createAuditLogs",
+    "newSlug": "/references/audit/createAuditLogs",
+    "filePath": "/www/apps/resources/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.createAuditLogs/page.json"
+  },
+  {
+    "origSlug": "/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.flush",
+    "newSlug": "/references/audit/flush",
+    "filePath": "/www/apps/resources/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.flush/page.json"
+  },
+  {
+    "origSlug": "/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.listAndCountAuditLogs",
+    "newSlug": "/references/audit/listAndCountAuditLogs",
+    "filePath": "/www/apps/resources/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.listAndCountAuditLogs/page.json"
+  },
+  {
+    "origSlug": "/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.listAuditLogs",
+    "newSlug": "/references/audit/listAuditLogs",
+    "filePath": "/www/apps/resources/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.listAuditLogs/page.json"
+  },
+  {
+    "origSlug": "/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.retrieveAuditLog",
+    "newSlug": "/references/audit/retrieveAuditLog",
+    "filePath": "/www/apps/resources/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.retrieveAuditLog/page.json"
+  },
+  {
+    "origSlug": "/references/audit/interfaces/audit.IAuditModuleService",
+    "newSlug": "/references/audit",
+    "filePath": "/www/apps/resources/references/audit/interfaces/audit.IAuditModuleService/page.json"
+  },
+  {
+    "origSlug": "/references/audit_models/variables/audit_models.AuditLog",
+    "newSlug": "/references/audit/models/AuditLog",
+    "filePath": "/www/apps/resources/references/audit_models/variables/audit_models.AuditLog/page.json"
+  },
+  {
+    "origSlug": "/references/audit_provider/classes/audit_provider.AbstractAuditProviderService",
+    "newSlug": "/references/audit/provider",
+    "filePath": "/www/apps/resources/references/audit_provider/classes/audit_provider.AbstractAuditProviderService/page.json"
+  },
+  {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.authenticate",
     "newSlug": "/references/auth/authenticate",
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.authenticate/page.json"
@@ -6183,6 +6223,11 @@ export const slugChanges = [
     "origSlug": "/references/modules/api_key_models",
     "newSlug": "/references/api-key/models",
     "filePath": "/www/apps/resources/references/modules/api_key_models/page.json"
+  },
+  {
+    "origSlug": "/references/modules/audit_models",
+    "newSlug": "/references/audit/models",
+    "filePath": "/www/apps/resources/references/modules/audit_models/page.json"
   },
   {
     "origSlug": "/references/modules/auth_models",

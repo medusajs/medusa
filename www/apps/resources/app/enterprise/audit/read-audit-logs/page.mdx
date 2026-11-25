@@ -1,0 +1,152 @@
+---
+sidebar_label: "Read Audit Logs"
+---
+
+export const metadata = {
+  title: `Read Audit Logs`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice />
+
+In this guide, you'll learn how to retrieve audit logs with the Admin API routes, the JS SDK, and in your custom code.
+
+## Read Audit Logs with the Admin API
+
+The Audit Module adds Admin API routes to list audit logs and retrieve an audit log by its ID. You can filter the list by actor, action, resource, outcome, and date, and search it.
+
+If the [RBAC Module](../../rbac/page.mdx) is installed, the authenticated admin user or API key needs the `audit_log:read` policy to access these routes.
+
+For example, to list the denied and failed actions on orders with the [JS SDK](../../../js-sdk/page.mdx):
+
+```ts
+const { audit_logs, count } = await sdk.admin.auditLog.list({
+  resource_type: "order",
+  outcome: ["denied", "failed"],
+})
+```
+
+Refer to the [Admin API reference](!api!/admin/audit-logs) for the routes and their parameters, and to the [Audit Module JS SDK](../js-sdk/page.mdx) reference for the `sdk.admin.auditLog` methods.
+
+---
+
+## Read Audit Logs in Custom Code
+
+Medusa doesn't provide a workflow or step to retrieve audit logs. So, to retrieve audit logs in your custom code, such as a custom API route, you create a custom step that retrieves them with the Audit Module's service, use it in a [workflow](!docs!/learn/fundamentals/workflows), and execute the workflow.
+
+For example, to retrieve the audit logs of an order, create the step at `src/workflows/steps/retrieve-audit-logs.ts`:
+
+export const stepHighlights = [
+  ["24", "resolve", "Resolve the Audit Module's service."],
+  ["27", "listAndCountAuditLogs", "Retrieve the audit logs and their count."],
+]
+
+```ts title="src/workflows/steps/retrieve-audit-logs.ts" highlights={stepHighlights}
+import {
+  createStep,
+  StepResponse,
+} from "@medusajs/framework/workflows-sdk"
+import {
+  AuditLogFindConfig,
+  FilterableAuditLogProps,
+  IAuditModuleService,
+} from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
+
+type RetrieveAuditLogsStepInput = {
+  filters: FilterableAuditLogProps
+  config?: AuditLogFindConfig
+}
+
+export const retrieveAuditLogsStep = createStep(
+  "retrieve-audit-logs",
+  async (
+    { filters, config }: RetrieveAuditLogsStepInput,
+    { container }
+  ) => {
+    const auditModuleService: IAuditModuleService =
+      container.resolve(Modules.AUDIT)
+
+    const [audit_logs, count] =
+      await auditModuleService.listAndCountAuditLogs(
+        filters,
+        config
+      )
+
+    return new StepResponse({ audit_logs, count })
+  }
+)
+```
+
+Then, create the workflow that uses the step at `src/workflows/retrieve-order-audit-logs.ts`:
+
+```ts title="src/workflows/retrieve-order-audit-logs.ts"
+import {
+  createWorkflow,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+import {
+  retrieveAuditLogsStep,
+} from "./steps/retrieve-audit-logs"
+
+type WorkflowInput = {
+  order_id: string
+}
+
+export const retrieveOrderAuditLogsWorkflow = createWorkflow(
+  "retrieve-order-audit-logs",
+  ({ order_id }: WorkflowInput) => {
+    const result = retrieveAuditLogsStep({
+      filters: {
+        resource_type: "order",
+        resource_id: order_id,
+      },
+      config: {
+        take: 20,
+      },
+    })
+
+    return new WorkflowResponse(result)
+  }
+)
+```
+
+Finally, execute the workflow in your custom code, such as an API route at `src/api/admin/orders/[id]/history/route.ts`:
+
+```ts title="src/api/admin/orders/[id]/history/route.ts"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  retrieveOrderAuditLogsWorkflow,
+} from "../../../../../workflows/retrieve-order-audit-logs"
+
+export async function GET(
+  req: AuthenticatedMedusaRequest,
+  res: MedusaResponse
+) {
+  const { result } = await retrieveOrderAuditLogsWorkflow(
+    req.scope
+  ).run({
+    input: {
+      order_id: req.params.id,
+    },
+  })
+
+  res.json(result)
+}
+```
+
+The route returns the order's latest audit logs and their total count.
+
+### Audit Module Service Methods
+
+In your custom steps, you can use the `listAuditLogs`, `listAndCountAuditLogs`, and `retrieveAuditLog` methods of the Audit Module's service to read audit logs. Refer to the [Audit Module's main service reference](/references/audit) for their parameters and examples.
+
+<Note>
+
+Audit logs can't be updated or deleted. Calling `updateAuditLogs`, `deleteAuditLogs`, `softDeleteAuditLogs`, or `restoreAuditLogs` throws an error.
+
+</Note>

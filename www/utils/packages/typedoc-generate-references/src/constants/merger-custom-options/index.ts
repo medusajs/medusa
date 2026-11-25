@@ -1,4 +1,5 @@
 import { FormattingOptionsType } from "types"
+import auditProviderOptions from "./audit-provider.js"
 import authProviderOptions from "./auth-provider.js"
 import cachingOptions from "./caching.js"
 import fileOptions from "./file.js"
@@ -27,6 +28,7 @@ import searchProviderOptions from "./search-provider.js"
 const mergerCustomOptions: FormattingOptionsType = {
   ...analyticsOptions,
   ...analyticsProviderOptions,
+  ...auditProviderOptions,
   ...authProviderOptions,
   ...cacheOptions,
   ...cachingOptions,

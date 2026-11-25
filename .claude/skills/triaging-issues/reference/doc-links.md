@@ -22,22 +22,33 @@ www/apps/<project>/app/<path>/page.mdx  →  <prefix>/<path>
 
 ## API Reference
 
-The API reference has only two pages: `/api/store` and `/api/admin`.
+The API reference uses real page paths, not hash anchors. Old hash links (`/api/admin#products`) only redirect on the client, so never write them.
 
-**Linking to a tag** (group of routes) — append `#<tag-kebab-case>`:
+**Linking to an area** — `/api/store` or `/api/admin`.
 
-```
-/api/admin#products
-/api/store#carts
-```
-
-**Linking to a specific operation** — format: `#{tag}_{method}{path-without-slashes}`:
+**Linking to a tag** (group of routes) — append the tag in kebab-case:
 
 ```
-/api/admin#products_getproducts        (GET /admin/products)
-/api/admin#products_getproductsid      (GET /admin/products/:id)
-/api/store#carts_postcarts             (POST /store/carts)
+/api/admin/products
+/api/store/carts
 ```
+
+**Linking to a specific operation** — append the operation's slug, which is its sidebar summary in kebab-case:
+
+```
+/api/admin/products/list-products      (GET /admin/products)
+/api/admin/products/get-a-product      (GET /admin/products/:id)
+/api/store/carts/create-cart           (POST /store/carts)
+```
+
+**Linking to an intro section** — append the section, and a heading anchor if needed:
+
+```
+/api/admin/authentication
+/api/admin/authentication#2-api-token
+```
+
+Find the exact paths in `www/apps/api-reference/generated/api-ref-paths.mjs`.
 
 ## Full URL
 
@@ -46,5 +57,5 @@ Prepend `https://docs.medusajs.com` to all paths:
 ```
 https://docs.medusajs.com/learn
 https://docs.medusajs.com/resources/commerce-modules
-https://docs.medusajs.com/api/admin#products_getproducts
+https://docs.medusajs.com/api/admin/products/list-products
 ```

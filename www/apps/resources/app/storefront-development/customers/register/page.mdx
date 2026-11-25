@@ -260,9 +260,9 @@ In the above example, you create a `handleRegistration` function that:
 - Obtains a registration JWT token from the `/auth/customer/emailpass/register` API route using the `auth.register` method. If an error is thrown:
     - If the error is an existing identity error, try retrieving the login JWT token from `/auth/customer/emailpass` API route using the `auth.login` method. This will fail if the existing identity has a different password, which doesn't allow the customer from registering.
     - For other errors, show an alert and exit execution.
-    - The JS SDK automatically stores an re-uses the authentication headers or session in the `auth.register` and `auth.login` methods. So, if you're not using the JS SDK, make sure to pass the received authentication tokens as explained in the [API reference](!api!/store#1-bearer-authorization-with-jwt-tokens)
+    - The JS SDK automatically stores an re-uses the authentication headers or session in the `auth.register` and `auth.login` methods. So, if you're not using the JS SDK, make sure to pass the received authentication tokens as explained in the [API reference](!api!/store/authentication#1-bearer-authorization-with-jwt-tokens)
 - Send a request to the [Register Customer API route](!api!/store/customers/register-customer) to register the customer in Medusa.
     - If an error occurs, show an alert and exit execution.
-    - As mentioned, the JS SDK automatically sends the authentication headers or session in all requests after registration or logging in. If you're not using the JS SDK, make sure to pass the received authentication tokens as explained in the [API reference](!api!/store#1-bearer-authorization-with-jwt-tokens).
+    - As mentioned, the JS SDK automatically sends the authentication headers or session in all requests after registration or logging in. If you're not using the JS SDK, make sure to pass the received authentication tokens as explained in the [API reference](!api!/store/authentication#1-bearer-authorization-with-jwt-tokens).
 - Once the customer is registered successfully, you can either redirect the customer to the login page or log them in automatically, as explained in the [Login](../login/page.mdx) guide.
 

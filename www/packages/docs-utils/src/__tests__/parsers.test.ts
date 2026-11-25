@@ -62,6 +62,27 @@ describe("parsePermissionsBadge", () => {
   })
 })
 
+describe("parseRolesBadge", () => {
+  it("renders the Admin role when no roles are passed", async () => {
+    const result = await clean(`# Title\n\n<RolesBadge />`)
+
+    expect(result).toContain("Requires role: Admin.")
+    expect(result).toContain(
+      "[Learn more about roles](https://docs.medusajs.com/cloud/organizations/roles)"
+    )
+  })
+
+  it("lists the passed roles after Admin in a fixed order", async () => {
+    const result = await clean(
+      `# Title\n\n<RolesBadge roles={["billing", "developer"]} />`
+    )
+
+    expect(result).toContain(
+      "Requires one of the roles: Admin, Developer, Billing."
+    )
+  })
+})
+
 describe("parseEnterpriseNotice", () => {
   it("renders the enterprise license sentence", async () => {
     const result = await clean(`# Title\n\n<EnterpriseNotice />`)

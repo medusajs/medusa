@@ -1,5 +1,6 @@
 export const modules = [
   "api-key",
+  "audit",
   "auth",
   "cart",
   "currency",
@@ -19,7 +20,7 @@ export const modules = [
   "tax",
   "translation",
   "user",
-  "rbac"
+  "rbac",
 ]
 
 const allReferences = [
@@ -52,6 +53,7 @@ const allReferences = [
   "mfa",
   "search",
   "search-provider",
+  "audit-provider",
   "loyalty",
   "loyalty-models",
   "store-credit",
