@@ -1,14 +1,8 @@
-import {
-  DeleteObjectCommand,
-  DeleteObjectsCommand,
-  GetObjectCommand,
+import type {
   ObjectCannedACL,
-  PutObjectCommand,
   S3Client,
   S3ClientConfigType,
 } from "@aws-sdk/client-s3"
-import { Upload } from "@aws-sdk/lib-storage"
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 import {
   FileTypes,
   Logger,
@@ -21,6 +15,19 @@ import {
 import path from "path"
 import { PassThrough, Readable, Writable } from "stream"
 import { ulid } from "ulid"
+
+/**
+ * The AWS SDK is loaded when it is first used, not when this file is: loading
+ * it takes hundreds of milliseconds (most of a second on a small container),
+ * which every boot would otherwise pay, whether or not a file is ever touched.
+ */
+const loadS3 = (): typeof import("@aws-sdk/client-s3") =>
+  require("@aws-sdk/client-s3")
+const loadLibStorage = (): typeof import("@aws-sdk/lib-storage") =>
+  require("@aws-sdk/lib-storage")
+const loadRequestPresigner =
+  (): typeof import("@aws-sdk/s3-request-presigner") =>
+    require("@aws-sdk/s3-request-presigner")
 
 /**
  * Decodes the string `content` of an uploaded file into a Buffer.
@@ -91,7 +98,18 @@ export class S3FileService extends AbstractFileProviderService {
   static identifier = "s3"
   protected config_: S3FileServiceConfig
   protected logger_: Logger
-  protected client_: S3Client
+  protected clientInstance_?: S3Client
+
+  /**
+   * The S3 client, created the first time it is used.
+   */
+  protected get client_(): S3Client {
+    return (this.clientInstance_ ??= this.getClient())
+  }
+
+  protected set client_(client: S3Client) {
+    this.clientInstance_ = client
+  }
 
   constructor({ logger }: InjectedDependencies, options: S3FileServiceOptions) {
     super()
@@ -124,7 +142,6 @@ export class S3FileService extends AbstractFileProviderService {
       acl: options.acl ?? undefined,
     }
     this.logger_ = logger
-    this.client_ = this.getClient()
   }
 
   protected getClient() {
@@ -145,6 +162,7 @@ export class S3FileService extends AbstractFileProviderService {
       ...this.config_.additionalClientConfig,
     }
 
+    const { S3Client } = loadS3()
     return new S3Client(config)
   }
 
@@ -201,6 +219,7 @@ export class S3FileService extends AbstractFileProviderService {
 
     const content = decodeFileContent(file.content, file.mimeType)
 
+    const { PutObjectCommand } = loadS3()
     const command = new PutObjectCommand({
       // We probably also want to support a separate bucket altogether for private files
       // protected private_bucket_: string
@@ -261,6 +280,7 @@ export class S3FileService extends AbstractFileProviderService {
     }${parsedFilename.name}-${ulid()}${parsedFilename.ext}`
 
     const pass = new PassThrough()
+    const { Upload } = loadLibStorage()
     const upload = new Upload({
       client: this.client_,
       params: {
@@ -294,6 +314,7 @@ export class S3FileService extends AbstractFileProviderService {
   async delete(
     files: FileTypes.ProviderDeleteFileDTO | FileTypes.ProviderDeleteFileDTO[]
   ): Promise<void> {
+    const { DeleteObjectCommand, DeleteObjectsCommand } = loadS3()
     try {
       /**
        * Bulk delete files
@@ -328,6 +349,8 @@ export class S3FileService extends AbstractFileProviderService {
     fileData: FileTypes.ProviderGetFileDTO
   ): Promise<string> {
     // TODO: Allow passing content disposition when getting a presigned URL
+    const { GetObjectCommand } = loadS3()
+    const { getSignedUrl } = loadRequestPresigner()
     const command = new GetObjectCommand({
       Bucket: this.config_.bucket,
       Key: `${fileData.fileKey}`,
@@ -363,6 +386,8 @@ export class S3FileService extends AbstractFileProviderService {
       : undefined
 
     // Using content-type, acl, etc. doesn't work with all providers, and some simply ignore it.
+    const { PutObjectCommand } = loadS3()
+    const { getSignedUrl } = loadRequestPresigner()
     const command = new PutObjectCommand({
       Bucket: this.config_.bucket,
       ContentType: fileData.mimeType,
@@ -393,6 +418,7 @@ export class S3FileService extends AbstractFileProviderService {
     }
 
     const fileKey = file.fileKey
+    const { GetObjectCommand } = loadS3()
     const response = await this.client_.send(
       new GetObjectCommand({
         Key: fileKey,
@@ -412,6 +438,7 @@ export class S3FileService extends AbstractFileProviderService {
     }
 
     const fileKey = file.fileKey
+    const { GetObjectCommand } = loadS3()
     const response = await this.client_.send(
       new GetObjectCommand({
         Key: fileKey,

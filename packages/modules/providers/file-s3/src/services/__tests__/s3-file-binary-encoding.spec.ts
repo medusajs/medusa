@@ -7,13 +7,14 @@
  */
 
 /* eslint-disable @typescript-eslint/no-var-requires */
-var mockS3Send: jest.Mock
+// Created here, not in the mock factory: the provider loads the AWS SDK on
+// first use, so the factory hasn't run yet when the first test starts
+var mockS3Send: jest.Mock = jest.fn().mockResolvedValue({})
 
 jest.mock("@aws-sdk/client-s3", () => {
   const actual = jest.requireActual(
     "@aws-sdk/client-s3"
   ) as typeof import("@aws-sdk/client-s3")
-  mockS3Send = jest.fn().mockResolvedValue({})
   return {
     ...actual,
     S3Client: jest.fn().mockImplementation(() => ({

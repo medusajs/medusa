@@ -41,10 +41,11 @@ module.exports = defineConfig({
 - Implements `upload`, `getUploadStream` (multipart via `@aws-sdk/lib-storage` `Upload`), `delete`, `getPresignedDownloadUrl`, `getPresignedUploadUrl`, `getDownloadStream`, `getAsBuffer`.
 - Keys: `{prefix}{dir/}{name}-{ulid}{ext}`; filenames are sanitized (backslashes normalized, leading `/` and `..`/`.` segments stripped). The original filename is stored in `original-filename` object metadata.
 - Returned URL is `${file_url}/${key}` with each path segment URI-encoded.
+- The AWS SDK and the S3 client are loaded on the first file operation, not at boot (`loadS3()` and friends in `s3-file.ts`, the `client_` getter). Keep SDK imports type-only at the top of the file; options are still validated in the constructor.
 
 ## Development
 
-- `yarn build`, `yarn test` (unit specs in `src/services/__tests__`: ACL, binary encoding, URL encoding, presigned upload size).
+- `yarn build`, `yarn test` (unit specs in `src/services/__tests__`: ACL, binary encoding, URL encoding, presigned upload size, lazy client).
 - `integration-tests/__tests__/services.spec.ts` is `describe.skip`: it hits a real bucket and is meant to be run manually with `S3_TEST_*` env vars.
 
 ## Gotchas
@@ -54,3 +55,5 @@ module.exports = defineConfig({
 - `getPresignedUploadUrl` only sets an ACL when `access` is passed, and uses the sanitized filename as the key (no ulid suffix), so same-named uploads overwrite each other. A `size` is signed as `ContentLength`, so S3 rejects an upload whose length differs. A presigned PUT can only enforce an exact length, not a maximum: callers check the size against their limit before asking for the URL.
 - `delete` swallows S3 errors (logged only).
 - `file_url` must not end with `/`; it's concatenated with `/` + key.
+- Bad client settings (e.g. an invalid `additional_client_config`) surface on the first file operation, since the client is created then.
+- In tests, `jest.mock("@aws-sdk/client-s3", factory)` runs its factory on the first file operation: create shared mocks outside the factory.
