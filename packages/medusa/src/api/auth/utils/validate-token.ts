@@ -21,6 +21,15 @@ export interface UpdateProviderJwtPayload {
   jti?: string
 }
 
+/**
+ * A request whose reset-password token was validated. `auth_context` names the
+ * actor, while `reset_password_entity_id` is the identity the token was issued
+ * for, such as an email.
+ */
+export type ResetPasswordRequest = AuthenticatedMedusaRequest & {
+  reset_password_entity_id: string
+}
+
 // Middleware to validate that a token is valid
 export const validateToken = () => {
   return async (
@@ -30,7 +39,7 @@ export const validateToken = () => {
   ) => {
     const { actor_type, auth_provider } = req.params
 
-    const req_ = req as AuthenticatedMedusaRequest
+    const req_ = req as unknown as ResetPasswordRequest
 
     const logger = req.scope.resolve(ContainerRegistrationKeys.LOGGER)
 
@@ -98,11 +107,19 @@ export const validateToken = () => {
       return next(errorObject)
     }
 
+    const authIdentity = await authModule.retrieveAuthIdentity(
+      providerIdentity.auth_identity_id!,
+      { select: ["app_metadata"] }
+    )
+
+    req_.reset_password_entity_id = providerIdentity.entity_id
     req_.auth_context = {
       actor_type,
       auth_identity_id: providerIdentity.auth_identity_id!,
-      actor_id: providerIdentity.entity_id,
-      app_metadata: {},
+      // Empty when the identity has no actor of this type yet
+      actor_id:
+        (authIdentity.app_metadata?.[`${actor_type}_id`] as string) ?? "",
+      app_metadata: authIdentity.app_metadata ?? {},
       user_metadata: providerIdentity.user_metadata ?? {},
     }
 
