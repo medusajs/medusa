@@ -20,7 +20,7 @@ To answer these questions, create a custom `GET` [API route](!docs!/learn/fundam
 
 <Note>
 
-The AI tool can't find or call custom API routes under other prefixes, such as `/custom`, or API routes defined in plugins. It also can't call `POST` or `DELETE` API routes, since the Medusa MCP server is read-only.
+The AI tool can't find or call custom API routes under other prefixes, such as `/custom`, or API routes defined in plugins. It can only call custom `POST` and `DELETE` API routes under the `/admin` prefix, and only in environments with [read and write access](../page.mdx#read-and-write-access).
 
 </Note>
 
@@ -311,7 +311,7 @@ Medusa indexes the request body's type with the API route, similar to query para
 
 <Note>
 
-The Medusa MCP server is read-only, so the AI tool currently only calls `GET` API routes.
+The AI tool only calls `POST` API routes under the `/admin` prefix, and only in environments with [read and write access](../page.mdx#read-and-write-access). It doesn't call `POST` API routes under the `/store` prefix.
 
 </Note>
 
