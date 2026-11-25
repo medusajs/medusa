@@ -3,6 +3,7 @@ import {
   Collection,
   Entity,
   EntityManager,
+  EntitySchema,
   Filter,
   ManyToMany,
   ManyToOne,
@@ -314,6 +315,23 @@ class CompositePkEntity {
   deleted_at: Date | null
 }
 
+// Schema-defined entity with a composite primary key, built like link entities
+class SchemaCompositePkEntityClass {
+  foo_id: string
+  bar_id: string
+  title: string
+}
+
+const SchemaCompositePkEntity = new EntitySchema({
+  class: SchemaCompositePkEntityClass,
+  tableName: "schema_composite_pk_entity",
+  properties: {
+    foo_id: { type: "string", nullable: false, primary: true },
+    bar_id: { type: "string", nullable: false, primary: true },
+    title: { type: "string", nullable: false },
+  } as any,
+})
+
 const Entity1Repository = mikroOrmBaseRepositoryFactory(Entity1)
 const Entity2Repository = mikroOrmBaseRepositoryFactory(Entity2)
 const Entity3Repository = mikroOrmBaseRepositoryFactory(Entity3)
@@ -324,6 +342,9 @@ const Entity7Repository = mikroOrmBaseRepositoryFactory(Entity7)
 const CustomPkEntityRepository = mikroOrmBaseRepositoryFactory(CustomPkEntity)
 const CompositePkEntityRepository =
   mikroOrmBaseRepositoryFactory(CompositePkEntity)
+const SchemaCompositePkEntityRepository = mikroOrmBaseRepositoryFactory(
+  SchemaCompositePkEntity as any
+)
 
 describe("mikroOrmRepository", () => {
   let orm!: MikroORM
@@ -357,6 +378,9 @@ describe("mikroOrmRepository", () => {
   const compositePkManager = () => {
     return new CompositePkEntityRepository({ manager: manager.fork() })
   }
+  const schemaCompositePkManager = () => {
+    return new SchemaCompositePkEntityRepository({ manager: manager.fork() })
+  }
 
   beforeEach(async () => {
     await dropDatabase(
@@ -376,6 +400,7 @@ describe("mikroOrmRepository", () => {
           Entity7,
           CustomPkEntity,
           CompositePkEntity,
+          SchemaCompositePkEntity,
         ],
         clientUrl: getDatabaseURL(dbName),
         // Match Medusa's production config: soft-delete filters are not
@@ -1590,6 +1615,28 @@ describe("mikroOrmRepository", () => {
       expect(remaining).toHaveLength(1)
       expect(remaining[0].foo).toEqual("foo-2")
       expect(remaining[0].bar).toEqual("bar-2")
+    })
+
+    it("should delete an EntitySchema entity with a composite primary key and return the primary key values keyed by property name", async () => {
+      const seedManager = orm.em.fork()
+      await schemaCompositePkManager().create(
+        [
+          { foo_id: "foo-1", bar_id: "bar-1", title: "first" },
+          { foo_id: "foo-2", bar_id: "bar-2", title: "second" },
+        ],
+        { transactionManager: seedManager }
+      )
+      await seedManager.flush()
+
+      const deleted = await schemaCompositePkManager().delete({
+        foo_id: { $in: ["foo-1"] },
+      })
+
+      expect(deleted).toEqual([{ foo_id: "foo-1", bar_id: "bar-1" }])
+
+      const remaining = await schemaCompositePkManager().find({ where: {} })
+      expect(remaining).toHaveLength(1)
+      expect(remaining[0].foo_id).toEqual("foo-2")
     })
   })
 

@@ -5,18 +5,16 @@ import {
 import { MedusaModule } from "@medusajs/framework/modules-sdk"
 import {
   AuditLogDTO,
-  FilterableAuditLogProps,
   HttpTypes,
   IAuditModuleService,
 } from "@medusajs/framework/types"
 import { defineFileConfig, Modules } from "@medusajs/framework/utils"
 
 /**
- * @ignore
- * TODO: remove the ignore tag and add a `@since` tag when the audit feature is fully released
+ * @since 2.23.0
  */
 export const GET = async (
-  req: AuthenticatedMedusaRequest<undefined, FilterableAuditLogProps>,
+  req: AuthenticatedMedusaRequest<undefined, HttpTypes.AdminAuditLogListParams>,
   res: MedusaResponse<HttpTypes.AdminAuditLogListResponse>
 ) => {
   const auditModuleService = req.scope.resolve<IAuditModuleService>(
