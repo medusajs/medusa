@@ -1169,11 +1169,10 @@ medusaIntegrationTestRunner({
           const retailChannel = await salesChannelService.createSalesChannels({
             name: "Retail Store",
           })
-          const wholesaleChannel = await salesChannelService.createSalesChannels(
-            {
+          const wholesaleChannel =
+            await salesChannelService.createSalesChannels({
               name: "Wholesale Store",
-            }
-          )
+            })
 
           const buildCart = (
             email: string,
@@ -1239,11 +1238,10 @@ medusaIntegrationTestRunner({
           const retailChannel = await salesChannelService.createSalesChannels({
             name: "Retail Store",
           })
-          const wholesaleChannel = await salesChannelService.createSalesChannels(
-            {
+          const wholesaleChannel =
+            await salesChannelService.createSalesChannels({
               name: "Wholesale Store",
-            }
-          )
+            })
 
           await cartService.createCarts([
             {
@@ -1303,6 +1301,131 @@ medusaIntegrationTestRunner({
           expect(channelsByItemTitle[0]).toEqual(
             expect.objectContaining({ name: "Wholesale Store" })
           )
+        })
+
+        it("should filter through an internal relation and a read-only link declared on its entity", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+          const cartService: any = container.resolve(Modules.CART)
+          const salesChannelService: any = container.resolve(
+            Modules.SALES_CHANNEL
+          )
+
+          const retailChannel = await salesChannelService.createSalesChannels({
+            name: "Retail Store",
+          })
+          const wholesaleChannel =
+            await salesChannelService.createSalesChannels({
+              name: "Wholesale Store",
+            })
+
+          const item = (title: string) => ({
+            title,
+            quantity: 1,
+            unit_price: 100,
+          })
+
+          await cartService.createCarts([
+            {
+              currency_code: "usd",
+              sales_channel_id: retailChannel.id,
+              items: [item("Retail Item 1"), item("Retail Item 2")],
+            },
+            {
+              currency_code: "usd",
+              sales_channel_id: retailChannel.id,
+              items: [item("Retail Item 3")],
+            },
+            {
+              currency_code: "usd",
+              sales_channel_id: wholesaleChannel.id,
+              items: [item("Wholesale Item")],
+            },
+          ])
+
+          const { data: lineItems, metadata } = await query.graph({
+            entity: "line_item",
+            fields: ["id", "title"],
+            filters: {
+              cart: {
+                sales_channel: { name: "Retail Store" },
+              },
+            },
+            pagination: {
+              take: 2,
+              skip: 0,
+              order: { title: "ASC" },
+            },
+          })
+
+          expect(lineItems.map((lineItem) => lineItem.title)).toEqual([
+            "Retail Item 1",
+            "Retail Item 2",
+          ])
+          expect(metadata).toEqual(
+            expect.objectContaining({ count: 3, take: 2, skip: 0 })
+          )
+        })
+
+        it("should filter through a hasMany relation and an inverse read-only link", async () => {
+          const container = getContainer()
+          const query = container.resolve("query")
+          const translationService: any = container.resolve(Modules.TRANSLATION)
+
+          const buildTranslatedProduct = (title: string) => ({
+            title,
+            options: [{ title: "size", values: ["small"] }],
+            variants: [
+              { title: `${title} Variant`, options: { size: "small" } },
+            ],
+          })
+
+          const {
+            result: [frenchProduct, germanProduct],
+          } = await createProductsWorkflow(container).run({
+            input: {
+              products: [
+                buildTranslatedProduct("French Variant Product"),
+                buildTranslatedProduct("German Variant Product"),
+              ],
+            },
+          })
+
+          await translationService.createTranslations([
+            {
+              reference_id: frenchProduct.variants[0].id,
+              reference: "product_variant",
+              locale_code: "fr-FR",
+              translations: { title: "Petit" },
+            },
+            {
+              reference_id: germanProduct.variants[0].id,
+              reference: "product_variant",
+              locale_code: "de-DE",
+              translations: { title: "Klein" },
+            },
+            // Same locale on the product itself must not match the variant path.
+            {
+              reference_id: germanProduct.id,
+              reference: "product",
+              locale_code: "fr-FR",
+              translations: { title: "Produit" },
+            },
+          ])
+
+          const { data: products } = await query.graph({
+            entity: "product",
+            fields: ["id", "title"],
+            filters: {
+              variants: {
+                translations: { locale_code: "fr-FR" },
+              },
+            },
+          })
+
+          expect(products).toEqual([
+            expect.objectContaining({ id: frenchProduct.id }),
+          ])
         })
 
         it("should sort by a cross-module field", async () => {
