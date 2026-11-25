@@ -59,8 +59,7 @@ export class AuditLog {
    * })
    * ```
    *
-   * @ignore
-   * TODO: remove the ignore tag and add a `@since` tag when the audit feature is fully released
+   * @since 2.23.0
    */
   async list(
     queryParams?: HttpTypes.AdminAuditLogListParams,
@@ -91,8 +90,7 @@ export class AuditLog {
    *   console.log(audit_log)
    * })
    *
-   * @ignore
-   * TODO: remove the ignore tag and add a `@since` tag when the audit feature is fully released
+   * @since 2.23.0
    */
   async retrieve(
     id: string,
