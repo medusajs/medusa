@@ -518,10 +518,13 @@ export async function bundleBackend({
   }
   loaded.forEach(add)
 
-  // Packages first-party code loads by name only under some configurations
-  // (e.g. the DynamoDB session store): the collection pass runs with the
-  // build's configuration, so bundle them even if it didn't load them.
-  // They're resolved from the file loading them, as Node would.
+  // Packages first-party code loads or resolves by name only under some
+  // configurations (e.g. the DynamoDB session store, or the package behind a
+  // `@medusajs/medusa/<module>` entry the run-time environment enables): the
+  // collection pass runs with the build's configuration, so bundle them even
+  // if it didn't load them. They're resolved from the file naming them, as
+  // Node would: at run time that file may not be able to (a pnpm install only
+  // links a package's dependencies next to the package itself).
   for (const file of [...registry.values()]) {
     if (
       !file.endsWith(".js") ||
@@ -529,8 +532,8 @@ export async function bundleBackend({
     ) {
       continue
     }
-    for (const [, request] of readFileSync(file, "utf8").matchAll(
-      DYNAMIC_IMPORT_OF_PACKAGE
+    for (const request of packagesResolvedByName(
+      readFileSync(file, "utf8")
     )) {
       if (request in resolutions) {
         continue
@@ -965,6 +968,21 @@ const SHADOWED_REQUIRE =
 // compiled) with a package name, not a relative or absolute path
 const DYNAMIC_IMPORT_OF_PACKAGE =
   /dynamicImport\)?\(\s*"((?:@[\w.-]+\/)?[a-z0-9][\w./-]*)"\s*\)/g
+// `require.resolve("pkg")` with a package name
+const REQUIRE_RESOLVE_OF_PACKAGE =
+  /(?<![\w$.])require\.resolve\(\s*"((?:@[\w.-]+\/)?[a-z0-9][\w./-]*)"\s*\)/g
+
+/**
+ * The packages a compiled file loads (`dynamicImport`) or resolves
+ * (`require.resolve`) by a literal name. Neither is an import the bundler
+ * follows, so each is resolved at build time and answered from the bundle.
+ */
+export function packagesResolvedByName(source: string): string[] {
+  return [
+    ...source.matchAll(DYNAMIC_IMPORT_OF_PACKAGE),
+    ...source.matchAll(REQUIRE_RESOLVE_OF_PACKAGE),
+  ].map(([, request]) => request)
+}
 const SIDE_EFFECT = /^global(This)?\.[A-Za-z_]+ *(\?\?=|=)/m
 // A call made at the top level (compiled TypeScript puts top-level statements
 // at column 0), other than the module plumbing TypeScript emits: e.g.

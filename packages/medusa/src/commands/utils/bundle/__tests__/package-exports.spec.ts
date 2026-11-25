@@ -1,7 +1,10 @@
 import { mkdirSync, mkdtempSync, realpathSync, writeFileSync } from "fs"
 import { tmpdir } from "os"
 import path from "path"
-import { addPackageExportResolutions } from "../bundle-backend"
+import {
+  addPackageExportResolutions,
+  packagesResolvedByName,
+} from "../bundle-backend"
 
 function createPackage(exportsMap: unknown, files: string[]) {
   const root = path.join(
@@ -91,5 +94,29 @@ describe("addPackageExportResolutions", () => {
     )
 
     expect(resolutions).toEqual({})
+  })
+})
+
+describe("packagesResolvedByName", () => {
+  it("finds packages loaded or resolved by a literal name", () => {
+    expect(
+      packagesResolvedByName(`
+        exports.discoveryPath = require.resolve("@medusajs/rbac");
+        const store = await (0, utils_1.dynamicImport)("connect-dynamodb");
+        const other = await dynamicImport("@scope/pkg/sub");
+      `)
+    ).toEqual(["connect-dynamodb", "@scope/pkg/sub", "@medusajs/rbac"])
+  })
+
+  it("skips paths and computed names", () => {
+    expect(
+      packagesResolvedByName(`
+        require.resolve("./local");
+        require.resolve("/abs/file.js");
+        require.resolve(name);
+        obj.require.resolve("not-a-require");
+        dynamicImport(path.join(dir, "x"));
+      `)
+    ).toEqual([])
   })
 })
