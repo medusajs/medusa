@@ -953,7 +953,7 @@ export class Auth {
 
   /**
    * This method lists the authentication providers available for an actor type.
-   * It sends a request to the [List Auth Providers API route](https://docs.medusajs.com/api/admin#auth_getactor_typeproviders).
+   * It sends a request to the [List Auth Providers API route](https://docs.medusajs.com/api/admin/auth/list-providers).
    *
    * This is a public, pre-authentication endpoint. A frontend can use it to
    * render the available login options, such as an email/password form or
@@ -982,7 +982,7 @@ export class Auth {
    * This method creates or links the `user` (admin) actor for a redirect-based
    * authentication provider after a successful callback. An existing user with
    * a matching, identity-provider-verified email is linked; otherwise a new
-   * user is created. It sends a request to the [Provision Auth User API route](https://docs.medusajs.com/api/admin#auth_postauth_provideruser).
+   * user is created. It sends a request to the [Provision Auth User API route](https://docs.medusajs.com/api/admin/auth/create-admin-user).
    *
    * The token returned by {@link callback} is actorless until the user is
    * provisioned. Pass that token in the `Authorization` header, then call
