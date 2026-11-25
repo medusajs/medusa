@@ -141,7 +141,7 @@ export const generatedEditDates = {
   "app/learn/fundamentals/api-routes/allowed-fields/page.mdx": "2026-09-11T10:06:19.798Z",
   "app/learn/fundamentals/api-routes/disallowed-fields/page.mdx": "2026-09-11T08:58:48.383Z",
   "app/learn/fundamentals/workflows/cancel-workflow/page.mdx": "2026-09-22T06:13:18.949Z",
-  "app/learn/introduction/build-with-llms-ai/manage-store-with-agents/page.mdx": "2026-11-19T07:59:24.534Z",
+  "app/learn/introduction/build-with-llms-ai/manage-store-with-agents/page.mdx": "2026-11-25T16:01:49.342Z",
   "app/learn/configurations/typescript/page.mdx": "2026-11-16T13:55:02.008Z",
   "app/learn/introduction/build-with-llms-ai/docs-mcp-server/page.mdx": "2026-11-24T11:55:13.628Z"
 }

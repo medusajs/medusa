@@ -2,32 +2,37 @@ import { InlineIcon, Note, Table } from "docs-ui"
 import { EllipsisHorizontal } from "@medusajs/icons"
 
 export const metadata = {
-  title: `Connections`,
+  title: `MCP and Connectors`,
 }
 
 # {metadata.title}
 
-In this guide, you'll learn how to view and manage the connections that third-party applications, such as AI tools, have to your organization's environments.
+In this guide, you'll learn how to view and manage the connectors that AI agents and other applications use to access your organization's environments through the Medusa MCP server.
 
-## What is a Connection?
+## What is a Connector?
 
-A connection is the access that you grant a third-party application to your environments when you approve it on Cloud's OAuth consent page. For example, when you connect an AI tool like Claude, ChatGPT, or Cursor to the [Medusa MCP server](../../medusa-mcp/page.mdx), Cloud creates a connection for that AI tool with the environments you selected.
+A connector is the access that you grant an AI agent or another application to your environments when you approve it on Cloud's OAuth consent page. For example, when you connect an AI tool like Claude, ChatGPT, or Cursor to the [Medusa MCP server](../../medusa-mcp/page.mdx), Cloud creates a connector for that AI tool with the environments and access you selected.
 
-From your organization's settings, you can view all of these connections, change the environments each connection can access, and revoke connections that you no longer need.
+A connector acts on your behalf with your role in each organization. For each environment, the connector has one of the following access levels:
+
+- **Read only**: The connector can retrieve the environment's data.
+- **Read and write**: The connector can also create, update, and delete the environment's commerce data.
+
+From your organization's settings, you can view all of these connectors, change the environments each connector can access and their access levels, and revoke connectors that you no longer need.
 
 ---
 
-## View Connections
+## View Connectors
 
 <RolesBadge roles={["developer"]} />
 
-To view your organization's connections:
+To view your organization's connectors:
 
-1. If you're in a different organization, [switch to the organization](../page.mdx#switch-organization) whose connections you want to view.
+1. If you're in a different organization, [switch to the organization](../page.mdx#switch-organization) whose connectors you want to view.
 2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
-3. Click **Connections** in the sidebar.
+3. Click **MCP and Connectors** in the sidebar.
 
-The Connections page shows a table of all the authorized connections and the total number of connections. If there are no connections, the page shows an empty state instead.
+The MCP and Connectors page shows a table of all the authorized connectors and the total number of connectors. If there are no connectors, the page shows an empty state instead.
 
 The table has the following columns:
 
@@ -45,7 +50,7 @@ The table has the following columns:
   <Table.Body>
     <Table.Row>
       <Table.Cell>
-        **App**
+        **Connector**
       </Table.Cell>
       <Table.Cell>
         The connected application's icon and name, along with the resource type or host that it connects to. For example, "Claude" with a "Medusa MCP" subtitle.
@@ -56,7 +61,15 @@ The table has the following columns:
         **Access**
       </Table.Cell>
       <Table.Cell>
-        The number of environments and organizations that the connection can access.
+        The connector's access level and the number of environments it can access. The access level is **Read only**, **Read and write**, or, when only some environments have write access, the number of environments with write access, for example, "Write in 1 of 3".
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        **Organizations**
+      </Table.Cell>
+      <Table.Cell>
+        The number of organizations that the connector can access.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -64,7 +77,7 @@ The table has the following columns:
         **Status**
       </Table.Cell>
       <Table.Cell>
-        Shows **Active** for an active connection, or **Expires Soon** if the connection expires within 7 days.
+        Shows **Active** for an active connector, or **Expires Soon** if the connector expires within 7 days.
       </Table.Cell>
     </Table.Row>
     <Table.Row>
@@ -72,7 +85,7 @@ The table has the following columns:
         **Last Used**
       </Table.Cell>
       <Table.Cell>
-        How long ago the application last used the connection, or **Never** if it hasn't used it yet.
+        How long ago the application last used the connector, or **Never** if it hasn't used it yet.
       </Table.Cell>
     </Table.Row>
   </Table.Body>
@@ -80,61 +93,70 @@ The table has the following columns:
 
 ---
 
-## Manage a Connection
+## Manage a Connector
 
 <RolesBadge roles={["developer"]} />
 
-You can view a connection's details and change the environments that the application can access.
+You can view a connector's details and change the environments that the application can access.
 
-To manage a connection:
+To manage a connector:
 
-1. [Go to the Connections page](#view-connections).
-2. Click the connection's row. Alternatively, click the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the end of the connection's row and choose **Manage access**.
+1. [Go to the MCP and Connectors page](#view-connectors).
+2. Click the connector's row. Alternatively, click the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the end of the connector's row and choose **Manage access**.
 
-This opens a side drawer with the connection's details.
+This opens a side drawer with the connector's details.
 
-### Connection Details
+### Connector Details
 
-The **Details** section of the drawer shows the following information about the connection:
+The **Details** section of the drawer shows the following information about the connector:
 
-- **Status**: Whether the connection is active or expires soon.
-- **Connected**: The date that you approved the connection.
-- **Last Used**: How long ago the application last used the connection, or **Never**.
-- **Expires**: The date that the connection expires.
+- **Status**: Whether the connector is active or expires soon.
+- **Connected**: The date that you approved the connector.
+- **Last Used**: How long ago the application last used the connector, or **Never**.
+- **Expires**: The date that the connector expires. Connectors that go unused for 30 days are revoked automatically.
 - **Client ID**: The OAuth client identifier of the application.
 
-### Change Accessible Environments
+### Change Environments and Access
 
 <RolesBadge roles={["developer"]} />
 
-The **Environments** section of the drawer lists the environments that you can access, grouped by organization and project. Each organization row shows how many of its environments are selected, for example, "2 of 5 selected". You can expand an organization to view its projects and their environments.
+The **Organizations and environments** section of the drawer lists the environments that you can access, grouped by organization. Each environment has a **Read** and a **Write** checkbox, and the section's header shows how many environments are selected and how many of them have write access.
 
-To change the environments that the application can access:
+To change the environments that the application can access and their access levels:
 
-1. In the **Environments** section, select or clear the checkboxes of the environments. Selecting a project's checkbox selects all its environments.
-2. Click **Save**.
+1. In the **Organizations and environments** section, expand an organization to view its environments.
+2. Check or clear the **Read** checkbox of an environment to give or remove access to it. Checking **Read** in an organization's row selects all its environments.
+3. Check the **Write** checkbox of an environment to let the application change its data, or clear it to make the environment read-only. Checking **Write** also selects the environment.
+4. Review the changes in the **Unsaved changes** section, which lists the environments you added or removed and the access levels you changed.
+5. Click **Save**.
+
+<Note type="warning">
+
+With write access, the application can create, update, and delete data in the environment as your admin user. Give write access to production environments only to applications that you trust.
+
+</Note>
 
 <Note>
 
-A connection must have access to at least one environment. To remove the application's access to all environments, [revoke the connection](#revoke-a-connection) instead.
+A connector must have access to at least one environment. To remove the application's access to all environments, [revoke the connector](#revoke-a-connector) instead.
 
 </Note>
 
 ---
 
-## Revoke a Connection
+## Revoke a Connector
 
 <RolesBadge roles={["developer"]} />
 
 <Note type="warning">
 
-Once you revoke a connection, the application can no longer access the connection's environments. To restore access, you must connect the application again and approve the connection on the consent page.
+Once you revoke a connector, the application can no longer access the connector's environments. To restore access, you must connect the application again and approve the connection on the consent page.
 
 </Note>
 
-To revoke a connection:
+To revoke a connector:
 
-1. [Go to the Connections page](#view-connections).
-2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the end of the connection's row.
+1. [Go to the MCP and Connectors page](#view-connectors).
+2. Click the <InlineIcon Icon={EllipsisHorizontal} alt="three dots" /> icon at the end of the connector's row.
 3. Choose **Revoke** from the dropdown.
-4. Confirm revoking the connection in the prompt. The prompt shows the application's name and the number of environments it can no longer access.
+4. Confirm revoking the connector in the prompt. The prompt shows the application's name and the number of environments it can no longer access.

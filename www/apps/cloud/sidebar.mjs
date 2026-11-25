@@ -107,7 +107,7 @@ export const sidebar = [
             children: [
               {
                 type: "link",
-                title: "Connections",
+                title: "MCP and Connectors",
                 path: "/organizations/connections",
               },
               {
