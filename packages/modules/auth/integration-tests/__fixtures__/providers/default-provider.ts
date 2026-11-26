@@ -3,6 +3,7 @@ import {
   AuthenticationResponse,
   AuthIdentityDTO,
   AuthIdentityProviderService,
+  ProviderIdentityDTO,
 } from "@medusajs/framework/types"
 import {
   AbstractAuthModuleProvider,
@@ -17,6 +18,12 @@ export class AuthServiceFixtures extends AbstractAuthModuleProvider {
       {},
       { provider: "plaintextpass", displayName: "plaintextpass Fixture" }
     )
+  }
+
+  getCredentialsUpdatedAt(providerIdentity: ProviderIdentityDTO): Date | null {
+    const updatedAt = providerIdentity.provider_metadata?.password_updated_at
+
+    return updatedAt ? new Date(updatedAt as string) : null
   }
 
   async authenticate(

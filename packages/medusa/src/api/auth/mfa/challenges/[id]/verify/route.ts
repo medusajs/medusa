@@ -9,6 +9,7 @@ import {
   Modules,
 } from "@medusajs/framework/utils"
 import { generateJwtTokenForAuthIdentity } from "../../../../utils/generate-jwt-token"
+import { validateTokenIssuedAfterCredentialsUpdate } from "../../../../utils/validate-token-issued-after-credentials-update"
 import { AuthMfaVerifyChallengeRequestType } from "../../../../validators"
 
 /**
@@ -53,6 +54,13 @@ export const POST = async (
       `Auth identity does not have a provider identity for "${challenge.auth_provider}"`
     )
   }
+
+  await validateTokenIssuedAfterCredentialsUpdate(authService, {
+    authContext: req.auth_context,
+    authIdentity,
+    authProvider:
+      req.auth_context.auth_provider ?? challenge.auth_provider ?? undefined,
+  })
 
   const { http } = req.scope.resolve<ConfigModule>(
     ContainerRegistrationKeys.CONFIG_MODULE

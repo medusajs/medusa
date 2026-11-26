@@ -1,3 +1,4 @@
+import { generateResetPasswordTokenWorkflow } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import jwt from "jsonwebtoken"
 import {
@@ -228,6 +229,57 @@ medusaIntegrationTestRunner({
           .catch((e) => e)
 
         expect(err.response.status).toEqual(401)
+      })
+
+      it("does not complete the challenge after the password was reset", async () => {
+        const { secret } = await enrollTotpFactor(api)
+
+        const pending = await loginWithoutCompletingMfa(api)
+
+        // JWT issue dates have a one second resolution
+        await new Promise((resolve) => setTimeout(resolve, 1100))
+
+        const { result: resetToken } = await generateResetPasswordTokenWorkflow(
+          getContainer()
+        ).run({
+          input: {
+            entityId: EMAIL,
+            actorType: "user",
+            provider: "emailpass",
+            secret: "test",
+          },
+        })
+
+        await api.post(
+          "/auth/user/emailpass/update",
+          { password: "new_password" },
+          { headers: { authorization: `Bearer ${resetToken}` } }
+        )
+
+        const err = await api
+          .post(
+            `/auth/mfa/challenges/${pending.challenge.id}/verify`,
+            { method: "totp", code: generateTotpCode({ secret }) },
+            pending.headers
+          )
+          .catch((e) => e)
+
+        expect(err.response.status).toEqual(401)
+        expect(err.response.data.token).toBeUndefined()
+
+        const login = await api.post("/auth/user/emailpass", {
+          email: EMAIL,
+          password: "new_password",
+        })
+
+        const verified = await api.post(
+          `/auth/mfa/challenges/${login.data.mfa_challenge.id}/verify`,
+          { method: "totp", code: generateTotpCode({ secret }) },
+          { headers: { authorization: `Bearer ${login.data.token}` } }
+        )
+
+        expect(verified.status).toEqual(200)
+        expect(verified.data).toEqual({ token: expect.any(String) })
       })
     })
 

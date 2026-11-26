@@ -51,6 +51,7 @@ module.exports = defineConfig({
 - `register` succeeds (returns the existing identity) if the email already exists, the password matches, and the identity has no `app_metadata` (not yet linked to an actor). This lets one email register as a second actor type.
 - `authenticate` returns `"Invalid email or password"` for both unknown email and wrong password (no user enumeration).
 - `update` with a missing or non-string `password` returns `{ success: true }` without changing anything.
+- `update` with a password also sets `provider_metadata.password_updated_at`, which `getCredentialsUpdatedAt` returns. `POST /auth/token/refresh` and MFA challenge verification reject tokens issued before it, so a password reset stops earlier tokens from being renewed.
 - Lowering `hashConfig.logN` speeds up tests but weakens hashes; existing hashes still verify because scrypt-kdf stores params in the hash.
 - `scrypt-kdf` (v4) is ESM-only and loaded with `import()` on first hash or verify, so Jest suites that register or log in need `NODE_OPTIONS=--experimental-vm-modules` (the documented test scripts set it) and the `@medusajs/test-utils` preset. `require()` isn't an option: Jest with that flag rejects `require()` of ESM.
 - `Scrypt.kdf()` returns a `Uint8Array`: wrap it in `Buffer.from()` before `.toString("base64")`, or you get comma-separated bytes instead of base64.
