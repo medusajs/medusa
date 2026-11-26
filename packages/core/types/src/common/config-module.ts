@@ -133,6 +133,46 @@ export interface AdminOptions {
    * ```
    */
   maxUploadFileSize?: number
+
+  /**
+   * Security headers added to the admin dashboard's HTML page in production. They're not set by
+   * the development server, nor on the dashboard's static files or any other route. By default, none are added.
+   *
+   * @example
+   * ```js title="medusa-config.ts"
+   * module.exports = defineConfig({
+   *   admin: {
+   *     securityHeaders: {
+   *       contentSecurityPolicy:
+   *         "script-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'",
+   *       referrerPolicy: "strict-origin-when-cross-origin",
+   *     },
+   *   },
+   *   // ...
+   * })
+   * ```
+   */
+  securityHeaders?: AdminSecurityHeadersOptions
+}
+
+/**
+ * @interface
+ *
+ * Security headers added to the admin dashboard's HTML page.
+ */
+export type AdminSecurityHeadersOptions = {
+  /**
+   * Directives added to the `Content-Security-Policy` header, after the `frame-ancestors` directive
+   * set by `projectConfig.http.securityHeaders`. Set `frame-ancestors` there, not here: when a
+   * directive appears twice, browsers only use the first one.
+   *
+   * Admin customizations that load scripts from other origins need those origins in `script-src`.
+   */
+  contentSecurityPolicy?: string
+  /**
+   * The value of the `Referrer-Policy` header.
+   */
+  referrerPolicy?: string
 }
 
 /**

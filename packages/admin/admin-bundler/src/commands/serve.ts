@@ -1,3 +1,4 @@
+import { AdminSecurityHeadersOptions } from "@medusajs/types"
 import compression from "compression"
 import { IRouter, Request, Response, Router, static as static_ } from "express"
 import fs from "fs"
@@ -6,11 +7,11 @@ import path from "path"
 
 type ServeOptions = {
   outDir: string
+  securityHeaders?: AdminSecurityHeadersOptions
 }
 
-const router = Router()
-
 export async function serve(options: ServeOptions): Promise<IRouter> {
+  const router = Router()
   const htmlPath = path.resolve(options.outDir, "index.html")
 
   /**
@@ -31,9 +32,23 @@ export async function serve(options: ServeOptions): Promise<IRouter> {
 
   const html = fs.readFileSync(htmlPath, "utf-8")
 
+  const { contentSecurityPolicy, referrerPolicy } =
+    options.securityHeaders ?? {}
+
   const sendHtml = (_req: Request, res: Response) => {
     res.setHeader("Cache-Control", "no-cache")
     res.setHeader("Vary", "Origin, Cache-Control")
+    if (contentSecurityPolicy) {
+      // Keeps the frame-ancestors directive that the framework sets on every response.
+      const current = res.getHeader("Content-Security-Policy")
+      res.setHeader(
+        "Content-Security-Policy",
+        current ? `${current}; ${contentSecurityPolicy}` : contentSecurityPolicy
+      )
+    }
+    if (referrerPolicy) {
+      res.setHeader("Referrer-Policy", referrerPolicy)
+    }
     res.send(html)
   }
 
