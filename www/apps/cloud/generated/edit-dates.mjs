@@ -8,7 +8,7 @@ export const generatedEditDates = {
   "app/database/page.mdx": "2026-11-25T09:41:13.166Z",
   "app/redis/page.mdx": "2026-04-17T09:45:49.836Z",
   "app/s3/page.mdx": "2026-11-24T07:53:15.473Z",
-  "app/logs/page.mdx": "2026-11-24T07:54:16.924Z",
+  "app/logs/page.mdx": "2026-11-26T12:18:20.049Z",
   "app/update-medusa/page.mdx": "2026-11-24T07:54:16.925Z",
   "app/connect-storefront/page.mdx": "2026-01-08T08:50:31.830Z",
   "app/environments/environment-variables/page.mdx": "2026-11-24T07:54:16.920Z",
