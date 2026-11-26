@@ -32,6 +32,48 @@ describe("Email password auth provider", () => {
     })
   })
 
+  it("records when the password was updated", async () => {
+    const authServiceSpies = {
+      retrieve: jest.fn().mockResolvedValue({
+        provider_identities: [
+          {
+            entity_id: "test@admin.com",
+            provider: "emailpass",
+            provider_metadata: { password: "somehash", custom: "keep-me" },
+          },
+        ],
+      }),
+      update: jest.fn().mockImplementation((entity_id, data) => ({
+        provider_identities: [{ entity_id, provider: "emailpass", ...data }],
+      })),
+    }
+
+    const before = Date.now()
+    const resp = await emailpassService.update(
+      { entity_id: "test@admin.com", password: "newpass" },
+      authServiceSpies as any
+    )
+
+    expect(resp.success).toBe(true)
+
+    const metadata = authServiceSpies.update.mock.calls[0][1].provider_metadata
+    expect(metadata.custom).toEqual("keep-me")
+    expect(
+      new Date(metadata.password_updated_at).getTime()
+    ).toBeGreaterThanOrEqual(before)
+
+    expect(
+      emailpassService.getCredentialsUpdatedAt({
+        provider_metadata: metadata,
+      } as any)
+    ).toEqual(new Date(metadata.password_updated_at))
+    expect(
+      emailpassService.getCredentialsUpdatedAt({
+        provider_metadata: { password: "somehash" },
+      } as any)
+    ).toBeNull()
+  })
+
   it("return error if password is not passed", async () => {
     const resp = await emailpassService.authenticate(
       { body: { email: "test@admin.com" } },
