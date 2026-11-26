@@ -1,5 +1,14 @@
 # @medusajs/promotion
 
+## 2.23.1
+
+### Patch Changes
+
+- [#17965](https://github.com/medusajs/medusa/pull/17965) [`8a43169`](https://github.com/medusajs/medusa/commit/8a43169b555ce1f7b3358ebd50016e076f57f3ba) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(promotion): apply automatic promotions with ne rules on missing attributes
+
+- Updated dependencies [[`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450)]:
+  - @medusajs/framework@2.23.1
+
 ## 2.23.0
 
 ### Patch Changes

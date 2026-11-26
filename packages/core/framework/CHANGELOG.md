@@ -1,5 +1,21 @@
 # @medusajs/framework
 
+## 2.23.1
+
+### Patch Changes
+
+- [#17990](https://github.com/medusajs/medusa/pull/17990) [`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: license core packages under MIT only, limit the Enterprise license to the RBAC, OIDC, and Audit packages
+
+- Updated dependencies [[`275ea48`](https://github.com/medusajs/medusa/commit/275ea482975fa042d5ff707ea9d166c6d8af4d63), [`bfe6632`](https://github.com/medusajs/medusa/commit/bfe6632a059d1ecceb093bea68b867f4a626d147), [`50dee3b`](https://github.com/medusajs/medusa/commit/50dee3b8fee83411321b6430fd903ecb2680beff), [`a7b83c0`](https://github.com/medusajs/medusa/commit/a7b83c0c2d22f8b68bc501dc5fca56f384ff8978), [`b66d364`](https://github.com/medusajs/medusa/commit/b66d36466bdb215d9cd3d25323e16173fe6201c5), [`0a70932`](https://github.com/medusajs/medusa/commit/0a70932759cd2da398bc7b7adb23b0c6ef852934), [`d0cf9a1`](https://github.com/medusajs/medusa/commit/d0cf9a1c0b443422bde97039755ee5d68e269d5d), [`d0f627d`](https://github.com/medusajs/medusa/commit/d0f627df80a83adfe9325238c831166e3fd235f4), [`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450)]:
+  - @medusajs/types@2.23.1
+  - @medusajs/utils@2.23.1
+  - @medusajs/telemetry@2.23.1
+  - @medusajs/modules-sdk@2.23.1
+  - @medusajs/orchestration@2.23.1
+  - @medusajs/workflows-sdk@2.23.1
+  - @medusajs/cli@2.23.1
+  - @medusajs/deps@2.23.1
+
 ## 2.23.0
 
 ### Minor Changes

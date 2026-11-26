@@ -1,20 +1,20 @@
 {
 	"schemaVersion": "2.0",
-	"id": 67325,
+	"id": 67421,
 	"name": "events",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 67486,
+			"id": 67582,
 			"name": "Cart",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 67327,
+					"id": 67423,
 					"name": "CartWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -40,20 +40,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 8,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L8"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L8"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67328,
+							"id": 67424,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67329,
+									"id": 67425,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -102,7 +102,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 19,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L19"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L19"
 										}
 									],
 									"type": {
@@ -112,7 +112,7 @@
 									"defaultValue": "\"cart.created\""
 								},
 								{
-									"id": 67330,
+									"id": 67426,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -161,7 +161,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 30,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L30"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L30"
 										}
 									],
 									"type": {
@@ -171,7 +171,7 @@
 									"defaultValue": "\"cart.updated\""
 								},
 								{
-									"id": 67331,
+									"id": 67427,
 									"name": "CUSTOMER_UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -202,7 +202,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 41,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L41"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L41"
 										}
 									],
 									"type": {
@@ -212,7 +212,7 @@
 									"defaultValue": "\"cart.customer_updated\""
 								},
 								{
-									"id": 67332,
+									"id": 67428,
 									"name": "REGION_UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -269,7 +269,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 53,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L53"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L53"
 										}
 									],
 									"type": {
@@ -279,7 +279,7 @@
 									"defaultValue": "\"cart.region_updated\""
 								},
 								{
-									"id": 67333,
+									"id": 67429,
 									"name": "CUSTOMER_TRANSFERRED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -337,7 +337,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 68,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L68"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L68"
 										}
 									],
 									"type": {
@@ -351,11 +351,11 @@
 								{
 									"title": "Properties",
 									"children": [
-										67329,
-										67330,
-										67331,
-										67332,
-										67333
+										67425,
+										67426,
+										67427,
+										67428,
+										67429
 									]
 								}
 							]
@@ -368,7 +368,7 @@
 				{
 					"title": "Variables",
 					"children": [
-						67327
+						67423
 					]
 				}
 			],
@@ -376,20 +376,20 @@
 				{
 					"title": "Cart",
 					"children": [
-						67327
+						67423
 					]
 				}
 			]
 		},
 		{
-			"id": 67487,
+			"id": 67583,
 			"name": "Customer",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 67334,
+					"id": 67430,
 					"name": "CustomerWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -415,20 +415,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 75,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L75"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L75"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67335,
+							"id": 67431,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67336,
+									"id": 67432,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -477,7 +477,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 86,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L86"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L86"
 										}
 									],
 									"type": {
@@ -487,7 +487,7 @@
 									"defaultValue": "\"customer.created\""
 								},
 								{
-									"id": 67337,
+									"id": 67433,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -536,7 +536,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 97,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L97"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L97"
 										}
 									],
 									"type": {
@@ -546,7 +546,7 @@
 									"defaultValue": "\"customer.updated\""
 								},
 								{
-									"id": 67338,
+									"id": 67434,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -595,7 +595,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 108,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L108"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L108"
 										}
 									],
 									"type": {
@@ -609,9 +609,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67336,
-										67337,
-										67338
+										67432,
+										67433,
+										67434
 									]
 								}
 							]
@@ -624,7 +624,7 @@
 				{
 					"title": "Variables",
 					"children": [
-						67334
+						67430
 					]
 				}
 			],
@@ -632,20 +632,20 @@
 				{
 					"title": "Customer",
 					"children": [
-						67334
+						67430
 					]
 				}
 			]
 		},
 		{
-			"id": 67488,
+			"id": 67584,
 			"name": "Order",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 67339,
+					"id": 67435,
 					"name": "OrderWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -671,20 +671,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 115,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L115"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L115"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67340,
+							"id": 67436,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67341,
+									"id": 67437,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -733,7 +733,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 127,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L127"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L127"
 										}
 									],
 									"type": {
@@ -743,7 +743,7 @@
 									"defaultValue": "\"order.updated\""
 								},
 								{
-									"id": 67342,
+									"id": 67438,
 									"name": "PLACED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -792,7 +792,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 140,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L140"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L140"
 										}
 									],
 									"type": {
@@ -802,7 +802,7 @@
 									"defaultValue": "\"order.placed\""
 								},
 								{
-									"id": 67343,
+									"id": 67439,
 									"name": "CANCELED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -851,7 +851,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 151,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L151"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L151"
 										}
 									],
 									"type": {
@@ -861,7 +861,7 @@
 									"defaultValue": "\"order.canceled\""
 								},
 								{
-									"id": 67344,
+									"id": 67440,
 									"name": "COMPLETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -910,7 +910,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 162,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L162"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L162"
 										}
 									],
 									"type": {
@@ -920,7 +920,7 @@
 									"defaultValue": "\"order.completed\""
 								},
 								{
-									"id": 67345,
+									"id": 67441,
 									"name": "ARCHIVED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -969,7 +969,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 173,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L173"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L173"
 										}
 									],
 									"type": {
@@ -979,7 +979,7 @@
 									"defaultValue": "\"order.archived\""
 								},
 								{
-									"id": 67346,
+									"id": 67442,
 									"name": "FULFILLMENT_CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1028,7 +1028,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 187,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L187"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L187"
 										}
 									],
 									"type": {
@@ -1038,7 +1038,7 @@
 									"defaultValue": "\"order.fulfillment_created\""
 								},
 								{
-									"id": 67347,
+									"id": 67443,
 									"name": "FULFILLMENT_CANCELED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1087,7 +1087,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 200,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L200"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L200"
 										}
 									],
 									"type": {
@@ -1097,7 +1097,7 @@
 									"defaultValue": "\"order.fulfillment_canceled\""
 								},
 								{
-									"id": 67348,
+									"id": 67444,
 									"name": "RETURN_REQUESTED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1146,7 +1146,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 213,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L213"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L213"
 										}
 									],
 									"type": {
@@ -1156,7 +1156,7 @@
 									"defaultValue": "\"order.return_requested\""
 								},
 								{
-									"id": 67349,
+									"id": 67445,
 									"name": "RETURN_RECEIVED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1205,7 +1205,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 225,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L225"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L225"
 										}
 									],
 									"type": {
@@ -1215,7 +1215,7 @@
 									"defaultValue": "\"order.return_received\""
 								},
 								{
-									"id": 67350,
+									"id": 67446,
 									"name": "CLAIM_CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1264,7 +1264,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 238,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L238"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L238"
 										}
 									],
 									"type": {
@@ -1274,7 +1274,7 @@
 									"defaultValue": "\"order.claim_created\""
 								},
 								{
-									"id": 67351,
+									"id": 67447,
 									"name": "EXCHANGE_CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1323,7 +1323,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 250,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L250"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L250"
 										}
 									],
 									"type": {
@@ -1333,7 +1333,7 @@
 									"defaultValue": "\"order.exchange_created\""
 								},
 								{
-									"id": 67352,
+									"id": 67448,
 									"name": "TRANSFER_REQUESTED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1382,7 +1382,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 264,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L264"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L264"
 										}
 									],
 									"type": {
@@ -1396,18 +1396,18 @@
 								{
 									"title": "Properties",
 									"children": [
-										67341,
-										67342,
-										67343,
-										67344,
-										67345,
-										67346,
-										67347,
-										67348,
-										67349,
-										67350,
-										67351,
-										67352
+										67437,
+										67438,
+										67439,
+										67440,
+										67441,
+										67442,
+										67443,
+										67444,
+										67445,
+										67446,
+										67447,
+										67448
 									]
 								}
 							]
@@ -1416,7 +1416,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 67353,
+					"id": 67449,
 					"name": "OrderEditWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -1442,20 +1442,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 271,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L271"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L271"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67354,
+							"id": 67450,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67355,
+									"id": 67451,
 									"name": "REQUESTED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1513,7 +1513,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 286,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L286"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L286"
 										}
 									],
 									"type": {
@@ -1523,7 +1523,7 @@
 									"defaultValue": "\"order-edit.requested\""
 								},
 								{
-									"id": 67356,
+									"id": 67452,
 									"name": "CONFIRMED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1581,7 +1581,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 301,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L301"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L301"
 										}
 									],
 									"type": {
@@ -1591,7 +1591,7 @@
 									"defaultValue": "\"order-edit.confirmed\""
 								},
 								{
-									"id": 67357,
+									"id": 67453,
 									"name": "CANCELED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1649,7 +1649,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 315,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L315"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L315"
 										}
 									],
 									"type": {
@@ -1663,9 +1663,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67355,
-										67356,
-										67357
+										67451,
+										67452,
+										67453
 									]
 								}
 							]
@@ -1678,8 +1678,8 @@
 				{
 					"title": "Variables",
 					"children": [
-						67339,
-						67353
+						67435,
+						67449
 					]
 				}
 			],
@@ -1687,26 +1687,26 @@
 				{
 					"title": "Order",
 					"children": [
-						67339
+						67435
 					]
 				},
 				{
 					"title": "Order Edit",
 					"children": [
-						67353
+						67449
 					]
 				}
 			]
 		},
 		{
-			"id": 67489,
+			"id": 67585,
 			"name": "User",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 67358,
+					"id": 67454,
 					"name": "UserWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -1732,20 +1732,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 322,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L322"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L322"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67359,
+							"id": 67455,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67360,
+									"id": 67456,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1794,7 +1794,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 333,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L333"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L333"
 										}
 									],
 									"type": {
@@ -1804,7 +1804,7 @@
 									"defaultValue": "\"user.created\""
 								},
 								{
-									"id": 67361,
+									"id": 67457,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1853,7 +1853,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 344,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L344"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L344"
 										}
 									],
 									"type": {
@@ -1863,7 +1863,7 @@
 									"defaultValue": "\"user.updated\""
 								},
 								{
-									"id": 67362,
+									"id": 67458,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -1912,7 +1912,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 355,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L355"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L355"
 										}
 									],
 									"type": {
@@ -1926,9 +1926,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67360,
-										67361,
-										67362
+										67456,
+										67457,
+										67458
 									]
 								}
 							]
@@ -1937,7 +1937,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 67431,
+					"id": 67527,
 					"name": "InviteWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -1963,20 +1963,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 974,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L974"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L974"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67432,
+							"id": 67528,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67433,
+									"id": 67529,
 									"name": "ACCEPTED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2025,7 +2025,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 985,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L985"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L985"
 										}
 									],
 									"type": {
@@ -2035,7 +2035,7 @@
 									"defaultValue": "\"invite.accepted\""
 								},
 								{
-									"id": 67434,
+									"id": 67530,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2084,7 +2084,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 997,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L997"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L997"
 										}
 									],
 									"type": {
@@ -2094,7 +2094,7 @@
 									"defaultValue": "\"invite.created\""
 								},
 								{
-									"id": 67435,
+									"id": 67531,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2143,7 +2143,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1008,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1008"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1008"
 										}
 									],
 									"type": {
@@ -2153,7 +2153,7 @@
 									"defaultValue": "\"invite.deleted\""
 								},
 								{
-									"id": 67436,
+									"id": 67532,
 									"name": "RESENT",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2202,7 +2202,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1021,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1021"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1021"
 										}
 									],
 									"type": {
@@ -2216,10 +2216,10 @@
 								{
 									"title": "Properties",
 									"children": [
-										67433,
-										67434,
-										67435,
-										67436
+										67529,
+										67530,
+										67531,
+										67532
 									]
 								}
 							]
@@ -2232,8 +2232,8 @@
 				{
 					"title": "Variables",
 					"children": [
-						67358,
-						67431
+						67454,
+						67527
 					]
 				}
 			],
@@ -2241,26 +2241,26 @@
 				{
 					"title": "User",
 					"children": [
-						67358
+						67454
 					]
 				},
 				{
 					"title": "Invite",
 					"children": [
-						67431
+						67527
 					]
 				}
 			]
 		},
 		{
-			"id": 67490,
+			"id": 67586,
 			"name": "Auth",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 67481,
+					"id": 67577,
 					"name": "AuthEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -2286,20 +2286,20 @@
 							"fileName": "auth/events.ts",
 							"line": 5,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/auth/events.ts#L5"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/auth/events.ts#L5"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67482,
+							"id": 67578,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67483,
+									"id": 67579,
 									"name": "MFA_ENABLED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2357,7 +2357,7 @@
 											"fileName": "auth/events.ts",
 											"line": 19,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/auth/events.ts#L19"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/auth/events.ts#L19"
 										}
 									],
 									"type": {
@@ -2367,7 +2367,7 @@
 									"defaultValue": "\"auth.mfa_enabled\""
 								},
 								{
-									"id": 67484,
+									"id": 67580,
 									"name": "MFA_DISABLED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2425,7 +2425,7 @@
 											"fileName": "auth/events.ts",
 											"line": 33,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/auth/events.ts#L33"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/auth/events.ts#L33"
 										}
 									],
 									"type": {
@@ -2435,7 +2435,7 @@
 									"defaultValue": "\"auth.mfa_disabled\""
 								},
 								{
-									"id": 67485,
+									"id": 67581,
 									"name": "MFA_RECOVERY_CODES_GENERATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2493,7 +2493,7 @@
 											"fileName": "auth/events.ts",
 											"line": 46,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/auth/events.ts#L46"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/auth/events.ts#L46"
 										}
 									],
 									"type": {
@@ -2507,9 +2507,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67483,
-										67484,
-										67485
+										67579,
+										67580,
+										67581
 									]
 								}
 							]
@@ -2518,7 +2518,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 67363,
+					"id": 67459,
 					"name": "AuthWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -2544,20 +2544,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 362,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L362"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L362"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67364,
+							"id": 67460,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67365,
+									"id": 67461,
 									"name": "PASSWORD_RESET",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2606,7 +2606,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 377,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L377"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L377"
 										}
 									],
 									"type": {
@@ -2616,7 +2616,7 @@
 									"defaultValue": "\"auth.password_reset\""
 								},
 								{
-									"id": 67366,
+									"id": 67462,
 									"name": "VERIFICATION_REQUESTED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2714,7 +2714,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 401,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L401"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L401"
 										}
 									],
 									"type": {
@@ -2728,8 +2728,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										67365,
-										67366
+										67461,
+										67462
 									]
 								}
 							]
@@ -2742,8 +2742,8 @@
 				{
 					"title": "Variables",
 					"children": [
-						67481,
-						67363
+						67577,
+						67459
 					]
 				}
 			],
@@ -2751,21 +2751,21 @@
 				{
 					"title": "Auth",
 					"children": [
-						67363,
-						67481
+						67459,
+						67577
 					]
 				}
 			]
 		},
 		{
-			"id": 67491,
+			"id": 67587,
 			"name": "Sales Channel",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 67367,
+					"id": 67463,
 					"name": "SalesChannelWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -2791,20 +2791,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 408,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L408"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L408"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67368,
+							"id": 67464,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67369,
+									"id": 67465,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2853,7 +2853,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 419,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L419"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L419"
 										}
 									],
 									"type": {
@@ -2863,7 +2863,7 @@
 									"defaultValue": "\"sales-channel.created\""
 								},
 								{
-									"id": 67370,
+									"id": 67466,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2912,7 +2912,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 430,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L430"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L430"
 										}
 									],
 									"type": {
@@ -2922,7 +2922,7 @@
 									"defaultValue": "\"sales-channel.updated\""
 								},
 								{
-									"id": 67371,
+									"id": 67467,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -2971,7 +2971,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 441,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L441"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L441"
 										}
 									],
 									"type": {
@@ -2985,9 +2985,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67369,
-										67370,
-										67371
+										67465,
+										67466,
+										67467
 									]
 								}
 							]
@@ -3000,7 +3000,7 @@
 				{
 					"title": "Variables",
 					"children": [
-						67367
+						67463
 					]
 				}
 			],
@@ -3008,20 +3008,20 @@
 				{
 					"title": "Sales Channel",
 					"children": [
-						67367
+						67463
 					]
 				}
 			]
 		},
 		{
-			"id": 67492,
+			"id": 67588,
 			"name": "Product",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 67372,
+					"id": 67468,
 					"name": "ProductCategoryWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -3047,20 +3047,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 448,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L448"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L448"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67373,
+							"id": 67469,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67374,
+									"id": 67470,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3109,7 +3109,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 459,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L459"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L459"
 										}
 									],
 									"type": {
@@ -3119,7 +3119,7 @@
 									"defaultValue": "\"product-category.created\""
 								},
 								{
-									"id": 67375,
+									"id": 67471,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3168,7 +3168,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 470,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L470"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L470"
 										}
 									],
 									"type": {
@@ -3178,7 +3178,7 @@
 									"defaultValue": "\"product-category.updated\""
 								},
 								{
-									"id": 67376,
+									"id": 67472,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3227,7 +3227,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 481,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L481"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L481"
 										}
 									],
 									"type": {
@@ -3241,9 +3241,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67374,
-										67375,
-										67376
+										67470,
+										67471,
+										67472
 									]
 								}
 							]
@@ -3252,7 +3252,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 67377,
+					"id": 67473,
 					"name": "ProductCollectionWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -3278,20 +3278,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 488,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L488"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L488"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67378,
+							"id": 67474,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67379,
+									"id": 67475,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3340,7 +3340,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 499,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L499"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L499"
 										}
 									],
 									"type": {
@@ -3350,7 +3350,7 @@
 									"defaultValue": "\"product-collection.created\""
 								},
 								{
-									"id": 67380,
+									"id": 67476,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3399,7 +3399,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 510,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L510"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L510"
 										}
 									],
 									"type": {
@@ -3409,7 +3409,7 @@
 									"defaultValue": "\"product-collection.updated\""
 								},
 								{
-									"id": 67381,
+									"id": 67477,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3458,7 +3458,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 521,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L521"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L521"
 										}
 									],
 									"type": {
@@ -3472,9 +3472,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67379,
-										67380,
-										67381
+										67475,
+										67476,
+										67477
 									]
 								}
 							]
@@ -3483,7 +3483,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 67382,
+					"id": 67478,
 					"name": "ProductVariantWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -3509,20 +3509,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 528,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L528"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L528"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67383,
+							"id": 67479,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67384,
+									"id": 67480,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3571,7 +3571,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 539,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L539"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L539"
 										}
 									],
 									"type": {
@@ -3581,7 +3581,7 @@
 									"defaultValue": "\"product-variant.updated\""
 								},
 								{
-									"id": 67385,
+									"id": 67481,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3630,7 +3630,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 550,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L550"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L550"
 										}
 									],
 									"type": {
@@ -3640,7 +3640,7 @@
 									"defaultValue": "\"product-variant.created\""
 								},
 								{
-									"id": 67386,
+									"id": 67482,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3689,7 +3689,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 561,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L561"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L561"
 										}
 									],
 									"type": {
@@ -3703,9 +3703,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67384,
-										67385,
-										67386
+										67480,
+										67481,
+										67482
 									]
 								}
 							]
@@ -3714,7 +3714,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 67387,
+					"id": 67483,
 					"name": "ProductWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -3740,20 +3740,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 568,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L568"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L568"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67388,
+							"id": 67484,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67389,
+									"id": 67485,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3802,7 +3802,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 579,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L579"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L579"
 										}
 									],
 									"type": {
@@ -3812,7 +3812,7 @@
 									"defaultValue": "\"product.updated\""
 								},
 								{
-									"id": 67390,
+									"id": 67486,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3861,7 +3861,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 590,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L590"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L590"
 										}
 									],
 									"type": {
@@ -3871,7 +3871,7 @@
 									"defaultValue": "\"product.created\""
 								},
 								{
-									"id": 67391,
+									"id": 67487,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -3920,7 +3920,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 601,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L601"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L601"
 										}
 									],
 									"type": {
@@ -3934,9 +3934,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67389,
-										67390,
-										67391
+										67485,
+										67486,
+										67487
 									]
 								}
 							]
@@ -3945,7 +3945,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 67392,
+					"id": 67488,
 					"name": "ProductTypeWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -3971,20 +3971,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 608,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L608"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L608"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67393,
+							"id": 67489,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67394,
+									"id": 67490,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -4033,7 +4033,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 619,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L619"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L619"
 										}
 									],
 									"type": {
@@ -4043,7 +4043,7 @@
 									"defaultValue": "\"product-type.updated\""
 								},
 								{
-									"id": 67395,
+									"id": 67491,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -4092,7 +4092,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 630,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L630"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L630"
 										}
 									],
 									"type": {
@@ -4102,7 +4102,7 @@
 									"defaultValue": "\"product-type.created\""
 								},
 								{
-									"id": 67396,
+									"id": 67492,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -4151,7 +4151,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 641,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L641"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L641"
 										}
 									],
 									"type": {
@@ -4165,9 +4165,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67394,
-										67395,
-										67396
+										67490,
+										67491,
+										67492
 									]
 								}
 							]
@@ -4176,7 +4176,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 67397,
+					"id": 67493,
 					"name": "ProductTagWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -4202,20 +4202,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 648,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L648"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L648"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67398,
+							"id": 67494,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67399,
+									"id": 67495,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -4264,7 +4264,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 659,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L659"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L659"
 										}
 									],
 									"type": {
@@ -4274,7 +4274,7 @@
 									"defaultValue": "\"product-tag.updated\""
 								},
 								{
-									"id": 67400,
+									"id": 67496,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -4323,7 +4323,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 670,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L670"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L670"
 										}
 									],
 									"type": {
@@ -4333,7 +4333,7 @@
 									"defaultValue": "\"product-tag.created\""
 								},
 								{
-									"id": 67401,
+									"id": 67497,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -4382,7 +4382,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 681,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L681"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L681"
 										}
 									],
 									"type": {
@@ -4396,9 +4396,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67399,
-										67400,
-										67401
+										67495,
+										67496,
+										67497
 									]
 								}
 							]
@@ -4407,7 +4407,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 67402,
+					"id": 67498,
 					"name": "ProductOptionWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -4433,20 +4433,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 688,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L688"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L688"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67403,
+							"id": 67499,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67404,
+									"id": 67500,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -4495,7 +4495,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 699,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L699"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L699"
 										}
 									],
 									"type": {
@@ -4505,7 +4505,7 @@
 									"defaultValue": "\"product-option.updated\""
 								},
 								{
-									"id": 67405,
+									"id": 67501,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -4554,7 +4554,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 710,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L710"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L710"
 										}
 									],
 									"type": {
@@ -4564,7 +4564,7 @@
 									"defaultValue": "\"product-option.created\""
 								},
 								{
-									"id": 67406,
+									"id": 67502,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -4613,7 +4613,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 721,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L721"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L721"
 										}
 									],
 									"type": {
@@ -4627,9 +4627,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67404,
-										67405,
-										67406
+										67500,
+										67501,
+										67502
 									]
 								}
 							]
@@ -4638,7 +4638,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 67407,
+					"id": 67503,
 					"name": "ProductOptionValueWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -4664,20 +4664,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 728,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L728"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L728"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67408,
+							"id": 67504,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67409,
+									"id": 67505,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -4735,7 +4735,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 741,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L741"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L741"
 										}
 									],
 									"type": {
@@ -4745,7 +4745,7 @@
 									"defaultValue": "\"product-option-value.updated\""
 								},
 								{
-									"id": 67410,
+									"id": 67506,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -4803,7 +4803,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 754,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L754"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L754"
 										}
 									],
 									"type": {
@@ -4817,8 +4817,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										67409,
-										67410
+										67505,
+										67506
 									]
 								}
 							]
@@ -4831,14 +4831,14 @@
 				{
 					"title": "Variables",
 					"children": [
-						67372,
-						67377,
-						67382,
-						67387,
-						67392,
-						67397,
-						67402,
-						67407
+						67468,
+						67473,
+						67478,
+						67483,
+						67488,
+						67493,
+						67498,
+						67503
 					]
 				}
 			],
@@ -4846,62 +4846,62 @@
 				{
 					"title": "Product Category",
 					"children": [
-						67372
+						67468
 					]
 				},
 				{
 					"title": "Product Collection",
 					"children": [
-						67377
+						67473
 					]
 				},
 				{
 					"title": "Product Variant",
 					"children": [
-						67382
+						67478
 					]
 				},
 				{
 					"title": "Product",
 					"children": [
-						67387
+						67483
 					]
 				},
 				{
 					"title": "Product Type",
 					"children": [
-						67392
+						67488
 					]
 				},
 				{
 					"title": "Product Tag",
 					"children": [
-						67397
+						67493
 					]
 				},
 				{
 					"title": "Product Option",
 					"children": [
-						67402
+						67498
 					]
 				},
 				{
 					"title": "Product Option Value",
 					"children": [
-						67407
+						67503
 					]
 				}
 			]
 		},
 		{
-			"id": 67493,
+			"id": 67589,
 			"name": "Pricing",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 67411,
+					"id": 67507,
 					"name": "PriceListWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -4927,20 +4927,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 761,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L761"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L761"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67412,
+							"id": 67508,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67413,
+									"id": 67509,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -4998,7 +4998,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 774,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L774"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L774"
 										}
 									],
 									"type": {
@@ -5008,7 +5008,7 @@
 									"defaultValue": "\"price-list.created\""
 								},
 								{
-									"id": 67414,
+									"id": 67510,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5066,7 +5066,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 787,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L787"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L787"
 										}
 									],
 									"type": {
@@ -5076,7 +5076,7 @@
 									"defaultValue": "\"price-list.updated\""
 								},
 								{
-									"id": 67415,
+									"id": 67511,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5134,7 +5134,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 800,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L800"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L800"
 										}
 									],
 									"type": {
@@ -5144,7 +5144,7 @@
 									"defaultValue": "\"price-list.deleted\""
 								},
 								{
-									"id": 67416,
+									"id": 67512,
 									"name": "PRICES_ADDED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5202,7 +5202,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 814,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L814"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L814"
 										}
 									],
 									"type": {
@@ -5212,7 +5212,7 @@
 									"defaultValue": "\"price-list.prices_added\""
 								},
 								{
-									"id": 67417,
+									"id": 67513,
 									"name": "PRICES_UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5270,7 +5270,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 828,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L828"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L828"
 										}
 									],
 									"type": {
@@ -5280,7 +5280,7 @@
 									"defaultValue": "\"price-list.prices_updated\""
 								},
 								{
-									"id": 67418,
+									"id": 67514,
 									"name": "PRICES_REMOVED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5338,7 +5338,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 842,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L842"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L842"
 										}
 									],
 									"type": {
@@ -5352,12 +5352,12 @@
 								{
 									"title": "Properties",
 									"children": [
-										67413,
-										67414,
-										67415,
-										67416,
-										67417,
-										67418
+										67509,
+										67510,
+										67511,
+										67512,
+										67513,
+										67514
 									]
 								}
 							]
@@ -5370,7 +5370,7 @@
 				{
 					"title": "Variables",
 					"children": [
-						67411
+						67507
 					]
 				}
 			],
@@ -5378,20 +5378,20 @@
 				{
 					"title": "Price List",
 					"children": [
-						67411
+						67507
 					]
 				}
 			]
 		},
 		{
-			"id": 67494,
+			"id": 67590,
 			"name": "Promotion",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 67419,
+					"id": 67515,
 					"name": "PromotionWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -5417,20 +5417,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 849,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L849"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L849"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67420,
+							"id": 67516,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67421,
+									"id": 67517,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5488,7 +5488,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 862,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L862"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L862"
 										}
 									],
 									"type": {
@@ -5498,7 +5498,7 @@
 									"defaultValue": "\"promotion.created\""
 								},
 								{
-									"id": 67422,
+									"id": 67518,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5556,7 +5556,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 875,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L875"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L875"
 										}
 									],
 									"type": {
@@ -5566,7 +5566,7 @@
 									"defaultValue": "\"promotion.updated\""
 								},
 								{
-									"id": 67423,
+									"id": 67519,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5624,7 +5624,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 888,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L888"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L888"
 										}
 									],
 									"type": {
@@ -5634,7 +5634,7 @@
 									"defaultValue": "\"promotion.deleted\""
 								},
 								{
-									"id": 67424,
+									"id": 67520,
 									"name": "RULES_UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5692,7 +5692,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 906,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L906"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L906"
 										}
 									],
 									"type": {
@@ -5706,10 +5706,10 @@
 								{
 									"title": "Properties",
 									"children": [
-										67421,
-										67422,
-										67423,
-										67424
+										67517,
+										67518,
+										67519,
+										67520
 									]
 								}
 							]
@@ -5718,7 +5718,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 67425,
+					"id": 67521,
 					"name": "CampaignWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -5744,20 +5744,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 913,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L913"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L913"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67426,
+							"id": 67522,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67427,
+									"id": 67523,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5815,7 +5815,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 926,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L926"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L926"
 										}
 									],
 									"type": {
@@ -5825,7 +5825,7 @@
 									"defaultValue": "\"campaign.created\""
 								},
 								{
-									"id": 67428,
+									"id": 67524,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5883,7 +5883,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 939,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L939"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L939"
 										}
 									],
 									"type": {
@@ -5893,7 +5893,7 @@
 									"defaultValue": "\"campaign.updated\""
 								},
 								{
-									"id": 67429,
+									"id": 67525,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -5951,7 +5951,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 952,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L952"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L952"
 										}
 									],
 									"type": {
@@ -5961,7 +5961,7 @@
 									"defaultValue": "\"campaign.deleted\""
 								},
 								{
-									"id": 67430,
+									"id": 67526,
 									"name": "PROMOTIONS_UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -6019,7 +6019,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 967,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L967"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L967"
 										}
 									],
 									"type": {
@@ -6033,10 +6033,10 @@
 								{
 									"title": "Properties",
 									"children": [
-										67427,
-										67428,
-										67429,
-										67430
+										67523,
+										67524,
+										67525,
+										67526
 									]
 								}
 							]
@@ -6049,8 +6049,8 @@
 				{
 					"title": "Variables",
 					"children": [
-						67419,
-						67425
+						67515,
+						67521
 					]
 				}
 			],
@@ -6058,26 +6058,26 @@
 				{
 					"title": "Promotion",
 					"children": [
-						67419
+						67515
 					]
 				},
 				{
 					"title": "Campaign",
 					"children": [
-						67425
+						67521
 					]
 				}
 			]
 		},
 		{
-			"id": 67495,
+			"id": 67591,
 			"name": "Region",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 67437,
+					"id": 67533,
 					"name": "RegionWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -6103,20 +6103,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 1028,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1028"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1028"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67438,
+							"id": 67534,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67439,
+									"id": 67535,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -6165,7 +6165,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1039,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1039"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1039"
 										}
 									],
 									"type": {
@@ -6175,7 +6175,7 @@
 									"defaultValue": "\"region.updated\""
 								},
 								{
-									"id": 67440,
+									"id": 67536,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -6224,7 +6224,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1050,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1050"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1050"
 										}
 									],
 									"type": {
@@ -6234,7 +6234,7 @@
 									"defaultValue": "\"region.created\""
 								},
 								{
-									"id": 67441,
+									"id": 67537,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -6283,7 +6283,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1061,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1061"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1061"
 										}
 									],
 									"type": {
@@ -6297,9 +6297,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67439,
-										67440,
-										67441
+										67535,
+										67536,
+										67537
 									]
 								}
 							]
@@ -6312,7 +6312,7 @@
 				{
 					"title": "Variables",
 					"children": [
-						67437
+						67533
 					]
 				}
 			],
@@ -6320,20 +6320,20 @@
 				{
 					"title": "Region",
 					"children": [
-						67437
+						67533
 					]
 				}
 			]
 		},
 		{
-			"id": 67496,
+			"id": 67592,
 			"name": "Fulfillment",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 67442,
+					"id": 67538,
 					"name": "FulfillmentWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -6359,20 +6359,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 1068,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1068"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1068"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67443,
+							"id": 67539,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67444,
+									"id": 67540,
 									"name": "SHIPMENT_CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -6421,7 +6421,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1080,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1080"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1080"
 										}
 									],
 									"type": {
@@ -6431,7 +6431,7 @@
 									"defaultValue": "\"shipment.created\""
 								},
 								{
-									"id": 67445,
+									"id": 67541,
 									"name": "DELIVERY_CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -6480,7 +6480,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1091,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1091"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1091"
 										}
 									],
 									"type": {
@@ -6494,8 +6494,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										67444,
-										67445
+										67540,
+										67541
 									]
 								}
 							]
@@ -6504,7 +6504,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 67446,
+					"id": 67542,
 					"name": "ShippingOptionTypeWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -6530,20 +6530,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 1098,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1098"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1098"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67447,
+							"id": 67543,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67448,
+									"id": 67544,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -6601,7 +6601,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1111,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1111"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1111"
 										}
 									],
 									"type": {
@@ -6611,7 +6611,7 @@
 									"defaultValue": "\"shipping-option-type.updated\""
 								},
 								{
-									"id": 67449,
+									"id": 67545,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -6669,7 +6669,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1124,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1124"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1124"
 										}
 									],
 									"type": {
@@ -6679,7 +6679,7 @@
 									"defaultValue": "\"shipping-option-type.created\""
 								},
 								{
-									"id": 67450,
+									"id": 67546,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -6737,7 +6737,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1137,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1137"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1137"
 										}
 									],
 									"type": {
@@ -6751,9 +6751,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67448,
-										67449,
-										67450
+										67544,
+										67545,
+										67546
 									]
 								}
 							]
@@ -6762,7 +6762,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 67451,
+					"id": 67547,
 					"name": "ShippingOptionWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -6788,20 +6788,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 1144,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1144"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1144"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67452,
+							"id": 67548,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67453,
+									"id": 67549,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -6859,7 +6859,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1157,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1157"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1157"
 										}
 									],
 									"type": {
@@ -6869,7 +6869,7 @@
 									"defaultValue": "\"shipping-option.created\""
 								},
 								{
-									"id": 67454,
+									"id": 67550,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -6927,7 +6927,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1170,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1170"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1170"
 										}
 									],
 									"type": {
@@ -6937,7 +6937,7 @@
 									"defaultValue": "\"shipping-option.updated\""
 								},
 								{
-									"id": 67455,
+									"id": 67551,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -6995,7 +6995,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1183,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1183"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1183"
 										}
 									],
 									"type": {
@@ -7009,9 +7009,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67453,
-										67454,
-										67455
+										67549,
+										67550,
+										67551
 									]
 								}
 							]
@@ -7024,9 +7024,9 @@
 				{
 					"title": "Variables",
 					"children": [
-						67442,
-						67446,
-						67451
+						67538,
+						67542,
+						67547
 					]
 				}
 			],
@@ -7034,32 +7034,32 @@
 				{
 					"title": "Fulfillment",
 					"children": [
-						67442
+						67538
 					]
 				},
 				{
 					"title": "Shipping Option Type",
 					"children": [
-						67446
+						67542
 					]
 				},
 				{
 					"title": "Shipping Option",
 					"children": [
-						67451
+						67547
 					]
 				}
 			]
 		},
 		{
-			"id": 67497,
+			"id": 67593,
 			"name": "Payment",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 67456,
+					"id": 67552,
 					"name": "PaymentEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -7085,20 +7085,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 1190,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1190"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1190"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67457,
+							"id": 67553,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67458,
+									"id": 67554,
 									"name": "CAPTURED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7147,7 +7147,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1201,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1201"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1201"
 										}
 									],
 									"type": {
@@ -7157,7 +7157,7 @@
 									"defaultValue": "\"payment.captured\""
 								},
 								{
-									"id": 67459,
+									"id": 67555,
 									"name": "REFUNDED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7206,7 +7206,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1212,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1212"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1212"
 										}
 									],
 									"type": {
@@ -7220,8 +7220,8 @@
 								{
 									"title": "Properties",
 									"children": [
-										67458,
-										67459
+										67554,
+										67555
 									]
 								}
 							]
@@ -7234,7 +7234,7 @@
 				{
 					"title": "Variables",
 					"children": [
-						67456
+						67552
 					]
 				}
 			],
@@ -7242,20 +7242,20 @@
 				{
 					"title": "Payment",
 					"children": [
-						67456
+						67552
 					]
 				}
 			]
 		},
 		{
-			"id": 67498,
+			"id": 67594,
 			"name": "Translation",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 67460,
+					"id": 67556,
 					"name": "TranslationWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -7281,20 +7281,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 1219,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1219"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1219"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67461,
+							"id": 67557,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67462,
+									"id": 67558,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7352,7 +7352,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1231,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1231"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1231"
 										}
 									],
 									"type": {
@@ -7362,7 +7362,7 @@
 									"defaultValue": "\"translation.created\""
 								},
 								{
-									"id": 67463,
+									"id": 67559,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7420,7 +7420,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1243,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1243"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1243"
 										}
 									],
 									"type": {
@@ -7430,7 +7430,7 @@
 									"defaultValue": "\"translation.updated\""
 								},
 								{
-									"id": 67464,
+									"id": 67560,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7488,7 +7488,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1255,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1255"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1255"
 										}
 									],
 									"type": {
@@ -7502,9 +7502,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67462,
-										67463,
-										67464
+										67558,
+										67559,
+										67560
 									]
 								}
 							]
@@ -7517,7 +7517,7 @@
 				{
 					"title": "Variables",
 					"children": [
-						67460
+						67556
 					]
 				}
 			],
@@ -7525,20 +7525,20 @@
 				{
 					"title": "Translation",
 					"children": [
-						67460
+						67556
 					]
 				}
 			]
 		},
 		{
-			"id": 67499,
+			"id": 67595,
 			"name": "Inventory",
 			"variant": "declaration",
 			"kind": 4,
 			"flags": {},
 			"children": [
 				{
-					"id": 67465,
+					"id": 67561,
 					"name": "InventoryItemWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -7564,20 +7564,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 1262,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1262"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1262"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67466,
+							"id": 67562,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67467,
+									"id": 67563,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7635,7 +7635,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1275,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1275"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1275"
 										}
 									],
 									"type": {
@@ -7645,7 +7645,7 @@
 									"defaultValue": "\"inventory-item.created\""
 								},
 								{
-									"id": 67468,
+									"id": 67564,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7703,7 +7703,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1288,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1288"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1288"
 										}
 									],
 									"type": {
@@ -7713,7 +7713,7 @@
 									"defaultValue": "\"inventory-item.updated\""
 								},
 								{
-									"id": 67469,
+									"id": 67565,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7771,7 +7771,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1301,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1301"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1301"
 										}
 									],
 									"type": {
@@ -7785,9 +7785,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67467,
-										67468,
-										67469
+										67563,
+										67564,
+										67565
 									]
 								}
 							]
@@ -7796,7 +7796,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 67470,
+					"id": 67566,
 					"name": "InventoryLevelWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -7822,20 +7822,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 1308,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1308"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1308"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67471,
+							"id": 67567,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67472,
+									"id": 67568,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7893,7 +7893,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1321,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1321"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1321"
 										}
 									],
 									"type": {
@@ -7903,7 +7903,7 @@
 									"defaultValue": "\"inventory-level.created\""
 								},
 								{
-									"id": 67473,
+									"id": 67569,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -7961,7 +7961,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1336,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1336"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1336"
 										}
 									],
 									"type": {
@@ -7971,7 +7971,7 @@
 									"defaultValue": "\"inventory-level.updated\""
 								},
 								{
-									"id": 67474,
+									"id": 67570,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8029,7 +8029,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1349,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1349"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1349"
 										}
 									],
 									"type": {
@@ -8043,9 +8043,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67472,
-										67473,
-										67474
+										67568,
+										67569,
+										67570
 									]
 								}
 							]
@@ -8054,7 +8054,7 @@
 					"defaultValue": "..."
 				},
 				{
-					"id": 67475,
+					"id": 67571,
 					"name": "ReservationItemWorkflowEvents",
 					"variant": "declaration",
 					"kind": 32,
@@ -8080,20 +8080,20 @@
 							"fileName": "core-flows/events.ts",
 							"line": 1356,
 							"character": 13,
-							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1356"
+							"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1356"
 						}
 					],
 					"type": {
 						"type": "reflection",
 						"declaration": {
-							"id": 67476,
+							"id": 67572,
 							"name": "__type",
 							"variant": "declaration",
 							"kind": 65536,
 							"flags": {},
 							"children": [
 								{
-									"id": 67477,
+									"id": 67573,
 									"name": "CREATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8151,7 +8151,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1370,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1370"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1370"
 										}
 									],
 									"type": {
@@ -8161,7 +8161,7 @@
 									"defaultValue": "\"reservation-item.created\""
 								},
 								{
-									"id": 67478,
+									"id": 67574,
 									"name": "UPDATED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8219,7 +8219,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1384,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1384"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1384"
 										}
 									],
 									"type": {
@@ -8229,7 +8229,7 @@
 									"defaultValue": "\"reservation-item.updated\""
 								},
 								{
-									"id": 67479,
+									"id": 67575,
 									"name": "DELETED",
 									"variant": "declaration",
 									"kind": 1024,
@@ -8287,7 +8287,7 @@
 											"fileName": "core-flows/events.ts",
 											"line": 1398,
 											"character": 2,
-											"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/utils/src/core-flows/events.ts#L1398"
+											"url": "https://github.com/medusajs/medusa/blob/c2e715d7ee2aafae72bf7d4866b8795536e968c5/packages/core/utils/src/core-flows/events.ts#L1398"
 										}
 									],
 									"type": {
@@ -8301,9 +8301,9 @@
 								{
 									"title": "Properties",
 									"children": [
-										67477,
-										67478,
-										67479
+										67573,
+										67574,
+										67575
 									]
 								}
 							]
@@ -8316,9 +8316,9 @@
 				{
 					"title": "Variables",
 					"children": [
-						67465,
-						67470,
-						67475
+						67561,
+						67566,
+						67571
 					]
 				}
 			],
@@ -8326,19 +8326,19 @@
 				{
 					"title": "Inventory Item",
 					"children": [
-						67465
+						67561
 					]
 				},
 				{
 					"title": "Inventory Level",
 					"children": [
-						67470
+						67566
 					]
 				},
 				{
 					"title": "Reservation Item",
 					"children": [
-						67475
+						67571
 					]
 				}
 			]
@@ -8348,828 +8348,828 @@
 		{
 			"title": "Modules",
 			"children": [
-				67480,
-				67326
+				67576,
+				67422
 			]
 		},
 		{
 			"title": "Namespaces",
 			"children": [
-				67486,
-				67487,
-				67488,
-				67489,
-				67490,
-				67491,
-				67492,
-				67493,
-				67494,
-				67495,
-				67496,
-				67497,
-				67498,
-				67499
+				67582,
+				67583,
+				67584,
+				67585,
+				67586,
+				67587,
+				67588,
+				67589,
+				67590,
+				67591,
+				67592,
+				67593,
+				67594,
+				67595
 			]
 		}
 	],
 	"packageName": "@medusajs/utils",
 	"symbolIdMap": {
-		"67326": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": ""
-		},
-		"67327": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "CartWorkflowEvents"
-		},
-		"67328": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67329": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
-		},
-		"67330": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
-		},
-		"67331": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CUSTOMER_UPDATED"
-		},
-		"67332": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.REGION_UPDATED"
-		},
-		"67333": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CUSTOMER_TRANSFERRED"
-		},
-		"67334": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "CustomerWorkflowEvents"
-		},
-		"67335": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67336": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
-		},
-		"67337": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
-		},
-		"67338": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
-		},
-		"67339": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "OrderWorkflowEvents"
-		},
-		"67340": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67341": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
-		},
-		"67342": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.PLACED"
-		},
-		"67343": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CANCELED"
-		},
-		"67344": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.COMPLETED"
-		},
-		"67345": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.ARCHIVED"
-		},
-		"67346": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.FULFILLMENT_CREATED"
-		},
-		"67347": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.FULFILLMENT_CANCELED"
-		},
-		"67348": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.RETURN_REQUESTED"
-		},
-		"67349": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.RETURN_RECEIVED"
-		},
-		"67350": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CLAIM_CREATED"
-		},
-		"67351": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.EXCHANGE_CREATED"
-		},
-		"67352": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.TRANSFER_REQUESTED"
-		},
-		"67353": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "OrderEditWorkflowEvents"
-		},
-		"67354": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67355": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.REQUESTED"
-		},
-		"67356": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CONFIRMED"
-		},
-		"67357": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CANCELED"
-		},
-		"67358": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "UserWorkflowEvents"
-		},
-		"67359": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67360": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
-		},
-		"67361": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
-		},
-		"67362": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
-		},
-		"67363": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "AuthWorkflowEvents"
-		},
-		"67364": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67365": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.PASSWORD_RESET"
-		},
-		"67366": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.VERIFICATION_REQUESTED"
-		},
-		"67367": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "SalesChannelWorkflowEvents"
-		},
-		"67368": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67369": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
-		},
-		"67370": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
-		},
-		"67371": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
-		},
-		"67372": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "ProductCategoryWorkflowEvents"
-		},
-		"67373": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67374": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
-		},
-		"67375": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
-		},
-		"67376": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
-		},
-		"67377": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "ProductCollectionWorkflowEvents"
-		},
-		"67378": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67379": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
-		},
-		"67380": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
-		},
-		"67381": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
-		},
-		"67382": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "ProductVariantWorkflowEvents"
-		},
-		"67383": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67384": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
-		},
-		"67385": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
-		},
-		"67386": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
-		},
-		"67387": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "ProductWorkflowEvents"
-		},
-		"67388": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67389": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
-		},
-		"67390": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
-		},
-		"67391": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
-		},
-		"67392": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "ProductTypeWorkflowEvents"
-		},
-		"67393": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67394": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
-		},
-		"67395": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
-		},
-		"67396": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
-		},
-		"67397": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "ProductTagWorkflowEvents"
-		},
-		"67398": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67399": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
-		},
-		"67400": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
-		},
-		"67401": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
-		},
-		"67402": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "ProductOptionWorkflowEvents"
-		},
-		"67403": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67404": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
-		},
-		"67405": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
-		},
-		"67406": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
-		},
-		"67407": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "ProductOptionValueWorkflowEvents"
-		},
-		"67408": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67409": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
-		},
-		"67410": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
-		},
-		"67411": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "PriceListWorkflowEvents"
-		},
-		"67412": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67413": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
-		},
-		"67414": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
-		},
-		"67415": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
-		},
-		"67416": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.PRICES_ADDED"
-		},
-		"67417": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.PRICES_UPDATED"
-		},
-		"67418": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.PRICES_REMOVED"
-		},
-		"67419": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "PromotionWorkflowEvents"
-		},
-		"67420": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
-		},
-		"67421": {
-			"packageName": "@medusajs/utils",
-			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
-		},
 		"67422": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
+			"qualifiedName": ""
 		},
 		"67423": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
+			"qualifiedName": "CartWorkflowEvents"
 		},
 		"67424": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.RULES_UPDATED"
+			"qualifiedName": "__object"
 		},
 		"67425": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "CampaignWorkflowEvents"
+			"qualifiedName": "__object.CREATED"
 		},
 		"67426": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.UPDATED"
 		},
 		"67427": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
+			"qualifiedName": "__object.CUSTOMER_UPDATED"
 		},
 		"67428": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
+			"qualifiedName": "__object.REGION_UPDATED"
 		},
 		"67429": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
+			"qualifiedName": "__object.CUSTOMER_TRANSFERRED"
 		},
 		"67430": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.PROMOTIONS_UPDATED"
+			"qualifiedName": "CustomerWorkflowEvents"
 		},
 		"67431": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "InviteWorkflowEvents"
+			"qualifiedName": "__object"
 		},
 		"67432": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.CREATED"
 		},
 		"67433": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.ACCEPTED"
+			"qualifiedName": "__object.UPDATED"
 		},
 		"67434": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
+			"qualifiedName": "__object.DELETED"
 		},
 		"67435": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
+			"qualifiedName": "OrderWorkflowEvents"
 		},
 		"67436": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.RESENT"
+			"qualifiedName": "__object"
 		},
 		"67437": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "RegionWorkflowEvents"
+			"qualifiedName": "__object.UPDATED"
 		},
 		"67438": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.PLACED"
 		},
 		"67439": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
+			"qualifiedName": "__object.CANCELED"
 		},
 		"67440": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
+			"qualifiedName": "__object.COMPLETED"
 		},
 		"67441": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
+			"qualifiedName": "__object.ARCHIVED"
 		},
 		"67442": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "FulfillmentWorkflowEvents"
+			"qualifiedName": "__object.FULFILLMENT_CREATED"
 		},
 		"67443": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.FULFILLMENT_CANCELED"
 		},
 		"67444": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.SHIPMENT_CREATED"
+			"qualifiedName": "__object.RETURN_REQUESTED"
 		},
 		"67445": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELIVERY_CREATED"
+			"qualifiedName": "__object.RETURN_RECEIVED"
 		},
 		"67446": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "ShippingOptionTypeWorkflowEvents"
+			"qualifiedName": "__object.CLAIM_CREATED"
 		},
 		"67447": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.EXCHANGE_CREATED"
 		},
 		"67448": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
+			"qualifiedName": "__object.TRANSFER_REQUESTED"
 		},
 		"67449": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
+			"qualifiedName": "OrderEditWorkflowEvents"
 		},
 		"67450": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
+			"qualifiedName": "__object"
 		},
 		"67451": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "ShippingOptionWorkflowEvents"
+			"qualifiedName": "__object.REQUESTED"
 		},
 		"67452": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.CONFIRMED"
 		},
 		"67453": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
+			"qualifiedName": "__object.CANCELED"
 		},
 		"67454": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
+			"qualifiedName": "UserWorkflowEvents"
 		},
 		"67455": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
+			"qualifiedName": "__object"
 		},
 		"67456": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "PaymentEvents"
+			"qualifiedName": "__object.CREATED"
 		},
 		"67457": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.UPDATED"
 		},
 		"67458": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CAPTURED"
+			"qualifiedName": "__object.DELETED"
 		},
 		"67459": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.REFUNDED"
+			"qualifiedName": "AuthWorkflowEvents"
 		},
 		"67460": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "TranslationWorkflowEvents"
+			"qualifiedName": "__object"
 		},
 		"67461": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.PASSWORD_RESET"
 		},
 		"67462": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
+			"qualifiedName": "__object.VERIFICATION_REQUESTED"
 		},
 		"67463": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
+			"qualifiedName": "SalesChannelWorkflowEvents"
 		},
 		"67464": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
+			"qualifiedName": "__object"
 		},
 		"67465": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "InventoryItemWorkflowEvents"
+			"qualifiedName": "__object.CREATED"
 		},
 		"67466": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.UPDATED"
 		},
 		"67467": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
+			"qualifiedName": "__object.DELETED"
 		},
 		"67468": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
+			"qualifiedName": "ProductCategoryWorkflowEvents"
 		},
 		"67469": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
+			"qualifiedName": "__object"
 		},
 		"67470": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "InventoryLevelWorkflowEvents"
+			"qualifiedName": "__object.CREATED"
 		},
 		"67471": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.UPDATED"
 		},
 		"67472": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
+			"qualifiedName": "__object.DELETED"
 		},
 		"67473": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
+			"qualifiedName": "ProductCollectionWorkflowEvents"
 		},
 		"67474": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
+			"qualifiedName": "__object"
 		},
 		"67475": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "ReservationItemWorkflowEvents"
+			"qualifiedName": "__object.CREATED"
 		},
 		"67476": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object"
+			"qualifiedName": "__object.UPDATED"
 		},
 		"67477": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.CREATED"
+			"qualifiedName": "__object.DELETED"
 		},
 		"67478": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.UPDATED"
+			"qualifiedName": "ProductVariantWorkflowEvents"
 		},
 		"67479": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/core-flows/events.ts",
-			"qualifiedName": "__object.DELETED"
+			"qualifiedName": "__object"
 		},
 		"67480": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67481": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67482": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67483": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "ProductWorkflowEvents"
+		},
+		"67484": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67485": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67486": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67487": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67488": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "ProductTypeWorkflowEvents"
+		},
+		"67489": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67490": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67491": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67492": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67493": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "ProductTagWorkflowEvents"
+		},
+		"67494": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67495": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67496": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67497": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67498": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "ProductOptionWorkflowEvents"
+		},
+		"67499": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67500": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67501": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67502": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67503": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "ProductOptionValueWorkflowEvents"
+		},
+		"67504": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67505": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67506": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67507": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "PriceListWorkflowEvents"
+		},
+		"67508": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67509": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67510": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67511": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67512": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.PRICES_ADDED"
+		},
+		"67513": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.PRICES_UPDATED"
+		},
+		"67514": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.PRICES_REMOVED"
+		},
+		"67515": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "PromotionWorkflowEvents"
+		},
+		"67516": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67517": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67518": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67519": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67520": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.RULES_UPDATED"
+		},
+		"67521": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "CampaignWorkflowEvents"
+		},
+		"67522": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67523": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67524": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67525": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67526": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.PROMOTIONS_UPDATED"
+		},
+		"67527": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "InviteWorkflowEvents"
+		},
+		"67528": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67529": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.ACCEPTED"
+		},
+		"67530": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67531": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67532": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.RESENT"
+		},
+		"67533": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "RegionWorkflowEvents"
+		},
+		"67534": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67535": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67536": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67537": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67538": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "FulfillmentWorkflowEvents"
+		},
+		"67539": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67540": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.SHIPMENT_CREATED"
+		},
+		"67541": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELIVERY_CREATED"
+		},
+		"67542": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "ShippingOptionTypeWorkflowEvents"
+		},
+		"67543": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67544": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67545": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67546": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67547": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "ShippingOptionWorkflowEvents"
+		},
+		"67548": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67549": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67550": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67551": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67552": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "PaymentEvents"
+		},
+		"67553": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67554": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CAPTURED"
+		},
+		"67555": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.REFUNDED"
+		},
+		"67556": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "TranslationWorkflowEvents"
+		},
+		"67557": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67558": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67559": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67560": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67561": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "InventoryItemWorkflowEvents"
+		},
+		"67562": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67563": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67564": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67565": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67566": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "InventoryLevelWorkflowEvents"
+		},
+		"67567": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67568": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67569": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67570": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67571": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "ReservationItemWorkflowEvents"
+		},
+		"67572": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object"
+		},
+		"67573": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.CREATED"
+		},
+		"67574": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.UPDATED"
+		},
+		"67575": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/core-flows/events.ts",
+			"qualifiedName": "__object.DELETED"
+		},
+		"67576": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/events.ts",
 			"qualifiedName": ""
 		},
-		"67481": {
+		"67577": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/events.ts",
 			"qualifiedName": "AuthEvents"
 		},
-		"67482": {
+		"67578": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/events.ts",
 			"qualifiedName": "__object"
 		},
-		"67483": {
+		"67579": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/events.ts",
 			"qualifiedName": "__object.MFA_ENABLED"
 		},
-		"67484": {
+		"67580": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/events.ts",
 			"qualifiedName": "__object.MFA_DISABLED"
 		},
-		"67485": {
+		"67581": {
 			"packageName": "@medusajs/utils",
 			"packagePath": "src/auth/events.ts",
 			"qualifiedName": "__object.MFA_RECOVERY_CODES_GENERATED"
@@ -9181,8 +9181,8 @@
 			"2": "../../../../packages/core/utils/src/auth/events.ts"
 		},
 		"reflections": {
-			"1": 67326,
-			"2": 67480
+			"1": 67422,
+			"2": 67576
 		}
 	}
 }

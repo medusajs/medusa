@@ -133,6 +133,32 @@ export interface AdminOptions {
    * ```
    */
   maxUploadFileSize?: number
+
+  /**
+   * Headers added to the admin dashboard's HTML page in production. A header set here replaces
+   * the one the application sets on every response, for example the `Content-Security-Policy`
+   * and `X-Frame-Options` headers from `projectConfig.http.securityHeaders`, so include
+   * `frame-ancestors` in a `Content-Security-Policy` set here. Headers not set here keep the values
+   * from `projectConfig.http.securityHeaders`. Header names are case-insensitive. The headers aren't set by the
+   * development server, nor on the dashboard's static files or any other route. By default, none are added.
+   *
+   * Admin customizations that load scripts from other origins need those origins in the policy's `script-src`.
+   *
+   * @example
+   * ```js title="medusa-config.ts"
+   * module.exports = defineConfig({
+   *   admin: {
+   *     htmlHeaders: {
+   *       "Content-Security-Policy":
+   *         "frame-ancestors 'self'; script-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'",
+   *       "Referrer-Policy": "strict-origin-when-cross-origin",
+   *     },
+   *   },
+   *   // ...
+   * })
+   * ```
+   */
+  htmlHeaders?: Record<string, string>
 }
 
 /**

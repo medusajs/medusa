@@ -1,5 +1,19 @@
 # @medusajs/types
 
+## 2.23.1
+
+### Patch Changes
+
+- [#17999](https://github.com/medusajs/medusa/pull/17999) [`275ea48`](https://github.com/medusajs/medusa/commit/275ea482975fa042d5ff707ea9d166c6d8af4d63) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(types,js-sdk): link to API reference pages by path instead of hash
+
+- [#17980](https://github.com/medusajs/medusa/pull/17980) [`bfe6632`](https://github.com/medusajs/medusa/commit/bfe6632a059d1ecceb093bea68b867f4a626d147) Thanks [@srindom](https://github.com/srindom)! - feat(core-flows,auth): add validateAuthCallbackWorkflow with an authCallbackValidated hook that receives what the provider got back, and a storeTokens option to keep GitHub tokens out of provider_metadata
+
+- [#17923](https://github.com/medusajs/medusa/pull/17923) [`b66d364`](https://github.com/medusajs/medusa/commit/b66d36466bdb215d9cd3d25323e16173fe6201c5) Thanks [@peterlgh7](https://github.com/peterlgh7)! - feat(file-s3): sign the file size into presigned upload URLs when `size` is passed to `getUploadFileUrls`
+
+- [#17779](https://github.com/medusajs/medusa/pull/17779) [`d0cf9a1`](https://github.com/medusajs/medusa/commit/d0cf9a1c0b443422bde97039755ee5d68e269d5d) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa,auth,auth-emailpass,utils,types): store when password was updated for refresh and MFA validation
+
+- [#17990](https://github.com/medusajs/medusa/pull/17990) [`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: license core packages under MIT only, limit the Enterprise license to the RBAC, OIDC, and Audit packages
+
 ## 2.23.0
 
 ### Minor Changes

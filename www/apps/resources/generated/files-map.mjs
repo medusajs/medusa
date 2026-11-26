@@ -2808,6 +2808,10 @@ export const filesMap = [
     "pathname": "/references/auth/generateAuthMfaRecoveryCodes"
   },
   {
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.getCredentialsUpdatedAt/page.json",
+    "pathname": "/references/auth/getCredentialsUpdatedAt"
+  },
+  {
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCountAuthIdentities/page.json",
     "pathname": "/references/auth/listAndCountAuthIdentities"
   },
@@ -3976,6 +3980,10 @@ export const filesMap = [
     "pathname": "/references/medusa-workflows/steps/setAuthAppMetadataStep"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.validateAuthCallbackStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/validateAuthCallbackStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/variables/core_flows.Auth.Steps_Auth.createPasswordResetTokenStepId/page.json",
     "pathname": "/references/core_flows/Auth/Steps_Auth/variables/core_flows.Auth.Steps_Auth.createPasswordResetTokenStepId"
   },
@@ -3992,6 +4000,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/Auth/Steps_Auth/variables/core_flows.Auth.Steps_Auth.setAuthAppMetadataStepId"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/variables/core_flows.Auth.Steps_Auth.validateAuthCallbackStepId/page.json",
+    "pathname": "/references/core_flows/Auth/Steps_Auth/variables/core_flows.Auth.Steps_Auth.validateAuthCallbackStepId"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.generateResetPasswordTokenWorkflow/page.json",
     "pathname": "/references/medusa-workflows/generateResetPasswordTokenWorkflow"
   },
@@ -4004,12 +4016,20 @@ export const filesMap = [
     "pathname": "/references/medusa-workflows/setAuthAppMetadataWorkflow"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.validateAuthCallbackWorkflow/page.json",
+    "pathname": "/references/medusa-workflows/validateAuthCallbackWorkflow"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Auth/Workflows_Auth/variables/core_flows.Auth.Workflows_Auth.requestVerificationWorkflowId/page.json",
     "pathname": "/references/core_flows/Auth/Workflows_Auth/variables/core_flows.Auth.Workflows_Auth.requestVerificationWorkflowId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Auth/Workflows_Auth/variables/core_flows.Auth.Workflows_Auth.setAuthAppMetadataWorkflowId/page.json",
     "pathname": "/references/core_flows/Auth/Workflows_Auth/variables/core_flows.Auth.Workflows_Auth.setAuthAppMetadataWorkflowId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Auth/Workflows_Auth/variables/core_flows.Auth.Workflows_Auth.validateAuthCallbackWorkflowId/page.json",
+    "pathname": "/references/core_flows/Auth/Workflows_Auth/variables/core_flows.Auth.Workflows_Auth.validateAuthCallbackWorkflowId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Auth/core_flows.Auth.Steps_Auth/page.json",
@@ -5892,6 +5912,10 @@ export const filesMap = [
     "pathname": "/references/medusa-workflows/steps/updateLineItemsStepWithSelector"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Line_Item/Steps_Line_Item/functions/core_flows.Line_Item.Steps_Line_Item.validateLineItemsInCartStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/validateLineItemsInCartStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Line_Item/Steps_Line_Item/variables/core_flows.Line_Item.Steps_Line_Item.deleteLineItemsStepId/page.json",
     "pathname": "/references/core_flows/Line_Item/Steps_Line_Item/variables/core_flows.Line_Item.Steps_Line_Item.deleteLineItemsStepId"
   },
@@ -5902,6 +5926,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Line_Item/Steps_Line_Item/variables/core_flows.Line_Item.Steps_Line_Item.updateLineItemsStepWithSelectorId/page.json",
     "pathname": "/references/core_flows/Line_Item/Steps_Line_Item/variables/core_flows.Line_Item.Steps_Line_Item.updateLineItemsStepWithSelectorId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Line_Item/Steps_Line_Item/variables/core_flows.Line_Item.Steps_Line_Item.validateLineItemsInCartStepId/page.json",
+    "pathname": "/references/core_flows/Line_Item/Steps_Line_Item/variables/core_flows.Line_Item.Steps_Line_Item.validateLineItemsInCartStepId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Line_Item/Workflows_Line_Item/functions/core_flows.Line_Item.Workflows_Line_Item.deleteLineItemsWorkflow/page.json",
@@ -10576,6 +10604,10 @@ export const filesMap = [
     "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidateLineItemPricesStepInput"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidateLineItemsInCartStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidateLineItemsInCartStepInput"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidatePaymentProviderInRegionStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidatePaymentProviderInRegionStepInput"
   },
@@ -10654,6 +10686,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AttachInventoryItemToVariantsStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AttachInventoryItemToVariantsStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AuthCallbackValidatedHookInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AuthCallbackValidatedHookInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.AuthorizePaymentSessionForOrderInput/page.json",
@@ -12546,6 +12582,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ValidateActorRolePermissionsStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ValidateActorRolePermissionsStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ValidateAuthCallbackStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ValidateAuthCallbackStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ValidateAuthCallbackWorkflowInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ValidateAuthCallbackWorkflowInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/types/core_flows.core_core_flows_src.ValidateCartShippingOptionsPriceInput/page.json",

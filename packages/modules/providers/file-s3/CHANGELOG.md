@@ -1,5 +1,14 @@
 # @medusajs/file-s3
 
+## 2.23.1
+
+### Patch Changes
+
+- [#17923](https://github.com/medusajs/medusa/pull/17923) [`b66d364`](https://github.com/medusajs/medusa/commit/b66d36466bdb215d9cd3d25323e16173fe6201c5) Thanks [@peterlgh7](https://github.com/peterlgh7)! - feat(file-s3): sign the file size into presigned upload URLs when `size` is passed to `getUploadFileUrls`
+
+- Updated dependencies [[`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450)]:
+  - @medusajs/framework@2.23.1
+
 ## 2.23.0
 
 ### Patch Changes

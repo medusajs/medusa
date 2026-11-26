@@ -1,5 +1,11 @@
 # @medusajs/eslint-plugin
 
+## 2.23.1
+
+### Patch Changes
+
+- [#17994](https://github.com/medusajs/medusa/pull/17994) [`91c2479`](https://github.com/medusajs/medusa/commit/91c247967401c61ecafd4273ca71513a59e7a1f1) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(eslint-plugin): allow assigning a hook created inside a when().then() callback in no-direct-variable-mutation-in-workflow
+
 ## 2.23.0
 
 ### Patch Changes
