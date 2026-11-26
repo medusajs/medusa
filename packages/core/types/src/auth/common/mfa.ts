@@ -289,6 +289,15 @@ export type GenerateAuthMfaRecoveryCodesDTO = {
    * Number of recovery codes to generate. Defaults to implementation-specific value.
    */
   count?: number
+  /**
+   * The MFA method of `code`. When `method` and `code` are passed, the code
+   * must be valid for the auth identity before its recovery codes are replaced.
+   */
+  method?: AuthMfaChallengeMethod
+  /**
+   * A current verification code for `method`.
+   */
+  code?: string
 }
 
 /**

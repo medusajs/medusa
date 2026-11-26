@@ -320,6 +320,36 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         ).rejects.toThrow("Recovery code is invalid or already used")
       })
 
+      it("replaces recovery codes only with a valid code when one is passed", async () => {
+        const { codes } = await service.generateAuthMfaRecoveryCodes({
+          auth_identity_id: "test-id",
+        })
+
+        await expect(
+          service.generateAuthMfaRecoveryCodes({
+            auth_identity_id: "test-id",
+            method: "recovery_code",
+            code: "not-a-recovery-code",
+          })
+        ).rejects.toThrow("Invalid MFA verification code")
+
+        await expect(
+          service.generateAuthMfaRecoveryCodes({
+            auth_identity_id: "test-id",
+            code: codes[0],
+          })
+        ).rejects.toThrow("Invalid MFA verification code")
+
+        const { codes: newCodes } = await service.generateAuthMfaRecoveryCodes({
+          auth_identity_id: "test-id",
+          method: "recovery_code",
+          code: codes[1],
+        })
+
+        expect(newCodes).toHaveLength(2)
+        expect(newCodes).not.toContain(codes[0])
+      })
+
       it("disables MFA factors", async () => {
         const setup = await service.startAuthMfa({
           auth_identity_id: "test-id",

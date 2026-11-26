@@ -51,6 +51,7 @@ export {
   type AuthMfaStartPayload,
   type AuthMfaVerifyChallengePayload,
   type AuthMfaVerifyPayload,
+  type AuthMfaVerifyResponse,
   type AuthRedirectResponse,
   type AuthRegisterResponse,
 } from "./auth/index.js"

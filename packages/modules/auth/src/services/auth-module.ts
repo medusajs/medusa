@@ -664,6 +664,27 @@ export default class AuthModuleService
       sharedContext
     )
 
+    if (data.method || data.code) {
+      const valid =
+        !!data.method &&
+        !!data.code &&
+        (await this.authMfaProviderService_.verify(
+          data.method,
+          {
+            auth_identity_id: data.auth_identity_id,
+            code: data.code,
+          },
+          sharedContext
+        ))
+
+      if (!valid) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Invalid MFA verification code"
+        )
+      }
+    }
+
     const codes = await this.authMfaProviderService_.generateCodes(
       "recovery_code",
       {

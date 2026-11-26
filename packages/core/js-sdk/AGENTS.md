@@ -44,6 +44,7 @@ await sdk.auth.logout()
 - `register()` stores the token but does not start a session: the token has no actor yet. Create the actor (e.g. `sdk.store.customer.create`), then call `sdk.auth.login` again or `sdk.auth.refresh()`.
 - OAuth: `sdk.auth.callback(actor, provider, queryParams)` then `sdk.auth.refresh()` once the actor exists.
 - Also: `sdk.auth.resetPassword`, `updateProvider`, `listProviders`, `createUser`, `sdk.auth.mfa.*`, `sdk.auth.verification.*`.
+- `sdk.auth.mfa.verify` returns the first `recovery_codes` when it enables a factor; `sdk.auth.mfa.generateRecoveryCodes` replaces them and needs a current `method` + `code`.
 
 ### Custom routes
 

@@ -56,6 +56,8 @@ export type AuthMfaDisableFactorRequestType = z.infer<
 >
 
 export const AuthMfaGenerateRecoveryCodesRequest = z.object({
+  method: z.string().min(1),
+  code: z.string().min(1),
   count: z.number().int().min(1).max(50).optional(),
 })
 export type AuthMfaGenerateRecoveryCodesRequestType = z.infer<

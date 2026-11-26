@@ -139,16 +139,7 @@ export async function generateJwtTokenForAuthIdentity(
   let mfaEnabled_ = mfaEnabled ?? false
 
   if (mfaEnabled === undefined && container && authIdentity?.id) {
-    const authModule = container.resolve<IAuthModuleService>(Modules.AUTH)
-    const enabledFactors = await authModule.listAuthMfa(
-      {
-        auth_identity_id: authIdentity.id,
-        status: "enabled",
-      },
-      { select: ["id"] }
-    )
-
-    mfaEnabled_ = enabledFactors.length > 0
+    mfaEnabled_ = await hasEnabledMfa(container, authIdentity.id)
   }
 
   return generateJwtToken(
@@ -173,4 +164,24 @@ export async function generateJwtTokenForAuthIdentity(
       jwtOptions: options,
     }
   )
+}
+
+export async function hasEnabledMfa(
+  container: MedusaContainer,
+  authIdentityId: string
+): Promise<boolean> {
+  if (!authIdentityId) {
+    return false
+  }
+
+  const authModule = container.resolve<IAuthModuleService>(Modules.AUTH)
+  const enabledFactors = await authModule.listAuthMfa(
+    {
+      auth_identity_id: authIdentityId,
+      status: "enabled",
+    },
+    { select: ["id"] }
+  )
+
+  return enabledFactors.length > 0
 }
