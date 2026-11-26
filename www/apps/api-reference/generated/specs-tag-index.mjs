@@ -6,6 +6,10 @@ export const specsTagIndex = {
       "admin_api-keys_{id}_revoke.yaml",
       "admin_api-keys_{id}_sales-channels.yaml"
     ],
+    "audit-logs": [
+      "admin_audit-logs.yaml",
+      "admin_audit-logs_{id}.yaml"
+    ],
     "campaigns": [
       "admin_campaigns.yaml",
       "admin_campaigns_{id}.yaml",
