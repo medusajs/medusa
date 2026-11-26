@@ -35,6 +35,8 @@ import {
 import { writeFileSync } from "fs"
 import path, { join, parse } from "path"
 import { initializeContainer } from "../../../loaders"
+import { environmentValues, findEnvironmentValue } from "./environment-values"
+import { toManifestJoinerConfig } from "./manifest-joiner-config"
 import { buildWorkflowManifest } from "./workflow-manifest"
 
 const HTTP_METHODS = [
@@ -213,6 +215,13 @@ async function main() {
     lazyModules: {},
   }
   const kept: Record<string, string> = {}
+  // What the manifest copies out of evaluated files was computed with the
+  // build's environment. Anything holding one of its values is not stored:
+  // the file or module then loads at boot as it would unbundled, reading the
+  // run-time environment, and the value stays out of the bundle.
+  const fromEnvironment = environmentValues()
+  const environmentValueIn = (data: unknown) =>
+    findEnvironmentValue(data, fromEnvironment)?.name
 
   for (const [file, fileExports] of imported) {
     if (getDefinedFileConfig(file)) {
@@ -254,7 +263,10 @@ async function main() {
           ),
         })
       }
-      if (lazy) {
+      const variable = lazy ? environmentValueIn(routes) : undefined
+      if (variable) {
+        kept[file] = `middlewares: route config holds the value of ${variable}`
+      } else if (lazy) {
         manifest.middlewares![file] = { routes }
       } else {
         kept[file] = "middlewares: route config isn't plain data"
@@ -275,7 +287,10 @@ async function main() {
       typeof fileExports.default === "function" &&
       fileExports.config
     ) {
-      if (isPlainData(fileExports.config)) {
+      const variable = environmentValueIn(fileExports.config)
+      if (variable) {
+        kept[file] = `subscriber: config holds the value of ${variable}`
+      } else if (isPlainData(fileExports.config)) {
         manifest.subscribers![file] = {
           config: fileExports.config,
           handlerName: fileExports.default.name,
@@ -376,11 +391,13 @@ async function main() {
       kept[`module:${key}`] = "joiner config isn't plain data"
       continue
     }
-    manifest.lazyModules![key] = {
-      joinerConfig: joinerConfig
-        ? JSON.parse(JSON.stringify(joinerConfig))
-        : null,
+    const stored = toManifestJoinerConfig(joinerConfig as any)
+    const variable = environmentValueIn(stored)
+    if (variable) {
+      kept[`module:${key}`] = `joiner config holds the value of ${variable}`
+      continue
     }
+    manifest.lazyModules![key] = { joinerConfig: stored as any }
   }
 
   // Where each module's code lives: its providers and loaders load by path
