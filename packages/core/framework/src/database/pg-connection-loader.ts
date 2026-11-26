@@ -21,6 +21,15 @@ const FATAL_PG_CONNECTION_ERROR_CODES = new Set([
   "42501", // insufficient privilege
 ])
 
+const PG_CONNECTION_ENV_VARS = [
+  "PGHOST",
+  "PGHOSTADDR",
+  "PGPORT",
+  "PGDATABASE",
+  "PGUSER",
+  "PGSERVICE",
+]
+
 const isFatalConnectionError = (error: unknown): boolean => {
   const code = (error as { code?: string })?.code
   return !!code && FATAL_PG_CONNECTION_ERROR_CODES.has(code)
@@ -42,10 +51,11 @@ export async function pgConnectionLoader(): Promise<
 
   // Share a knex connection to be consumed by the shared modules
   const connectionString = configModule.projectConfig.databaseUrl
-  if (!connectionString && !(process.env.PGHOST && process.env.PGDATABASE)) {
+  const hasPgEnv = PG_CONNECTION_ENV_VARS.some((key) => !!process.env[key])
+  if (!connectionString && !hasPgEnv) {
     throw new Error(
       withDbTroubleshootingLink(
-        `The database URL isn't set. Set the "DATABASE_URL" environment variable or the "projectConfig.databaseUrl" option in medusa-config.ts.`
+        `The database URL isn't set. Set the "DATABASE_URL" environment variable, the "projectConfig.databaseUrl" option in medusa-config.ts, or the PostgreSQL connection environment variables (for example, "PGHOST" and "PGDATABASE").`
       )
     )
   }

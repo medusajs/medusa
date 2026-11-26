@@ -58,7 +58,11 @@ class Store {
       return this.config_.set(path, val)
     } catch (e) {
       // e.g. EPERM when running as root and the config file can't be chowned
-      this.config_ = new InMemoryConfigStore()
+      const fallback = new InMemoryConfigStore()
+      try {
+        Object.assign(fallback.config, this.config_.all)
+      } catch (_) {}
+      this.config_ = fallback
       return this.config_.set(path, val)
     }
   }

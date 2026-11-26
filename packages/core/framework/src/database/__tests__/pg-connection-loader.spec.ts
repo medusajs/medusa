@@ -117,8 +117,11 @@ describe("pgConnectionLoader", () => {
     const projectConfig = configManager.config.projectConfig
     const databaseUrl = projectConfig.databaseUrl
     projectConfig.databaseUrl = undefined
-    delete process.env.PGHOST
-    delete process.env.PGDATABASE
+    for (const key of Object.keys(process.env)) {
+      if (key.startsWith("PG")) {
+        delete process.env[key]
+      }
+    }
 
     try {
       const error = await pgConnectionLoader().catch((e) => e)
@@ -133,7 +136,6 @@ describe("pgConnectionLoader", () => {
     const projectConfig = configManager.config.projectConfig
     const databaseUrl = projectConfig.databaseUrl
     projectConfig.databaseUrl = undefined
-    process.env.PGHOST = "localhost"
     process.env.PGDATABASE = "medusa"
     const connection = {
       client: { pool: new EventEmitter() },
