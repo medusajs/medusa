@@ -4,6 +4,7 @@ import {
   validateAndTransformBody,
 } from "@medusajs/framework/http"
 import { loginAuditMetadata } from "./utils/login-audit-metadata"
+import { validateActorType } from "./utils/validate-actor-type"
 import { validateScopeProviderAssociation } from "./utils/validate-scope-provider-association"
 import { validateToken } from "./utils/validate-token"
 import {
@@ -101,6 +102,11 @@ export const authRoutesMiddlewares: MiddlewareRoute[] = [
       authenticate("*", ["session", "bearer"], { allowUnregistered: true }),
       validateAndTransformBody(AuthMfaGenerateRecoveryCodesRequest),
     ],
+  },
+  {
+    method: ["GET"],
+    matcher: "/auth/:actor_type/providers",
+    middlewares: [validateActorType()],
   },
   {
     method: ["POST"],
