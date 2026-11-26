@@ -31,7 +31,7 @@ module.exports = defineConfig({
 
 - Options (`AuthModuleOptions`, `src/types/index.ts`):
   - `providers: { resolve, id, options? }[]`: the `id` is the provider name used in `/auth/{actor_type}/{id}` routes and in `ProviderIdentity.provider`.
-  - `mfa`: `encryption_key`, `recovery_code_count`, `challenge_ttl_seconds`, `challenge_max_attempts`, `disable_policy` (`"session"` default, or `"challenge"`), `providers` (extra or overridden MFA providers; `totp` options: `issuer`, `digits`, `period`, `window`).
+  - `mfa`: `encryption_key`, `recovery_code_count`, `challenge_ttl_seconds`, `challenge_max_attempts`, `identity_max_failed_attempts`, `identity_failed_attempts_ttl_seconds`, `disable_policy` (`"session"` default, or `"challenge"`), `providers` (extra or overridden MFA providers; `totp` options: `issuer`, `digits`, `period`, `window`).
   - `verification.providers`: extra verification providers; built-in `token` accepts `ttl_seconds` (default 900).
   - `cloud`: private; injected by `defineConfig` for Medusa Cloud.
 - Custom providers extend `AbstractAuthModuleProvider` from `@medusajs/framework/utils`.
@@ -89,7 +89,7 @@ yarn migration:create      # after any change to src/models; never hand-write mi
 ## Gotchas
 
 - MFA challenges and OAuth state live in the Cache Module (`Modules.CACHE`), not the DB: challenge key `auth:mfa:challenge:<id>`; state defaults to a 1200s TTL and is deleted on first read (single-use). Without a cache dependency these paths throw `INVALID_ARGUMENT`.
-- `verifyAuthMfaChallenge` runs under a Locking Module lock (`Modules.LOCKING`) keyed on `auth:mfa:challenge:<id>`, so concurrent requests can't share an attempt. Without a locking dependency it throws `INVALID_ARGUMENT`.
+- Every MFA code check (`verifyAuthMfaChallenge`, and `disableAuthMfa` / `generateAuthMfaRecoveryCodes` when they check a code) runs under a Locking Module lock (`Modules.LOCKING`) keyed on `auth:mfa:identity:<auth_identity_id>`, and counts failures per identity in the cache (`auth:mfa:failed_attempts:<auth_identity_id>`) on top of each challenge's `attempts`. Past `identity_max_failed_attempts`, checks throw "Too many failed MFA attempts. Try again later." until the count expires. Without cache and locking dependencies these paths throw `INVALID_ARGUMENT`.
 - `generateAuthMfaRecoveryCodes` with `method` and `code` throws "Invalid MFA verification code" unless the code is valid; without them it doesn't check. `POST /auth/mfa/recovery-codes` always passes them, and `POST /auth/mfa/factors/:id/verify` returns the first set when it enables a factor.
 - TOTP secrets are encrypted with `mfa.encryption_key`; missing it throws "MFA encryption key is required to use MFA methods" on enroll/verify.
 - Recovery codes are hashed with the ESM-only `scrypt-kdf`, loaded with `import()` in `src/utils/mfa.ts`. Jest suites that generate or use recovery codes need `NODE_OPTIONS=--experimental-vm-modules` and the `@medusajs/test-utils` preset.

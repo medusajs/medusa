@@ -84,6 +84,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
       recovery_code_count: 2,
       challenge_ttl_seconds: 60,
       challenge_max_attempts: 2,
+      identity_max_failed_attempts: 3,
       providers: [
         {
           id: "totp",
@@ -590,6 +591,57 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         ).rejects.toThrow("MFA challenge has too many failed attempts")
       })
 
+      it("limits failed MFA attempts per auth identity across challenges", async () => {
+        const setup = await service.startAuthMfa({
+          auth_identity_id: "test-id",
+          provider: "totp",
+        })
+        const code = generateTotpCode({
+          secret: setup.secret,
+          timestamp: Date.now(),
+        })
+
+        await service.verifyAuthMfa({
+          id: setup.mfa.id,
+          code,
+        })
+
+        // A new login gets a new challenge, but the failures add up.
+        for (const guess of ["000000", "000001", "000002"]) {
+          const challenge = await service.createAuthMfaChallenge({
+            auth_identity_id: "test-id",
+          })
+
+          await expect(
+            service.verifyAuthMfaChallenge({
+              id: challenge.id,
+              method: "totp",
+              code: guess,
+            })
+          ).rejects.toThrow("Invalid MFA challenge code")
+        }
+
+        const challenge = await service.createAuthMfaChallenge({
+          auth_identity_id: "test-id",
+        })
+
+        await expect(
+          service.verifyAuthMfaChallenge({
+            id: challenge.id,
+            method: "totp",
+            code,
+          })
+        ).rejects.toThrow("Too many failed MFA attempts. Try again later.")
+
+        await expect(
+          service.generateAuthMfaRecoveryCodes({
+            auth_identity_id: "test-id",
+            method: "totp",
+            code,
+          })
+        ).rejects.toThrow("Too many failed MFA attempts. Try again later.")
+      })
+
       it("rejects expired MFA challenges", async () => {
         const setup = await service.startAuthMfa({
           auth_identity_id: "test-id",
@@ -629,6 +681,11 @@ moduleIntegrationTestRunner<IAuthModuleService>({
       encryption_key: "test-mfa-encryption-key",
       disable_policy: "challenge",
     },
+  },
+  moduleDependencies: [Modules.CACHE, Modules.LOCKING],
+  injectedDependencies: {
+    [Modules.CACHE]: inMemoryCache,
+    [Modules.LOCKING]: inMemoryLocking,
   },
   testSuite: ({ service }) => {
     describe("AuthModuleService - challenge MFA disable policy", () => {

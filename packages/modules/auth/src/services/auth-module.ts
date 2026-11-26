@@ -482,27 +482,28 @@ export default class AuthModuleService
     data: AuthTypes.VerifyAuthMfaChallengeDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.AuthMfaChallengeDTO> {
+    const { auth_identity_id } = await this.retrieveMfaChallenge_(data.id)
+
+    if (data.auth_identity_id && auth_identity_id !== data.auth_identity_id) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `MFA challenge with id "${data.id}" was not found`
+      )
+    }
+
+    // Locked per auth identity, not per challenge, so parallel requests on
+    // different challenges can't race the identity's failed attempt count.
     return await this.getLocking_().execute(
-      this.getMfaChallengeCacheKey_(data.id),
+      this.getMfaIdentityLockKey_(auth_identity_id!),
       async () => {
         const challenge = await this.retrieveMfaChallenge_(data.id)
 
-        if (
-          data.auth_identity_id &&
-          challenge.auth_identity_id !== data.auth_identity_id
-        ) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `MFA challenge with id "${data.id}" was not found`
-          )
-        }
-
         this.assertMfaChallengeCanBeVerified_(challenge, data.method)
 
-        const valid = await this.authMfaProviderService_.verify(
-          data.method,
+        const valid = await this.verifyMfaCode_(
           {
             auth_identity_id: challenge.auth_identity_id!,
+            method: data.method,
             code: data.code,
           },
           sharedContext
@@ -558,21 +559,14 @@ export default class AuthModuleService
         )
       }
 
-      const valid = await this.authMfaProviderService_.verify(
-        data.method,
+      await this.assertValidMfaCode_(
         {
           auth_identity_id: factor.auth_identity_id,
+          method: data.method,
           code: data.code,
         },
         sharedContext
       )
-
-      if (!valid) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Invalid MFA verification code"
-        )
-      }
     }
 
     const disabledFactor = await this.authMfaFactorService_.update(
@@ -665,24 +659,14 @@ export default class AuthModuleService
     )
 
     if (data.method || data.code) {
-      const valid =
-        !!data.method &&
-        !!data.code &&
-        (await this.authMfaProviderService_.verify(
-          data.method,
-          {
-            auth_identity_id: data.auth_identity_id,
-            code: data.code,
-          },
-          sharedContext
-        ))
-
-      if (!valid) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Invalid MFA verification code"
-        )
-      }
+      await this.assertValidMfaCode_(
+        {
+          auth_identity_id: data.auth_identity_id,
+          method: data.method,
+          code: data.code,
+        },
+        sharedContext
+      )
     }
 
     const codes = await this.authMfaProviderService_.generateCodes(
@@ -1029,6 +1013,113 @@ export default class AuthModuleService
 
   protected hashVerificationToken_(token: string): string {
     return crypto.createHash("sha256").update(token).digest("hex")
+  }
+
+  protected async assertValidMfaCode_(
+    data: {
+      auth_identity_id: string
+      method?: AuthTypes.AuthMfaChallengeMethod
+      code?: string
+    },
+    sharedContext: Context = {}
+  ): Promise<void> {
+    const { method, code } = data
+
+    const valid =
+      !!method &&
+      !!code &&
+      (await this.getLocking_().execute(
+        this.getMfaIdentityLockKey_(data.auth_identity_id),
+        async () =>
+          await this.verifyMfaCode_(
+            { auth_identity_id: data.auth_identity_id, method, code },
+            sharedContext
+          )
+      ))
+
+    if (!valid) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Invalid MFA verification code"
+      )
+    }
+  }
+
+  // Callers must hold the auth identity's lock, see getMfaIdentityLockKey_.
+  protected async verifyMfaCode_(
+    data: {
+      auth_identity_id: string
+      method: AuthTypes.AuthMfaChallengeMethod
+      code: string
+    },
+    sharedContext: Context = {}
+  ): Promise<boolean> {
+    const { maxFailedAttempts, failedAttemptsTtlSeconds } =
+      this.getMfaIdentityLimitConfig_()
+    const failedAttemptsKey = `auth:mfa:failed_attempts:${data.auth_identity_id}`
+    const failedAttempts =
+      (await this.getCache_().get<number>(failedAttemptsKey)) ?? 0
+
+    if (failedAttempts >= maxFailedAttempts) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Too many failed MFA attempts. Try again later."
+      )
+    }
+
+    const valid = await this.authMfaProviderService_.verify(
+      data.method,
+      {
+        auth_identity_id: data.auth_identity_id,
+        code: data.code,
+      },
+      sharedContext
+    )
+
+    if (!valid) {
+      await this.getCache_().set(
+        failedAttemptsKey,
+        failedAttempts + 1,
+        failedAttemptsTtlSeconds
+      )
+    } else if (failedAttempts > 0) {
+      await this.getCache_().invalidate(failedAttemptsKey)
+    }
+
+    return valid
+  }
+
+  protected getMfaIdentityLockKey_(authIdentityId: string): string {
+    return `auth:mfa:identity:${authIdentityId}`
+  }
+
+  protected getMfaIdentityLimitConfig_(): {
+    maxFailedAttempts: number
+    failedAttemptsTtlSeconds: number
+  } {
+    const maxFailedAttempts =
+      this.moduleOptions_.mfa?.identity_max_failed_attempts ?? 10
+    const failedAttemptsTtlSeconds =
+      this.moduleOptions_.mfa?.identity_failed_attempts_ttl_seconds ?? 900
+
+    if (!Number.isInteger(maxFailedAttempts) || maxFailedAttempts < 1) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "MFA identity max failed attempts must be a positive integer"
+      )
+    }
+
+    if (
+      !Number.isInteger(failedAttemptsTtlSeconds) ||
+      failedAttemptsTtlSeconds < 1
+    ) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "MFA identity failed attempts TTL must be a positive integer"
+      )
+    }
+
+    return { maxFailedAttempts, failedAttemptsTtlSeconds }
   }
 
   protected getMfaChallengeConfig_(): {
