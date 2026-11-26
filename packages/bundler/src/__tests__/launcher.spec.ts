@@ -2,12 +2,9 @@ import { execFileSync, spawnSync } from "child_process"
 import { mkdtempSync, readFileSync, realpathSync, writeFileSync } from "fs"
 import { tmpdir } from "os"
 import path from "path"
-import {
-  BUNDLE_FILE_NAME,
-  BUNDLE_MARKER,
-  LAUNCHER,
-  RUNTIME_MISSING_MODULE_HINT,
-} from "../bundle-backend"
+import { BUNDLE_FILE_NAME, BUNDLE_MARKER } from "../constants"
+import { LAUNCHER } from "../runtime/launcher"
+import { RUNTIME_MISSING_MODULE_HINT } from "../runtime/missing-module-hint"
 
 /**
  * Writes the launcher next to a stand-in for the bundle that prints the
@@ -25,11 +22,10 @@ process.stdout.write(JSON.stringify({ command: command, keys: Object.keys(comman
 }
 
 function launch(dir: string, args: string[]) {
-  const output = execFileSync(
-    process.execPath,
-    [path.join(dir, BUNDLE_FILE_NAME), ...args],
-    { env: { ...process.env, MEDUSA_DISABLE_COMPILE_CACHE: "1" } }
-  )
+  const output = execFileSync(process.execPath, [
+    path.join(dir, BUNDLE_FILE_NAME),
+    ...args,
+  ])
   return JSON.parse(output.toString())
 }
 
@@ -127,7 +123,7 @@ function extractTable(source: string, name: string) {
 describe("launcher and CLI flag tables", () => {
   it("list the same flags for each command", () => {
     const cliSource = readFileSync(
-      path.join(__dirname, "../../../../../../cli/medusa-cli/cli.js"),
+      path.join(__dirname, "../../../cli/medusa-cli/cli.js"),
       "utf8"
     )
     const cliFlags = extractTable(cliSource, "BUNDLE_FLAGS")

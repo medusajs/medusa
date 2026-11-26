@@ -3341,6 +3341,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/bundler@npm:2.23.1, @medusajs/bundler@workspace:packages/bundler":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/bundler@workspace:packages/bundler"
+  dependencies:
+    "@medusajs/framework": "npm:2.23.1"
+    "@vercel/nft": "npm:^1.11.0"
+    esbuild: "npm:^0.28.2"
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/cache-inmemory@npm:2.23.1, @medusajs/cache-inmemory@workspace:*, @medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory":
   version: 0.0.0-use.local
   resolution: "@medusajs/cache-inmemory@workspace:packages/modules/cache-inmemory"
@@ -3994,6 +4004,7 @@ __metadata:
     "@medusajs/auth-github": "npm:2.23.1"
     "@medusajs/auth-google": "npm:2.23.1"
     "@medusajs/auth-oidc": "npm:2.23.1"
+    "@medusajs/bundler": "npm:2.23.1"
     "@medusajs/cache-inmemory": "npm:2.23.1"
     "@medusajs/cache-redis": "npm:2.23.1"
     "@medusajs/caching": "npm:2.23.1"
@@ -4042,7 +4053,6 @@ __metadata:
     "@medusajs/user": "npm:2.23.1"
     "@medusajs/workflow-engine-inmemory": "npm:2.23.1"
     "@medusajs/workflow-engine-redis": "npm:2.23.1"
-    "@vercel/nft": "npm:^1.11.0"
     boxen: "npm:^9.0.0"
     chokidar: "npm:^6.0.0"
     compression: "npm:^1.8.2"

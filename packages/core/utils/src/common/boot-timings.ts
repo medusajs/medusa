@@ -71,7 +71,7 @@ function startStallMonitor() {
   stallMonitor.unref()
 }
 
-/** Recorded by a bundled build's runtime (see bundle-backend.ts) */
+/** Recorded by a bundled build's runtime (see runtime/boot-profile.ts in @medusajs/bundler) */
 type EvalProfile = {
   /** Seconds since the process started when the bundle's code began running */
   startedAt: number

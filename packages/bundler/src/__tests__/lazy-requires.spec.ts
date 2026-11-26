@@ -1,4 +1,4 @@
-import { usedOnlyThroughMembers } from "../bundle-backend"
+import { usedOnlyThroughMembers } from "../transforms"
 
 describe("usedOnlyThroughMembers", () => {
   it("accepts property access only", () => {

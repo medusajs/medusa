@@ -4,7 +4,7 @@ import path from "path"
 import {
   addPackageExportResolutions,
   packagesResolvedByName,
-} from "../bundle-backend"
+} from "../selection"
 
 function createPackage(exportsMap: unknown, files: string[]) {
   const root = path.join(
