@@ -3,6 +3,7 @@ import { Module, Modules } from "@medusajs/framework/utils"
 import { AuthModuleService } from "@services"
 import { moduleIntegrationTestRunner, SuiteOptions } from "@medusajs/test-utils"
 import { resolve } from "path"
+import { runWhileRowsAreHeld } from "../../__fixtures__/race"
 
 let moduleOptions = {
   providers: [
@@ -21,7 +22,7 @@ jest.setTimeout(30000)
 moduleIntegrationTestRunner({
   moduleName: Modules.AUTH,
   moduleOptions,
-  testSuite: ({ service }: SuiteOptions<IAuthModuleService>) =>
+  testSuite: ({ MikroOrmWrapper, service }: SuiteOptions<IAuthModuleService>) =>
     describe("Auth Module Service", () => {
       beforeEach(async () => {
         await service.createAuthIdentities({
@@ -87,6 +88,46 @@ moduleIntegrationTestRunner({
           error: `
 Unable to retrieve the auth provider with id: facebook
 Please make sure that the provider is registered in the container and it is configured correctly in your project configuration file.`,
+        })
+      })
+
+      describe("consumePasswordResetToken", () => {
+        const consume = (jti: string) =>
+          service.consumePasswordResetToken({
+            jti,
+            provider: "plaintextpass",
+            entity_id: "test@admin.com",
+          })
+
+        it("accepts a token only once", async () => {
+          const { jti } = await service.createPasswordResetToken({
+            provider: "plaintextpass",
+            entity_id: "test@admin.com",
+          })
+
+          await expect(consume(jti)).resolves.toEqual(
+            expect.objectContaining({ entity_id: "test@admin.com" })
+          )
+          await expect(consume(jti)).rejects.toThrow("Invalid token")
+        })
+
+        it("rejects a token another request uses at the same time", async () => {
+          const { jti } = await service.createPasswordResetToken({
+            provider: "plaintextpass",
+            entity_id: "test@admin.com",
+          })
+
+          const result = await runWhileRowsAreHeld(
+            MikroOrmWrapper,
+            "delete from auth_password_reset_token where entity_id = ?",
+            ["test@admin.com"],
+            () => consume(jti)
+          )
+
+          expect(result).toEqual({
+            status: "rejected",
+            reason: expect.objectContaining({ message: "Invalid token" }),
+          })
         })
       })
 

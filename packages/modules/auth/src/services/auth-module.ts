@@ -732,7 +732,7 @@ export default class AuthModuleService
     )
   }
 
-  @InjectManager()
+  @InjectTransactionManager()
   async confirmAuthVerification(
     data: AuthTypes.ConfirmAuthVerificationDTO,
     @MedusaContext() sharedContext: Context = {}
@@ -978,10 +978,16 @@ export default class AuthModuleService
       throw new MedusaError(MedusaError.Types.UNAUTHORIZED, "Invalid token")
     }
 
-    await this.authPasswordResetTokenService_.delete(
+    // Concurrent requests can all read the token before one deletes it, so only
+    // the request whose delete removed the row may use it.
+    const deletedIds = await this.authPasswordResetTokenService_.delete(
       resetToken.id,
       sharedContext
     )
+
+    if (!deletedIds.length) {
+      throw new MedusaError(MedusaError.Types.UNAUTHORIZED, "Invalid token")
+    }
 
     return {
       auth_identity_id: resetToken.auth_identity_id!,
