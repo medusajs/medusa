@@ -1,6 +1,10 @@
 import { generateResetPasswordTokenWorkflow } from "@medusajs/core-flows"
 import { IAuthModuleService } from "@medusajs/framework/types"
-import { AuthWorkflowEvents, Modules } from "@medusajs/framework/utils"
+import {
+  AuthWorkflowEvents,
+  ContainerRegistrationKeys,
+  Modules,
+} from "@medusajs/framework/utils"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import jwt from "jsonwebtoken"
 import {
@@ -795,6 +799,43 @@ medusaIntegrationTestRunner({
 
       expect(freshRefresh.status).toEqual(200)
       expect(freshRefresh.data).toEqual({ token: expect.any(String) })
+    })
+
+    it("should refuse to refresh a token once the login is older than jwtRefreshMaxAgeSeconds", async () => {
+      const { http } = container.resolve(
+        ContainerRegistrationKeys.CONFIG_MODULE
+      ).projectConfig
+      http.jwtRefreshMaxAgeSeconds = 2
+
+      try {
+        const signup = await api.post("/auth/user/emailpass/register", {
+          email: "old-login@medusa-commerce.com",
+          password: "secret_password",
+        })
+
+        const refreshed = await api.post(
+          "/auth/token/refresh",
+          {},
+          { headers: { authorization: `Bearer ${signup.data.token}` } }
+        )
+        expect(refreshed.status).toEqual(200)
+        expect(jwt.decode(refreshed.data.token).auth_time).toEqual(
+          jwt.decode(signup.data.token).auth_time
+        )
+
+        await new Promise((resolve) => setTimeout(resolve, 3100))
+
+        const tooOld = await api
+          .post(
+            "/auth/token/refresh",
+            {},
+            { headers: { authorization: `Bearer ${refreshed.data.token}` } }
+          )
+          .catch((e) => e.response)
+        expect(tooOld.status).toEqual(401)
+      } finally {
+        delete http.jwtRefreshMaxAgeSeconds
+      }
     })
 
     it("should preserve custom app_metadata fields on token refresh", async () => {

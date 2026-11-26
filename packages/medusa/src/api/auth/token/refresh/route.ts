@@ -46,6 +46,24 @@ export const POST = async (
     authProvider: req.auth_context.auth_provider,
   })
 
+  const { http } = req.scope.resolve<ConfigModule>(
+    ContainerRegistrationKeys.CONFIG_MODULE
+  ).projectConfig
+
+  // Tokens issued before auth_time existed fall back to their own issue time
+  const authTime = req.auth_context.auth_time ?? req.auth_context.iat
+
+  if (
+    http.jwtRefreshMaxAgeSeconds &&
+    (typeof authTime !== "number" ||
+      Date.now() / 1000 - authTime > http.jwtRefreshMaxAgeSeconds)
+  ) {
+    throw new MedusaError(
+      MedusaError.Types.UNAUTHORIZED,
+      "The login is too old to refresh the token, log in again"
+    )
+  }
+
   /* A request would have the actor ID set on it only after it:
     - Creates an actor after registration
     - Passes MFA and other verifications
@@ -56,10 +74,6 @@ export const POST = async (
   not expected until mfa/verifications are completed.
   */
   if (req.auth_context.actor_id) {
-    const { http } = req.scope.resolve<ConfigModule>(
-      ContainerRegistrationKeys.CONFIG_MODULE
-    ).projectConfig
-
     const token = await generateJwtTokenForAuthIdentity(
       {
         authIdentity,
@@ -68,6 +82,7 @@ export const POST = async (
         container: req.scope,
         mfaEnabled: req.auth_context.mfa_enabled,
         mfaChallengeCompletedAt: req.auth_context.mfa_challenge_completed_at,
+        authTime,
       },
       {
         secret: http.jwtSecret!,
@@ -99,6 +114,7 @@ export const POST = async (
     mfaChallenge,
     actorType: req.auth_context.actor_type,
     authProvider: req.auth_context.auth_provider,
+    authTime,
   })
 
   return res.json(result)

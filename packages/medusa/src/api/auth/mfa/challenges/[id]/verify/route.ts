@@ -76,6 +76,7 @@ export const POST = async (
       container: req.scope,
       mfaEnabled: true,
       mfaChallengeCompletedAt: challenge.completed_at,
+      authTime: req.auth_context.auth_time ?? req.auth_context.iat,
     },
     {
       secret: http.jwtSecret!,
