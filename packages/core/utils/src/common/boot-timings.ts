@@ -77,7 +77,6 @@ type EvalProfile = {
   startedAt: number
   /** Self time evaluating each file, in ms, by path */
   self: Map<string, number>
-  coldLoads: { count: number; ms: number }
 }
 
 const packageOf = (file: string) => {
@@ -174,9 +173,7 @@ export function logBootSummary() {
     }
     lines.push(
       `bundle code started running at ${profile.startedAt.toFixed(2)}s`,
-      `evaluating code: ${ms(total)} in ${profile.self.size} files, ${
-        profile.coldLoads.count
-      } loaded on first use (${ms(profile.coldLoads.ms)} to load them)`,
+      `evaluating code: ${ms(total)} in ${profile.self.size} files`,
       `evaluating code by package: ${top(byPackage, 20)}`,
       `slowest files to evaluate: ${top(byFile, 15)}`
     )

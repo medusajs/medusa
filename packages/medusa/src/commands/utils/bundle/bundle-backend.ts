@@ -18,7 +18,6 @@ import {
 } from "fs"
 import { mkdtemp, readFile, writeFile } from "fs/promises"
 import Module, { createRequire } from "module"
-import { createHash } from "crypto"
 import os from "os"
 import path from "path"
 import { createPathKeys, RUNTIME_PATH_KEYS } from "./paths"
@@ -31,9 +30,6 @@ import { createPathKeys, RUNTIME_PATH_KEYS } from "./paths"
 export const BUNDLE_FILE_NAME = "medusa-bundle.js"
 export const BUNDLE_MARKER = "/* @medusajs/medusa bundle */"
 const MAIN_FILE_NAME = "medusa-bundle.main.js"
-// Modules loaded on first use, one file each, and their index (key -> file)
-const COLD_DIR = "medusa-bundle.cold"
-const COLD_INDEX = `${COLD_DIR}/index.json`
 const COMPILE_CACHE_DIR = ".medusa-compile-cache"
 
 /**
@@ -216,37 +212,6 @@ var __Module = require("module");
 var __path = require("path");
 var __r = new Map();
 ${entries}
-// Modules loaded on first use (see COLD_DIR): one file each, required when the
-// registry is first asked for them
-var __coldProfile = globalThis.__MEDUSA_BOOT_EVAL_PROFILE__ && globalThis.__MEDUSA_BOOT_EVAL_PROFILE__.coldLoads;
-try {
-  var __cold = JSON.parse(require("fs").readFileSync(__path.join(__medusaAppRoot, ${JSON.stringify(
-    COLD_INDEX
-  )}), "utf8"));
-  for (var __coldKey in __cold) {
-    if (!__r.has(__coldKey)) {
-      __r.set(__coldKey, ((file) => {
-        var load = () => {
-          if (!__coldProfile) return require(file);
-          var outer = __coldProfile.depth++ === 0, startedAt = performance.now();
-          var first = !require.cache[file];
-          try { return require(file); } finally {
-            __coldProfile.depth--;
-            if (first) __coldProfile.count++;
-            // Nested loads are part of the outer one's time
-            if (first && outer) __coldProfile.ms += performance.now() - startedAt;
-          }
-        };
-        // A plain require of the module's own file: Node's module cache
-        // handles require cycles through it, so it's safe to re-enter
-        load.reentrant = true;
-        return load;
-      })(__path.join(__medusaAppRoot, __cold[__coldKey])));
-    }
-  }
-} catch (e) {
-  if (e.code !== "ENOENT") throw e;
-}
 var __lookup = (file) => {
   var key = __medusaPathToKey(file);
   return __r.get(key) || __r.get(key + ".js") || __r.get(key + ".json") || __r.get(__medusaPathToKey(__path.join(file, "index.js")));
@@ -340,9 +305,8 @@ __Module._load = function (request, parent, isMain) {
         throw new Error("'" + left + "' is not in this bundle: the configuration 'medusa build --bundle' saw did not use it. Enable it in the configuration the build sees and build again.");
       }
     }
-    // Entries left external are plain requires: don't loop back here. Cold
-    // modules are safe to re-enter (a require cycle through them).
-    if (hit && (hit.reentrant || !__loading.has(hit))) {
+    // Entries left external are plain requires: don't loop back here.
+    if (hit && !__loading.has(hit)) {
       __loading.add(hit);
       try { return hit(); } finally { __loading.delete(hit); }
     }
@@ -403,7 +367,6 @@ if (__migrateFiles[__command.name]) {
  * collection pass found to make boot evaluate as little as possible:
  *
  * - routes, middlewares, subscribers, workflows and hooks load on first use
- * - modules boot doesn't need load on first use
  * - re-export files and package imports in first-party code are lazy
  * - file identity (`__filename`, `defineFileConfig`, ...) survives bundling
  */
@@ -644,63 +607,14 @@ export async function bundleBackend({
       SIDE_EFFECT.test(readFileSync(file, "utf8"))
   )
 
-  // Hot: what the collection pass evaluated (a superset of what boot runs),
-  // bundled into the main file. Cold: everything else, built as one file per
-  // module and loaded on first use, so boot only parses what it may run.
-  // MEDUSA_BUNDLE_SPLIT=false bundles everything into the main file.
-  const split = process.env.MEDUSA_BUNDLE_SPLIT !== "false"
-  const hotFiles = new Set<string>(
-    split
-      ? [
-          ...loaded,
-          ...globalSetupFiles,
-          startFile,
-          ...Object.values(migrateFiles),
-        ].filter(registrable)
-      : registry.values()
-  )
   const entryFile = path.join(outDir, "__medusa-entry.js")
   const transform = createTransforms({ outDir, entryFile, toKey })
-  if (split) {
-    // What starting the server imports before modules load (the app's
-    // instrumentation, the start command), which the collection pass never
-    // evaluates: hot, with everything they import
-    const bootRoots = [startFile, path.join(outDir, "instrumentation.js")].filter(
-      (file) => existsSync(file)
-    )
-    const analysis = await esbuild.build({
-      entryPoints: bootRoots,
-      bundle: true,
-      write: false,
-      metafile: true,
-      outdir: os.tmpdir(),
-      platform: "node",
-      format: "cjs",
-      logLevel: "silent",
-      // The same transforms as the bundle (e.g. computed requires), so the
-      // analysis sees the same imports
-      plugins: [transform.externals(), transform.sources],
-    })
-    for (const input of Object.keys(analysis.metafile.inputs)) {
-      const file = path.resolve(input)
-      if (registrable(file)) {
-        hotFiles.add(file)
-      }
-    }
-  }
-  const hotRegistry = new Map<string, string>()
-  for (const file of hotFiles) {
-    hotRegistry.set(toKey(file), file)
-  }
-  const coldPending = new Set(
-    [...registry.values()].filter((file) => !hotFiles.has(file))
-  )
 
   await writeFile(
     entryFile,
     createEntry({
       manifest: keyManifest(manifest, toKey),
-      registry: hotRegistry,
+      registry,
       startFile,
       migrateFiles,
       globalSetupFiles,
@@ -746,84 +660,11 @@ export async function bundleBackend({
         ...buildOptions,
         entryPoints: [entryFile],
         outfile: path.join(outDir, MAIN_FILE_NAME),
-        plugins: [
-          transform.externals(
-            split
-              ? {
-                  inline: (file) => hotFiles.has(file),
-                  onExternal: (file) => coldPending.add(file),
-                }
-              : undefined
-          ),
-          transform.sources,
-        ],
+        plugins: [transform.externals(), transform.sources],
       })
     )
   } finally {
     rmSync(entryFile, { force: true })
-  }
-  transform.forgetSources()
-
-  // Cold modules, one file each: every import they make goes through the
-  // registry, so each module exists once (here or in the main file). Built in
-  // rounds, as each round finds the modules the previous one imports.
-  const coldFiles = new Map<string, string>()
-  while (coldPending.size) {
-    const entryPoints: Record<string, string> = {}
-    for (const file of coldPending) {
-      if (!coldFiles.has(file) && !hotFiles.has(file)) {
-        const name = createHash("sha1")
-          .update(toKey(file))
-          .digest("hex")
-          .slice(0, 16)
-        coldFiles.set(file, `${COLD_DIR}/${name}.js`)
-        // JSON is written as a module directly: built as an entry point,
-        // esbuild turns its keys into named exports, which the CommonJS
-        // output only declares (the file would export nothing)
-        if (file.endsWith(".json")) {
-          mkdirSync(path.join(outDir, COLD_DIR), { recursive: true })
-          await writeFile(
-            path.join(outDir, COLD_DIR, `${name}.js`),
-            coldJsonModule(await readFile(file, "utf8"))
-          )
-          bundledFiles.add(file)
-          continue
-        }
-        entryPoints[name] = file
-      }
-    }
-    coldPending.clear()
-    if (!Object.keys(entryPoints).length) {
-      break
-    }
-    collectInputs(
-      await esbuild.build({
-        ...buildOptions,
-        entryPoints,
-        outdir: path.join(outDir, COLD_DIR),
-        plugins: [
-          transform.externals({
-            inline: () => false,
-            onExternal: (file) => {
-              if (!hotFiles.has(file) && !coldFiles.has(file)) {
-                coldPending.add(file)
-              }
-            },
-          }),
-          transform.sources,
-        ],
-      })
-    )
-  }
-  if (coldFiles.size) {
-    await writeFile(
-      path.join(outDir, COLD_INDEX),
-      JSON.stringify(
-        Object.fromEntries(
-          [...coldFiles].map(([file, out]) => [toKey(file), out])
-        )
-      )
-    )
   }
 
   const vendored = vendorPackages(transform.vendorRoots, outDir)
@@ -845,11 +686,7 @@ export async function bundleBackend({
     leftOut,
     bundled: bundledFiles,
     // Every module the build compiled is in the registry, by key
-    addressable: new Set([
-      ...registry.values(),
-      ...hotFiles,
-      ...coldFiles.keys(),
-    ]),
+    addressable: new Set(registry.values()),
     outDir,
     nodeModulesRoot,
     directory,
@@ -865,9 +702,7 @@ export async function bundleBackend({
   await writeFile(path.join(outDir, BUNDLE_FILE_NAME), LAUNCHER)
 
   logger.info(
-    `Bundled backend into ${BUNDLE_FILE_NAME}: ${
-      hotFiles.size
-    } modules at boot, ${coldFiles.size} loaded on first use (${(
+    `Bundled backend into ${BUNDLE_FILE_NAME}: ${registry.size} modules (${(
       (performance.now() - startedAt) /
       1000
     ).toFixed(1)}s)`
@@ -1005,13 +840,6 @@ const DYNAMIC_IMPORT_OF_PACKAGE =
 // `require.resolve("pkg")` with a package name
 const REQUIRE_RESOLVE_OF_PACKAGE =
   /(?<![\w$.])require\.resolve\(\s*"((?:@[\w.-]+\/)?[a-z0-9][\w./-]*)"\s*\)/g
-
-/**
- * A JSON file as a first-use module: what `require` of the file returns.
- */
-export function coldJsonModule(json: string): string {
-  return `module.exports=${JSON.stringify(JSON.parse(json))};`
-}
 
 /**
  * The packages a compiled file loads (`dynamicImport`) or resolves
@@ -1261,13 +1089,9 @@ function createTransforms({
     nativePackages.set(dir, found)
     return found
   }
-  // The builds (boot analysis, main file, each round of cold files) resolve
-  // many of the same imports: each is resolved by esbuild once. What a build
-  // then does with the result (inline, external) is still decided per build.
+  // The build resolves many of the same imports: each is resolved by esbuild
+  // once
   const resolved = new Map<string, Promise<any>>()
-  // Transformed sources, kept while the boot analysis and the main file read
-  // the same files (see `forgetSources`)
-  let sources: Map<string, Promise<string>> | null = new Map()
   const transformSource = async (file: string) => {
     if (isBuildOnlyCommand(file)) {
       return BUILD_ONLY_COMMAND_STUB
@@ -1284,22 +1108,10 @@ function createTransforms({
   return {
     vendorRoots,
     /**
-     * Stops keeping transformed sources. Called once the main file is built:
-     * cold files are each read by one build only, so keeping them would only
-     * hold their text in memory.
+     * Resolves imports for the build: what can't be bundled (native addons,
+     * build tooling, files that aren't code) stays external.
      */
-    forgetSources: () => {
-      sources = null
-    },
-    /**
-     * Resolves imports for a build. With a split policy, files the build
-     * doesn't inline become by-key externals, resolved through the bundle's
-     * registry at runtime (see the cold files in `bundleBackend`).
-     */
-    externals: (split?: {
-      inline: (file: string) => boolean
-      onExternal: (file: string) => void
-    }) => ({
+    externals: () => ({
       name: "medusa-externals",
       setup(build: any) {
         build.onResolve({ filter: /.*/ }, async (args: any) => {
@@ -1357,17 +1169,6 @@ function createTransforms({
               }
             }
           }
-          if (
-            split &&
-            /\.(c|m)?js$|\.json$/.test(result.path) &&
-            !split.inline(result.path)
-          ) {
-            split.onExternal(result.path)
-            return {
-              path: `${EXTERNAL_PREFIX}${toKey(result.path)}`,
-              external: true,
-            }
-          }
           return result
         })
       },
@@ -1379,13 +1180,8 @@ function createTransforms({
           if (args.path === entryFile) {
             return
           }
-          let transforming = sources?.get(args.path)
-          if (!transforming) {
-            transforming = transformSource(args.path)
-            sources?.set(args.path, transforming)
-          }
           return {
-            contents: await transforming,
+            contents: await transformSource(args.path),
             loader: "js",
             resolveDir: path.dirname(args.path),
           }
@@ -1513,7 +1309,6 @@ if (process.env.MEDUSA_LOG_BOOT_TIMINGS === "true") {
     globalThis.__MEDUSA_BOOT_EVAL_PROFILE__ = {
       startedAt: process.uptime(),
       self: self,
-      coldLoads: { count: 0, ms: 0, depth: 0 },
     };
   })();
 }
