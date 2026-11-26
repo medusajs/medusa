@@ -36,7 +36,8 @@ export async function startLicenseRemoteCheck(
   let status: unknown
 
   try {
-    const response = await fetch(LICENSE_CHECK_URL, {
+    const url = process.env.MEDUSA_LICENSE_CHECK_URL || LICENSE_CHECK_URL
+    const response = await fetch(url, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ license_key: license.token }),

@@ -23,7 +23,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
       onChange,
       size = "base",
       min = 0,
-      max = 100,
+      max,
       step = 1,
       className,
       disabled,

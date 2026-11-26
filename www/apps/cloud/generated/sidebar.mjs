@@ -147,7 +147,7 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "type": "link",
-                "title": "Connections",
+                "title": "MCP and Connectors",
                 "path": "/organizations/connections",
                 "children": []
               },
@@ -366,11 +366,64 @@ export const generatedSidebars = [
       {
         "loaded": true,
         "type": "category",
+        "title": "Payments",
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Medusa Payments",
+            "path": "/payments",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Payment Accounts",
+            "path": "/payments/accounts",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Medusa Payments",
+                "path": "/payments/accounts/medusa-payments",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Stripe",
+                "path": "/payments/accounts/stripe",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Adyen",
+                "path": "/payments/accounts/adyen",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Set up Medusa Payments in Environments",
+            "path": "/payments/environments",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Add to Storefront",
+            "path": "/payments/storefront",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
         "title": "Search",
-        "badge": {
-          "variant": "green",
-          "text": "New"
-        },
         "children": [
           {
             "loaded": true,

@@ -180,8 +180,9 @@ You can access the database settings from the [command palette](../command-palet
 3. In the project's dashboard, click on the name of the environment. For example, "Production".
 4. Click **Database** in the sidebar under the environment's section.
 5. In the **Database read-only connection string** section, toggle read access on if it is not already enabled.
-6. Copy the read-only connection string from the code block.
-  
+6. Click the reveal button to show the connection string, then confirm in the prompt that opens. The dashboard hides the connection string by default.
+7. Copy the read-only connection string from the code block.
+
 Then, you can connect to your database using a PostgreSQL client. For example, using the `psql` command-line tool:
 
 ```bash
@@ -226,11 +227,12 @@ You can access the database settings from the [command palette](../command-palet
 3. In the project's dashboard, click on the name of the environment. For example, "Production".
 4. Click **Database** in the sidebar under the environment's section.
 5. In the **Database write-access connection string** section, toggle the switch to enable write access.
-6. Once enabled, copy the write connection string from the code block that appears.
+6. Once enabled, click the reveal button to show the write connection string, then confirm in the prompt that opens. Like the read-only connection string, the dashboard hides it by default.
+7. Copy the write connection string from the code block.
 
 <Note title="Permission Requirements">
 
-Only organization owners can enable or disable database write access. If you can see the option to toggle write access, but it's disabled, contact your organization's owner to request access.
+Only organization owners can enable or disable database write access and reveal the write connection string. If you can see the option to toggle write access, but it's disabled, contact your organization's owner to request access.
 
 </Note>
 

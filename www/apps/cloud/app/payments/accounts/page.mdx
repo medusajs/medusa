@@ -1,0 +1,363 @@
+import { Note, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa Payment Accounts`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to set up and manage the payment accounts your stores take live payments with on Cloud.
+
+## Payment Accounts Overview
+
+Medusa supports integrated payment accounts for your organization with the following options:
+
+- [Medusa Payments account](./medusa-payments/page.mdx): Medusa creates and runs the Stripe account for you, so you don't need a Stripe account.
+- [Stripe account](./stripe/page.mdx): You connect one or more Stripe accounts that you already have, and you manage them in Stripe.
+- [Adyen account](./adyen/page.mdx): You register Medusa's Adyen Module Provider in your Medusa application and configure it with your own Adyen account. Cloud doesn't provide an integrated experience for Adyen.
+
+Learn about the differences between them in the [Differences Between Payment Account Types](#differences-between-payment-account-types) section.
+
+<Note title="Required Medusa version">
+
+To take payments with a Medusa Payments account or a connected Stripe account, your Medusa application must use Medusa [v2.22.3](https://github.com/medusajs/medusa/releases/tag/v2.22.3) or later. If your application uses an older version, [update it](!docs!/learn/update) first.
+
+</Note>
+
+---
+
+## View Payment Accounts
+
+To view your organization's payment accounts:
+
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization) whose payments you want to manage.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Payments** > **Overview** in the sidebar.
+
+The **Payment accounts** page shows the payment accounts that you've set up, or the option to set up a new one if your organization has none.
+
+If your organization has more than one payment account, use the selector at the top right of the page to choose the account to view.
+
+<Note>
+
+The **Transactions**, **Payouts**, and **Disputes** items in the sidebar are disabled until your organization has a payment account.
+
+</Note>
+
+---
+
+## Differences Between Payment Account Types
+
+In the Cloud dashboard, your organization takes live payments either with a Medusa Payments account or with its own Stripe accounts. You can't use a Medusa Payments account and your own Stripe accounts at the same time. To switch from one to the other, close or disconnect the accounts you have, then set up the other type.
+
+Adyen is configured separately in your Medusa application, so you can use it alongside a Medusa Payments account or your own Stripe accounts.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Difference
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+
+        [Medusa Payments](./medusa-payments/page.mdx)
+
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+
+        [Stripe](./stripe/page.mdx)
+
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+
+        [Adyen](./adyen/page.mdx)
+
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Who creates the account
+      </Table.Cell>
+      <Table.Cell>
+        Medusa creates and runs a Stripe account for you.
+      </Table.Cell>
+      <Table.Cell>
+        You connect a Stripe account you already have.
+      </Table.Cell>
+      <Table.Cell>
+        You register Medusa's Adyen Module Provider in your Medusa application with an Adyen account you already have.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Existing provider account needed
+      </Table.Cell>
+      <Table.Cell>
+        No.
+      </Table.Cell>
+      <Table.Cell>
+        Yes, a Stripe account.
+      </Table.Cell>
+      <Table.Cell>
+        Yes, an Adyen account.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Where you onboard the account
+      </Table.Cell>
+      <Table.Cell>
+        In the Cloud dashboard.
+      </Table.Cell>
+      <Table.Cell>
+        In the Stripe dashboard.
+      </Table.Cell>
+      <Table.Cell>
+        In Adyen's Customer Area.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Where you manage the account's details
+      </Table.Cell>
+      <Table.Cell>
+        In the Cloud dashboard.
+      </Table.Cell>
+      <Table.Cell>
+        In the Stripe dashboard.
+      </Table.Cell>
+      <Table.Cell>
+        In Adyen's Customer Area.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Number of accounts
+      </Table.Cell>
+      <Table.Cell>
+        One per organization.
+      </Table.Cell>
+      <Table.Cell>
+        One or more per organization.
+      </Table.Cell>
+      <Table.Cell>
+        One or more per Medusa application, with one provider per merchant account.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Choose accounts per environment
+      </Table.Cell>
+      <Table.Cell>
+
+        Click **Use this account** on the account's card in an environment's **Payments** page.
+
+      </Table.Cell>
+      <Table.Cell>
+
+        Click **Use this account** on the account's card in an environment's **Payments** page. An environment uses one account at a time.
+
+      </Table.Cell>
+      <Table.Cell>
+        Set the provider's credentials in the environment variables of each environment that takes payments with Adyen.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        View transactions, payouts, and disputes
+      </Table.Cell>
+      <Table.Cell>
+        In the Cloud dashboard.
+      </Table.Cell>
+      <Table.Cell>
+        In the Cloud dashboard and the Stripe dashboard.
+      </Table.Cell>
+      <Table.Cell>
+        In Adyen's Customer Area. Adyen activity doesn't show in the Cloud dashboard.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Stop using the account
+      </Table.Cell>
+      <Table.Cell>
+        Close the account. Medusa closes it once its balance is paid out and its open disputes are resolved.
+      </Table.Cell>
+      <Table.Cell>
+        Disconnect the account. The Stripe account and its data aren't affected.
+      </Table.Cell>
+      <Table.Cell>
+
+        Remove the provider from `medusa-config.ts`, or disable it in your regions.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+{/* TODO: explain when to choose each account type. */}
+
+---
+
+## Payment Account Statuses
+
+Each payment account shows a status badge on its card:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Status
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Setting up
+      </Table.Cell>
+      <Table.Cell>
+        Medusa is setting up payments for the account. This usually takes a few seconds.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Onboarding
+      </Table.Cell>
+      <Table.Cell>
+        Stripe needs more information before the account can accept payments.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        In review
+      </Table.Cell>
+      <Table.Cell>
+        Stripe is verifying the details you shared.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Active
+      </Table.Cell>
+      <Table.Cell>
+        The account can accept payments.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Rejected
+      </Table.Cell>
+      <Table.Cell>
+        Stripe can't accept payments with the account. For a Stripe account you connected, open it in Stripe to see why. For a Medusa Payments account, close it and connect your own Stripe account instead, or contact support.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Closing
+      </Table.Cell>
+      <Table.Cell>
+        You closed the Medusa Payments account, and Medusa closes it once its balance is paid out and its open disputes are resolved.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## View Payment Account Balance
+
+Once a payment account has activity, your organization's **Payments > Overview** page shows the account's balance below its details:
+
+- **Available**: The balance that's available to pay out to your bank account.
+- **Pending**: The balance from recent payments that isn't available to pay out yet.
+- **Latest payout**: The amount, date, and status of the account's latest payout.
+
+The **Transactions**, **Payouts**, and **Disputes** items in the sidebar show the rest of the account's activity, as explained in the following sections.
+
+---
+
+## View Transactions
+
+You can view the live payments your stores have taken with a payment account across all of your organization's environments.
+
+To view a payment account's transactions:
+
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization) whose payments you want to manage.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Payments** > **Transactions** in the sidebar.
+4. If your organization has more than one payment account, choose the account to view from the selector at the top right of the page.
+
+The **Transactions** page lists the account's payments with their date, status, customer, and amount. You can:
+
+- Filter the payments by amount, customer email, date, status, or payment method.
+- Export the payments.
+- Open a payment to view its details, capture it, or refund it.
+
+<Note>
+
+The **Transactions** page doesn't include payments taken in test mode. To view those, check the transactions of the environment that took them. Learn more in the [Set up Medusa Payments in Environments](../environments/page.mdx#view-environment-transactions) guide.
+
+</Note>
+
+To view the transactions of a single environment, use the environment's **Payments** page instead.
+
+---
+
+## View Payouts
+
+You can view the payouts from a payment account to your bank account, and the account's balance. Learn how payouts work in the [How Payouts Work](#how-payouts-work) section.
+
+To view a payment account's payouts:
+
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization) whose payments you want to manage.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Payments** > **Payouts** in the sidebar.
+4. If your organization has more than one payment account, choose the account to view from the selector at the top right of the page.
+
+The **Payouts** page shows the account's total balance and the amount available to pay out. Click **See details** to view a breakdown of the balance.
+
+Below the balance, the page lists the account's payouts with their date, status, destination bank account, and amount. You can filter the payouts by status, amount, method, or date, and export them.
+
+### How Payouts Work
+
+Stripe pays out a payment account's available balance to the bank account you added for it, on the account's payout schedule:
+
+- **Medusa Payments account**: You add the bank account during [onboarding](./medusa-payments/page.mdx#complete-medusa-payments-onboarding).
+- **Your own Stripe account**: The bank account and payout schedule come from your Stripe account, and you manage them in the Stripe dashboard. The **Payouts** page only shows the account's payouts.
+
+A payment account keeps paying out its balance even when it can't take new payments, for example, when your organization moves to the free plan or when you [close a Medusa Payments account](./medusa-payments/page.mdx#close-a-medusa-payments-account).
+
+---
+
+## View Disputes
+
+A dispute happens when a customer asks their bank to reverse a payment, for example, because they don't recognize it. You can view and respond to disputes on a payment account's payments.
+
+To view a payment account's disputes:
+
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization) whose payments you want to manage.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Payments** > **Disputes** in the sidebar.
+4. If your organization has more than one payment account, choose the account to view from the selector at the top right of the page.
+
+The **Disputes** page lists the account's disputes with the date to respond by, the dispute date, status, reason, customer, and disputed amount. You can:
+
+- Filter the disputes by reason, status, amount, dispute date, or respond-by date.
+- Export the disputes.
+- Open a dispute to view its details and respond to it.
+
+Respond to a dispute before its respond-by date. Otherwise, the bank usually decides in the customer's favor.
+
+---
+
+## Use a Payment Account in an Environment
+
+After you set up a payment account, you choose which environments take live payments with it from each environment's **Payments** page.
+
+Learn more in the [Set up Medusa Payments in Environments](../environments/page.mdx#set-up-payments-in-an-environment) guide.

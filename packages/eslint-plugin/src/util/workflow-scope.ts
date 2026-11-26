@@ -8,6 +8,7 @@ export const CREATE_WORKFLOW = "createWorkflow"
 export const CREATE_STEP = "createStep"
 export const TRANSFORM = "transform"
 export const WHEN = "when"
+export const CREATE_HOOK = "createHook"
 export const WORKFLOW_RESPONSE = "WorkflowResponse"
 export const STEP_RESPONSE = "StepResponse"
 
@@ -16,6 +17,7 @@ export type WorkflowSdkBindings = {
   createStep: Set<string>
   transform: Set<string>
   when: Set<string>
+  createHook: Set<string>
   workflowResponse: Set<string>
   stepResponse: Set<string>
 }
@@ -26,6 +28,7 @@ export function createWorkflowSdkBindings(): WorkflowSdkBindings {
     createStep: new Set(),
     transform: new Set(),
     when: new Set(),
+    createHook: new Set(),
     workflowResponse: new Set(),
     stepResponse: new Set(),
   }
@@ -36,6 +39,7 @@ const TRACKED_IMPORTS = [
   CREATE_STEP,
   TRANSFORM,
   WHEN,
+  CREATE_HOOK,
   WORKFLOW_RESPONSE,
   STEP_RESPONSE,
 ] as const
@@ -47,6 +51,7 @@ const BUCKET_BY_IMPORT: Record<TrackedImport, keyof WorkflowSdkBindings> = {
   [CREATE_STEP]: "createStep",
   [TRANSFORM]: "transform",
   [WHEN]: "when",
+  [CREATE_HOOK]: "createHook",
   [WORKFLOW_RESPONSE]: "workflowResponse",
   [STEP_RESPONSE]: "stepResponse",
 }

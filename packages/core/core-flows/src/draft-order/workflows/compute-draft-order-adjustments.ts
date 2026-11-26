@@ -114,7 +114,8 @@ export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
       return orderChange.actions
         .filter(
           (action) =>
-            action.action === ChangeActionType.ITEM_ADJUSTMENTS_REPLACE
+            action.action === ChangeActionType.ITEM_ADJUSTMENTS_REPLACE ||
+            action.action === ChangeActionType.SHIPPING_ADJUSTMENTS_REPLACE
         )
         .map((action) => {
           return action.id
@@ -137,7 +138,7 @@ export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
       const orderChangeActionAdjustmentsInput = transform(
         { order, previewedOrder, orderChange },
         ({ order, previewedOrder, orderChange }) => {
-          return previewedOrder.items.map((item) => {
+          const itemActions = previewedOrder.items.map((item) => {
             return {
               order_id: order.id,
               order_change_id: orderChange.id,
@@ -149,6 +150,23 @@ export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
               },
             }
           })
+
+          const shippingActions = (previewedOrder.shipping_methods ?? []).map(
+            (shippingMethod) => {
+              return {
+                order_id: order.id,
+                order_change_id: orderChange.id,
+                version: orderChange.version,
+                action: ChangeActionType.SHIPPING_ADJUSTMENTS_REPLACE,
+                details: {
+                  reference_id: shippingMethod.id,
+                  adjustments: [],
+                },
+              }
+            }
+          )
+
+          return [...itemActions, ...shippingActions]
         }
       )
 
@@ -175,7 +193,7 @@ export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
         additional_promotion_context: setPromotionContextResult,
       })
 
-      const { lineItemAdjustmentsToCreate } =
+      const { lineItemAdjustmentsToCreate, shippingMethodAdjustmentsToCreate } =
         prepareAdjustmentsFromPromotionActionsStep({ actions })
 
       const orderChangeActionAdjustmentsInput = transform(
@@ -184,14 +202,16 @@ export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
           previewedOrder,
           orderChange,
           lineItemAdjustmentsToCreate,
+          shippingMethodAdjustmentsToCreate,
         },
         ({
           order,
           previewedOrder,
           orderChange,
           lineItemAdjustmentsToCreate,
+          shippingMethodAdjustmentsToCreate,
         }) => {
-          return previewedOrder.items.map((item) => {
+          const itemActions = previewedOrder.items.map((item) => {
             const itemAdjustments = lineItemAdjustmentsToCreate.filter(
               (adjustment) => adjustment.item_id === item.id
             )
@@ -207,6 +227,29 @@ export const computeDraftOrderAdjustmentsWorkflow = createWorkflow(
               },
             }
           })
+
+          const shippingActions = (previewedOrder.shipping_methods ?? []).map(
+            (shippingMethod) => {
+              const shippingAdjustments =
+                shippingMethodAdjustmentsToCreate.filter(
+                  (adjustment) =>
+                    adjustment.shipping_method_id === shippingMethod.id
+                )
+
+              return {
+                order_change_id: orderChange.id,
+                order_id: order.id,
+                version: orderChange.version,
+                action: ChangeActionType.SHIPPING_ADJUSTMENTS_REPLACE,
+                details: {
+                  reference_id: shippingMethod.id,
+                  adjustments: shippingAdjustments,
+                },
+              }
+            }
+          )
+
+          return [...itemActions, ...shippingActions]
         }
       )
 
