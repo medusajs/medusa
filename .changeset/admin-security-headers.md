@@ -3,4 +3,4 @@
 "@medusajs/admin-bundler": patch
 ---
 
-feat(admin-bundler,types): add an `admin.securityHeaders` option that sets a Content-Security-Policy and a Referrer-Policy on the admin's HTML in production
+feat(admin-bundler,types): add an `admin.responseHeaders` option that sets headers on the admin's HTML in production, replacing the ones `http.securityHeaders` sets

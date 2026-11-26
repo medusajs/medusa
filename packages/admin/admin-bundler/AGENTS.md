@@ -7,7 +7,7 @@ Builds and serves the Medusa Admin for an application, and builds the admin exte
 Not imported by app code. The Medusa CLI calls it:
 
 - `develop(options)`: Vite dev server in middleware mode, returned as an Express router. Used by `packages/medusa/src/loaders/admin.ts` in development.
-- `serve({ outDir, securityHeaders })`: serves a prebuilt admin with long-lived cache headers and an SPA fallback. Throws if `index.html` is missing ("run 'medusa build'"). `admin.securityHeaders` adds a `Content-Security-Policy` (appended to the framework's `frame-ancestors`) and a `Referrer-Policy` to the HTML only, not to the static files; `develop` ignores it.
+- `serve({ outDir, responseHeaders })`: serves a prebuilt admin with long-lived cache headers and an SPA fallback. Throws if `index.html` is missing ("run 'medusa build'"). `admin.responseHeaders` sets any headers on the HTML only, not on the static files, replacing the ones the framework set (e.g. `http.securityHeaders`' CSP); `develop` ignores it.
 - `build(options)`: production build. Called from `packages/core/framework/src/build-tools/compiler.ts` (`medusa build`).
 - `plugin({ root, outDir })`: library build of a plugin's `src/admin` into `<outDir>/src/admin` (`medusa plugin:build`).
 

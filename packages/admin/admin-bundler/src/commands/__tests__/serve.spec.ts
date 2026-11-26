@@ -39,12 +39,12 @@ describe("serve", () => {
     }
   }
 
-  it("adds the configured security headers to the HTML", async () => {
+  it("sets the configured headers on the HTML, replacing the framework's", async () => {
     const server = await start({
       outDir,
-      securityHeaders: {
-        contentSecurityPolicy: "script-src 'self'; form-action 'self'",
-        referrerPolicy: "strict-origin-when-cross-origin",
+      responseHeaders: {
+        "Content-Security-Policy": "frame-ancestors 'none'; script-src 'self'",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
       },
     })
 
@@ -54,7 +54,7 @@ describe("serve", () => {
 
         expect(await response.text()).toBe("<html></html>")
         expect(response.headers.get("content-security-policy")).toBe(
-          "frame-ancestors 'self'; script-src 'self'; form-action 'self'"
+          "frame-ancestors 'none'; script-src 'self'"
         )
         expect(response.headers.get("referrer-policy")).toBe(
           "strict-origin-when-cross-origin"
