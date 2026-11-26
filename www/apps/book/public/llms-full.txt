@@ -4192,7 +4192,7 @@ You apply the `validateAndTransformQuery` middleware on the `GET /admin/brands` 
   - `fields`: A comma-separated string indicating the fields to retrieve.
   - `limit`: The maximum number of items to retrieve.
   - `offset`: The number of items to skip before retrieving the returned items.
-  - `order`: The name of the field to sort the items by. Learn more about sorting in [the API reference](undefined/api/admin#sort-order)
+  - `order`: The name of the field to sort the items by. Learn more about sorting in [the API reference](undefined/api/admin/pagination#sort-order)
 - An object of Query configurations having the following properties:
   - `defaults`: An array of default fields and relations to retrieve.
   - `isList`: Whether the API route returns a list of items.
@@ -33912,7 +33912,7 @@ Learn more about using the publishable API key in the [Storefront Development gu
 
 In this chapter, you'll learn about updating your Medusa application and packages.
 
-Medusa's current version is v2.23. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.23.0).
+Medusa's current version is v2.23.1. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.23.1).
 
 ## Medusa Versioning
 
@@ -52948,7 +52948,7 @@ The Medusa application infers the associated sales channels and ensures that onl
 
 ## How to Create a Publishable API Key?
 
-To create a publishable API key, either use the [Medusa Admin](undefined/user-guide/settings/developer/publishable-api-keys) or the [Admin API Routes](undefined/api/admin#publishable-api-keys).
+To create a publishable API key, either use the [Medusa Admin](undefined/user-guide/settings/developer/publishable-api-keys) or the [Admin API Routes](undefined/api/admin/api-keys).
 
 ***
 
@@ -56893,7 +56893,7 @@ const { data: invites } = await query.graph({
 // invites[0].rbac_roles
 ```
 
-To set an invite's roles when you create it, pass the `roles` parameter to the [Create Invite](undefined/api/admin#invites_postinvites) API route, as explained in the [RBAC API Routes](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/enterprise/rbac/api-routes#assign-roles-to-invites) guide.
+To set an invite's roles when you create it, pass the `roles` parameter to the [Create Invite](undefined/api/admin/invites/create-invite) API route, as explained in the [RBAC API Routes](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/enterprise/rbac/api-routes#assign-roles-to-invites) guide.
 
 Learn more in the [RBAC Module's links documentation](undefined/home/runner/work/medusa/medusa/www/apps/resources/app/enterprise/rbac/links-to-other-modules#user-module).
 
@@ -153334,6 +153334,8 @@ Download this reference as an OpenApi YAML file. You can import this file to too
 - [DELETE /admin/api-keys/](undefined/api/admin#api-keys_deleteapikeysid)
 - [POST /admin/api-keys//revoke](undefined/api/admin#api-keys_postapikeysidrevoke)
 - [POST /admin/api-keys//sales-channels](undefined/api/admin#api-keys_postapikeysidsaleschannels)
+- [GET /admin/audit-logs](undefined/api/admin#audit-logs_getauditlogs)
+- [GET /admin/audit-logs/](undefined/api/admin#audit-logs_getauditlogsid)
 - [GET /admin/campaigns](undefined/api/admin#campaigns_getcampaigns)
 - [POST /admin/campaigns](undefined/api/admin#campaigns_postcampaigns)
 - [GET /admin/campaigns/](undefined/api/admin#campaigns_getcampaignsid)

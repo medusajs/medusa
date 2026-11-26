@@ -713,6 +713,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "title": "setAuthAppMetadataWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setAuthAppMetadataWorkflow",
                       "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "validateAuthCallbackWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateAuthCallbackWorkflow",
+                      "children": []
                     }
                   ]
                 },
@@ -750,6 +757,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "setAuthAppMetadataStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setAuthAppMetadataStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "validateAuthCallbackStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateAuthCallbackStep",
                       "children": []
                     }
                   ]
@@ -1731,6 +1745,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "updateShippingMethodsStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateShippingMethodsStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "validateLineItemsInCartStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateLineItemsInCartStep",
                       "children": []
                     }
                   ]
