@@ -79,7 +79,7 @@ export const generatedEditDates = {
   "app/security/data-protection/page.mdx": "2026-11-06T12:26:30.453Z",
   "app/features/page.mdx": "2026-11-26T08:32:09.936Z",
   "app/going-live/page.mdx": "2026-11-18T11:44:35.702Z",
-  "app/ai-toolkit/page.mdx": "2026-11-19T09:58:42.067Z",
+  "app/ai-toolkit/page.mdx": "2026-11-26T13:47:57.732Z",
   "app/ai-toolkit/agent-skills/page.mdx": "2026-11-13T13:33:45.562Z",
   "app/ai-toolkit/ai-friendly-docs/page.mdx": "2026-11-26T13:09:40.982Z",
   "app/ai-toolkit/docs-mcp/ask-medusa-question/page.mdx": "2026-11-26T08:27:54.511Z",

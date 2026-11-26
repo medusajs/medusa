@@ -7,7 +7,7 @@
 - [Introduction](http://localhost:3000/cloud)
 - [Access Keys](http://localhost:3000/cloud/access-keys)
 - [Medusa Admin on Cloud](http://localhost:3000/cloud/admin)
-- [AI Toolkit](http://localhost:3000/cloud/ai-toolkit)
+- [Setting Up AI Agents](http://localhost:3000/cloud/ai-toolkit)
 - [Agent Skills for Medusa](http://localhost:3000/cloud/ai-toolkit/agent-skills)
 - [AI-Friendly Medusa Documentation](http://localhost:3000/cloud/ai-toolkit/ai-friendly-docs)
 - [Cloud Assistant](http://localhost:3000/cloud/ai-toolkit/assistant)
