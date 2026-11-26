@@ -1211,14 +1211,119 @@ describe("Medusa search utilities", () => {
         plan
       )
 
-      expect(query.query.rank_by).toEqual([
-        "Sum",
-        [
-          ["Product", 0.5, ["Product", 3, ["title", "BM25", "red shoe"]]],
-          ["Product", 0.5, ["embedding", "ANN", [0.1, 0.2, 0.3]]],
+      const side = {
+        filters: undefined,
+        include_attributes: ["title"],
+        // More than the page of 20, see the candidates test below.
+        limit: 80,
+        offset: undefined,
+        compute_attributes: undefined,
+      }
+      expect(query.hybrid).toEqual({
+        queries: [
+          { ...side, rank_by: ["Product", 3, ["title", "BM25", "red shoe"]] },
+          { ...side, rank_by: ["embedding", "ANN", [0.1, 0.2, 0.3]] },
         ],
+        rerank_by: ["RRF", { weights: [0.5, 0.5] }],
+        limit: 20,
+        offset: undefined,
+      })
+      expect(JSON.stringify(query.hybrid)).not.toContain('"Sum"')
+    })
+
+    it("weights the fusion by semantic_ratio and pages the fused rows", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "red shoe",
+          attributes_to_retrieve: ["title"],
+          pagination: { skip: 10, take: 5 },
+          search_options: {
+            vector: { value: [0.1, 0.2, 0.3], semantic_ratio: 0.75 },
+          },
+        },
+        plan
+      )
+
+      expect(query.hybrid).toMatchObject({
+        rerank_by: ["RRF", { weights: [0.25, 0.75] }],
+        limit: 5,
+        offset: 10,
+      })
+    })
+
+    it("hands the fusion more candidates than the page holds", () => {
+      const candidates = (skip: number, take: number) =>
+        buildQueryPlan(
+          {
+            index: definition,
+            q: "red shoe",
+            attributes_to_retrieve: ["title"],
+            pagination: { skip, take },
+            search_options: { vector: { value: [0.1, 0.2, 0.3] } },
+          },
+          plan
+        ).hybrid!.queries.map((side) => side.limit)
+
+      // A row both sides rank third beats one a single side ranks first, so
+      // a page of 2 can't be fused from 2 rows a side.
+      expect(candidates(0, 2)).toEqual([80, 80])
+      expect(candidates(90, 10)).toEqual([200, 200])
+      // Never past what Cloud returns for one query.
+      expect(candidates(9990, 10)).toEqual([10000, 10000])
+    })
+
+    it("deduplicates the fused rows of a hybrid search", () => {
+      const query = buildQueryPlan(
+        {
+          index: definition,
+          q: "red shoe",
+          attributes_to_retrieve: ["title"],
+          pagination: { skip: 2, take: 5 },
+          search_options: {
+            vector: { value: [0.1, 0.2, 0.3] },
+            distinct: "status",
+          },
+        },
+        plan
+      )
+
+      expect(query.hybrid).toMatchObject({
+        queries: [
+          { include_attributes: ["title", "status"], limit: 80 },
+          { include_attributes: ["title", "status"], limit: 80 },
+        ],
+        limit: { total: 7, per: { attributes: ["status"], limit: 1 } },
+        offset: undefined,
+      })
+    })
+
+    it("runs one query when semantic_ratio leaves a single side", () => {
+      const build = (semantic_ratio: number) =>
+        buildQueryPlan(
+          {
+            index: definition,
+            q: "red shoe",
+            attributes_to_retrieve: ["title"],
+            search_options: {
+              vector: { value: [0.1, 0.2, 0.3], semantic_ratio },
+            },
+          },
+          plan
+        )
+
+      expect(build(1).hybrid).toBeUndefined()
+      expect(build(1).query.rank_by).toEqual([
+        "embedding",
+        "ANN",
+        [0.1, 0.2, 0.3],
       ])
-      expect(query.query.filters).toBeUndefined()
+      expect(build(0).hybrid).toBeUndefined()
+      expect(build(0).query.rank_by).toEqual([
+        "Product",
+        3,
+        ["title", "BM25", "red shoe"],
+      ])
     })
 
     it("puts embed on the vector column", () => {
