@@ -340,6 +340,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Audit Logs",
+            path: "/settings/audit-logs",
+          },
+          {
+            type: "link",
             title: "Regions",
             path: "/settings/regions",
           },

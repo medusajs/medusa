@@ -1066,6 +1066,71 @@ export const parsePermissionsBadge: ComponentParser = (
   return [SKIP, index]
 }
 
+const CLOUD_ROLE_NAMES: Record<string, string> = {
+  developer: "Developer",
+  billing: "Billing",
+}
+
+export const parseRolesBadge: ComponentParser = (
+  node: UnistNodeWithData,
+  index: number,
+  parent: UnistTree
+): VisitorResult => {
+  const rolesAttr = node.attributes?.find((attr) => attr.name === "roles")
+  let roles: string[] = []
+
+  if (rolesAttr && typeof rolesAttr.value !== "string") {
+    const rolesJsVar = rolesAttr.value?.data?.estree
+      ? estreeToJs(rolesAttr.value.data.estree)
+      : undefined
+
+    if (Array.isArray(rolesJsVar)) {
+      roles = rolesJsVar.flatMap((item) => {
+        if (!isExpressionJsVarLiteral(item)) {
+          return []
+        }
+        return [item.data as string]
+      })
+    }
+  }
+
+  // Admin always has access, and the badge lists roles in a fixed order
+  const roleNames = [
+    "Admin",
+    ...Object.entries(CLOUD_ROLE_NAMES)
+      .filter(([role]) => roles.includes(role))
+      .map(([, name]) => name),
+  ]
+
+  const labelText =
+    roleNames.length > 1 ? `Requires one of the roles: ` : `Requires role: `
+
+  parent?.children.splice(index, 1, {
+    type: "paragraph",
+    children: [
+      {
+        type: "text",
+        value: `${labelText}${roleNames.join(", ")}. `,
+      },
+      {
+        type: "link",
+        url: "https://docs.medusajs.com/cloud/organizations/roles",
+        children: [
+          {
+            type: "text",
+            value: "Learn more about roles",
+          },
+        ],
+      },
+      {
+        type: "text",
+        value: ".",
+      },
+    ],
+  })
+  return [SKIP, index]
+}
+
 export const parseEnterpriseNotice: ComponentParser = (
   node: UnistNodeWithData,
   index: number,

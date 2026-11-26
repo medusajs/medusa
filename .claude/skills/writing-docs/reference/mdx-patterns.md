@@ -230,7 +230,10 @@ Never use absolute URLs for cross-project links. Use the special link syntax:
 [text](!docs!/learn/fundamentals/workflows)    → book
 [text](!resources!/commerce-modules/product)   → resources
 [text](!user-guide!/products)                  → user-guide
+[text](!api!/admin/products/list-products)     → API reference
 ```
+
+API reference links use page paths, never hash anchors: `!api!/{area}/{tag}` for a tag, `!api!/{area}/{tag}/{operation}` for a route, and `!api!/{area}/{section}#{heading}` for a heading in an intro section, such as `!api!/admin/authentication#2-api-token`. Find the exact paths in `www/apps/api-reference/generated/api-ref-paths.mjs`.
 
 Internal links within the same project use relative paths:
 

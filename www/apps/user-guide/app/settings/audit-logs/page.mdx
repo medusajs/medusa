@@ -1,0 +1,76 @@
+---
+sidebar_label: "Audit Logs"
+tags:
+  - user guide
+  - audit
+  - user
+products:
+  - user
+---
+
+export const metadata = {
+  title: `View Audit Logs in Medusa Admin`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice />
+
+In this guide, you'll learn how to view your store's audit logs in the Medusa Admin.
+
+<Note title="Enterprise feature">
+
+Audit logs are an enterprise feature. If your store is hosted on Cloud's **Scale** or **Enterprise** plan, an organization admin can [turn on audit logs](!cloud!/organizations/audit-logs) from the Cloud dashboard. Otherwise, a developer must enable them in your Medusa configuration before the **Audit logs** settings appear.
+
+</Note>
+
+## Overview
+
+Audit logs record who did what in your store, on which resource, and how it ended. For example, when an admin user cancels an order, Medusa records an audit log with the user, the order, and whether the cancellation succeeded.
+
+Medusa records actions that create, update, or delete data, such as creating a product, updating an order, inviting a user, or logging in. It also records attempts that failed or that were denied, such as a user trying to perform an action they don't have permission for. Viewing data isn't recorded.
+
+You can use audit logs to investigate a change, review who accessed your store, or meet compliance requirements.
+
+---
+
+## View Audit Logs
+
+<PermissionsBadge permissions={["audit_log:read"]} />
+
+To view your store's audit logs, go to Settings → Audit logs. The list shows the most recent audit logs first. For each audit log, you can see:
+
+- **Time**: When the action happened.
+- **Actor**: Who performed the action. For admin users, it shows the user's name and email. For other actors, such as API keys, it shows the actor's ID and type.
+- **Action**: The name of the action, such as `order.cancel` or `product.create`.
+- **Resource**: The ID and type of the resource that the action affected, such as an order or a product.
+- **Outcome**: Whether the action **Succeeded**, was **Denied** because of missing access, or **Failed** because of an error.
+
+If an actor shows **Impersonated by** with an ID, a Medusa support staff member performed the action while signed in as that actor.
+
+### Search and Filter Audit Logs
+
+To find specific audit logs, you can:
+
+- **Search**: Search audit logs by action, resource type, resource ID, or actor ID.
+- **Filter**: Filter audit logs by **Outcome**, **Actor type**, **Action**, **Resource type**, or **Started at** date.
+- **Sort**: Sort audit logs by time, from newest to oldest or oldest to newest.
+
+---
+
+## View an Audit Log's Details
+
+<PermissionsBadge permissions={["audit_log:read"]} />
+
+To view an audit log's details, click on it in the list. The details page shows:
+
+- The action's name and outcome.
+- The general details of the audit log, such as its ID, when the action started and ended, the actor, and the resource. If the actor is an admin user, you can click their name to view the user.
+- The **Request** section, which shows the request's method, route, path, status code, request ID, IP address, and user agent. Actions that didn't happen through a request, such as a scheduled import, don't have request details.
+- The **Request data**, **Response data**, and **Metadata** sections, which show any extra data that your developers chose to keep for the action.
+
+<Note title="Tip">
+
+When you contact support about an action, share its request ID. It's the same ID that appears in your store's server logs.
+
+</Note>

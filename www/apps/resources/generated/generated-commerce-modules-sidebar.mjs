@@ -18232,6 +18232,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
             {
               "loaded": true,
               "type": "ref",
+              "title": "Audit Logs",
+              "path": "https://docs.medusajs.com/user-guide/settings/audit-logs",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "ref",
               "title": "Common Roles",
               "path": "https://docs.medusajs.com/user-guide/settings/roles/common-roles",
               "children": []

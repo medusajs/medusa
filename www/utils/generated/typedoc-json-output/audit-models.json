@@ -1,0 +1,852 @@
+{
+	"schemaVersion": "2.0",
+	"id": 186,
+	"name": "audit-models",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 187,
+			"name": "AuditLog",
+			"variant": "declaration",
+			"kind": 32,
+			"flags": {
+				"isConst": true
+			},
+			"sources": [
+				{
+					"fileName": "audit-log.ts",
+					"line": 3,
+					"character": 6,
+					"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/modules/audit/src/models/audit-log.ts#L3"
+				}
+			],
+			"type": {
+				"type": "reference",
+				"target": {
+					"packageName": "@medusajs/utils",
+					"packagePath": "src/dml/entity.ts",
+					"qualifiedName": "DmlEntity"
+				},
+				"typeArguments": [
+					{
+						"type": "reference",
+						"target": {
+							"packageName": "@medusajs/utils",
+							"packagePath": "src/dml/entity.ts",
+							"qualifiedName": "DMLEntitySchemaBuilder"
+						},
+						"typeArguments": [
+							{
+								"type": "reflection",
+								"declaration": {
+									"id": 188,
+									"name": "__type",
+									"variant": "declaration",
+									"kind": 65536,
+									"flags": {},
+									"children": [
+										{
+											"id": 189,
+											"name": "id",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The ID of the audit log."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "audit-log.ts",
+													"line": 5,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/modules/audit/src/models/audit-log.ts#L5"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/primary-key.ts",
+													"qualifiedName": "PrimaryKeyModifier"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"packageName": "@medusajs/utils",
+															"packagePath": "src/dml/properties/id.ts",
+															"qualifiedName": "IdProperty"
+														},
+														"name": "IdProperty",
+														"package": "@medusajs/utils"
+													}
+												],
+												"name": "PrimaryKeyModifier",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 190,
+											"name": "started_at",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The started at of the audit log"
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "audit-log.ts",
+													"line": 6,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/modules/audit/src/models/audit-log.ts#L6"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/date-time.ts",
+													"qualifiedName": "DateTimeProperty"
+												},
+												"name": "DateTimeProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 191,
+											"name": "ended_at",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The ended at of the audit log"
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "audit-log.ts",
+													"line": 7,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/modules/audit/src/models/audit-log.ts#L7"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/date-time.ts",
+													"qualifiedName": "DateTimeProperty"
+												},
+												"name": "DateTimeProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 192,
+											"name": "actor_type",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The actor type of the audit log"
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "audit-log.ts",
+													"line": 8,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/modules/audit/src/models/audit-log.ts#L8"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 193,
+											"name": "actor_id",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The actor id of the audit log"
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "audit-log.ts",
+													"line": 9,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/modules/audit/src/models/audit-log.ts#L9"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 194,
+											"name": "impersonator_id",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The impersonator id of the audit log"
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "audit-log.ts",
+													"line": 10,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/modules/audit/src/models/audit-log.ts#L10"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 195,
+											"name": "action",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The action of the audit log"
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "audit-log.ts",
+													"line": 11,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/modules/audit/src/models/audit-log.ts#L11"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 196,
+											"name": "resource_type",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The resource type of the audit log"
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "audit-log.ts",
+													"line": 12,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/modules/audit/src/models/audit-log.ts#L12"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 197,
+											"name": "resource_id",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The resource id of the audit log"
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "audit-log.ts",
+													"line": 13,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/modules/audit/src/models/audit-log.ts#L13"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/text.ts",
+													"qualifiedName": "TextProperty"
+												},
+												"name": "TextProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 198,
+											"name": "outcome",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The outcome of the audit log"
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "audit-log.ts",
+													"line": 14,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/modules/audit/src/models/audit-log.ts#L14"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/enum.ts",
+													"qualifiedName": "EnumProperty"
+												},
+												"typeArguments": [
+													{
+														"type": "tuple",
+														"elements": [
+															{
+																"type": "literal",
+																"value": "succeeded"
+															},
+															{
+																"type": "literal",
+																"value": "denied"
+															},
+															{
+																"type": "literal",
+																"value": "failed"
+															}
+														]
+													}
+												],
+												"name": "EnumProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 199,
+											"name": "request",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The request of the audit log"
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "audit-log.ts",
+													"line": 15,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/modules/audit/src/models/audit-log.ts#L15"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/json.ts",
+													"qualifiedName": "JSONProperty"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
+															"qualifiedName": "NoInfer"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": {
+																	"packageName": "typescript",
+																	"packagePath": "lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														],
+														"name": "NoInfer",
+														"package": "typescript"
+													}
+												],
+												"name": "JSONProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 200,
+											"name": "request_data",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The request data of the audit log"
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "audit-log.ts",
+													"line": 16,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/modules/audit/src/models/audit-log.ts#L16"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/json.ts",
+													"qualifiedName": "JSONProperty"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
+															"qualifiedName": "NoInfer"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": {
+																	"packageName": "typescript",
+																	"packagePath": "lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														],
+														"name": "NoInfer",
+														"package": "typescript"
+													}
+												],
+												"name": "JSONProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 201,
+											"name": "response_data",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "The response data of the audit log"
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "audit-log.ts",
+													"line": 17,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/modules/audit/src/models/audit-log.ts#L17"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/json.ts",
+													"qualifiedName": "JSONProperty"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
+															"qualifiedName": "NoInfer"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": {
+																	"packageName": "typescript",
+																	"packagePath": "lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														],
+														"name": "NoInfer",
+														"package": "typescript"
+													}
+												],
+												"name": "JSONProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										},
+										{
+											"id": 202,
+											"name": "metadata",
+											"variant": "declaration",
+											"kind": 1024,
+											"flags": {
+												"isOptional": true
+											},
+											"comment": {
+												"summary": [
+													{
+														"kind": "text",
+														"text": "Holds custom data in key-value pairs."
+													}
+												]
+											},
+											"sources": [
+												{
+													"fileName": "audit-log.ts",
+													"line": 18,
+													"character": 4,
+													"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/modules/audit/src/models/audit-log.ts#L18"
+												}
+											],
+											"type": {
+												"type": "reference",
+												"target": {
+													"packageName": "@medusajs/utils",
+													"packagePath": "src/dml/properties/json.ts",
+													"qualifiedName": "JSONProperty"
+												},
+												"typeArguments": [
+													{
+														"type": "reference",
+														"target": {
+															"packageName": "typescript",
+															"packagePath": "lib/lib.es5.d.ts",
+															"qualifiedName": "NoInfer"
+														},
+														"typeArguments": [
+															{
+																"type": "reference",
+																"target": {
+																	"packageName": "typescript",
+																	"packagePath": "lib/lib.es5.d.ts",
+																	"qualifiedName": "Record"
+																},
+																"typeArguments": [
+																	{
+																		"type": "intrinsic",
+																		"name": "string"
+																	},
+																	{
+																		"type": "intrinsic",
+																		"name": "unknown"
+																	}
+																],
+																"name": "Record",
+																"package": "typescript"
+															}
+														],
+														"name": "NoInfer",
+														"package": "typescript"
+													}
+												],
+												"name": "JSONProperty",
+												"package": "@medusajs/utils"
+											},
+											"defaultValue": "..."
+										}
+									],
+									"groups": [
+										{
+											"title": "Properties",
+											"children": [
+												189,
+												190,
+												191,
+												192,
+												193,
+												194,
+												195,
+												196,
+												197,
+												198,
+												199,
+												200,
+												201,
+												202
+											]
+										}
+									]
+								}
+							}
+						],
+						"name": "DMLEntitySchemaBuilder",
+						"package": "@medusajs/utils"
+					},
+					{
+						"type": "literal",
+						"value": "audit_log"
+					}
+				],
+				"name": "DmlEntity",
+				"package": "@medusajs/utils"
+			},
+			"defaultValue": "..."
+		}
+	],
+	"groups": [
+		{
+			"title": "Variables",
+			"children": [
+				187
+			]
+		}
+	],
+	"packageName": "@medusajs/audit",
+	"symbolIdMap": {
+		"186": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/index.ts",
+			"qualifiedName": ""
+		},
+		"187": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "AuditLog"
+		},
+		"188": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "__object"
+		},
+		"189": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "__object.id"
+		},
+		"190": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "__object.started_at"
+		},
+		"191": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "__object.ended_at"
+		},
+		"192": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "__object.actor_type"
+		},
+		"193": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "__object.actor_id"
+		},
+		"194": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "__object.impersonator_id"
+		},
+		"195": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "__object.action"
+		},
+		"196": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "__object.resource_type"
+		},
+		"197": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "__object.resource_id"
+		},
+		"198": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "__object.outcome"
+		},
+		"199": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "__object.request"
+		},
+		"200": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "__object.request_data"
+		},
+		"201": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "__object.response_data"
+		},
+		"202": {
+			"packageName": "@medusajs/audit",
+			"packagePath": "src/models/audit-log.ts",
+			"qualifiedName": "__object.metadata"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/modules/audit/src/models/index.ts"
+		},
+		"reflections": {
+			"1": 186
+		}
+	}
+}

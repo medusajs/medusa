@@ -4,6 +4,10 @@ export const user = [
     "path": "https://docs.medusajs.com/user-guide/reset-password"
   },
   {
+    "title": "Audit Logs",
+    "path": "https://docs.medusajs.com/user-guide/settings/audit-logs"
+  },
+  {
     "title": "View Policies",
     "path": "https://docs.medusajs.com/user-guide/settings/policies"
   },

@@ -1,0 +1,827 @@
+{
+	"schemaVersion": "2.0",
+	"id": 0,
+	"name": "audit-provider",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 1,
+			"name": "AbstractAuditProviderService",
+			"variant": "declaration",
+			"kind": 128,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "An abstract class for Audit Module providers. Extend this class to store audit\nlogs somewhere other than the built-in providers.\n\nA provider only stores and reads audit logs. The Audit Module owns everything\naround it: validating recorded audit logs, assigning their IDs, buffering them,\nand retrying failed writes.\n\n### constructor\n\nThe constructor allows you to access resources from the module's container using the first parameter,\nand the provider's options using the second parameter.\n\n#### Example\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nimport { Logger } from \"@medusajs/framework/types\"\nimport { AbstractAuditProviderService } from \"@medusajs/framework/utils\"\n\ntype InjectedDependencies = {\n  logger: Logger\n}\n\ntype Options = {\n  url: string\n}\n\nclass MyAuditProviderService extends AbstractAuditProviderService {\n  static identifier = \"my-audit\"\n\n  protected logger_: Logger\n  protected options_: Options\n\n  constructor({ logger }: InjectedDependencies, options: Options) {\n    super()\n\n    this.logger_ = logger\n    this.options_ = options\n  }\n}\n\nexport default MyAuditProviderService\n```"
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 2,
+					"name": "identifier",
+					"variant": "declaration",
+					"kind": 1024,
+					"flags": {
+						"isStatic": true
+					},
+					"comment": {
+						"summary": [
+							{
+								"kind": "text",
+								"text": "Each audit provider has a unique identifier used to register it."
+							}
+						],
+						"blockTags": [
+							{
+								"tag": "@example",
+								"content": [
+									{
+										"kind": "code",
+										"text": "```ts\nclass MyAuditProviderService extends AbstractAuditProviderService {\n  static identifier = \"my-audit\"\n  // ...\n}\n```"
+									}
+								]
+							}
+						]
+					},
+					"sources": [
+						{
+							"fileName": "abstract-audit-provider.ts",
+							"line": 62,
+							"character": 9,
+							"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/core/utils/src/audit/abstract-audit-provider.ts#L62"
+						}
+					],
+					"type": {
+						"type": "intrinsic",
+						"name": "string"
+					}
+				},
+				{
+					"id": 3,
+					"name": "constructor",
+					"variant": "declaration",
+					"kind": 512,
+					"flags": {},
+					"signatures": [
+						{
+							"id": 4,
+							"name": "AbstractAuditProviderService",
+							"variant": "signature",
+							"kind": 16384,
+							"flags": {},
+							"type": {
+								"type": "reference",
+								"target": 1,
+								"name": "AbstractAuditProviderService",
+								"package": "@medusajs/utils"
+							}
+						}
+					]
+				},
+				{
+					"id": 9,
+					"name": "write",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "abstract-audit-provider.ts",
+							"line": 96,
+							"character": 8,
+							"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/core/utils/src/audit/abstract-audit-provider.ts#L96"
+						}
+					],
+					"signatures": [
+						{
+							"id": 10,
+							"name": "write",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method stores a batch of audit logs. The Audit Module calls it with\nbuffered audit logs that already have their ID and dates set.\n\nThrow when the batch can't be stored. The module retries a few times before\nit drops the batch, so the write should be safe to repeat."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "Resolves when the batch is stored."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyAuditProviderService extends AbstractAuditProviderService {\n  // ...\n  async write(entries: AuditLogDTO[]): Promise<void> {\n    await this.client.insert(entries)\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "abstract-audit-provider.ts",
+									"line": 96,
+									"character": 8,
+									"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/core/utils/src/audit/abstract-audit-provider.ts#L96"
+								}
+							],
+							"parameters": [
+								{
+									"id": 11,
+									"name": "_entries",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The audit logs to store."
+											}
+										]
+									},
+									"type": {
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": {
+												"packageName": "@medusajs/types",
+												"packagePath": "src/audit/common.ts",
+												"qualifiedName": "AuditLogDTO"
+											},
+											"name": "AuditLogDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IAuditProvider.write"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IAuditProvider.write"
+					}
+				},
+				{
+					"id": 12,
+					"name": "list",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "abstract-audit-provider.ts",
+							"line": 119,
+							"character": 8,
+							"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/core/utils/src/audit/abstract-audit-provider.ts#L119"
+						}
+					],
+					"signatures": [
+						{
+							"id": 13,
+							"name": "list",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a page of audit logs, newest first unless "
+									},
+									{
+										"kind": "code",
+										"text": "`config.order`"
+									},
+									{
+										"kind": "text",
+										"text": "\nsays otherwise."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The audit logs."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyAuditProviderService extends AbstractAuditProviderService {\n  // ...\n  async list(\n    filters: FilterableAuditLogProps,\n    config: AuditLogFindConfig\n  ): Promise<AuditLogDTO[]> {\n    return await this.client.query(filters, config)\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "abstract-audit-provider.ts",
+									"line": 119,
+									"character": 8,
+									"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/core/utils/src/audit/abstract-audit-provider.ts#L119"
+								}
+							],
+							"parameters": [
+								{
+									"id": 14,
+									"name": "_filters",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"packageName": "@medusajs/types",
+											"packagePath": "src/audit/common.ts",
+											"qualifiedName": "FilterableAuditLogProps"
+										},
+										"name": "FilterableAuditLogProps",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 15,
+									"name": "_config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Pagination, sorting, and field selection."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"packageName": "@medusajs/types",
+											"packagePath": "src/audit/common.ts",
+											"qualifiedName": "AuditLogFindConfig"
+										},
+										"name": "AuditLogFindConfig",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "reference",
+											"target": {
+												"packageName": "@medusajs/types",
+												"packagePath": "src/audit/common.ts",
+												"qualifiedName": "AuditLogDTO"
+											},
+											"name": "AuditLogDTO",
+											"package": "@medusajs/types"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IAuditProvider.list"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IAuditProvider.list"
+					}
+				},
+				{
+					"id": 16,
+					"name": "listAndCount",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "abstract-audit-provider.ts",
+							"line": 146,
+							"character": 8,
+							"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/core/utils/src/audit/abstract-audit-provider.ts#L146"
+						}
+					],
+					"signatures": [
+						{
+							"id": 17,
+							"name": "listAndCount",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves a page of audit logs and the total count of audit\nlogs matching the filters."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The audit logs and their total count."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyAuditProviderService extends AbstractAuditProviderService {\n  // ...\n  async listAndCount(\n    filters: FilterableAuditLogProps,\n    config: AuditLogFindConfig\n  ): Promise<[AuditLogDTO[], number]> {\n    const { rows, total } = await this.client.queryWithCount(filters, config)\n    return [rows, total]\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "abstract-audit-provider.ts",
+									"line": 146,
+									"character": 8,
+									"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/core/utils/src/audit/abstract-audit-provider.ts#L146"
+								}
+							],
+							"parameters": [
+								{
+									"id": 18,
+									"name": "_filters",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The filters to apply."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"packageName": "@medusajs/types",
+											"packagePath": "src/audit/common.ts",
+											"qualifiedName": "FilterableAuditLogProps"
+										},
+										"name": "FilterableAuditLogProps",
+										"package": "@medusajs/types"
+									}
+								},
+								{
+									"id": 19,
+									"name": "_config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Pagination, sorting, and field selection."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"packageName": "@medusajs/types",
+											"packagePath": "src/audit/common.ts",
+											"qualifiedName": "AuditLogFindConfig"
+										},
+										"name": "AuditLogFindConfig",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "tuple",
+										"elements": [
+											{
+												"type": "array",
+												"elementType": {
+													"type": "reference",
+													"target": {
+														"packageName": "@medusajs/types",
+														"packagePath": "src/audit/common.ts",
+														"qualifiedName": "AuditLogDTO"
+													},
+													"name": "AuditLogDTO",
+													"package": "@medusajs/types"
+												}
+											},
+											{
+												"type": "intrinsic",
+												"name": "number"
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IAuditProvider.listAndCount"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IAuditProvider.listAndCount"
+					}
+				},
+				{
+					"id": 20,
+					"name": "retrieve",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "abstract-audit-provider.ts",
+							"line": 168,
+							"character": 8,
+							"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/core/utils/src/audit/abstract-audit-provider.ts#L168"
+						}
+					],
+					"signatures": [
+						{
+							"id": 21,
+							"name": "retrieve",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves an audit log by its ID."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The audit log, or "
+											},
+											{
+												"kind": "code",
+												"text": "`null`"
+											},
+											{
+												"kind": "text",
+												"text": " if it doesn't exist."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyAuditProviderService extends AbstractAuditProviderService {\n  // ...\n  async retrieve(id: string): Promise<AuditLogDTO | null> {\n    return (await this.client.get(id)) ?? null\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "abstract-audit-provider.ts",
+									"line": 168,
+									"character": 8,
+									"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/core/utils/src/audit/abstract-audit-provider.ts#L168"
+								}
+							],
+							"parameters": [
+								{
+									"id": 22,
+									"name": "_id",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The ID of the audit log."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "string"
+									}
+								},
+								{
+									"id": 23,
+									"name": "_config",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Field selection."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"packageName": "@medusajs/types",
+											"packagePath": "src/audit/common.ts",
+											"qualifiedName": "AuditLogFindConfig"
+										},
+										"name": "AuditLogFindConfig",
+										"package": "@medusajs/types"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"packageName": "typescript",
+									"packagePath": "lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "reference",
+												"target": {
+													"packageName": "@medusajs/types",
+													"packagePath": "src/audit/common.ts",
+													"qualifiedName": "AuditLogDTO"
+												},
+												"name": "AuditLogDTO",
+												"package": "@medusajs/types"
+											},
+											{
+												"type": "literal",
+												"value": null
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							},
+							"implementationOf": {
+								"type": "reference",
+								"target": -1,
+								"name": "IAuditProvider.retrieve"
+							}
+						}
+					],
+					"implementationOf": {
+						"type": "reference",
+						"target": -1,
+						"name": "IAuditProvider.retrieve"
+					}
+				}
+			],
+			"groups": [
+				{
+					"title": "Constructors",
+					"children": [
+						3
+					]
+				},
+				{
+					"title": "Properties",
+					"children": [
+						2
+					]
+				},
+				{
+					"title": "Methods",
+					"children": [
+						9,
+						12,
+						16,
+						20
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "abstract-audit-provider.ts",
+					"line": 52,
+					"character": 13,
+					"url": "https://github.com/medusajs/medusa/blob/bfe6632a059d1ecceb093bea68b867f4a626d147/packages/core/utils/src/audit/abstract-audit-provider.ts#L52"
+				}
+			],
+			"implementedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"packageName": "@medusajs/types",
+						"packagePath": "src/audit/provider.ts",
+						"qualifiedName": "IAuditProvider"
+					},
+					"name": "IAuditProvider",
+					"package": "@medusajs/types"
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Classes",
+			"children": [
+				1
+			]
+		}
+	],
+	"packageName": "@medusajs/utils",
+	"symbolIdMap": {
+		"0": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": ""
+		},
+		"1": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "AbstractAuditProviderService"
+		},
+		"2": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "AbstractAuditProviderService.identifier"
+		},
+		"9": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "AbstractAuditProviderService.write"
+		},
+		"10": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "AbstractAuditProviderService.write"
+		},
+		"11": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "_entries"
+		},
+		"12": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "AbstractAuditProviderService.list"
+		},
+		"13": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "AbstractAuditProviderService.list"
+		},
+		"14": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "_filters"
+		},
+		"15": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "_config"
+		},
+		"16": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "AbstractAuditProviderService.listAndCount"
+		},
+		"17": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "AbstractAuditProviderService.listAndCount"
+		},
+		"18": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "_filters"
+		},
+		"19": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "_config"
+		},
+		"20": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "AbstractAuditProviderService.retrieve"
+		},
+		"21": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "AbstractAuditProviderService.retrieve"
+		},
+		"22": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "_id"
+		},
+		"23": {
+			"packageName": "@medusajs/utils",
+			"packagePath": "src/audit/abstract-audit-provider.ts",
+			"qualifiedName": "_config"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/core/utils/src/audit/abstract-audit-provider.ts"
+		},
+		"reflections": {
+			"1": 0
+		}
+	}
+}

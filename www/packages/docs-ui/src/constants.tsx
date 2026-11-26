@@ -256,6 +256,11 @@ export const navDropdownItems: NavigationItem[] = [
         items: [
           {
             type: "link",
+            title: "Audit Logs",
+            link: "/resources/enterprise/audit",
+          },
+          {
+            type: "link",
             title: "RBAC",
             link: "/resources/enterprise/rbac",
           },
