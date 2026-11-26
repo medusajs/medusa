@@ -1,5 +1,16 @@
 # @medusajs/auth-oidc
 
+## 2.23.1
+
+### Patch Changes
+
+- [#17980](https://github.com/medusajs/medusa/pull/17980) [`bfe6632`](https://github.com/medusajs/medusa/commit/bfe6632a059d1ecceb093bea68b867f4a626d147) Thanks [@srindom](https://github.com/srindom)! - feat(core-flows,auth): add validateAuthCallbackWorkflow with an authCallbackValidated hook that receives what the provider got back, and a storeTokens option to keep GitHub tokens out of provider_metadata
+
+- [#17990](https://github.com/medusajs/medusa/pull/17990) [`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: license core packages under MIT only, limit the Enterprise license to the RBAC, OIDC, and Audit packages
+
+- Updated dependencies [[`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450)]:
+  - @medusajs/framework@2.23.1
+
 ## 2.23.0
 
 ### Patch Changes

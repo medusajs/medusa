@@ -1,5 +1,16 @@
 # @medusajs/order
 
+## 2.23.1
+
+### Patch Changes
+
+- [#17996](https://github.com/medusajs/medusa/pull/17996) [`de30abe`](https://github.com/medusajs/medusa/commit/de30abeb8882f7f3add21321fedfb194a667a962) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(core-flows,order): apply shipping promotions added while editing a draft order
+
+- [#17939](https://github.com/medusajs/medusa/pull/17939) [`650231f`](https://github.com/medusajs/medusa/commit/650231f94b0fc1b7bacd1efd1286fce8cd024c7e) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(order): delete the undone version's adjustments in undoLastChange
+
+- Updated dependencies [[`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450)]:
+  - @medusajs/framework@2.23.1
+
 ## 2.23.0
 
 ### Patch Changes

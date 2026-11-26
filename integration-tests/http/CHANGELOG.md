@@ -1,5 +1,38 @@
 # integration-tests-http
 
+## 1.1.36
+
+### Patch Changes
+
+- Updated dependencies [[`bfe6632`](https://github.com/medusajs/medusa/commit/bfe6632a059d1ecceb093bea68b867f4a626d147), [`1606882`](https://github.com/medusajs/medusa/commit/1606882ea2ed144ebe87a4d43f3fd4eff5cfd8a3), [`50dee3b`](https://github.com/medusajs/medusa/commit/50dee3b8fee83411321b6430fd903ecb2680beff), [`a7b83c0`](https://github.com/medusajs/medusa/commit/a7b83c0c2d22f8b68bc501dc5fca56f384ff8978), [`de30abe`](https://github.com/medusajs/medusa/commit/de30abeb8882f7f3add21321fedfb194a667a962), [`0a70932`](https://github.com/medusajs/medusa/commit/0a70932759cd2da398bc7b7adb23b0c6ef852934), [`9229001`](https://github.com/medusajs/medusa/commit/922900146df75106bfb132699b1f4f3aaa4f6a0b), [`d017c01`](https://github.com/medusajs/medusa/commit/d017c01981a48d9b5da8d6171a0347573aa032a2), [`ef42ff1`](https://github.com/medusajs/medusa/commit/ef42ff158ef8cca05cd273aba2b8b4e7de7a52e3), [`e710607`](https://github.com/medusajs/medusa/commit/e710607c1d1f9d086bee8c3574f2f2978181bebd), [`36f0723`](https://github.com/medusajs/medusa/commit/36f0723258038e550d7a98eb6de74d3d16f46ed6), [`575d91c`](https://github.com/medusajs/medusa/commit/575d91c1c7da0bbec6d3c3023e6be2476ff70382), [`8a43169`](https://github.com/medusajs/medusa/commit/8a43169b555ce1f7b3358ebd50016e076f57f3ba), [`d0cf9a1`](https://github.com/medusajs/medusa/commit/d0cf9a1c0b443422bde97039755ee5d68e269d5d), [`c43459b`](https://github.com/medusajs/medusa/commit/c43459ba3eb5bce92da937f7867b8311325b229d), [`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450), [`6f84e7e`](https://github.com/medusajs/medusa/commit/6f84e7ed6314db48679f27a0bd1646b051c17eae)]:
+  - @medusajs/auth@2.23.1
+  - @medusajs/core-flows@2.23.1
+  - @medusajs/medusa@2.23.1
+  - @medusajs/utils@2.23.1
+  - @medusajs/inventory@2.23.1
+  - @medusajs/loyalty-plugin@2.23.1
+  - @medusajs/promotion@2.23.1
+  - @medusajs/framework@2.23.1
+  - @medusajs/modules-sdk@2.23.1
+  - @medusajs/event-bus-redis@2.23.1
+  - @medusajs/cloud@2.23.1
+  - @medusajs/test-utils@2.23.1
+  - @medusajs/api-key@2.23.1
+  - @medusajs/cache-inmemory@2.23.1
+  - @medusajs/customer@2.23.1
+  - @medusajs/event-bus-local@2.23.1
+  - @medusajs/fulfillment@2.23.1
+  - @medusajs/pricing@2.23.1
+  - @medusajs/product@2.23.1
+  - @medusajs/fulfillment-manual@2.23.1
+  - @medusajs/region@2.23.1
+  - @medusajs/stock-location@2.23.1
+  - @medusajs/store@2.23.1
+  - @medusajs/tax@2.23.1
+  - @medusajs/translation@2.23.1
+  - @medusajs/user@2.23.1
+  - @medusajs/workflow-engine-inmemory@2.23.1
+
 ## 1.1.35
 
 ### Patch Changes
