@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.23.1
+
+### Patch Changes
+
+- [#17941](https://github.com/medusajs/medusa/pull/17941) [`d0f627d`](https://github.com/medusajs/medusa/commit/d0f627df80a83adfe9325238c831166e3fd235f4) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(telemetry): replace deprecated axios-retry with an inline retry loop
+
 ## 2.23.0
 
 ## 2.22.7

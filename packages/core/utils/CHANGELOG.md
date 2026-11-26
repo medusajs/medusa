@@ -1,5 +1,22 @@
 # @medusajs/utils
 
+## 2.23.1
+
+### Patch Changes
+
+- [#17959](https://github.com/medusajs/medusa/pull/17959) [`50dee3b`](https://github.com/medusajs/medusa/commit/50dee3b8fee83411321b6430fd903ecb2680beff) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - chore(utils): update @graphql-codegen/core to 7.0.0
+
+- [#17960](https://github.com/medusajs/medusa/pull/17960) [`a7b83c0`](https://github.com/medusajs/medusa/commit/a7b83c0c2d22f8b68bc501dc5fca56f384ff8978) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - chore(utils): update @graphql-codegen/typescript to 7.0.1
+
+- [#17993](https://github.com/medusajs/medusa/pull/17993) [`0a70932`](https://github.com/medusajs/medusa/commit/0a70932759cd2da398bc7b7adb23b0c6ef852934) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(utils): hard delete of link rows fails with an empty RETURNING clause
+
+- [#17779](https://github.com/medusajs/medusa/pull/17779) [`d0cf9a1`](https://github.com/medusajs/medusa/commit/d0cf9a1c0b443422bde97039755ee5d68e269d5d) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa,auth,auth-emailpass,utils,types): store when password was updated for refresh and MFA validation
+
+- [#17990](https://github.com/medusajs/medusa/pull/17990) [`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: license core packages under MIT only, limit the Enterprise license to the RBAC, OIDC, and Audit packages
+
+- Updated dependencies []:
+  - @medusajs/deps@2.23.1
+
 ## 2.23.0
 
 ### Minor Changes

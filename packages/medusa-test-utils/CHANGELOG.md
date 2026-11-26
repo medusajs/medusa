@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.23.1
+
+### Patch Changes
+
+- Updated dependencies [[`bfe6632`](https://github.com/medusajs/medusa/commit/bfe6632a059d1ecceb093bea68b867f4a626d147), [`1606882`](https://github.com/medusajs/medusa/commit/1606882ea2ed144ebe87a4d43f3fd4eff5cfd8a3), [`de30abe`](https://github.com/medusajs/medusa/commit/de30abeb8882f7f3add21321fedfb194a667a962), [`d017c01`](https://github.com/medusajs/medusa/commit/d017c01981a48d9b5da8d6171a0347573aa032a2), [`e710607`](https://github.com/medusajs/medusa/commit/e710607c1d1f9d086bee8c3574f2f2978181bebd), [`36f0723`](https://github.com/medusajs/medusa/commit/36f0723258038e550d7a98eb6de74d3d16f46ed6), [`575d91c`](https://github.com/medusajs/medusa/commit/575d91c1c7da0bbec6d3c3023e6be2476ff70382), [`d0cf9a1`](https://github.com/medusajs/medusa/commit/d0cf9a1c0b443422bde97039755ee5d68e269d5d), [`c43459b`](https://github.com/medusajs/medusa/commit/c43459ba3eb5bce92da937f7867b8311325b229d), [`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450), [`6f84e7e`](https://github.com/medusajs/medusa/commit/6f84e7ed6314db48679f27a0bd1646b051c17eae)]:
+  - @medusajs/core-flows@2.23.1
+  - @medusajs/medusa@2.23.1
+  - @medusajs/framework@2.23.1
+
 ## 2.23.0
 
 ### Minor Changes

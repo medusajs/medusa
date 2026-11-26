@@ -1,5 +1,28 @@
 # @medusajs/core-flows
 
+## 2.23.1
+
+### Patch Changes
+
+- [#17980](https://github.com/medusajs/medusa/pull/17980) [`bfe6632`](https://github.com/medusajs/medusa/commit/bfe6632a059d1ecceb093bea68b867f4a626d147) Thanks [@srindom](https://github.com/srindom)! - feat(core-flows,auth): add validateAuthCallbackWorkflow with an authCallbackValidated hook that receives what the provider got back, and a storeTokens option to keep GitHub tokens out of provider_metadata
+
+- [#17968](https://github.com/medusajs/medusa/pull/17968) [`1606882`](https://github.com/medusajs/medusa/commit/1606882ea2ed144ebe87a4d43f3fd4eff5cfd8a3) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(core-flows): remove shipping methods added by a canceled order change
+
+- [#17996](https://github.com/medusajs/medusa/pull/17996) [`de30abe`](https://github.com/medusajs/medusa/commit/de30abeb8882f7f3add21321fedfb194a667a962) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(core-flows,order): apply shipping promotions added while editing a draft order
+
+- [#17936](https://github.com/medusajs/medusa/pull/17936) [`e710607`](https://github.com/medusajs/medusa/commit/e710607c1d1f9d086bee8c3574f2f2978181bebd) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(core-flows): require shipping for order items whose product has a shipping profile
+
+- [#17946](https://github.com/medusajs/medusa/pull/17946) [`575d91c`](https://github.com/medusajs/medusa/commit/575d91c1c7da0bbec6d3c3023e6be2476ff70382) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(core-flows): don't lock or complete an unrelated cart for a deleted payment session
+
+- [#18007](https://github.com/medusajs/medusa/pull/18007) [`c43459b`](https://github.com/medusajs/medusa/commit/c43459ba3eb5bce92da937f7867b8311325b229d) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(core-flows): only restore the reservations deleted by deleteReservationsByLineItemsStep on compensation
+
+- [#17990](https://github.com/medusajs/medusa/pull/17990) [`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: license core packages under MIT only, limit the Enterprise license to the RBAC, OIDC, and Audit packages
+
+- [#17963](https://github.com/medusajs/medusa/pull/17963) [`6f84e7e`](https://github.com/medusajs/medusa/commit/6f84e7ed6314db48679f27a0bd1646b051c17eae) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(core-flows): validate line items in deleteLineItemsWorkflow
+
+- Updated dependencies [[`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450)]:
+  - @medusajs/framework@2.23.1
+
 ## 2.23.0
 
 ### Patch Changes
