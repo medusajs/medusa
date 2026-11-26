@@ -6,7 +6,7 @@ import path from "path"
 
 type ServeOptions = {
   outDir: string
-  responseHeaders?: Record<string, string>
+  htmlHeaders?: Record<string, string>
 }
 
 export async function serve(options: ServeOptions): Promise<IRouter> {
@@ -34,7 +34,7 @@ export async function serve(options: ServeOptions): Promise<IRouter> {
   const sendHtml = (_req: Request, res: Response) => {
     res.setHeader("Cache-Control", "no-cache")
     res.setHeader("Vary", "Origin, Cache-Control")
-    for (const [name, value] of Object.entries(options.responseHeaders ?? {})) {
+    for (const [name, value] of Object.entries(options.htmlHeaders ?? {})) {
       res.setHeader(name, value)
     }
     res.send(html)

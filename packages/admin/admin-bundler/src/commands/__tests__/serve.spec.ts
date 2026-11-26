@@ -42,7 +42,7 @@ describe("serve", () => {
   it("sets the configured headers on the HTML, replacing the framework's", async () => {
     const server = await start({
       outDir,
-      responseHeaders: {
+      htmlHeaders: {
         "Content-Security-Policy": "frame-ancestors 'none'; script-src 'self'",
         "Referrer-Policy": "strict-origin-when-cross-origin",
       },

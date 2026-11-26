@@ -147,7 +147,7 @@ export interface AdminOptions {
    * ```js title="medusa-config.ts"
    * module.exports = defineConfig({
    *   admin: {
-   *     responseHeaders: {
+   *     htmlHeaders: {
    *       "Content-Security-Policy":
    *         "frame-ancestors 'self'; script-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'",
    *       "Referrer-Policy": "strict-origin-when-cross-origin",
@@ -157,7 +157,7 @@ export interface AdminOptions {
    * })
    * ```
    */
-  responseHeaders?: Record<string, string>
+  htmlHeaders?: Record<string, string>
 }
 
 /**
