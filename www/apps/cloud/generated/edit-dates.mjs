@@ -94,9 +94,9 @@ export const generatedEditDates = {
   "app/organizations/roles/page.mdx": "2026-11-24T08:41:03.582Z",
   "app/security/analytics/page.mdx": "2026-11-24T07:53:15.476Z",
   "app/payments/accounts/page.mdx": "2026-11-26T10:06:41.782Z",
-  "app/payments/environments/page.mdx": "2026-11-26T10:06:29.458Z",
-  "app/payments/page.mdx": "2026-11-26T10:06:30.508Z",
-  "app/payments/storefront/page.mdx": "2026-11-26T10:06:32.808Z",
+  "app/payments/environments/page.mdx": "2026-11-26T10:42:05.502Z",
+  "app/payments/page.mdx": "2026-11-26T10:42:05.501Z",
+  "app/payments/storefront/page.mdx": "2026-11-26T10:42:05.502Z",
   "app/payments/accounts/adyen/page.mdx": "2026-11-23T16:12:35.686Z",
   "app/payments/accounts/medusa-payments/page.mdx": "2026-11-26T10:06:43.132Z",
   "app/payments/accounts/stripe/page.mdx": "2026-11-26T10:06:44.432Z"
