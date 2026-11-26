@@ -16,13 +16,18 @@ export const sidebar = [
           },
           {
             type: "link",
-            path: "/sign-up",
-            title: "Sign Up",
+            path: "/first-project",
+            title: "Create First Project",
           },
           {
             type: "link",
-            path: "/first-project",
-            title: "Create First Project",
+            path: "/ai-toolkit",
+            title: "Setting Up Agents",
+          },
+          {
+            type: "link",
+            path: "/features",
+            title: "Features",
           },
           {
             type: "link",
@@ -31,23 +36,36 @@ export const sidebar = [
           },
           {
             type: "link",
-            path: "/faq",
-            title: "FAQ",
-          },
-          {
-            type: "link",
-            path: "/comparison",
-            title: "Cloud vs Self-Hosted",
-          },
-          {
-            type: "link",
             path: "/migrate-self-hosted",
             title: "Migrate from Self Hosting",
           },
+        ],
+      },
+      {
+        type: "category",
+        title: "Building Features",
+        children: [
           {
             type: "link",
-            path: "/features",
-            title: "Features",
+            path: "/setup-locally",
+            title: "Setup Locally",
+            children: [
+              {
+                type: "link",
+                path: "/setup-locally/docker",
+                title: "Setup with Docker",
+              },
+            ],
+          },
+          {
+            type: "link",
+            path: "/development-resources",
+            title: "Development Resources",
+          },
+          {
+            type: "link",
+            path: "/integrations",
+            title: "Integrations",
           },
         ],
       },
@@ -55,11 +73,6 @@ export const sidebar = [
         type: "category",
         title: "AI Toolkit",
         children: [
-          {
-            type: "link",
-            path: "/ai-toolkit",
-            title: "Overview",
-          },
           {
             type: "link",
             title: "Medusa MCP",
@@ -174,34 +187,6 @@ export const sidebar = [
             type: "link",
             path: "/ai-toolkit/ai-friendly-docs",
             title: "AI-Friendly Docs",
-          },
-        ],
-      },
-      {
-        type: "category",
-        title: "Building Features",
-        children: [
-          {
-            type: "link",
-            path: "/setup-locally",
-            title: "Setup Locally",
-            children: [
-              {
-                type: "link",
-                path: "/setup-locally/docker",
-                title: "Setup with Docker",
-              },
-            ],
-          },
-          {
-            type: "link",
-            path: "/development-resources",
-            title: "Development Resources",
-          },
-          {
-            type: "link",
-            path: "/integrations",
-            title: "Integrations",
           },
         ],
       },
@@ -367,6 +352,16 @@ export const sidebar = [
             type: "link",
             title: "Cache",
             path: "/cache",
+          },
+          {
+            type: "link",
+            path: "/faq",
+            title: "FAQ",
+          },
+          {
+            type: "link",
+            path: "/comparison",
+            title: "Cloud vs Self-Hosted",
           },
           {
             type: "link",

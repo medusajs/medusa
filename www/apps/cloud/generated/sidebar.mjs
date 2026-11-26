@@ -19,15 +19,22 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "path": "/sign-up",
-            "title": "Sign Up",
+            "path": "/first-project",
+            "title": "Create First Project",
             "children": []
           },
           {
             "loaded": true,
             "type": "link",
-            "path": "/first-project",
-            "title": "Create First Project",
+            "path": "/ai-toolkit",
+            "title": "Setting Up Agents",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/features",
+            "title": "Features",
             "children": []
           },
           {
@@ -40,29 +47,44 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
-            "path": "/faq",
-            "title": "FAQ",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "path": "/comparison",
-            "title": "Cloud vs Self-Hosted",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
             "path": "/migrate-self-hosted",
             "title": "Migrate from Self Hosting",
             "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Building Features",
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/setup-locally",
+            "title": "Setup Locally",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "path": "/setup-locally/docker",
+                "title": "Setup with Docker",
+                "children": []
+              }
+            ]
           },
           {
             "loaded": true,
             "type": "link",
-            "path": "/features",
-            "title": "Features",
+            "path": "/development-resources",
+            "title": "Development Resources",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/integrations",
+            "title": "Integrations",
             "children": []
           }
         ]
@@ -72,13 +94,6 @@ export const generatedSidebars = [
         "type": "category",
         "title": "AI Toolkit",
         "children": [
-          {
-            "loaded": true,
-            "type": "link",
-            "path": "/ai-toolkit",
-            "title": "Overview",
-            "children": []
-          },
           {
             "loaded": true,
             "type": "link",
@@ -220,42 +235,6 @@ export const generatedSidebars = [
             "type": "link",
             "path": "/ai-toolkit/ai-friendly-docs",
             "title": "AI-Friendly Docs",
-            "children": []
-          }
-        ]
-      },
-      {
-        "loaded": true,
-        "type": "category",
-        "title": "Building Features",
-        "children": [
-          {
-            "loaded": true,
-            "type": "link",
-            "path": "/setup-locally",
-            "title": "Setup Locally",
-            "children": [
-              {
-                "loaded": true,
-                "type": "link",
-                "path": "/setup-locally/docker",
-                "title": "Setup with Docker",
-                "children": []
-              }
-            ]
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "path": "/development-resources",
-            "title": "Development Resources",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "path": "/integrations",
-            "title": "Integrations",
             "children": []
           }
         ]
@@ -477,6 +456,20 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Cache",
             "path": "/cache",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/faq",
+            "title": "FAQ",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/comparison",
+            "title": "Cloud vs Self-Hosted",
             "children": []
           },
           {

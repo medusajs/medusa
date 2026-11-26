@@ -112,7 +112,6 @@
 - [Data Protection](http://localhost:3000/cloud/security/data-protection)
 - [Set Up Medusa Locally](http://localhost:3000/cloud/setup-locally)
 - [Set Up Medusa Locally with Docker](http://localhost:3000/cloud/setup-locally/docker)
-- [Sign Up for Medusa](http://localhost:3000/cloud/sign-up)
 - [Cloud Status Page](http://localhost:3000/cloud/status)
 - [Storefront Deployment on Cloud](http://localhost:3000/cloud/storefront)
 - [Usage](http://localhost:3000/cloud/usage)

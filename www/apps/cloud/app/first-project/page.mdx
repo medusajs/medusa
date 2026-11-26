@@ -1,14 +1,85 @@
+---
+keywords:
+  - sign up
+  - signup
+  - deploy
+  - deployment
+  - production
+  - cloud
+---
+
 export const metadata = {
   title: `Create your First Medusa Project`,
+  keywords: ["sign up", "signup", "deploy", "deployment", "production", "cloud"],
 }
 
 # {metadata.title}
 
-In this guide, you'll learn how to create your first Medusa project after you sign up, either from a starter or from your own GitHub repository.
+In this guide, you'll learn how to sign up for Medusa, set up your organization, and create your first project from a starter or from your own GitHub repository.
 
-## Create a Project After Sign Up
+<Note title="Free Trial Availability" type="soon">
 
-After you [sign up](../sign-up/page.mdx), Medusa redirects you to your organization's projects list.
+Medusa offers a free trial available only in select regions. You'll need to enter your payment details, but you won't be charged until the trial period ends.
+
+</Note>
+
+<Note>
+
+If you already have a Medusa account and you want to create a new organization, refer to the [Create an Organization](../organizations/page.mdx#create-or-join-an-organization) guide instead. If you already have an organization, skip to [Step 4](#step-4-create-your-first-project).
+
+</Note>
+
+## Step 1: Create a Medusa Account
+
+To sign up for Medusa, go to [cloud.medusajs.com/signup](https://cloud.medusajs.com/signup?utm_source=docs&utm_medium=website&utm_campaign=cloud_signup_guide).
+
+On this page, you can choose to either sign up with your GitHub account or with your email address.
+
+---
+
+## Step 2: Set Up Your Account
+
+In the next step, you need to enter your account details. These details will be used for your organization as well.
+
+Enter the following details:
+
+- **What should we call you?**: Enter your full name.
+    - This name will be used as the organization's name. You can change the organization name later in the [organization settings](../organizations/page.mdx#edit-organization-details).
+- **Where did you hear about Medusa?**: Select an option from the dropdown menu. This helps us understand how users find out about Medusa.
+- **What are you building?**: Select an option from the dropdown menu. This helps us understand what users are building with Medusa. If you don't see an option that fits your use case, select "Other" and provide more details in the text box that appears.
+- **News and features**: Keep the switch enabled to receive updates about Medusa, including new features, improvements, and other news. You can disable this option if you prefer not to receive such updates.
+
+Once you're done, click the **Next** button to proceed to the billing details step.
+
+---
+
+## Step 3: Add Billing Details
+
+In this step, you add the payment and billing details of your organization. The top of the page shows the plan you're signing up for and its price. To sign up for a different plan, click **Change plan**.
+
+Medusa doesn't charge you when you sign up for a free trial. Your first payment is due when the trial ends, and the page shows that date in the **Payment details** section.
+
+Enter the following details:
+
+- **Card information**: Enter your card's number, expiry date, and CVC.
+- **Legal name**: Enter the name to bill, such as your company's legal name. It defaults to your organization's name.
+- **Billing email**: Enter the email address that receives invoices and billing notifications. It defaults to your account's email address.
+- **Tax ID**: Enter your tax ID for tax purposes, if you have one.
+- **Country**, **Address**, **City**, and **Postal code**: Enter your billing address. Medusa uses it for payments and invoices.
+
+<Note title="Restrictions">
+
+Cards issued by banks in India are not supported. Please use cards issued by banks in other countries.
+
+</Note>
+
+Once you're done, click the **Start your free trial** or **Start your $29/mo plan** button, based on your plan. Medusa creates your organization and redirects you to your organization's projects list.
+
+If your organization is on a free trial, you can view the trial's status in the organization's billing settings. Learn more in the [Manage Plans](../billing/plans/page.mdx#view-trial-status) guide. If your trial ends and you want to keep your plan, refer to the [Resume your Organization's Plan](../billing/plans/page.mdx#resume-your-organizations-plan) guide.
+
+---
+
+## Step 4: Create Your First Project
 
 When your organization has no projects yet, the projects list shows two options to create your first project:
 
@@ -17,9 +88,7 @@ When your organization has no projects yet, the projects list shows two options 
 
 After following either flow, you'll have a deployed Medusa store. Choose the option that best fits your use case.
 
----
-
-## Option 1: Choose a Starter
+### Option 1: Choose a Starter
 
 <RolesBadge roles={["developer"]} />
 
@@ -38,9 +107,7 @@ Once your project is deployed, you're ready to use your ecommerce store and star
 
 Medusa clones the starter into a GitHub repository in your account or organization. To customize the store, refer to the [Set Up Medusa Locally](../setup-locally/page.mdx) guide.
 
----
-
-## Option 2: Import a Repository
+### Option 2: Import a Repository
 
 <RolesBadge roles={["developer"]} />
 

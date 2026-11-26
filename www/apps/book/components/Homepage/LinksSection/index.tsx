@@ -14,7 +14,7 @@ const HomepageLinksSection = () => {
       tag: "Get Started",
       links: [
         {
-          link: "https://docs.medusajs.com/cloud/sign-up",
+          link: "https://docs.medusajs.com/cloud/first-project",
           text: "Sign up",
         },
         {

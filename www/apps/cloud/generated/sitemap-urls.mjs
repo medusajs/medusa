@@ -107,7 +107,6 @@ export const sitemapUrls = [
   "/security",
   "/setup-locally/docker",
   "/setup-locally",
-  "/sign-up",
   "/status",
   "/storefront",
   "/usage/compute",

@@ -8663,7 +8663,7 @@ Don't set `projectConfig.databaseUrl`, `projectConfig.databaseDriverOptions`, or
 
 A project in Cloud holds your Medusa application's environments and deployments. To create a project from your application:
 
-1. [Sign up](https://docs.medusajs.com/cloud/sign-up/index.html.md) for a Cloud account, if you don't have one.
+1. [Sign up](https://docs.medusajs.com/cloud/first-project/index.html.md) for a Cloud account, if you don't have one.
 2. In your organization's dashboard, click the **Create Project** button. If your organization has no projects yet, click the **Import repository** card instead.
 3. Choose your application's GitHub repository, then set the project's name, subdomain, region, and build details.
 4. Click the **Create** button.
@@ -31210,7 +31210,7 @@ Refer to the [Deployment](https://docs.medusajs.com/resources/deployment/index.h
 
 This section of the documentation introduces Medusa Commerce and its Framework in a series of chapters. By the end of the chapters, you will have a solid understanding of how to build and customize commerce features using Medusa.
 
-Learn how to [sign up](https://docs.medusajs.com/cloud/sign-up/index.html.md) and [create your first project](https://docs.medusajs.com/cloud/first-project/index.html.md).
+Learn how to [sign up and create your first project](https://docs.medusajs.com/cloud/first-project/index.html.md).
 
 ## What is Medusa Commerce?
 
@@ -65839,7 +65839,7 @@ Fetch https://docs.medusajs.com/resources/examples/guides/custom-item-price.md a
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -66694,7 +66694,7 @@ Fetch https://docs.medusajs.com/resources/examples/guides/quote-management.md an
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -74959,7 +74959,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/abandoned-c
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -75619,7 +75619,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/agentic-com
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -78894,7 +78894,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/category-im
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -81915,7 +81915,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/customer-ti
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -85720,7 +85720,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/first-purch
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -86337,7 +86337,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/gift-messag
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -86990,7 +86990,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/invoice-gen
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -89394,7 +89394,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/loyalty-poi
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -91242,7 +91242,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/phone-auth.
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -93350,7 +93350,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/preorder.md
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -96743,7 +96743,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/product-bui
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -102593,7 +102593,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/product-fee
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -103175,7 +103175,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/product-ren
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -107418,7 +107418,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/product-rev
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -109311,7 +109311,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/re-order.md
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -109834,7 +109834,7 @@ Fetch https://docs.medusajs.com/resources/how-to-tutorials/tutorials/saved-payme
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -110719,7 +110719,7 @@ Fetch https://docs.medusajs.com/resources/integrations/guides/algolia.md and int
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -112042,7 +112042,7 @@ Fetch https://docs.medusajs.com/resources/integrations/guides/avalara.md and int
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -113618,7 +113618,7 @@ Fetch https://docs.medusajs.com/resources/integrations/guides/contentful.md and 
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -116789,7 +116789,7 @@ You'll first create a Medusa application that exposes core commerce features thr
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -118017,7 +118017,7 @@ Fetch https://docs.medusajs.com/resources/integrations/guides/mailchimp.md and i
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -119342,7 +119342,7 @@ Fetch https://docs.medusajs.com/resources/integrations/guides/meilisearch.md and
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -120621,7 +120621,7 @@ Fetch https://docs.medusajs.com/resources/integrations/guides/okta.md and integr
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -121906,7 +121906,7 @@ Fetch https://docs.medusajs.com/resources/integrations/guides/payload.md and int
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -126018,7 +126018,7 @@ Fetch https://docs.medusajs.com/resources/integrations/guides/paypal.md and inte
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -127909,7 +127909,7 @@ Fetch https://docs.medusajs.com/resources/integrations/guides/resend.md and inte
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -129230,7 +129230,7 @@ Fetch https://docs.medusajs.com/resources/integrations/guides/sanity.md and inte
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -131092,7 +131092,7 @@ Fetch https://docs.medusajs.com/resources/integrations/guides/segment.md and int
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -131801,7 +131801,7 @@ Fetch https://docs.medusajs.com/resources/integrations/guides/sentry.md and inte
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -132175,7 +132175,7 @@ Fetch https://docs.medusajs.com/resources/integrations/guides/shipstation.md and
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -133450,7 +133450,7 @@ Fetch https://docs.medusajs.com/resources/integrations/guides/slack.md and integ
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -134112,7 +134112,7 @@ Fetch https://docs.medusajs.com/resources/integrations/guides/strapi.md and inte
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -138203,7 +138203,7 @@ You'll first create a Medusa application that exposes core commerce features thr
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -148395,7 +148395,7 @@ In this step, you'll set up a Medusa project and configure the Stripe Module Pro
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -150727,7 +150727,7 @@ Fetch https://docs.medusajs.com/resources/nextjs-starter/guides/storefront-retur
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -161051,7 +161051,7 @@ Fetch https://docs.medusajs.com/resources/recipes/bundled-products/examples/stan
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -163998,7 +163998,7 @@ Fetch https://docs.medusajs.com/resources/recipes/commerce-automation/restock-no
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -165285,7 +165285,7 @@ Fetch https://docs.medusajs.com/resources/recipes/digital-products/examples/stan
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -168626,7 +168626,7 @@ Fetch https://docs.medusajs.com/resources/recipes/erp/odoo.md and integrate Odoo
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -169502,7 +169502,7 @@ You can use the code snippets in the recipe as a starting point for your ERP int
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -170223,7 +170223,7 @@ Fetch https://docs.medusajs.com/resources/recipes/marketplace/examples/restauran
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -173588,7 +173588,7 @@ Fetch https://docs.medusajs.com/resources/recipes/marketplace/examples/vendors.m
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -176197,7 +176197,7 @@ Fetch https://docs.medusajs.com/resources/recipes/personalized-products/example.
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -177495,7 +177495,7 @@ Fetch https://docs.medusajs.com/resources/recipes/subscriptions/examples/standar
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -180204,7 +180204,7 @@ Fetch https://docs.medusajs.com/resources/recipes/ticket-booking/example.md and 
 
 ### Prerequisites
 
-- [A Medusa account](https://docs.medusajs.com/cloud/sign-up/index.html.md)
+- [A Medusa account](https://docs.medusajs.com/cloud/first-project/index.html.md)
 - [Node.js v22.22.0+](https://nodejs.org/en/download)
 - [Git CLI tool](https://git-scm.com/downloads)
 - [PostgreSQL](https://www.postgresql.org/download/)

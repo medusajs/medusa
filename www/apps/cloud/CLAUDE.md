@@ -60,7 +60,7 @@ entry format.
 create a store on Cloud. It repeats steps from these docs, so update it in the
 same PR when you change any of them:
 
-- Sign-up, login, and organizations (`sign-up`, `cli/commands/signup`, `login`)
+- Sign-up, login, and organizations (`first-project`, `cli/commands/signup`, `login`)
 - Project creation, starters, and their configuration (`projects`,
   `first-project`, `projects/prerequisites`), including subdomain rules,
   regions, and reserved environment variables
