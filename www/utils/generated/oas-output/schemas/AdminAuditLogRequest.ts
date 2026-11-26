@@ -31,15 +31,15 @@
  *   request_id:
  *     type: string
  *     title: request_id
- *     description: The request's request id.
+ *     description: The request ID, the same one that appears in the application logs.
  *   ip_address:
  *     type: string
  *     title: ip_address
- *     description: The request's ip address.
+ *     description: The client IP address.
  *   user_agent:
  *     type: string
  *     title: user_agent
- *     description: The request's user agent.
+ *     description: The client user agent.
  * 
 */
 

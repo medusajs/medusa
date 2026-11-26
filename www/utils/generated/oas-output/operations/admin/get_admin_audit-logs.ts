@@ -2,9 +2,125 @@
  * @oas [get] /admin/audit-logs
  * operationId: GetAuditLogs
  * summary: List Audit Logs
- * description: Retrieve a list of audit logs. The audit logs can be filtered by fields such as `id`. The audit logs can also be sorted or paginated.
+ * description: Retrieve a list of audit logs, newest first. The audit logs can be filtered by fields such as `actor_id`, `resource_type`, or `outcome`. The audit logs can also be sorted or paginated. This API route is only available when the Audit Module is installed.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/resources/enterprise/audit
+ *   description: Learn more about the Audit Module.
  * x-authenticated: true
  * parameters:
+ *   - name: id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: id
+ *           description: Filter by an audit log ID.
+ *         - type: array
+ *           description: Filter by audit log IDs.
+ *           items:
+ *             type: string
+ *             title: id
+ *             description: An audit log ID.
+ *   - name: actor_type
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: actor_type
+ *           description: Filter by an actor type, such as `user`, `api-key`, or `system`.
+ *         - type: array
+ *           description: Filter by actor types.
+ *           items:
+ *             type: string
+ *             title: actor_type
+ *             description: An actor type.
+ *   - name: actor_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: actor_id
+ *           description: Filter by the ID of the user, API key, or customer that performed the action.
+ *         - type: array
+ *           description: Filter by actor IDs.
+ *           items:
+ *             type: string
+ *             title: actor_id
+ *             description: An actor ID.
+ *   - name: action
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: action
+ *           description: Filter by an action, such as `order.cancel`.
+ *         - type: array
+ *           description: Filter by actions.
+ *           items:
+ *             type: string
+ *             title: action
+ *             description: An action.
+ *   - name: resource_type
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: resource_type
+ *           description: Filter by the type of resource acted on, such as `order`.
+ *         - type: array
+ *           description: Filter by resource types.
+ *           items:
+ *             type: string
+ *             title: resource_type
+ *             description: A resource type.
+ *   - name: resource_id
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: resource_id
+ *           description: Filter by the ID of the resource acted on.
+ *         - type: array
+ *           description: Filter by resource IDs.
+ *           items:
+ *             type: string
+ *             title: resource_id
+ *             description: A resource ID.
+ *   - name: outcome
+ *     in: query
+ *     required: false
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           title: outcome
+ *           description: Filter by how the action ended. `denied` is a `401` or `403` response, and `failed` is any other error response.
+ *           enum:
+ *             - succeeded
+ *             - denied
+ *             - failed
+ *         - type: array
+ *           description: Filter by outcomes.
+ *           items:
+ *             type: string
+ *             description: An outcome.
+ *             enum:
+ *               - succeeded
+ *               - denied
+ *               - failed
+ *   - name: q
+ *     in: query
+ *     description: A search term to search the audit logs' action, resource type, resource ID, and actor ID.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: q
+ *       description: A search term to search the audit logs' action, resource type, resource ID, and actor ID.
  *   - name: limit
  *     in: query
  *     description: Limit the number of items returned in the list.
@@ -27,129 +143,39 @@
  *         url: "#pagination"
  *   - name: order
  *     in: query
- *     description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *     description: The field to sort the audit logs by. Audit logs can only be sorted by `started_at`, and they're sorted by `-started_at` by default.
  *     required: false
  *     schema:
  *       type: string
  *       title: order
- *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *       description: The field to sort the audit logs by. Audit logs can only be sorted by `started_at`, and they're sorted by `-started_at` by default.
  *       externalDocs:
  *         url: "#pagination"
- *   - name: q
+ *   - name: started_at
  *     in: query
- *     description: The audit log's q.
+ *     description: Filter by when the action started, with dates as ISO 8601 strings.
  *     required: false
  *     schema:
- *       type: string
- *       title: q
- *       description: The audit log's q.
- *   - name: id
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: id
- *           description: The audit log's ID.
- *         - type: array
- *           description: The audit log's ID.
- *           items:
- *             type: string
- *             title: id
- *             description: The id's ID.
- *   - name: actor_type
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: actor_type
- *           description: The audit log's actor type.
- *         - type: array
- *           description: The audit log's actor type.
- *           items:
- *             type: string
- *             title: actor_type
- *             description: The actor type's details.
- *   - name: actor_id
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: actor_id
- *           description: The audit log's actor id.
- *         - type: array
- *           description: The audit log's actor id.
- *           items:
- *             type: string
- *             title: actor_id
- *             description: The actor id's details.
- *   - name: action
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: action
- *           description: The audit log's action.
- *         - type: array
- *           description: The audit log's action.
- *           items:
- *             type: string
- *             title: action
- *             description: The action's details.
- *   - name: resource_type
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: resource_type
- *           description: The audit log's resource type.
- *         - type: array
- *           description: The audit log's resource type.
- *           items:
- *             type: string
- *             title: resource_type
- *             description: The resource type's details.
- *   - name: resource_id
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: resource_id
- *           description: The audit log's resource id.
- *         - type: array
- *           description: The audit log's resource id.
- *           items:
- *             type: string
- *             title: resource_id
- *             description: The resource id's details.
- *   - name: outcome
- *     in: query
- *     required: false
- *     schema:
- *       oneOf:
- *         - type: string
- *           title: outcome
- *           description: The audit log's outcome.
- *         - type: string
- *           title: outcome
- *           description: The audit log's outcome.
- *         - type: string
- *           title: outcome
- *           description: The audit log's outcome.
- *         - type: array
- *           description: The audit log's outcome.
- *           items:
- *             type: string
- *             description: The outcome's details.
- *             enum:
- *               - succeeded
- *               - denied
- *               - failed
+ *       type: object
+ *       description: Filter by when the action started, with dates as ISO 8601 strings.
+ *       x-schemaName: AdminAuditLogDateRange
+ *       properties:
+ *         $gt:
+ *           type: string
+ *           title: $gt
+ *           description: Filter by values greater than this parameter. Useful for numbers and dates only.
+ *         $gte:
+ *           type: string
+ *           title: $gte
+ *           description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+ *         $lt:
+ *           type: string
+ *           title: $lt
+ *           description: Filter by values less than this parameter. Useful for numbers and dates only.
+ *         $lte:
+ *           type: string
+ *           title: $lte
+ *           description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
  *   - name: fields
  *     in: query
  *     description: Comma-separated fields that should be included in the returned data. If a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default
@@ -199,7 +225,7 @@
  *         schema:
  *           allOf:
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of audit logs.
  *               required:
  *                 - limit
  *                 - offset
@@ -220,11 +246,11 @@
  *                 estimate_count:
  *                   type: number
  *                   title: estimate_count
- *                   description: The audit log's estimate count.
+ *                   description: The estimated count retrieved from the PostgreSQL query planner, which may be inaccurate.
  *                   deprecated: true
  *                   x-featureFlag: index_engine
  *             - type: object
- *               description: SUMMARY
+ *               description: The paginated list of audit logs.
  *               required:
  *                 - audit_logs
  *               properties:

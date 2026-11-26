@@ -143,10 +143,10 @@ export const apiRefPaths = {
         "schemaPath": "/admin/audit-logs/schema",
         "operations": {
           "GetAuditLogsId": {
-            "slug": "get-a-audit-log",
-            "path": "/admin/audit-logs/get-a-audit-log",
+            "slug": "get-an-audit-log",
+            "path": "/admin/audit-logs/get-an-audit-log",
             "oldHash": "audit-logs_getauditlogsid",
-            "title": "Get a Audit Log",
+            "title": "Get an Audit Log",
             "method": "get"
           },
           "GetAuditLogs": {
@@ -4213,7 +4213,7 @@ export const apiRefRedirects = {
     "api-keys_deleteapikeysid": "/admin/api-keys/delete-an-api-key",
     "api-keys_apikey_schema": "/admin/api-keys/schema",
     "api-keys": "/admin/api-keys",
-    "audit-logs_getauditlogsid": "/admin/audit-logs/get-a-audit-log",
+    "audit-logs_getauditlogsid": "/admin/audit-logs/get-an-audit-log",
     "audit-logs_getauditlogs": "/admin/audit-logs/list-audit-logs",
     "audit-logs_auditlog_schema": "/admin/audit-logs/schema",
     "audit-logs": "/admin/audit-logs",

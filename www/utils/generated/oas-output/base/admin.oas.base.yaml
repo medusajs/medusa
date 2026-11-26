@@ -24,6 +24,13 @@ tags:
     x-associatedSchema:
       $ref: "#/components/schemas/AdminApiKey"
   - name: Audit Logs
+    description: |
+      An audit log records an action, who performed it, on which resource, and how it ended.
+
+      These API routes allow admin users to view the audit logs of their store. They're only available when the Audit Module is installed.
+    externalDocs:
+      description: Learn more about the Audit Module.
+      url: https://docs.medusajs.com/resources/enterprise/audit
     x-associatedSchema:
       $ref: "#/components/schemas/AdminAuditLog"
   - name: Auth

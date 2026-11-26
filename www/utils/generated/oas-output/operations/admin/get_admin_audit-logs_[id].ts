@@ -1,8 +1,11 @@
 /**
  * @oas [get] /admin/audit-logs/{id}
  * operationId: GetAuditLogsId
- * summary: Get a Audit Log
- * description: Retrieve a audit log by its ID. You can expand the audit log's relations or select the fields that should be returned.
+ * summary: Get an Audit Log
+ * description: Retrieve an audit log by its ID. You can select the fields that should be returned. This API route is only available when the Audit Module is installed.
+ * externalDocs:
+ *   url: https://docs.medusajs.com/resources/enterprise/audit
+ *   description: Learn more about the Audit Module.
  * x-authenticated: true
  * parameters:
  *   - name: id

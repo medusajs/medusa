@@ -1,7 +1,7 @@
 /**
  * @schema AdminAuditLogResponse
  * type: object
- * description: SUMMARY
+ * description: The audit log's details.
  * x-schemaName: AdminAuditLogResponse
  * required:
  *   - audit_log

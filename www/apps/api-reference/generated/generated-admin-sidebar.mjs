@@ -159,8 +159,8 @@ const generatedgeneratedAdminSidebarSidebar = {
         },
         {
           "type": "link",
-          "path": "/admin/audit-logs/get-a-audit-log",
-          "title": "Get a Audit Log",
+          "path": "/admin/audit-logs/get-an-audit-log",
+          "title": "Get an Audit Log",
           "loaded": true,
           "badge": {
             "variant": "green",

@@ -38,11 +38,11 @@
  *   actor_id:
  *     type: string
  *     title: actor_id
- *     description: The audit log's actor id.
+ *     description: The ID of the user, API key, or customer that performed the action.
  *   impersonator_id:
  *     type: string
  *     title: impersonator_id
- *     description: The audit log's impersonator id.
+ *     description: The ID of the Medusa staff member that performed the action while acting as the actor, on Cloud.
  *   action:
  *     type: string
  *     title: action
@@ -50,16 +50,14 @@
  *   resource_type:
  *     type: string
  *     title: resource_type
- *     description: The audit log's resource type.
+ *     description: The type of resource acted on, such as `order`.
  *   resource_id:
  *     type: string
  *     title: resource_id
- *     description: The audit log's resource id.
+ *     description: The ID of the resource acted on. It's `null` when the action acts on several resources.
  *   outcome:
  *     type: string
- *     description: |-
- *       How the action ended: `denied` for a 401 or 403 response, `failed` for any
- *       other 4xx or 5xx response.
+ *     description: How the action ended. `denied` is a `401` or `403` response, and `failed` is any other `4xx` or `5xx` response.
  *     enum:
  *       - succeeded
  *       - denied
@@ -68,13 +66,13 @@
  *     $ref: "#/components/schemas/AdminAuditLogRequest"
  *   request_data:
  *     type: object
- *     description: The audit log's request data.
+ *     description: The request fields that the route chose to keep.
  *   response_data:
  *     type: object
- *     description: The audit log's response data.
+ *     description: The response fields that the route chose to keep.
  *   metadata:
  *     type: object
- *     description: The audit log's metadata.
+ *     description: Any other data attached to the audit log.
  * 
 */
 
