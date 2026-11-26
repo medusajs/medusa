@@ -352,6 +352,20 @@ If the token was refreshed successfully, you'll receive a `token` field in the r
 
 Use that token in the header of subsequent requests to send authenticated requests.
 
+### Tokens Issued Before a Credentials Update
+
+<Note>
+
+This behavior is available since [Medusa v2.23.1](https://github.com/medusajs/medusa/releases/tag/v2.23.1).
+
+</Note>
+
+The route refuses to refresh a token that was issued before the user's credentials, such as their password, were last updated. In that case, the route returns an `Unauthorized` error with the message `The token was issued before the credentials were updated`, and the user must log in again to receive a new token.
+
+For example, when a user resets their password with the [Reset Password Route](#reset-password-route), tokens issued before the reset can no longer be refreshed.
+
+Medusa retrieves the date of the last credentials update from the auth provider that issued the token. The [Emailpass Auth Module Provider](../auth-providers/emailpass/page.mdx) tracks when a user's password was last updated. If you're building a custom auth provider, refer to the [Create Auth Provider](/references/auth/provider) guide to learn how to implement the `getCredentialsUpdatedAt` method.
+
 ---
 
 ## Reset Password Routes
