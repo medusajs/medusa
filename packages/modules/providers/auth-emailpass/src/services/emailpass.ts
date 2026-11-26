@@ -29,6 +29,11 @@ async function loadScrypt(): Promise<ScryptKdf> {
   return scryptKdf
 }
 
+// A scrypt hash of a random string, made with the default hashConfig. Used when
+// a dummy hash can't be made with the configured one
+const FALLBACK_DUMMY_PASSWORD_HASH =
+  "c2NyeXB0AA8AAAAIAAAAAbILi6nEiqxctyznLIrjCTW8/P2D+ZVsQ4plnATdbvVNloBGa014BvNKMztXSqaJwsJ0QqpYCHOhMTPviPRt4Sc6tPSr8hbtzAJdDg8NQ7P8"
+
 type InjectedDependencies = {
   logger: Logger
 }
@@ -62,8 +67,12 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     super(...arguments)
     this.config_ = options
     this.logger_ = logger
-    this.dummyPasswordHash_ = this.hashPassword(randomUUID())
-    this.dummyPasswordHash_.catch(() => {})
+    this.dummyPasswordHash_ = this.hashPassword(randomUUID()).catch((error) => {
+      this.logger_.error(
+        `Emailpass couldn't generate a dummy password hash: ${error.message}. Using the fallback dummy hash instead.`
+      )
+      return FALLBACK_DUMMY_PASSWORD_HASH
+    })
   }
 
   protected async hashPassword(password: string) {

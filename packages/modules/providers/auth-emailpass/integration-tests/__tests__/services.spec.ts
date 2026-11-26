@@ -374,6 +374,31 @@ describe("Email password auth provider", () => {
     })
   })
 
+  it("falls back to a fixed dummy hash when the configured one can't be made", async () => {
+    const logger = { error: jest.fn() }
+    const service = new EmailPassAuthService({ logger: logger as any }, {
+      hashConfig: { logN: 0, r: 8, p: 1 },
+    } as any)
+    const verify = jest.spyOn(Scrypt, "verify")
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+    }
+
+    const resp = await service.authenticate(
+      { body: { email: "unknown@admin.com", password: "somepass" } },
+      authServiceSpies as any
+    )
+
+    expect(logger.error).toHaveBeenCalledTimes(1)
+    expect(verify).toHaveBeenCalledTimes(1)
+    expect(resp).toEqual({
+      error: "Invalid email or password",
+      success: false,
+    })
+  })
+
   it("checks the password against a hash when the identity has no password, and refuses it", async () => {
     const verify = jest.spyOn(Scrypt, "verify")
     const authServiceSpies = {
