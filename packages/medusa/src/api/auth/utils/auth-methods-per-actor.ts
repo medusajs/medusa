@@ -1,4 +1,5 @@
 import { ConfigModule } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
 
 /**
  * The actor types Medusa ships with. Any other actor type must have an entry
@@ -28,6 +29,22 @@ export const isKnownActorType = (
     BUILT_IN_ACTOR_TYPES.includes(actorType) ||
     hasEntry(getAuthMethodsPerActor(config), actorType)
   )
+}
+
+/**
+ * Throws when the app doesn't know the given actor type (see
+ * `isKnownActorType`).
+ */
+export const assertKnownActorType = (
+  config: ConfigModule,
+  actorType: string
+): void => {
+  if (!isKnownActorType(config, actorType)) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      `The actor type ${actorType} is not supported. Add it to projectConfig.http.authMethodsPerActor to use it`
+    )
+  }
 }
 
 /**

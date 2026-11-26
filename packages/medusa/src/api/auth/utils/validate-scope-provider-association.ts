@@ -9,8 +9,8 @@ import {
   MedusaError,
 } from "@medusajs/framework/utils"
 import {
+  assertKnownActorType,
   isAuthProviderAllowedForActor,
-  isKnownActorType,
 } from "./auth-methods-per-actor"
 
 /**
@@ -32,12 +32,7 @@ export const validateScopeProviderAssociation = (actorType?: string) => {
       ContainerRegistrationKeys.CONFIG_MODULE
     )
 
-    if (!isKnownActorType(config, actor_type)) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        `The actor type ${actor_type} is not supported. Add it to projectConfig.http.authMethodsPerActor to use it`
-      )
-    }
+    assertKnownActorType(config, actor_type)
 
     if (!isAuthProviderAllowedForActor(config, actor_type, auth_provider)) {
       throw new MedusaError(
