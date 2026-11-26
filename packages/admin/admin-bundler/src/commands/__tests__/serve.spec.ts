@@ -24,6 +24,8 @@ describe("serve", () => {
     const app = express()
     // What the framework's applySecurityHeaders sets on every response.
     app.use((_req, res, next) => {
+      res.setHeader("X-Content-Type-Options", "nosniff")
+      res.setHeader("X-Frame-Options", "SAMEORIGIN")
       res.setHeader("Content-Security-Policy", "frame-ancestors 'self'")
       next()
     })
@@ -66,6 +68,26 @@ describe("serve", () => {
         "frame-ancestors 'self'"
       )
       expect(asset.headers.get("referrer-policy")).toBeNull()
+    } finally {
+      await server.close()
+    }
+  })
+
+  it("keeps the framework's headers that aren't configured", async () => {
+    const server = await start({
+      outDir,
+      htmlHeaders: { "referrer-policy": "no-referrer" },
+    })
+
+    try {
+      const response = await server.get("/app")
+
+      expect(response.headers.get("referrer-policy")).toBe("no-referrer")
+      expect(response.headers.get("content-security-policy")).toBe(
+        "frame-ancestors 'self'"
+      )
+      expect(response.headers.get("x-frame-options")).toBe("SAMEORIGIN")
+      expect(response.headers.get("x-content-type-options")).toBe("nosniff")
     } finally {
       await server.close()
     }

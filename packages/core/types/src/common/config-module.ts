@@ -138,7 +138,8 @@ export interface AdminOptions {
    * Headers added to the admin dashboard's HTML page in production. A header set here replaces
    * the one the application sets on every response, for example the `Content-Security-Policy`
    * and `X-Frame-Options` headers from `projectConfig.http.securityHeaders`, so include
-   * `frame-ancestors` in a `Content-Security-Policy` set here. The headers aren't set by the
+   * `frame-ancestors` in a `Content-Security-Policy` set here. Headers not set here keep the values
+   * from `projectConfig.http.securityHeaders`. Header names are case-insensitive. The headers aren't set by the
    * development server, nor on the dashboard's static files or any other route. By default, none are added.
    *
    * Admin customizations that load scripts from other origins need those origins in the policy's `script-src`.
