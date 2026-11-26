@@ -1,0 +1,124 @@
+---
+generate_toc: true
+---
+
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Audit Module`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice />
+
+In this section of the documentation, you will find resources to learn more about the Audit Module and how to use it in your application.
+
+<Note title="Looking for no-code docs?">
+
+Refer to the [Medusa Admin User Guide](!user-guide!/settings/audit-logs) to learn how to view audit logs using the dashboard.
+
+</Note>
+
+Medusa has audit logging features available through the Audit Module. A [module](!docs!/learn/fundamentals/modules) is a standalone package that provides features for a single domain.
+
+The Audit Module records audit logs, where each audit log is an action, who performed it, on which resource, and how it ended. You can use audit logs to investigate a change, review access to your store, or meet compliance requirements.
+
+## Audit Features
+
+- [Automatic Request Recording](./record-api-requests/page.mdx): Record requests that create, update, or delete data through the Admin API without writing any code.
+- [Route Customization](./record-api-requests/page.mdx#customize-how-a-route-is-recorded): Exclude routes, record more routes, and choose the action, resource, and data recorded for each route.
+- [Custom Audit Logs](./record-custom-audit-logs/page.mdx): Record actions that happen outside API requests, such as in scheduled jobs or workflows.
+- [Read Audit Logs](./read-audit-logs/page.mdx): Retrieve and filter audit logs with the Admin API, the JS SDK, or in your custom workflows.
+- [Admin Dashboard](!user-guide!/settings/audit-logs): Search, filter, and view audit logs in the Medusa Admin.
+- [Storage Providers](./module-options/page.mdx#providers): Store audit logs in your database, in Cloud, or in your own storage with a [custom provider](/references/audit/provider).
+
+---
+
+## How to Use the Audit Module
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa v2.23.0+",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.23.0"
+    }
+  ]}
+/>
+
+### Use the Audit Module on Cloud
+
+If your application is deployed on Cloud, you don't need to configure anything in your Medusa application. Instead, turn on audit logs for your Cloud organization. This adds the `audit` feature to your organization's license, and Medusa registers the Audit Module with Cloud's audit storage in your environments.
+
+Learn more in the [Audit Logs](!cloud!/organizations/audit-logs) Cloud guide.
+
+<Note>
+
+Audit logs on Cloud are available for organizations on the **Scale** and **Enterprise** plans.
+
+</Note>
+
+The following steps are only for running Medusa outside Cloud, such as in local development or in a self-hosted deployment. Outside Cloud, the Audit Module stores audit logs in your application's database by default, not in Cloud.
+
+### 1. Configure an Enterprise License Key
+
+The Audit Module is an [enterprise feature](../page.mdx), so it only loads when you configure a license key that covers the `audit` feature:
+
+```shell
+MEDUSA_LICENSE_KEY=your_license_key
+```
+
+If the key is missing or doesn't cover the `audit` feature, the Medusa application exits at boot with an error. Learn how to obtain and configure a key in the [Enterprise Features](../page.mdx) documentation.
+
+### 2. Register the Audit Module
+
+To use the Audit Module outside Cloud, add it to the `modules` array in `medusa-config.ts`:
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/audit",
+    },
+  ],
+})
+```
+
+By default, the Audit Module stores audit logs in your application's database and keeps them forever. Learn how to change that in the [Module Options](./module-options/page.mdx) guide.
+
+### 3. Run Migrations
+
+Then, run the migrations to create the Audit Module's table in your database:
+
+```bash
+npx medusa db:migrate
+```
+
+### 4. View Audit Logs
+
+Start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+Then, perform an action in the Medusa Admin, such as updating a product. Medusa records the request as an audit log, which you can view in the Medusa Admin under **Settings** > **Audit logs**.
+
+<Note>
+
+If the [RBAC Module](../rbac/page.mdx) is installed, admin users need the `audit_log:read` policy to view audit logs.
+
+</Note>
+
+---
+
+## What the Audit Module Records
+
+Once you install the Audit Module, Medusa records every `POST`, `PUT`, `PATCH`, and `DELETE` request to routes under `/admin`, `/rbac`, and `/auth`. This includes requests that fail validation or that Medusa rejects because the actor isn't authenticated or authorized.
+
+Medusa doesn't record `GET` requests or requests to `/store` routes by default. You can [record them yourself](./record-api-requests/page.mdx#record-a-route-that-isnt-recorded-by-default).
+
+Learn more about what each audit log holds and how to customize it in the [Record API Requests](./record-api-requests/page.mdx#how-medusa-records-api-requests) guide.
+
+Audit logs can only be created and read. You can't update or delete them.

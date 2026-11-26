@@ -1,0 +1,180 @@
+---
+sidebar_label: "Record API Requests"
+---
+
+export const metadata = {
+  title: `Record API Requests in Audit Logs`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice />
+
+In this guide, you'll learn how Medusa records API requests in audit logs, and how to customize which routes are recorded and what's recorded for them.
+
+## How Medusa Records API Requests
+
+When the [Audit Module](../page.mdx) is installed, Medusa records an audit log for every `POST`, `PUT`, `PATCH`, and `DELETE` request to routes under `/admin`, `/rbac`, and `/auth`. This applies to Medusa's routes and to your [custom API routes](!docs!/learn/fundamentals/api-routes) under those paths.
+
+Medusa records the request after it sends the response, so recording never delays or changes the response. It also records requests that Medusa rejects before they reach the route, such as unauthenticated requests or requests that fail validation.
+
+Each audit log has the following details:
+
+- `action`: The name of the action. By default, it's the resource followed by the route's segments after it, such as `order.cancel` for `POST /admin/orders/:id/cancel`. If there are no segments after the resource, Medusa uses `create`, `update`, or `delete` based on the method, such as `product.create` for `POST /admin/products`.
+- `resource_type` and `resource_id`: The resource acted on. By default, if the route has path parameters, the last one is the resource's ID, and the segment before it, in singular snake case, is the resource's type. For example, `POST /admin/orders/:id/fulfillments/:fulfillment_id/cancel` acts on a `fulfillment`. If the route has no path parameters, the type is the first segment after the namespace, such as `/admin`, and the ID is read from the response, such as `{ product: { id } }`.
+- `actor_type` and `actor_id`: Who performed the action, which is the authenticated user, API key, or customer, or `anonymous` for unauthenticated requests.
+- `outcome`: How the action ended. It's `succeeded`, `denied` for a `401` or `403` response, or `failed` for any other error response.
+- `started_at` and `ended_at`: When the request arrived and when Medusa sent the response.
+- `request`: The HTTP details of the request, such as its method, route, status code, IP address, and user agent.
+- `request_data` and `response_data`: The request and response fields that the route chose to keep.
+- `metadata`: Any other data attached to the audit log.
+
+Medusa never stores the request or response bodies, since they may hold personal data or secrets. You choose which fields to keep with the [requestData and responseData](#keep-request-and-response-data) functions.
+
+---
+
+## Configure a Route's Audit Logs
+
+You configure how Medusa records a route with the `audit` property of the route's middleware in `src/api/middlewares.ts`. You can set it to a boolean to [exclude](#exclude-a-route-from-audit-logs) or [include](#record-a-route-that-isnt-recorded-by-default) the route, or to an object to [customize](#customize-how-a-route-is-recorded) how Medusa records it.
+
+When several middlewares set `audit` for the same route, the most specific matcher wins. If Medusa, a plugin, and your application set `audit` for the same matcher and method, your application's setting wins, and Medusa merges the objects. So, you can add `requestData` to one of Medusa's routes without changing its other details.
+
+### Exclude a Route from Audit Logs
+
+To stop recording a route, set `audit` to `false`:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/custom/sync",
+      methods: ["POST"],
+      audit: false,
+    },
+  ],
+})
+```
+
+Medusa no longer records `POST` requests to `/admin/custom/sync`.
+
+### Record a Route that Isn't Recorded by Default
+
+To record a route that Medusa doesn't record by default, such as a `GET` route or a `/store` route, set `audit` to `true`:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/custom/reports",
+      methods: ["GET"],
+      audit: true,
+    },
+  ],
+})
+```
+
+Medusa now records `GET` requests to `/admin/custom/reports`, which is useful to track access to sensitive data.
+
+### Customize How a Route Is Recorded
+
+To override the default details of a route's audit logs, set `audit` to an object:
+
+export const customizeHighlights = [
+  ["9", "action", "The name of the action."],
+  ["10", "resource", "The resource that the request acted on."],
+]
+
+```ts title="src/api/middlewares.ts" highlights={customizeHighlights}
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/brands/:id/products",
+      methods: ["POST"],
+      audit: {
+        action: "brand.link_products",
+        resource: (req) => ({
+          type: "brand",
+          id: req.params.id,
+        }),
+      },
+    },
+  ],
+})
+```
+
+The `audit` object accepts the following properties:
+
+- `action`: A string indicating the name of the action.
+- `resource`: A function that returns the resource that the request acted on. It returns an object with a `type` and an optional `id`. Return `undefined` to use the default resource.
+- `requestData`: A function that returns the request fields to keep. Learn more in the [next section](#keep-request-and-response-data).
+- `responseData`: A function that returns the response fields to keep.
+- `metadata`: A function that returns values to add to the audit log's `metadata`. The values that Medusa sets itself, such as `auth_identity_id`, take precedence.
+
+The `resource`, `responseData`, and `metadata` functions receive the request as a first parameter, and the JSON response body as a second parameter. Medusa only passes the response body for successful responses.
+
+Medusa runs these functions after it sends the response. If a function throws an error, Medusa logs a warning and ignores the error.
+
+### Keep Request and Response Data
+
+By default, an audit log doesn't include any request or response data. To keep fields that help you understand a change, return them from the `requestData` and `responseData` functions:
+
+export const dataHighlights = [
+  ["9", "requestData", "Keep the new status from the request body."],
+  ["12", "responseData", "Keep the updated date from the response."],
+]
+
+```ts title="src/api/middlewares.ts" highlights={dataHighlights}
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/products/:id",
+      methods: ["POST"],
+      audit: {
+        requestData: (req) => ({
+          status: req.body?.status,
+        }),
+        responseData: (req, body) => ({
+          updated_at: body?.product?.updated_at,
+        }),
+      },
+    },
+  ],
+})
+```
+
+The audit logs of `POST /admin/products/:id` requests now include the product's new status in `request_data`, and its update date in `response_data`. Since your application's setting is merged with Medusa's, the audit log keeps its default action and resource.
+
+<Note type="warning">
+
+Only return the fields worth keeping. Don't return whole request or response bodies, since they can hold personal data, such as customer addresses, or secrets, such as passwords.
+
+</Note>
+
+---
+
+## Set Route Namespaces
+
+Medusa skips the first segment of a route, such as `/admin`, when it deduces the action and resource. If your routes are nested under a longer prefix, set the prefixes in the `audit.namespaces` property of `defineMiddlewares`:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  audit: {
+    namespaces: ["/admin/v2"],
+  },
+  routes: [
+    // ...
+  ],
+})
+```
+
+Medusa now records `POST /admin/v2/brands` requests as `brand.create`, instead of `v2.create`. When a route matches several namespaces, Medusa uses the longest one.

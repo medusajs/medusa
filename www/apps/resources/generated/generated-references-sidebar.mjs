@@ -188,6 +188,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "title": "setAuthAppMetadataWorkflow",
                   "description": "",
                   "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/validateAuthCallbackWorkflow",
+                  "title": "validateAuthCallbackWorkflow",
+                  "description": "Validate a third-party provider's authentication callback.",
+                  "children": []
                 }
               ]
             },
@@ -225,6 +233,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/setAuthAppMetadataStep",
                   "title": "setAuthAppMetadataStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/validateAuthCallbackStep",
+                  "title": "validateAuthCallbackStep",
                   "description": "",
                   "children": []
                 }
@@ -2437,6 +2453,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                   "type": "link",
                   "path": "/references/medusa-workflows/steps/updateLineItemsStepWithSelector",
                   "title": "updateLineItemsStepWithSelector",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/medusa-workflows/steps/validateLineItemsInCartStep",
+                  "title": "validateLineItemsInCartStep",
                   "description": "",
                   "children": []
                 }

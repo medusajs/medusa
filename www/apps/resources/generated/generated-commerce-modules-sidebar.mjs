@@ -959,6 +959,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/references/auth/getCredentialsUpdatedAt",
+                      "title": "getCredentialsUpdatedAt",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/references/auth/listAndCountAuthIdentities",
                       "title": "listAndCountAuthIdentities",
                       "description": "",
@@ -9681,6 +9689,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "title": "updateRegionsWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateRegionsWorkflow",
                       "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "updateTaxLinesWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateTaxLinesWorkflow",
+                      "children": []
                     }
                   ]
                 },
@@ -18214,6 +18229,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
           "sort_sidebar": "alphabetize",
           "description": "Learn how to utilize and manage User features in the Medusa Admin dashboard.",
           "children": [
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Audit Logs",
+              "path": "https://docs.medusajs.com/user-guide/settings/audit-logs",
+              "children": []
+            },
             {
               "loaded": true,
               "type": "ref",

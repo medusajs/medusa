@@ -1,6 +1,7 @@
 export * from "./admin.js"
 export * from "./analytics.js"
 export * from "./api-key.js"
+export * from "./audit.js"
 export * from "./auth.js"
 export * from "./cache.js"
 export * from "./caching.js"

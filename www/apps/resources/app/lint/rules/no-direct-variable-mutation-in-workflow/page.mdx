@@ -56,6 +56,36 @@ createWorkflow("my-workflow", (input) => {
 })
 ```
 
+### Exception: Assign a Hook in a when-then Callback
+
+The rule doesn't report assigning the result of `createHook` to a variable inside a `when().then()` callback. This lets you create a hook conditionally and pass it to the `WorkflowResponse`'s `hooks` option:
+
+```ts title="src/workflows/example.ts"
+import {
+  createHook,
+  createWorkflow,
+  when,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
+
+createWorkflow("my-workflow", (input) => {
+  let validated
+  when(
+    "is-valid",
+    { input },
+    (data) => data.input.valid
+  ).then(() => {
+    validated = createHook("validated", { input })
+  })
+
+  return new WorkflowResponse(input, {
+    hooks: [validated],
+  })
+})
+```
+
+The rule still reports assigning a hook directly in the workflow's constructor, or assigning a hook to an object property, such as `hooks.validated = createHook(...)`, inside a `when().then()` callback.
+
 ## Why it's Important
 
 A workflow's constructor and `when().then()` callbacks run at definition time, not execution time. So, locals like step outputs and input are placeholders, not real values. Mutating or recomputing them doesn't work as expected. Use `transform` to derive new values.

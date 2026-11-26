@@ -1,5 +1,14 @@
 # @medusajs/rbac
 
+## 2.23.1
+
+### Patch Changes
+
+- [#17990](https://github.com/medusajs/medusa/pull/17990) [`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: license core packages under MIT only, limit the Enterprise license to the RBAC, OIDC, and Audit packages
+
+- Updated dependencies [[`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450)]:
+  - @medusajs/framework@2.23.1
+
 ## 2.23.0
 
 ### Patch Changes

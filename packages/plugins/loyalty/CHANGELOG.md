@@ -1,5 +1,21 @@
 # @medusajs/loyalty-plugin
 
+## 2.23.1
+
+### Patch Changes
+
+- [#17978](https://github.com/medusajs/medusa/pull/17978) [`ef42ff1`](https://github.com/medusajs/medusa/commit/ef42ff158ef8cca05cd273aba2b8b4e7de7a52e3) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(loyalty-plugin): accept comma decimal values in the gift card create form
+
+- Updated dependencies [[`bfe6632`](https://github.com/medusajs/medusa/commit/bfe6632a059d1ecceb093bea68b867f4a626d147), [`d017c01`](https://github.com/medusajs/medusa/commit/d017c01981a48d9b5da8d6171a0347573aa032a2), [`36f0723`](https://github.com/medusajs/medusa/commit/36f0723258038e550d7a98eb6de74d3d16f46ed6), [`d0cf9a1`](https://github.com/medusajs/medusa/commit/d0cf9a1c0b443422bde97039755ee5d68e269d5d), [`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450)]:
+  - @medusajs/medusa@2.23.1
+  - @medusajs/framework@2.23.1
+  - @medusajs/dashboard@2.23.1
+  - @medusajs/test-utils@2.23.1
+  - @medusajs/cli@2.23.1
+  - @medusajs/admin-sdk@2.23.1
+  - @medusajs/icons@2.23.1
+  - @medusajs/ui@4.3.1
+
 ## 2.23.0
 
 ### Minor Changes

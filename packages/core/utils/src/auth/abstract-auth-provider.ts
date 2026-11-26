@@ -3,6 +3,7 @@ import {
   AuthenticationResponse,
   AuthIdentityProviderService,
   IAuthProvider,
+  ProviderIdentityDTO,
 } from "@medusajs/types"
 
 /**
@@ -56,9 +57,9 @@ import {
 export abstract class AbstractAuthModuleProvider implements IAuthProvider {
   /**
    * Every auth provider must have an `identifier` static property. The provider's ID
-   * will be stored as `au_{identifier}_{id}`, where `{id}` is the provider's `id` 
+   * will be stored as `au_{identifier}_{id}`, where `{id}` is the provider's `id`
    * property in the `medusa-config.ts`.
-   * 
+   *
    * @example
    * class MyAuthProviderService extends AbstractAuthModuleProvider {
    *   static identifier = "my-auth"
@@ -68,13 +69,13 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
   static identifier: string
   /**
    * This property indicates the name used when displaying the provider on a frontend application.
-   * 
+   *
    * @example
    * class MyAuthProviderService extends AbstractAuthModuleProvider {
    *   static DISPLAY_NAME = "My Auth"
    *   // ...
    * }
-   * 
+   *
    */
   static DISPLAY_NAME: string
 
@@ -108,11 +109,11 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
   /**
    * This method validates the options of the provider set in `medusa-config.ts`.
    * Implementing this method is optional. It's useful if your provider requires custom validation.
-   * 
+   *
    * If the options aren't valid, throw an error.
-   * 
+   *
    * @param options - The provider's options.
-   * 
+   *
    * @example
    * class MyAuthProviderService extends AbstractAuthModuleProvider {
    *   static validateOptions(options: Record<any, any>) {
@@ -214,14 +215,14 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *         error: "Incorrect credentials"
    *       }
    *     }
-   * 
+   *
    *     // optional, useful for third-party providers that require a redirect URL
    *     // to continue the authentication flow
    *     // const stateKey = crypto.randomBytes(32).toString("hex")
    *     // const state = {
    *     //   callback_url: body?.callback_url ?? this.config_.callbackUrl,
    *     // }
-   *     
+   *
    *     // verify this later in the `validateCallback` method
    *     // await authIdentityService.setState(stateKey, state)
    *
@@ -364,6 +365,36 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
   }
 
   /**
+   * This method retrieves when the credentials of a provider identity, such as its password, were last updated.
+   * Medusa refuses to refresh a token, or complete an MFA challenge with it, if the token was issued before that date.
+   *
+   * Implement this method if your provider manages credentials that the user can change. By default, it returns `null`.
+   *
+   * @param providerIdentity - The provider identity to get the date of. Its `provider_metadata` holds the data your provider stored.
+   * @returns The date the credentials were last updated, or `null` if they were never updated.
+   *
+   * @example
+   * import { ProviderIdentityDTO } from "@medusajs/framework/types"
+   * // ...
+   *
+   * class MyAuthProviderService extends AbstractAuthModuleProvider {
+   *   // ...
+   *   async getCredentialsUpdatedAt(
+   *     providerIdentity: ProviderIdentityDTO
+   *   ): Promise<Date | null> {
+   *     const updatedAt = providerIdentity.provider_metadata?.secret_updated_at
+   *
+   *     return updatedAt ? new Date(updatedAt as string) : null
+   *   }
+   * }
+   */
+  getCredentialsUpdatedAt(
+    providerIdentity: ProviderIdentityDTO
+  ): Promise<Date | null> | Date | null {
+    return null
+  }
+
+  /**
    * This method validates the callback of an authentication request.
    *
    * In an authentication flow that requires performing an action with a third-party service, such as login
@@ -405,7 +436,7 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *     authIdentityProviderService: AuthIdentityProviderService
    *   ): Promise<AuthenticationResponse> {
    *     const isAuthenticated = false
-   * 
+   *
    *     // optional, useful for third-party providers that require a redirect URL
    *     // to continue the authentication flow
    *     // const stateKey = data.query?.state as string
