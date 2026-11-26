@@ -12,11 +12,6 @@ const getAuthMethodsPerActor = (
 ): Record<string, string[]> =>
   config.projectConfig?.http?.authMethodsPerActor ?? {}
 
-const hasEntry = (
-  authMethodsPerActor: Record<string, string[]>,
-  actorType: string
-) => Object.prototype.hasOwnProperty.call(authMethodsPerActor, actorType)
-
 /**
  * Whether the app knows the given actor type: one Medusa ships with, or one
  * with an entry in `projectConfig.http.authMethodsPerActor`.
@@ -27,7 +22,7 @@ export const isKnownActorType = (
 ): boolean => {
   return (
     BUILT_IN_ACTOR_TYPES.includes(actorType) ||
-    hasEntry(getAuthMethodsPerActor(config), actorType)
+    Object.keys(getAuthMethodsPerActor(config)).includes(actorType)
   )
 }
 
@@ -60,7 +55,7 @@ export const getAllowedAuthProvidersForActor = (
 ): string[] | undefined => {
   const authMethodsPerActor = getAuthMethodsPerActor(config)
 
-  return hasEntry(authMethodsPerActor, actorType)
+  return Object.keys(authMethodsPerActor).includes(actorType)
     ? authMethodsPerActor[actorType]
     : undefined
 }
