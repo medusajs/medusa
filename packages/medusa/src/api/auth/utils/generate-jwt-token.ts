@@ -41,6 +41,7 @@ export async function generateJwtTokenWithChecks(
         authProvider: authProvider,
         container: container,
         mfaEnabled: !!mfaChallenge,
+        mfaChallengeId: mfaChallenge?.id,
       },
       {
         secret: http.jwtSecret!,
@@ -104,6 +105,7 @@ export async function generateJwtTokenForAuthIdentity(
     container,
     mfaEnabled,
     mfaChallengeCompletedAt,
+    mfaChallengeId,
   }: {
     authIdentity: AuthIdentityDTO
     actorType: string
@@ -111,6 +113,7 @@ export async function generateJwtTokenForAuthIdentity(
     container?: MedusaContainer
     mfaEnabled?: boolean
     mfaChallengeCompletedAt?: Date | string | null
+    mfaChallengeId?: string
   },
   {
     secret,
@@ -152,6 +155,7 @@ export async function generateJwtTokenForAuthIdentity(
       mfa_challenge_completed_at: mfaChallengeCompletedAt
         ? new Date(mfaChallengeCompletedAt).toISOString()
         : null,
+      ...(mfaChallengeId ? { mfa_challenge_id: mfaChallengeId } : {}),
       app_metadata: {
         ...(authIdentity.app_metadata ?? {}),
         [entityIdKey]: entityId,

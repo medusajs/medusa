@@ -370,6 +370,36 @@ medusaIntegrationTestRunner({
 
         expect(verified.status).toEqual(200)
       })
+
+      it("does not verify a challenge with the token of another login", async () => {
+        const { secret } = await enrollTotpFactor(api)
+
+        const first = await loginWithoutCompletingMfa(api)
+        const second = await loginWithoutCompletingMfa(api)
+        const code = generateTotpCode({ secret })
+
+        const err = await api
+          .post(
+            `/auth/mfa/challenges/${first.challenge.id}/verify`,
+            { method: "totp", code },
+            second.headers
+          )
+          .catch((e) => e)
+
+        expect(err.response.status).toEqual(404)
+
+        const verified = await api.post(
+          `/auth/mfa/challenges/${first.challenge.id}/verify`,
+          { method: "totp", code },
+          first.headers
+        )
+
+        expect(verified.status).toEqual(200)
+        expect(
+          (jwt.decode(verified.data.token) as Record<string, unknown>)
+            .mfa_challenge_id
+        ).toBeUndefined()
+      })
     })
 
     describe("MFA routes with a completed MFA challenge", () => {

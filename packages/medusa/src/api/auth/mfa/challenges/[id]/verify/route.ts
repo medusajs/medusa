@@ -21,6 +21,15 @@ export const POST = async (
   const { id } = req.params
   const { method, code } = req.validatedBody
 
+  // Only the token issued by the login that created the challenge can
+  // complete it, not another login of the same identity.
+  if (req.auth_context.mfa_challenge_id !== id) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `MFA challenge with id "${id}" was not found`
+    )
+  }
+
   const authService = req.scope.resolve<IAuthModuleService>(Modules.AUTH)
   const challenge = await authService.verifyAuthMfaChallenge({
     id,

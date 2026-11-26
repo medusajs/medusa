@@ -72,6 +72,7 @@ module.exports = defineConfig({
 - `src/loaders/providers.ts` registers, in order: built-in MFA providers `totp` and `recovery_code` (`mfa_<id>`), custom `mfa.providers`, built-in `token` verification provider and custom `verification.providers` (`verif_<id>`), the `cloud` provider (only if `cloud` options validate and `disabled` is falsy), then `providers` (`au_<id>`).
 - `AuthProviderService`, `AuthMfaProviderService`, `AuthVerificationProviderService` resolve providers by those prefixes.
 - Providers receive an `AuthIdentityProviderService` (`getAuthIdentityProviderService(provider)`) with `retrieve`, `create`, `update`, `setState`, `getState`.
+- The token returned with a login's MFA challenge carries `mfa_challenge_id`, and `POST /auth/mfa/challenges/:id/verify` only accepts that token (or a session created from it).
 - `applyMfaRequirement_`: after a successful `register`/`authenticate`/`validateCallback`, if the identity has an enabled, verifiable factor, the response gets an `mfaChallenge` instead of being final.
 
 ## Development
