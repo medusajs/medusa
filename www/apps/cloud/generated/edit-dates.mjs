@@ -29,7 +29,7 @@ export const generatedEditDates = {
   "app/user/page.mdx": "2026-06-08T13:04:35.724Z",
   "app/deployments/access/page.mdx": "2026-11-24T07:54:16.923Z",
   "app/projects/prerequisites/page.mdx": "2026-10-29T10:28:19.290Z",
-  "app/storefront/page.mdx": "2026-11-24T07:54:16.924Z",
+  "app/storefront/page.mdx": "2026-11-26T14:12:39.768Z",
   "app/projects/rename-repo-branch/page.mdx": "2026-11-24T07:54:16.918Z",
   "app/environments/custom-domains/page.mdx": "2026-11-24T07:54:16.920Z",
   "app/command-palette/page.mdx": "2026-11-24T07:54:59.923Z",
