@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/workflow-engine-redis",
-  "version": "2.22.7",
+  "version": "2.23.0",
   "description": "Medusa Workflow Orchestrator module using Redis to track workflows executions",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -36,22 +36,22 @@
     "resolve:aliases": "yarn run -T tsc --showConfig -p tsconfig.json > tsconfig.resolved.json && yarn run -T tsc-alias -p tsconfig.resolved.json && yarn run -T rimraf tsconfig.resolved.json",
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build && npm run resolve:aliases",
     "test": "../../../node_modules/.bin/jest --passWithNoTests --bail --forceExit --testPathPatterns=src",
-    "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPatterns=\"integration-tests/__tests__/index\\.spec\\.ts\" && ../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPatterns=\"integration-tests/__tests__/race\\.spec\\.ts\" && ../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPatterns=\"integration-tests/__tests__/retry-interval\\.spec\\.ts\"",
+    "test:integration": "../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPatterns=\"integration-tests/__tests__/index\\.spec\\.ts\" && ../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPatterns=\"integration-tests/__tests__/race\\.spec\\.ts\" && ../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPatterns=\"integration-tests/__tests__/retry-interval\\.spec\\.ts\" && ../../../node_modules/.bin/jest --passWithNoTests --forceExit --testPathPatterns=\"integration-tests/__tests__/hook-input\\.spec\\.ts\"",
     "migration:initial": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts MIKRO_ORM_ALLOW_GLOBAL_CLI=true medusa-mikro-orm migration:create --initial",
     "migration:create": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts MIKRO_ORM_ALLOW_GLOBAL_CLI=true medusa-mikro-orm migration:create",
     "migration:up": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts MIKRO_ORM_ALLOW_GLOBAL_CLI=true medusa-mikro-orm migration:up",
     "orm:cache:clear": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts MIKRO_ORM_ALLOW_GLOBAL_CLI=true medusa-mikro-orm cache:clear"
   },
   "devDependencies": {
-    "@medusajs/framework": "2.22.7",
-    "@medusajs/test-utils": "2.22.7"
+    "@medusajs/framework": "2.23.0",
+    "@medusajs/test-utils": "2.23.0"
   },
   "dependencies": {
-    "bullmq": "5.13.0",
-    "ioredis": "^5.11.1",
+    "bullmq": "6.7.6",
+    "ioredis": "^6.0.0",
     "ulid": "^3.0.2"
   },
   "peerDependencies": {
-    "@medusajs/framework": "2.22.7"
+    "@medusajs/framework": "2.23.0"
   }
 }

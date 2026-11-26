@@ -1,5 +1,17 @@
 # @medusajs/workflows-sdk
 
+## 2.23.0
+
+### Patch Changes
+
+- [#17918](https://github.com/medusajs/medusa/pull/17918) [`1166823`](https://github.com/medusajs/medusa/commit/1166823171588bce9d797864e343061d6f084f29) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(workflows-sdk): revert the parent workflow when a runAsStep workflow fails
+
+- Updated dependencies [[`182cf74`](https://github.com/medusajs/medusa/commit/182cf748cb162ec177df8d9e912319a77ee83111), [`a0c4da4`](https://github.com/medusajs/medusa/commit/a0c4da4ddd112d663679d09b7ba759ca006b7314), [`d42343a`](https://github.com/medusajs/medusa/commit/d42343ac7c17f6c79b4999feb49d6574b23cbde3), [`45ab5b6`](https://github.com/medusajs/medusa/commit/45ab5b68c954ea7c000952a5e3263c60deadfa99), [`2086f3d`](https://github.com/medusajs/medusa/commit/2086f3d573a1357815007c53f6a842227731898f), [`6d76b3b`](https://github.com/medusajs/medusa/commit/6d76b3b55154896d732d4f8ac6fc948bd36d958c), [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50), [`964ad71`](https://github.com/medusajs/medusa/commit/964ad715d9c74a8966de01e9cca5625f6f3e1ae7)]:
+  - @medusajs/utils@2.23.0
+  - @medusajs/deps@2.23.0
+  - @medusajs/modules-sdk@2.23.0
+  - @medusajs/orchestration@2.23.0
+
 ## 2.22.7
 
 ### Patch Changes

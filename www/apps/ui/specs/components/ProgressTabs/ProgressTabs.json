@@ -32,9 +32,18 @@
       "description": "The direction of navigation between toolbar items.",
       "required": false,
       "tsType": {
-        "name": "Direction",
-        "elements": [],
-        "raw": "Direction"
+        "name": "union",
+        "raw": "\"ltr\" \\| \"rtl\"",
+        "elements": [
+          {
+            "name": "literal",
+            "value": "\"ltr\""
+          },
+          {
+            "name": "literal",
+            "value": "\"rtl\""
+          }
+        ]
       }
     },
     "onValueChange": {

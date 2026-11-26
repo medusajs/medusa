@@ -68,7 +68,7 @@ export const useUpdateTaxRate = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.taxRate.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: taxRatesQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: taxRatesQueryKeys.detail(id),
@@ -76,7 +76,7 @@ export const useUpdateTaxRate = (
 
       queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.details() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -91,12 +91,12 @@ export const useCreateTaxRate = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.taxRate.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: taxRatesQueryKeys.lists() })
 
       queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.details() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -112,7 +112,7 @@ export const useDeleteTaxRate = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.taxRate.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: taxRatesQueryKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: taxRatesQueryKeys.detail(id),
@@ -120,7 +120,7 @@ export const useDeleteTaxRate = (
 
       queryClient.invalidateQueries({ queryKey: taxRegionsQueryKeys.details() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

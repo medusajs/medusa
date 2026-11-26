@@ -10,6 +10,8 @@ In this guide, you'll learn how to inspect Cloud deployments and their build log
 
 ## deployments list
 
+<RolesBadge roles={["developer"]} />
+
 List recent deployments for a project. By default, the command returns the 20 most recent deployments across all environments in the project, ordered by creation time (newest first).
 
 <CodeTabs group="cli-auth">
@@ -234,6 +236,8 @@ List recent deployments for a project. By default, the command returns the 20 mo
 
 ## deployments get
 
+<RolesBadge roles={["developer"]} />
+
 Retrieve a single deployment by its ID. Returns the deployment's status, commit details, environment, and timestamps as a key-value list.
 
 <Note>
@@ -390,6 +394,8 @@ This only retrieves the deployment's details. If you want to view its build logs
 ---
 
 ## deployments build-logs
+
+<RolesBadge roles={["developer"]} />
 
 Fetch the build logs for a deployment. Use this to debug build failures or to inspect the build output for a specific deployment.
 

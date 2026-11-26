@@ -224,6 +224,7 @@ export class Admin {
   public apiKey: ApiKey
   /**
    * @tags audit
+   * @since 2.23.0
    */
   public auditLog: AuditLog
   /**

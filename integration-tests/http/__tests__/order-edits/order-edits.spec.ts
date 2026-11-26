@@ -575,6 +575,68 @@ medusaIntegrationTestRunner({
         expect(result[0].status).toEqual("confirmed")
         expect(result[0].confirmed_by).toEqual(expect.stringContaining("user_"))
       })
+
+      it("should require shipping for a new item without managed inventory whose product has a shipping profile", async () => {
+        const product = (
+          await api.post(
+            "/admin/products",
+            {
+              title: "Shirt",
+              status: ProductStatus.PUBLISHED,
+              options: [{ title: "size", values: ["S"] }],
+              shipping_profile_id: shippingProfile.id,
+              variants: [
+                {
+                  title: "S",
+                  manage_inventory: false,
+                  options: { size: "S" },
+                  prices: [{ currency_code: "usd", amount: 10 }],
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.product
+
+        await api.post(
+          "/admin/order-edits",
+          { order_id: order.id, description: "Test" },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${order.id}/items`,
+          {
+            items: [
+              { variant_id: product.variants[0].id, quantity: 1 },
+            ],
+          },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${order.id}/items/item/${order.items[0].id}`,
+          { quantity: 0 },
+          adminHeaders
+        )
+
+        await api.post(`/admin/order-edits/${order.id}/request`, {}, adminHeaders)
+        await api.post(`/admin/order-edits/${order.id}/confirm`, {}, adminHeaders)
+
+        const updatedOrder = (
+          await api.get(
+            `/admin/orders/${order.id}?fields=*items`,
+            adminHeaders
+          )
+        ).data.order
+
+        expect(updatedOrder.items).toEqual([
+          expect.objectContaining({
+            variant_id: product.variants[0].id,
+            requires_shipping: true,
+          }),
+        ])
+      })
     })
 
     describe("Order Edit Inventory", () => {
@@ -1135,6 +1197,71 @@ medusaIntegrationTestRunner({
         expect(orderChangesResult.data.order_changes.length).toEqual(1)
         expect(orderChangesResult.data.order_changes[0].status).toEqual(
           OrderChangeStatus.CONFIRMED
+        )
+      })
+
+      it("should remove the shipping method added by an order edit when the edit is canceled", async () => {
+        const orderId = order.id
+
+        await api.post(
+          "/admin/order-edits",
+          { order_id: orderId, description: "Test" },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${orderId}/shipping-method`,
+          { shipping_option_id: shippingOption.id, custom_amount: 5 },
+          adminHeaders
+        )
+
+        await api.delete(`/admin/order-edits/${orderId}`, adminHeaders)
+
+        const orderModule = container.resolve(Modules.ORDER)
+        const shippingMethods = await orderModule.listOrderShippingMethods(
+          {},
+          {}
+        )
+
+        expect(shippingMethods).toEqual([
+          expect.objectContaining({ amount: 10 }),
+        ])
+
+        await api.post(
+          "/admin/order-edits",
+          { order_id: orderId, description: "Test" },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${orderId}/shipping-method`,
+          { shipping_option_id: shippingOption.id, custom_amount: 7 },
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${orderId}/request`,
+          {},
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/order-edits/${orderId}/confirm`,
+          {},
+          adminHeaders
+        )
+
+        const orderResult = await api.get(
+          `/admin/orders/${orderId}`,
+          adminHeaders
+        )
+
+        expect(orderResult.data.order.shipping_methods).toHaveLength(2)
+        expect(orderResult.data.order.shipping_methods).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({ amount: 10 }),
+            expect.objectContaining({ amount: 7 }),
+          ])
         )
       })
 

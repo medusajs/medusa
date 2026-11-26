@@ -1,4 +1,4 @@
-import { Switch } from "@medusajs/ui";
+import { Switch, DataTableRowData } from "@medusajs/ui";
 import { useEffect, useRef, useState } from "react";
 import CurrencyInput, { CurrencyInputProps } from "react-currency-input-field";
 import { Controller, ControllerRenderProps } from "react-hook-form";
@@ -8,7 +8,7 @@ import { useDataGridCell, useDataGridCellError } from "../hooks";
 import { DataGridCellProps, InputProps } from "../types";
 import { DataGridCellContainer } from "./data-grid-cell-container";
 
-export const DataGridTogglableNumberCell = <TData, TValue = any>({
+export const DataGridTogglableNumberCell = <TData extends DataTableRowData, TValue = any>({
   context,
   disabledToggleTooltip,
   ...rest
@@ -185,7 +185,7 @@ const Inner = ({
         {...attributes}
         {...props}
         ref={combinedRefs}
-        className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent pl-8 text-right outline-none"
+        className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent pl-8 text-right outline-hidden"
         value={localValue?.quantity}
         onValueChange={handleInputChange}
         formatValueOnBlur

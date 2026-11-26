@@ -3165,6 +3165,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Auditní záznamy",
+    "subtitle": "Přehled toho, kdo co udělal ve vašem obchodě, na jakém zdroji a jak to dopadlo.",
+    "impersonatedBy": "Zosobnění uživatelem {{id}}",
+    "outcome": {
+      "succeeded": "Úspěšně",
+      "denied": "Zamítnuto",
+      "failed": "Selhalo"
+    },
+    "fields": {
+      "time": "Čas",
+      "actor": "Aktér",
+      "actorType": "Typ aktéra",
+      "actorId": "ID aktéra",
+      "impersonatorId": "ID zosobnění",
+      "action": "Akce",
+      "resource": "Zdroj",
+      "resourceType": "Typ zdroje",
+      "resourceId": "ID zdroje",
+      "outcome": "Výsledek",
+      "startedAt": "Zahájeno v",
+      "endedAt": "Ukončeno v",
+      "requestData": "Data požadavku",
+      "responseData": "Data odpovědi"
+    },
+    "request": {
+      "header": "Požadavek",
+      "method": "Metoda",
+      "route": "Trasa",
+      "path": "Cesta",
+      "statusCode": "Stavový kód",
+      "requestId": "ID požadavku",
+      "ipAddress": "IP adresa",
+      "userAgent": "User agent",
+      "none": "Tento auditní záznam nebyl zaznamenán pro požadavek API."
+    },
+    "list": {
+      "empty": {
+        "heading": "Zatím žádné auditní záznamy",
+        "description": "Zde se zobrazí akce provedené ve vašem obchodě."
+      },
+      "filtered": {
+        "heading": "Žádné výsledky",
+        "description": "Žádné auditní záznamy neodpovídají aktuálním kritériím filtru."
+      },
+      "searchError": {
+        "heading": "Vyhledávání selhalo"
+      }
+    }
+  },
   "store": {
     "domain": "Obchod",
     "manageYourStoresDetails": "Spravujte detaily svého obchodu",
@@ -3686,6 +3736,10 @@
     "domain": "Popisky vlastností",
     "title": "Popisky vlastností",
     "subtitle": "Spravujte vlastní popisky vlastností pro konfigurovatelné tabulky vašich entit.",
+    "editTitle": "Upravit štítky vlastností",
+    "editDescription": "Přizpůsobte zobrazení názvů vlastností pro {{entity}}",
+    "customLabel": "Vlastní štítek",
+    "updateSuccess": "Štítky vlastností byly úspěšně aktualizovány",
     "fields": {
       "module": "Modul",
       "model": "Model",
@@ -3733,6 +3787,9 @@
   "fields": {
     "actions": "Akce",
     "amount": "Částka",
+    "yes": "Ano",
+    "no": "Ne",
+    "field": "Pole",
     "reference": "Reference",
     "reference_id": "ID reference",
     "refundAmount": "Částka k vrácení",

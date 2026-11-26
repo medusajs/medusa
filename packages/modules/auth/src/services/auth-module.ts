@@ -7,6 +7,7 @@ import {
   DAL,
   FindConfig,
   ICacheService,
+  ILockingModule,
   InferEntityType,
   InternalModuleDeclaration,
   Logger,
@@ -49,6 +50,7 @@ type InjectedDependencies = {
   authVerificationProviderService: AuthVerificationProviderService
   logger?: Logger
   cache?: ICacheService
+  locking?: ILockingModule
 }
 
 export default class AuthModuleService
@@ -82,6 +84,7 @@ export default class AuthModuleService
   protected readonly authMfaProviderService_: AuthMfaProviderService
   protected readonly authVerificationProviderService_: AuthVerificationProviderService
   protected readonly cache_: ICacheService | undefined
+  protected readonly locking_: ILockingModule | undefined
   protected readonly moduleOptions_: AuthModuleOptions
 
   constructor(
@@ -97,6 +100,7 @@ export default class AuthModuleService
       authVerificationProviderService,
       baseRepository,
       cache,
+      locking,
     }: InjectedDependencies,
     moduleOptions: AuthModuleOptions = {},
     protected readonly moduleDeclaration?: InternalModuleDeclaration
@@ -115,6 +119,7 @@ export default class AuthModuleService
     this.authVerificationProviderService_ = authVerificationProviderService
     this.providerIdentityService_ = providerIdentityService
     this.cache_ = cache
+    this.locking_ = locking
     this.moduleOptions_ = moduleOptions
   }
 
@@ -477,53 +482,58 @@ export default class AuthModuleService
     data: AuthTypes.VerifyAuthMfaChallengeDTO,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<AuthTypes.AuthMfaChallengeDTO> {
-    const challenge = await this.retrieveMfaChallenge_(data.id)
+    return await this.getLocking_().execute(
+      this.getMfaChallengeCacheKey_(data.id),
+      async () => {
+        const challenge = await this.retrieveMfaChallenge_(data.id)
 
-    if (
-      data.auth_identity_id &&
-      challenge.auth_identity_id !== data.auth_identity_id
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `MFA challenge with id "${data.id}" was not found`
-      )
-    }
+        if (
+          data.auth_identity_id &&
+          challenge.auth_identity_id !== data.auth_identity_id
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `MFA challenge with id "${data.id}" was not found`
+          )
+        }
 
-    this.assertMfaChallengeCanBeVerified_(challenge, data.method)
+        this.assertMfaChallengeCanBeVerified_(challenge, data.method)
 
-    const valid = await this.authMfaProviderService_.verify(
-      data.method,
-      {
-        auth_identity_id: challenge.auth_identity_id!,
-        code: data.code,
-      },
-      sharedContext
+        const valid = await this.authMfaProviderService_.verify(
+          data.method,
+          {
+            auth_identity_id: challenge.auth_identity_id!,
+            code: data.code,
+          },
+          sharedContext
+        )
+
+        if (!valid) {
+          const attempts = challenge.attempts + 1
+
+          await this.setMfaChallenge_({
+            ...challenge,
+            attempts,
+          })
+
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            attempts >= challenge.max_attempts
+              ? "MFA challenge has too many failed attempts"
+              : "Invalid MFA challenge code"
+          )
+        }
+
+        const completedChallenge: AuthTypes.AuthMfaChallengeDTO = {
+          ...challenge,
+          completed_at: new Date(),
+        }
+
+        await this.setMfaChallenge_(completedChallenge)
+
+        return completedChallenge
+      }
     )
-
-    if (!valid) {
-      const attempts = challenge.attempts + 1
-
-      await this.setMfaChallenge_({
-        ...challenge,
-        attempts,
-      })
-
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        attempts >= challenge.max_attempts
-          ? "MFA challenge has too many failed attempts"
-          : "Invalid MFA challenge code"
-      )
-    }
-
-    const completedChallenge: AuthTypes.AuthMfaChallengeDTO = {
-      ...challenge,
-      completed_at: new Date(),
-    }
-
-    await this.setMfaChallenge_(completedChallenge)
-
-    return completedChallenge
   }
 
   @InjectManager()
@@ -751,6 +761,7 @@ export default class AuthModuleService
       success: true,
       mfaChallenge: mfaChallenge,
       authIdentity: response.authIdentity,
+      providerData: response.providerData,
     }
   }
 
@@ -1094,6 +1105,17 @@ export default class AuthModuleService
     }
 
     return this.cache_
+  }
+
+  protected getLocking_(): ILockingModule {
+    if (!this.locking_) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        "Locking module dependency is required when using MFA challenges"
+      )
+    }
+
+    return this.locking_
   }
 
   getAuthIdentityProviderService(

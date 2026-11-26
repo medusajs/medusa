@@ -4032,6 +4032,10 @@ export const filesMap = [
     "pathname": "/references/medusa-workflows/steps/validateCartStep"
   },
   {
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateCartTaxCountryStep/page.json",
+    "pathname": "/references/medusa-workflows/steps/validateCartTaxCountryStep"
+  },
+  {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.validateLineItemPricesStep/page.json",
     "pathname": "/references/medusa-workflows/steps/validateLineItemPricesStep"
   },
@@ -4182,6 +4186,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateCartStepId/page.json",
     "pathname": "/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateCartStepId"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateCartTaxCountryStepId/page.json",
+    "pathname": "/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateCartTaxCountryStepId"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/Cart/Steps_Cart/variables/core_flows.Cart.Steps_Cart.validateLineItemPricesStepId/page.json",
@@ -10418,6 +10426,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidateCartStepInput/page.json",
     "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidateCartStepInput"
+  },
+  {
+    "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidateCartTaxCountryStepInput/page.json",
+    "pathname": "/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidateCartTaxCountryStepInput"
   },
   {
     "filePath": "/www/apps/resources/references/core_flows/core_core_flows_src/interfaces/core_flows.core_core_flows_src.ValidateDeletedPaymentSessionsStepInput/page.json",
@@ -18026,6 +18038,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/medusa/interfaces/medusa.SubscriberContext/page.json",
     "pathname": "/references/medusa/interfaces/medusa.SubscriberContext"
+  },
+  {
+    "filePath": "/www/apps/resources/references/medusa/types/medusa.AuditMiddlewaresConfig/page.json",
+    "pathname": "/references/medusa/types/medusa.AuditMiddlewaresConfig"
   },
   {
     "filePath": "/www/apps/resources/references/medusa/types/medusa.AuditRequest/page.json",

@@ -7,7 +7,8 @@ import {
   useQueryClient,
   UseQueryOptions,
 } from "@tanstack/react-query"
-import { AdminCreateGiftCardType } from "../../../api/admin/gift-cards/validators"
+import { z } from "@medusajs/framework/zod"
+import { AdminCreateGiftCard } from "../../../api/admin/gift-cards/validators"
 import {
   AdminGetGiftCardsParams,
   AdminGiftCardResponse,
@@ -133,7 +134,7 @@ export const useUpdateGiftCard = (
 
   return useMutation({
     mutationFn: async (payload) => updateGiftCard(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: giftCardQueryKey.detail(id),
       })
@@ -141,7 +142,7 @@ export const useUpdateGiftCard = (
         queryKey: giftCardQueryKey.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -160,33 +161,40 @@ export const useDeleteGiftCard = (
 
   return useMutation({
     mutationFn: () => deleteGiftCard(id),
-    onSuccess: (data: AdminGiftCardResponse, variables: any, context: any) => {
+    onSuccess: (
+      data: AdminGiftCardResponse,
+      variables: any,
+      onMutateResult: any,
+      context: any
+    ) => {
       queryClient.invalidateQueries({ queryKey: giftCardQueryKey.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })
 }
+
+type AdminCreateGiftCardBody = z.input<typeof AdminCreateGiftCard>
 
 export const useCreateGiftCard = (
   options?: UseMutationOptions<
     AdminGiftCardResponse,
     FetchError,
-    AdminCreateGiftCardType
+    AdminCreateGiftCardBody
   >
 ) => {
   const queryClient = useQueryClient()
-  const createGiftCard = async (body: AdminCreateGiftCardType) =>
+  const createGiftCard = async (body: AdminCreateGiftCardBody) =>
     sdk.client.fetch<AdminGiftCardResponse>(`/admin/gift-cards`, {
       body,
       method: "POST",
     })
 
   return useMutation({
-    mutationFn: (body: AdminCreateGiftCardType) => createGiftCard(body),
-    onSuccess: (data, variables, context) => {
+    mutationFn: (body: AdminCreateGiftCardBody) => createGiftCard(body),
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: giftCardQueryKey.lists() })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

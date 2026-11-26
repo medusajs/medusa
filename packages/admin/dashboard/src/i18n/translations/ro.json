@@ -3131,6 +3131,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Jurnale de audit",
+    "subtitle": "Examinați cine a făcut ce în magazinul dvs., pe ce resursă și cum s-a finalizat.",
+    "impersonatedBy": "Imitat de {{id}}",
+    "outcome": {
+      "succeeded": "Reușit",
+      "denied": "Refuzat",
+      "failed": "Eșuat"
+    },
+    "fields": {
+      "time": "Ora",
+      "actor": "Actor",
+      "actorType": "Tip actor",
+      "actorId": "ID actor",
+      "impersonatorId": "ID imitator",
+      "action": "Acțiune",
+      "resource": "Resursă",
+      "resourceType": "Tip resursă",
+      "resourceId": "ID resursă",
+      "outcome": "Rezultat",
+      "startedAt": "Început la",
+      "endedAt": "Încheiat la",
+      "requestData": "Date cerere",
+      "responseData": "Date răspuns"
+    },
+    "request": {
+      "header": "Cerere",
+      "method": "Metodă",
+      "route": "Rută",
+      "path": "Cale",
+      "statusCode": "Cod de stare",
+      "requestId": "ID cerere",
+      "ipAddress": "Adresă IP",
+      "userAgent": "Agent utilizator",
+      "none": "Acest jurnal de audit nu a fost înregistrat pentru o cerere API."
+    },
+    "list": {
+      "empty": {
+        "heading": "Niciun jurnal de audit încă",
+        "description": "Acțiunile efectuate în magazinul dvs. vor apărea aici."
+      },
+      "filtered": {
+        "heading": "Niciun rezultat",
+        "description": "Niciun jurnal de audit nu corespunde criteriilor actuale de filtrare."
+      },
+      "searchError": {
+        "heading": "Căutarea a eșuat"
+      }
+    }
+  },
   "translations": {
     "domain": "Traduceri",
     "settings": {
@@ -3740,6 +3790,10 @@
     "domain": "Etichete de proprietate",
     "title": "Etichete de proprietate",
     "subtitle": "Gestionați etichetele de proprietate personalizate pentru tabelele configurabile ale entităților dvs.",
+    "editTitle": "Editați etichetele proprietăților",
+    "editDescription": "Personalizați modul în care sunt afișate numele proprietăților pentru {{entity}}",
+    "customLabel": "Etichetă personalizată",
+    "updateSuccess": "Etichetele proprietăților au fost actualizate cu succes",
     "fields": {
       "module": "Modul",
       "model": "Model",
@@ -3787,6 +3841,9 @@
   "fields": {
     "actions": "Acțiuni",
     "amount": "Cantitate",
+    "yes": "Da",
+    "no": "Nu",
+    "field": "Câmp",
     "reference": "Referință",
     "reference_id": "ID referință",
     "refundAmount": "Suma de rambursare",

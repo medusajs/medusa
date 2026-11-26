@@ -24,13 +24,13 @@ If you don't have an admin user, use the [Medusa CLI](!resources!/medusa-cli/com
 
 </Note>
 
-<Note>
+<Note title="Version Changes">
 
-The Medusa Admin was migrated from Vite v5 to v7.3.6 and `react-router-dom` v6 to v7.18.2 in [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
 
-As of that version, the Medusa Admin supports Chrome v107+, Edge v107+, Firefox v104+, and Safari v16+. If you need to support older browsers, change the `build.target` option in the [admin.vite configuration](../../configurations/medusa-config/page.mdx#vite).
-
-If your project installs `react-router-dom` directly, update it to v7. Learn more in the [Admin Routing Customizations](./routing/page.mdx) chapter.
+- Since [Medusa v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), the Medusa Admin uses Vite v8 and supports Chrome v111+, Edge v111+, Firefox v114+, and Safari v16.4+. If you need to support older browsers, change the `build.target` option in the [admin.vite configuration](../../configurations/medusa-config/page.mdx#vite).
+- Since Medusa v2.23.0, the Medusa Admin and the Medusa UI package use React v19, and the `@medusajs/medusa` package requires `react-dom` v19.3.1 or later as a peer dependency. If your project or plugin installs `react`, `react-dom`, `@types/react`, or `@types/react-dom`, update them to v19 and make sure your admin customizations are compatible with React v19. For example, `useRef` now requires an initial value, and refs created with `useRef<HTMLDivElement>(null)` have the type `RefObject<HTMLDivElement | null>`. Learn more in the [React 19 Upgrade Guide](https://react.dev/blog/2024/04/25/react-19-upgrade-guide).
+- Since Medusa v2.23.0, the Medusa Admin and your admin customizations compile with [Tailwind CSS v4](https://tailwindcss.com/). The admin build scans your project's and plugins' admin files for Tailwind classes, so you don't need a `tailwind.config` file in your project or plugin. The admin build also doesn't load PostCSS configuration files. Make sure your admin customizations use Tailwind CSS v4 class names. For example, use `outline-hidden` instead of `outline-none`, and `rounded-sm` instead of `rounded`. Learn more in the [Tailwind CSS v4 Upgrade Guide](https://tailwindcss.com/docs/upgrade-guide).
+- Since [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0), the Medusa Admin uses `react-router-dom` v7. If your project installs `react-router-dom` directly, update it to v7. Learn more in the [Admin Routing Customizations](./routing/page.mdx) chapter.
 
 </Note>
 

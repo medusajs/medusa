@@ -3072,6 +3072,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Auditointilokit",
+    "subtitle": "Tarkastele, kuka teki mitä kaupassasi, mihin resurssiin ja mikä oli lopputulos.",
+    "impersonatedBy": "Tekeytyjä {{id}}",
+    "outcome": {
+      "succeeded": "Onnistui",
+      "denied": "Evätty",
+      "failed": "Epäonnistui"
+    },
+    "fields": {
+      "time": "Aika",
+      "actor": "Toimija",
+      "actorType": "Toimijan tyyppi",
+      "actorId": "Toimijan tunnus",
+      "impersonatorId": "Tekeytyjän tunnus",
+      "action": "Toiminto",
+      "resource": "Resurssi",
+      "resourceType": "Resurssin tyyppi",
+      "resourceId": "Resurssin tunnus",
+      "outcome": "Lopputulos",
+      "startedAt": "Aloitettu",
+      "endedAt": "Lopetettu",
+      "requestData": "Pyyntödata",
+      "responseData": "Vastausdata"
+    },
+    "request": {
+      "header": "Pyyntö",
+      "method": "Metodi",
+      "route": "Reitti",
+      "path": "Polku",
+      "statusCode": "Tilakoodi",
+      "requestId": "Pyynnön tunnus",
+      "ipAddress": "IP-osoite",
+      "userAgent": "Käyttäjäohjelma",
+      "none": "Tätä auditointilokia ei tallennettu API-pyynnolle."
+    },
+    "list": {
+      "empty": {
+        "heading": "Ei auditointilokeja vielä",
+        "description": "Kaupassasi suoritetut toiminnot näkyvät täällä."
+      },
+      "filtered": {
+        "heading": "Ei tuloksia",
+        "description": "Yksikään auditointiloki ei vastaa nykyisiä suodatinehtoja."
+      },
+      "searchError": {
+        "heading": "Haku epäonnistui"
+      }
+    }
+  },
   "translations": {
     "domain": "Käännökset",
     "settings": {
@@ -3671,6 +3721,10 @@
     "domain": "Ominaisuusnimikkeet",
     "title": "Ominaisuusnimikkeet",
     "subtitle": "Hallinnoi entiteettiesi mukautettavien taulukoiden mukautettuja ominaisuusnimikkeitä.",
+    "editTitle": "Muokkaa ominaisuuksien otsikoita",
+    "editDescription": "Mukauta, miten ominaisuuksien nimet näytetään kohteelle {{entity}}",
+    "customLabel": "Mukautettu otsikko",
+    "updateSuccess": "Ominaisuuksien otsikot päivitetty onnistuneesti",
     "fields": {
       "module": "Moduuli",
       "model": "Malli",
@@ -3718,6 +3772,9 @@
   "fields": {
     "actions": "Toiminnot",
     "amount": "Summa",
+    "yes": "Kyllä",
+    "no": "Ei",
+    "field": "Kenttä",
     "reference": "Viite",
     "reference_id": "Viitetunnus",
     "refundAmount": "Hyvityssumma",

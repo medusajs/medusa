@@ -1,3 +1,4 @@
+import { RowData } from "@tanstack/react-table"
 import { useCallback } from "react"
 import { FieldValues, Path, PathValue, UseFormReturn } from "react-hook-form"
 
@@ -8,14 +9,17 @@ import {
   DataGridToggleableNumber,
 } from "../types"
 
-type UseDataGridFormHandlersOptions<TData, TFieldValues extends FieldValues> = {
+type UseDataGridFormHandlersOptions<
+  TData extends RowData,
+  TFieldValues extends FieldValues,
+> = {
   matrix: DataGridMatrix<TData, TFieldValues>
   form: UseFormReturn<TFieldValues>
   anchor: DataGridCoordinates | null
 }
 
 export const useDataGridFormHandlers = <
-  TData,
+  TData extends RowData,
   TFieldValues extends FieldValues,
 >({
   matrix,

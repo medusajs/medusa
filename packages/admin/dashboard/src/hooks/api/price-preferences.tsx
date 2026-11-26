@@ -86,7 +86,7 @@ export const useUpsertPricePreference = (
         query
       )
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: pricePreferencesQueryKeys.list(),
       })
@@ -96,7 +96,7 @@ export const useUpsertPricePreference = (
         })
       }
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -112,12 +112,12 @@ export const useDeletePricePreference = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.pricePreference.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: pricePreferencesQueryKeys.list(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

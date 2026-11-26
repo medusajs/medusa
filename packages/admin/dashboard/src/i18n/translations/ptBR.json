@@ -3087,6 +3087,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Registros de auditoria",
+    "subtitle": "Revise quem fez o quê em sua loja, em qual recurso e como terminou.",
+    "impersonatedBy": "Representado por {{id}}",
+    "outcome": {
+      "succeeded": "Bem-sucedido",
+      "denied": "Negado",
+      "failed": "Falhou"
+    },
+    "fields": {
+      "time": "Hora",
+      "actor": "Ator",
+      "actorType": "Tipo de ator",
+      "actorId": "ID do ator",
+      "impersonatorId": "ID do representante",
+      "action": "Ação",
+      "resource": "Recurso",
+      "resourceType": "Tipo de recurso",
+      "resourceId": "ID do recurso",
+      "outcome": "Resultado",
+      "startedAt": "Iniciado em",
+      "endedAt": "Encerrado em",
+      "requestData": "Dados da requisição",
+      "responseData": "Dados da resposta"
+    },
+    "request": {
+      "header": "Requisição",
+      "method": "Método",
+      "route": "Rota",
+      "path": "Caminho",
+      "statusCode": "Código de status",
+      "requestId": "ID da requisição",
+      "ipAddress": "Endereço IP",
+      "userAgent": "Agente do usuário",
+      "none": "Este registro de auditoria não foi registrado para uma requisição de API."
+    },
+    "list": {
+      "empty": {
+        "heading": "Nenhum registro de auditoria ainda",
+        "description": "As ações realizadas em sua loja aparecerão aqui."
+      },
+      "filtered": {
+        "heading": "Nenhum resultado",
+        "description": "Nenhum registro de auditoria corresponde aos critérios de filtro atuais."
+      },
+      "searchError": {
+        "heading": "Falha na busca"
+      }
+    }
+  },
   "translations": {
     "domain": "Traduções",
     "settings": {
@@ -3686,6 +3736,10 @@
     "domain": "Rótulos de Propriedade",
     "title": "Rótulos de Propriedade",
     "subtitle": "Gerencie rótulos de propriedade personalizados para tabelas configuráveis das suas entidades.",
+    "editTitle": "Editar Rótulos de Propriedade",
+    "editDescription": "Personalize como os nomes das propriedades são exibidos para {{entity}}",
+    "customLabel": "Rótulo Personalizado",
+    "updateSuccess": "Rótulos de propriedade atualizados com sucesso",
     "fields": {
       "module": "Módulo",
       "model": "Modelo",
@@ -3733,6 +3787,9 @@
   "fields": {
     "actions": "Ações",
     "amount": "Quantidade",
+    "yes": "Sim",
+    "no": "Não",
+    "field": "Campo",
     "reference": "Referência",
     "reference_id": "ID de referência",
     "refundAmount": "Valor do reembolso",

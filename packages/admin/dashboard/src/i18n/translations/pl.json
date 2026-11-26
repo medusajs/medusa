@@ -1506,6 +1506,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Dzienniki audytu",
+    "subtitle": "Sprawdź, kto co zrobił w Twoim sklepie, na jakim zasobie i jak to się zakończyło.",
+    "impersonatedBy": "Podszywany przez {{id}}",
+    "outcome": {
+      "succeeded": "Powodzenie",
+      "denied": "Odmowa",
+      "failed": "Niepowodzenie"
+    },
+    "fields": {
+      "time": "Czas",
+      "actor": "Podmiot",
+      "actorType": "Typ podmiotu",
+      "actorId": "ID podmiotu",
+      "impersonatorId": "ID podszywającego się",
+      "action": "Akcja",
+      "resource": "Zasób",
+      "resourceType": "Typ zasobu",
+      "resourceId": "ID zasobu",
+      "outcome": "Wynik",
+      "startedAt": "Rozpoczęto o",
+      "endedAt": "Zakończono o",
+      "requestData": "Dane żądania",
+      "responseData": "Dane odpowiedzi"
+    },
+    "request": {
+      "header": "Żądanie",
+      "method": "Metoda",
+      "route": "Trasa",
+      "path": "Ścieżka",
+      "statusCode": "Kod statusu",
+      "requestId": "ID żądania",
+      "ipAddress": "Adres IP",
+      "userAgent": "Agent użytkownika",
+      "none": "Ten dziennik audytu nie został zarejestrowany dla żądania API."
+    },
+    "list": {
+      "empty": {
+        "heading": "Brak dzienników audytu",
+        "description": "Działania wykonane w Twoim sklepie pojawią się tutaj."
+      },
+      "filtered": {
+        "heading": "Brak wyników",
+        "description": "Żaden dziennik audytu nie spełnia bieżących kryteriów filtrowania."
+      },
+      "searchError": {
+        "heading": "Wyszukiwanie nie powiodło się"
+      }
+    }
+  },
   "translations": {
     "domain": "Tłumaczenia",
     "settings": {
@@ -3767,6 +3817,10 @@
     "domain": "Etykiety właściwości",
     "title": "Etykiety właściwości",
     "subtitle": "Zarządzaj niestandardowymi etykietami właściwości dla konfigurowalnych tabel Twoich encji.",
+    "editTitle": "Edytuj etykiety właściwości",
+    "editDescription": "Dostosuj sposób wyświetlania nazw właściwości dla {{entity}}",
+    "customLabel": "Niestandardowa etykieta",
+    "updateSuccess": "Etykiety właściwości zostały zaktualizowane pomyślnie",
     "fields": {
       "module": "Moduł",
       "model": "Model",
@@ -3814,6 +3868,9 @@
   "fields": {
     "actions": "Akcje",
     "amount": "Kwota",
+    "yes": "Tak",
+    "no": "Nie",
+    "field": "Pole",
     "reference": "Referencja",
     "reference_id": "ID referencji",
     "refundAmount": "Kwota zwrotu",

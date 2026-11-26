@@ -106,9 +106,22 @@ export class MikroOrmBaseRepository<const T extends object = object>
   }
 
   static retrievePrimaryKeys(entity: EntityClass<any> | EntitySchema) {
+    const schemaMeta = (entity as EntitySchema).meta
+    if (schemaMeta?.primaryKeys?.length) {
+      return schemaMeta.primaryKeys
+    }
+
+    // An EntitySchema that was never initialized has an empty primaryKeys list,
+    // so read the keys from the properties flagged as primary instead
+    const schemaPrimaryKeys = Object.entries(schemaMeta?.properties ?? {})
+      .filter(([, property]) => (property as { primary?: boolean })?.primary)
+      .map(([key]) => key)
+    if (schemaPrimaryKeys.length) {
+      return schemaPrimaryKeys
+    }
+
     return (
-      (entity as EntitySchema).meta?.primaryKeys ??
-      (entity as EntityClass<any>).prototype.__meta.primaryKeys ?? ["id"]
+      (entity as EntityClass<any>).prototype?.__meta?.primaryKeys ?? ["id"]
     )
   }
 

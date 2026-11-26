@@ -3080,6 +3080,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "审计日志",
+    "subtitle": "查看您的商店中谁执行了什么操作、针对哪个资源以及结果如何。",
+    "impersonatedBy": "由 {{id}} 模拟操作",
+    "outcome": {
+      "succeeded": "成功",
+      "denied": "拒绝",
+      "failed": "失败"
+    },
+    "fields": {
+      "time": "时间",
+      "actor": "操作者",
+      "actorType": "操作者类型",
+      "actorId": "操作者 ID",
+      "impersonatorId": "模拟者 ID",
+      "action": "操作",
+      "resource": "资源",
+      "resourceType": "资源类型",
+      "resourceId": "资源 ID",
+      "outcome": "结果",
+      "startedAt": "开始时间",
+      "endedAt": "结束时间",
+      "requestData": "请求数据",
+      "responseData": "响应数据"
+    },
+    "request": {
+      "header": "请求",
+      "method": "方法",
+      "route": "路由",
+      "path": "路径",
+      "statusCode": "状态码",
+      "requestId": "请求 ID",
+      "ipAddress": "IP 地址",
+      "userAgent": "用户代理",
+      "none": "此审计日志未记录 API 请求。"
+    },
+    "list": {
+      "empty": {
+        "heading": "暂无审计日志",
+        "description": "在您的商店中执行的操作将显示在此处。"
+      },
+      "filtered": {
+        "heading": "无结果",
+        "description": "没有符合当前筛选条件的审计日志。"
+      },
+      "searchError": {
+        "heading": "搜索失败"
+      }
+    }
+  },
   "translations": {
     "domain": "翻译",
     "settings": {
@@ -3678,6 +3728,10 @@
     "domain": "属性标签",
     "title": "属性标签",
     "subtitle": "管理实体可配置表格的自定义属性标签。",
+    "editTitle": "编辑属性标签",
+    "editDescription": "自定义{{entity}}的属性名称显示方式",
+    "customLabel": "自定义标签",
+    "updateSuccess": "属性标签更新成功",
     "fields": {
       "module": "模块",
       "model": "模型",
@@ -3725,6 +3779,9 @@
   "fields": {
     "actions": "操作",
     "amount": "金额",
+    "yes": "Yes",
+    "no": "No",
+    "field": "字段",
     "reference": "参考",
     "reference_id": "参考 ID",
     "refundAmount": "退款金额",

@@ -4,6 +4,7 @@ import {
   OnChangeFn,
   RowSelectionState,
 } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useCallback, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
@@ -240,7 +241,10 @@ export const AddCurrenciesForm = ({
   )
 }
 
-const columnHelper = createColumnHelper<HttpTypes.AdminCurrency>()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminCurrency
+>()
 
 const useColumns = (
   canReadPricePreferences: boolean,
@@ -259,6 +263,7 @@ const useColumns = (
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()

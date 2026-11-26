@@ -581,6 +581,50 @@ moduleIntegrationTestRunner<IInventoryService>({
           expect(inventoryLevel.reserved_quantity).toEqual(update.quantity)
         })
 
+        it("should move reserved_quantity from the old location to the new location when the location changes", async () => {
+          await service.updateReservationItems({
+            id: reservationItem.id,
+            location_id: "location-2",
+          })
+
+          const [oldLevel, newLevel] = await Promise.all([
+            service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-1"
+            ),
+            service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-2"
+            ),
+          ])
+
+          expect(oldLevel.reserved_quantity).toEqual(0)
+          expect(Number(oldLevel.available_quantity)).toEqual(10)
+          expect(newLevel.reserved_quantity).toEqual(3)
+        })
+
+        it("should move reserved_quantity to the new location with the updated quantity when both location and quantity change", async () => {
+          await service.updateReservationItems({
+            id: reservationItem.id,
+            location_id: "location-2",
+            quantity: 5,
+          })
+
+          const [oldLevel, newLevel] = await Promise.all([
+            service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-1"
+            ),
+            service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-2"
+            ),
+          ])
+
+          expect(oldLevel.reserved_quantity).toEqual(0)
+          expect(newLevel.reserved_quantity).toEqual(5)
+        })
+
         it("should throw error when increasing reserved quantity beyond availability", async () => {
           const update = {
             id: reservationItem.id,

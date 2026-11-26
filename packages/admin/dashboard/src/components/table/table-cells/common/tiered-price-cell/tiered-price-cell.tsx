@@ -1,3 +1,4 @@
+import { RowData } from "@tanstack/react-table"
 import { useCallback, useEffect, useState } from "react"
 import {
   Control,
@@ -23,7 +24,7 @@ import {
 import { useCombinedRefs } from "../../../../../hooks/use-combined-refs"
 
 export interface TieredPriceCellProps<
-  TData,
+  TData extends RowData,
   TValue = any,
 > extends DataGridCellProps<TData, TValue> {
   code: string
@@ -31,7 +32,7 @@ export interface TieredPriceCellProps<
   getTieredFieldName: (field: string) => string
 }
 
-export const TieredPriceCell = <TData, TValue = any>({
+export const TieredPriceCell = <TData extends RowData, TValue = any>({
   context,
   code,
   onOpenModal,
@@ -194,7 +195,7 @@ const Inner = ({
         {...rest}
         {...attributes}
         ref={combinedRef}
-        className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent pl-[60px] text-right outline-none"
+        className="txt-compact-small w-full flex-1 cursor-default appearance-none bg-transparent pl-[60px] text-right outline-hidden"
         value={localValue || undefined}
         onValueChange={handleValueChange}
         formatValueOnBlur

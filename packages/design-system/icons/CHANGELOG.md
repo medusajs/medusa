@@ -1,5 +1,11 @@
 # @medusajs/icons
 
+## 2.23.0
+
+### Patch Changes
+
+- [#17628](https://github.com/medusajs/medusa/pull/17628) [`b1911eb`](https://github.com/medusajs/medusa/commit/b1911ebf3aef01dfebe897133dd8c4a320d297a1) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,ui,icons,medusa,draft-order,loyalty-plugin): update react to v19
+
 ## 2.22.7
 
 ### Patch Changes

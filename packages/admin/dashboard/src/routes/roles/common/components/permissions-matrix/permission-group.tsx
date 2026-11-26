@@ -71,7 +71,7 @@ export const PermissionGroup = ({
   return (
     <Collapsible.Root open={open} onOpenChange={onOpenChange}>
       <div className="flex items-center justify-between gap-x-4 px-6 py-4">
-        <Collapsible.Trigger className="group flex min-w-0 flex-1 items-start gap-x-2 text-start outline-none focus-visible:shadow-borders-focus">
+        <Collapsible.Trigger className="group flex min-w-0 flex-1 items-start gap-x-2 text-start outline-hidden focus-visible:shadow-borders-focus">
           <TriangleRightMini className="mt-0.5 shrink-0 text-ui-fg-muted transition-transform group-data-[state='open']:rotate-90 rtl:rotate-180 rtl:group-data-[state='open']:rotate-90" />
           <div className="flex min-w-0 flex-col gap-y-0.5">
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -153,7 +153,7 @@ export const PermissionGroup = ({
                               toggleColumn(group, selection, operation)
                             )
                           }
-                          className="txt-compact-xsmall-plus rounded-md px-1.5 py-0.5 text-ui-fg-subtle outline-none hover:text-ui-fg-base focus-visible:shadow-borders-focus"
+                          className="txt-compact-xsmall-plus rounded-md px-1.5 py-0.5 text-ui-fg-subtle outline-hidden hover:text-ui-fg-base focus-visible:shadow-borders-focus"
                         >
                           {name}
                         </button>

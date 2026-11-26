@@ -421,7 +421,7 @@ const CountryCodeRenderer: CellRenderer = (_, row, column, _t) => {
 
   return (
     <Tooltip content={displayName}>
-      <div className="flex size-4 items-center justify-center overflow-hidden rounded-sm">
+      <div className="flex size-4 items-center justify-center overflow-hidden rounded-xs">
         <ReactCountryFlag
           countryCode={countryCode.toUpperCase()}
           svg
@@ -549,7 +549,7 @@ const UrlRenderer: CellRenderer = (value, _row, _column, _t) => {
       onClick={(e) => e.stopPropagation()}
     >
       <TruncatedText text={value} className="max-w-[200px]" />
-      <ArrowUpRightOnBox className="h-3 w-3 flex-shrink-0" />
+      <ArrowUpRightOnBox className="h-3 w-3 shrink-0" />
     </a>
   )
 }
@@ -563,7 +563,7 @@ const ImageRenderer: CellRenderer = (value, _row, _column, _t) => {
     <img
       src={value}
       alt=""
-      className="h-8 w-8 rounded object-cover"
+      className="h-8 w-8 rounded-sm object-cover"
       onError={(e) => {
         ;(e.target as HTMLImageElement).style.display = "none"
       }}

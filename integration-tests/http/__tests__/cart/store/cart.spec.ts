@@ -2535,6 +2535,135 @@ medusaIntegrationTestRunner({
           })
         })
 
+        describe("with quantity based prices of different tax inclusivity", () => {
+          let tieredVariantId
+          let tieredCart
+
+          beforeEach(async () => {
+            const tieredProduct = (
+              await api.post(
+                `/admin/products`,
+                {
+                  title: "Medusa T-Shirt with mixed tax inclusivity",
+                  handle: "t-shirt-with-mixed-tax-inclusivity",
+                  status: ProductStatus.PUBLISHED,
+                  options: [{ title: "Size", values: ["S"] }],
+                  variants: [
+                    {
+                      title: "S",
+                      sku: "SHIRT-S-BLACK-w-mixed-tax-inclusivity",
+                      options: { Size: "S" },
+                      manage_inventory: false,
+                      prices: [
+                        {
+                          amount: 4000,
+                          currency_code: "usd",
+                          min_quantity: 1,
+                          max_quantity: 2,
+                        },
+                        {
+                          amount: 3000,
+                          currency_code: "usd",
+                          min_quantity: 3,
+                          rules: { region_id: region.id },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                adminHeaders
+              )
+            ).data.product
+
+            tieredVariantId = tieredProduct.variants[0].id
+
+            tieredCart = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                },
+                storeHeaders
+              )
+            ).data.cart
+          })
+
+          it("should update is_tax_inclusive of a merged line item with its new price", async () => {
+            let response = await api.post(
+              `/store/carts/${tieredCart.id}/line-items`,
+              { variant_id: tieredVariantId, quantity: 1 },
+              storeHeaders
+            )
+
+            expect(response.data.cart.items[0]).toEqual(
+              expect.objectContaining({
+                quantity: 1,
+                unit_price: 4000,
+                is_tax_inclusive: true,
+              })
+            )
+
+            response = await api.post(
+              `/store/carts/${tieredCart.id}/line-items`,
+              { variant_id: tieredVariantId, quantity: 2 },
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.cart.items).toHaveLength(1)
+            expect(response.data.cart.items[0]).toEqual(
+              expect.objectContaining({
+                quantity: 3,
+                unit_price: 3000,
+                is_tax_inclusive: false,
+              })
+            )
+          })
+
+          it("should update is_tax_inclusive of a line item with its new price when its quantity is updated", async () => {
+            const itemId = (
+              await api.post(
+                `/store/carts/${tieredCart.id}/line-items`,
+                { variant_id: tieredVariantId, quantity: 1 },
+                storeHeaders
+              )
+            ).data.cart.items[0].id
+
+            let response = await api.post(
+              `/store/carts/${tieredCart.id}/line-items/${itemId}`,
+              { quantity: 3 },
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.cart.items[0]).toEqual(
+              expect.objectContaining({
+                quantity: 3,
+                unit_price: 3000,
+                is_tax_inclusive: false,
+              })
+            )
+
+            response = await api.post(
+              `/store/carts/${tieredCart.id}/line-items/${itemId}`,
+              { quantity: 1 },
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.cart.items[0]).toEqual(
+              expect.objectContaining({
+                quantity: 1,
+                unit_price: 4000,
+                is_tax_inclusive: true,
+              })
+            )
+          })
+        })
+
         describe("with manage_inventory true", () => {
           let inventoryItem
           beforeEach(async () => {
@@ -3295,6 +3424,137 @@ medusaIntegrationTestRunner({
                 }),
               })
             )
+          })
+
+          it("should fail to complete a cart if the promotion's campaign has ended", async () => {
+            const product = (
+              await api.post(
+                `/admin/products`,
+                {
+                  status: ProductStatus.PUBLISHED,
+                  title: "Product for ended campaign",
+                  description: "test",
+                  options: [
+                    {
+                      title: "Type",
+                      values: ["L"],
+                    },
+                  ],
+                  variants: [
+                    {
+                      title: "L",
+                      sku: "ended-campaign-product-l",
+                      options: {
+                        Type: "L",
+                      },
+                      manage_inventory: false,
+                      prices: [
+                        {
+                          amount: 300,
+                          currency_code: "usd",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                adminHeaders
+              )
+            ).data.product
+
+            const campaign = (
+              await api.post(
+                `/admin/campaigns`,
+                {
+                  name: "ENDING-CAMPAIGN",
+                  campaign_identifier: "ENDING_CAMPAIGN",
+                },
+                adminHeaders
+              )
+            ).data.campaign
+
+            const promotion = (
+              await api.post(
+                `/admin/promotions`,
+                {
+                  code: "ENDING_PROMO",
+                  type: PromotionType.STANDARD,
+                  status: PromotionStatus.ACTIVE,
+                  is_automatic: false,
+                  application_method: {
+                    target_type: "items",
+                    type: "fixed",
+                    allocation: "across",
+                    currency_code: "usd",
+                    value: 100,
+                  },
+                  campaign_id: campaign.id,
+                },
+                adminHeaders
+              )
+            ).data.promotion
+
+            const promoCart = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                  items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+                  promo_codes: [promotion.code],
+                },
+                storeHeadersWithCustomer
+              )
+            ).data.cart
+
+            expect(promoCart.promotions).toEqual([
+              expect.objectContaining({ code: promotion.code }),
+            ])
+
+            const paymentCollection = (
+              await api.post(
+                `/store/payment-collections`,
+                { cart_id: promoCart.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            await api.post(
+              `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+              { provider_id: "pp_system_default" },
+              storeHeaders
+            )
+
+            await api.post(
+              `/admin/campaigns/${campaign.id}`,
+              { ends_at: new Date(Date.now() - 1000) },
+              adminHeaders
+            )
+
+            const response = await api
+              .post(`/store/carts/${promoCart.id}/complete`, {}, storeHeaders)
+              .catch((e) => e)
+
+            expect(response.response.status).toEqual(400)
+            expect(response.response.data).toEqual(
+              expect.objectContaining({
+                type: "not_allowed",
+                message: `Promotion ${promotion.code} is not active.`,
+              })
+            )
+
+            const [cartAfter, promotionAfter] = await Promise.all([
+              api
+                .get(`/store/carts/${promoCart.id}`, storeHeaders)
+                .then((res) => res.data.cart),
+              api
+                .get(`/admin/promotions/${promotion.id}`, adminHeaders)
+                .then((res) => res.data.promotion),
+            ])
+
+            expect(cartAfter.completed_at).toBeNull()
+            expect(promotionAfter.used).toEqual(0)
           })
 
           it("should successfully complete cart without shipping for digital products", async () => {
@@ -4117,6 +4377,132 @@ medusaIntegrationTestRunner({
               }),
             ])
           )
+        })
+
+        describe("shipping country required for taxes", () => {
+          const setupTaxedCart = async (countries: string[]) => {
+            const taxService = appContainer.resolve(Modules.TAX)
+            await taxService.createTaxRegions(
+              countries.map((country_code) => ({
+                country_code,
+                provider_id: "tp_system",
+                default_tax_rate: {
+                  name: "Standard Rate",
+                  rate: 20,
+                  code: "STD",
+                },
+              }))
+            )
+
+            const taxedRegion = (
+              await api.post(
+                "/admin/regions",
+                {
+                  payment_providers: ["pp_system_default"],
+                  name: "Taxed Region",
+                  currency_code: "eur",
+                  countries,
+                },
+                adminHeaders
+              )
+            ).data.region
+
+            const taxedProduct = (
+              await api.post(
+                "/admin/products",
+                {
+                  title: "Taxed Product",
+                  status: ProductStatus.PUBLISHED,
+                  options: [{ title: "Size", values: ["S"] }],
+                  variants: [
+                    {
+                      title: "S",
+                      manage_inventory: false,
+                      options: { Size: "S" },
+                      prices: [{ amount: 1000, currency_code: "eur" }],
+                    },
+                  ],
+                },
+                adminHeaders
+              )
+            ).data.product
+
+            const taxedCart = (
+              await api.post(
+                "/store/carts",
+                {
+                  currency_code: "eur",
+                  region_id: taxedRegion.id,
+                  sales_channel_id: salesChannel.id,
+                  items: [
+                    { variant_id: taxedProduct.variants[0].id, quantity: 1 },
+                  ],
+                },
+                storeHeaders
+              )
+            ).data.cart
+
+            const paymentCollection = (
+              await api.post(
+                "/store/payment-collections",
+                { cart_id: taxedCart.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            await api.post(
+              `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+              { provider_id: "pp_system_default" },
+              storeHeaders
+            )
+
+            return taxedCart
+          }
+
+          it("should keep the country and taxes of a single-country region cart when the shipping address is updated without a country code", async () => {
+            const taxedCart = await setupTaxedCart(["gb"])
+
+            const updated = (
+              await api.post(
+                `/store/carts/${taxedCart.id}`,
+                { shipping_address: { first_name: "Test" } },
+                storeHeaders
+              )
+            ).data.cart
+
+            expect(updated.shipping_address.country_code).toEqual("gb")
+            expect(updated.items[0].tax_lines).toEqual([
+              expect.objectContaining({ code: "STD", rate: 20 }),
+            ])
+
+            const response = await api.post(
+              `/store/carts/${taxedCart.id}/complete`,
+              {},
+              storeHeaders
+            )
+
+            expect(response.status).toEqual(200)
+            expect(response.data.order.tax_total).toEqual(200)
+          })
+
+          it("should fail to complete a cart with automatic taxes when the shipping address has no country code", async () => {
+            const taxedCart = await setupTaxedCart(["fr", "es"])
+
+            await api.post(
+              `/store/carts/${taxedCart.id}`,
+              { shipping_address: { first_name: "Test" } },
+              storeHeaders
+            )
+
+            const response = await api
+              .post(`/store/carts/${taxedCart.id}/complete`, {}, storeHeaders)
+              .catch((e) => e.response)
+
+            expect(response.status).toEqual(400)
+            expect(response.data.message).toEqual(
+              "Cannot complete a cart whose shipping address has no country, as it's required to calculate taxes"
+            )
+          })
         })
 
         describe("empty cart validation", () => {
@@ -5622,6 +6008,92 @@ medusaIntegrationTestRunner({
                 }),
               ]),
             })
+          )
+        })
+
+        it("should refresh the payment collection when recalculating taxes changes the cart total", async () => {
+          // Tax-exclusive prices so a rate change moves the cart total
+          const [usdPreference] = (
+            await api.get(
+              `/admin/price-preferences?attribute=currency_code&value=usd`,
+              adminHeaders
+            )
+          ).data.price_preferences
+          await api.post(
+            `/admin/price-preferences/${usdPreference.id}`,
+            { is_tax_inclusive: false },
+            adminHeaders
+          )
+
+          const taxExclusiveCart = (
+            await api.post(
+              `/store/carts`,
+              {
+                currency_code: "usd",
+                sales_channel_id: salesChannel.id,
+                region_id: region.id,
+                shipping_address: shippingAddressData,
+                items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+              },
+              storeHeaders
+            )
+          ).data.cart
+
+          const paymentCollection = (
+            await api.post(
+              `/store/payment-collections`,
+              { cart_id: taxExclusiveCart.id },
+              storeHeaders
+            )
+          ).data.payment_collection
+          await api.post(
+            `/store/payment-collections/${paymentCollection.id}/payment-sessions`,
+            { provider_id: "pp_system_default" },
+            storeHeaders
+          )
+          expect(paymentCollection.amount).toEqual(taxExclusiveCart.total)
+
+          const caTaxRate = (
+            await api.get(`/admin/tax-rates?q=CADEFAULT`, adminHeaders)
+          ).data.tax_rates.find((rate) => rate.code === "CADEFAULT")
+          await api.post(
+            `/admin/tax-rates/${caTaxRate.id}`,
+            { rate: 10 },
+            adminHeaders
+          )
+
+          const recalculated = (
+            await api.post(
+              `/store/carts/${taxExclusiveCart.id}/taxes`,
+              {},
+              storeHeaders
+            )
+          ).data.cart
+          expect(recalculated.total).not.toEqual(taxExclusiveCart.total)
+
+          const refetched = (
+            await api.get(
+              `/store/carts/${taxExclusiveCart.id}?fields=total,*payment_collection,*payment_collection.payment_sessions`,
+              storeHeaders
+            )
+          ).data.cart
+
+          expect(refetched.payment_collection.amount).toEqual(refetched.total)
+          expect(refetched.payment_collection.payment_sessions).toEqual([])
+        })
+
+        it("should not recalculate taxes for a completed cart", async () => {
+          await appContainer
+            .resolve(Modules.CART)
+            .updateCarts(cart.id, { completed_at: new Date() })
+
+          const { response } = await api
+            .post(`/store/carts/${cart.id}/taxes`, {}, storeHeaders)
+            .catch((e) => e)
+
+          expect(response.status).toEqual(400)
+          expect(response.data.message).toEqual(
+            `Cart ${cart.id} is already completed.`
           )
         })
 

@@ -20,7 +20,7 @@ on:
       include_majors:
         description: "Plan major updates (capped per week)"
         type: boolean
-        default: false
+        default: true
       only:
         description: "Run a single group key (patch, minor, or major-<name>). Leave empty for all."
         type: string

@@ -3130,6 +3130,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Zapisnici revizije",
+    "subtitle": "Pregledajte ko je šta uradio u vašoj prodavnici, na kom resursu i kako je završeno.",
+    "impersonatedBy": "Personificiran od {{id}}",
+    "outcome": {
+      "succeeded": "Uspješno",
+      "denied": "Odbijeno",
+      "failed": "Neuspješno"
+    },
+    "fields": {
+      "time": "Vrijeme",
+      "actor": "Akter",
+      "actorType": "Tip aktera",
+      "actorId": "ID aktera",
+      "impersonatorId": "ID personifikatora",
+      "action": "Akcija",
+      "resource": "Resurs",
+      "resourceType": "Tip resursa",
+      "resourceId": "ID resursa",
+      "outcome": "Ishod",
+      "startedAt": "Počelo u",
+      "endedAt": "Završilo u",
+      "requestData": "Podaci zahtjeva",
+      "responseData": "Podaci odgovora"
+    },
+    "request": {
+      "header": "Zahtjev",
+      "method": "Metoda",
+      "route": "Ruta",
+      "path": "Putanja",
+      "statusCode": "Statusni kod",
+      "requestId": "ID zahtjeva",
+      "ipAddress": "IP adresa",
+      "userAgent": "Korisnički agent",
+      "none": "Ovaj zapisnik revizije nije zabilježen za API zahtjev."
+    },
+    "list": {
+      "empty": {
+        "heading": "Nema zapisnika revizije",
+        "description": "Ovdje će se pojaviti akcije izvršene u vašoj prodavnici."
+      },
+      "filtered": {
+        "heading": "Nema rezultata",
+        "description": "Nijedan zapisnik revizije ne odgovara trenutnim kriterijima filtriranja."
+      },
+      "searchError": {
+        "heading": "Pretraga nije uspjela"
+      }
+    }
+  },
   "translations": {
     "domain": "Prijevodi",
     "settings": {
@@ -3738,6 +3788,10 @@
     "domain": "Oznake svojstava",
     "title": "Oznake svojstava",
     "subtitle": "Upravljajte prilagođenim oznakama svojstava za konfigurirajuće tablice vaših entiteta.",
+    "editTitle": "Izmjena labela svojstava",
+    "editDescription": "Prilagodite kako se nazivi svojstava prikazuju za {{entity}}",
+    "customLabel": "Prilagođena labela",
+    "updateSuccess": "Labele svojstava su uspješno ažurirane.",
     "fields": {
       "module": "Modul",
       "model": "Model",
@@ -3785,6 +3839,9 @@
   "fields": {
     "actions": "Radnje",
     "amount": "Iznos",
+    "yes": "Da",
+    "no": "Ne",
+    "field": "Polje",
     "reference": "Referenca",
     "reference_id": "ID reference",
     "refundAmount": "Iznos povrata",

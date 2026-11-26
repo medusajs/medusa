@@ -11709,6 +11709,197 @@
       ],
       "additionalProperties": false
     },
+    "auditLogs": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "impersonatedBy": {
+          "type": "string"
+        },
+        "outcome": {
+          "type": "object",
+          "properties": {
+            "succeeded": {
+              "type": "string"
+            },
+            "denied": {
+              "type": "string"
+            },
+            "failed": {
+              "type": "string"
+            }
+          },
+          "required": ["succeeded", "denied", "failed"],
+          "additionalProperties": false
+        },
+        "fields": {
+          "type": "object",
+          "properties": {
+            "time": {
+              "type": "string"
+            },
+            "actor": {
+              "type": "string"
+            },
+            "actorType": {
+              "type": "string"
+            },
+            "actorId": {
+              "type": "string"
+            },
+            "impersonatorId": {
+              "type": "string"
+            },
+            "action": {
+              "type": "string"
+            },
+            "resource": {
+              "type": "string"
+            },
+            "resourceType": {
+              "type": "string"
+            },
+            "resourceId": {
+              "type": "string"
+            },
+            "outcome": {
+              "type": "string"
+            },
+            "startedAt": {
+              "type": "string"
+            },
+            "endedAt": {
+              "type": "string"
+            },
+            "requestData": {
+              "type": "string"
+            },
+            "responseData": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "time",
+            "actor",
+            "actorType",
+            "actorId",
+            "impersonatorId",
+            "action",
+            "resource",
+            "resourceType",
+            "resourceId",
+            "outcome",
+            "startedAt",
+            "endedAt",
+            "requestData",
+            "responseData"
+          ],
+          "additionalProperties": false
+        },
+        "request": {
+          "type": "object",
+          "properties": {
+            "header": {
+              "type": "string"
+            },
+            "method": {
+              "type": "string"
+            },
+            "route": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            },
+            "statusCode": {
+              "type": "string"
+            },
+            "requestId": {
+              "type": "string"
+            },
+            "ipAddress": {
+              "type": "string"
+            },
+            "userAgent": {
+              "type": "string"
+            },
+            "none": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "header",
+            "method",
+            "route",
+            "path",
+            "statusCode",
+            "requestId",
+            "ipAddress",
+            "userAgent",
+            "none"
+          ],
+          "additionalProperties": false
+        },
+        "list": {
+          "type": "object",
+          "properties": {
+            "empty": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            },
+            "filtered": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading", "description"],
+              "additionalProperties": false
+            },
+            "searchError": {
+              "type": "object",
+              "properties": {
+                "heading": {
+                  "type": "string"
+                }
+              },
+              "required": ["heading"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["empty", "filtered", "searchError"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "domain",
+        "subtitle",
+        "impersonatedBy",
+        "outcome",
+        "fields",
+        "request",
+        "list"
+      ],
+      "additionalProperties": false
+    },
     "translations": {
       "type": "object",
       "properties": {
@@ -14002,6 +14193,18 @@
         "subtitle": {
           "type": "string"
         },
+        "editTitle": {
+          "type": "string"
+        },
+        "editDescription": {
+          "type": "string"
+        },
+        "customLabel": {
+          "type": "string"
+        },
+        "updateSuccess": {
+          "type": "string"
+        },
         "fields": {
           "type": "object",
           "properties": {
@@ -14022,7 +14225,16 @@
           "additionalProperties": false
         }
       },
-      "required": ["domain", "title", "subtitle", "fields"],
+      "required": [
+        "domain",
+        "title",
+        "subtitle",
+        "editTitle",
+        "editDescription",
+        "customLabel",
+        "updateSuccess",
+        "fields"
+      ],
       "additionalProperties": false
     },
     "notifications": {
@@ -14170,6 +14382,15 @@
           "type": "string"
         },
         "amount": {
+          "type": "string"
+        },
+        "yes": {
+          "type": "string"
+        },
+        "no": {
+          "type": "string"
+        },
+        "field": {
           "type": "string"
         },
         "reference": {
@@ -14671,6 +14892,9 @@
       "required": [
         "actions",
         "amount",
+        "yes",
+        "no",
+        "field",
         "reference",
         "reference_id",
         "refundAmount",
@@ -15513,6 +15737,7 @@
     "users",
     "roles",
     "policies",
+    "auditLogs",
     "translations",
     "store",
     "regions",

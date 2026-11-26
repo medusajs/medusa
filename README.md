@@ -95,4 +95,4 @@ Join the [Discord server](https://discord.gg/medusajs) to meet and discuss with 
 
 ## License
 
-Medusa uses an open-core model. The core is licensed under the [MIT License](./LICENSE). The RBAC-based Enterprise Edition materials identified in [ENTERPRISE-LICENSE.md](./ENTERPRISE-LICENSE.md) require a commercial agreement with MedusaJS, Inc.
+Medusa uses an open-core model. The core is licensed under the [MIT License](./LICENSE). The Enterprise Edition packages identified in [ENTERPRISE-LICENSE.md](./ENTERPRISE-LICENSE.md) (`@medusajs/rbac`, `@medusajs/auth-oidc`, and `@medusajs/audit`) require a commercial agreement with MedusaJS, Inc.

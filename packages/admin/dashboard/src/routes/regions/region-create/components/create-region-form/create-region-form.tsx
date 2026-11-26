@@ -12,6 +12,7 @@ import {
   toast,
 } from "@medusajs/ui"
 import { RowSelectionState, createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -458,7 +459,7 @@ export const CreateRegionForm = ({ currencies }: CreateRegionFormProps) => {
   )
 }
 
-const columnHelper = createColumnHelper<StaticCountry>()
+const columnHelper = createColumnHelper<DataTableFeatures, StaticCountry>()
 
 const useColumns = () => {
   const base = useCountryTableColumns()
@@ -471,6 +472,7 @@ const useColumns = () => {
           return (
             <Checkbox
               checked={
+                !table.getIsAllPageRowsSelected() &&
                 table.getIsSomePageRowsSelected()
                   ? "indeterminate"
                   : table.getIsAllPageRowsSelected()
@@ -517,7 +519,7 @@ const CountryTag = ({
       <button
         type="button"
         onClick={() => onRemove(country.code)}
-        className="flex h-full w-7 items-center justify-center border-l outline-none transition-fg hover:bg-ui-bg-field-hover focus-visible:bg-ui-bg-field-hover"
+        className="flex h-full w-7 items-center justify-center border-l outline-hidden transition-fg hover:bg-ui-bg-field-hover focus-visible:bg-ui-bg-field-hover"
       >
         <XMarkMini className="text-ui-fg-muted" />
       </button>

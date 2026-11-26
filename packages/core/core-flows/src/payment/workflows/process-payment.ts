@@ -68,30 +68,35 @@ export const processPaymentWorkflow = createWorkflow(
       name: "payment-session-query",
     })
 
-    const cartPaymentCollection = useQueryGraphStep({
+    const paymentCollectionId = transform(
+      { paymentSessionResult },
+      ({ paymentSessionResult }) =>
+        paymentSessionResult.data[0]?.payment_collection_id
+    )
+
+    const cartPaymentCollectionResult = useQueryGraphStep({
       entity: "cart_payment_collection",
       fields: ["cart_id"],
       filters: {
-        payment_collection_id:
-          paymentSessionResult.data[0].payment_collection_id,
+        payment_collection_id: paymentCollectionId,
       },
     }).config({
       name: "cart-payment-query",
     })
 
     const cartId = transform(
-      { cartPaymentCollection, input },
-      ({ cartPaymentCollection, input }) => {
-        // A webhook action without a session id cannot be tied to a specific
-        // payment session, and therefore not to a specific cart. The queries
+      { cartPaymentCollectionResult, paymentSessionResult, input },
+      ({ cartPaymentCollectionResult, paymentSessionResult, input }) => {
+        // A webhook action without a session id, or with the id of a session
+        // that no longer exists, cannot be tied to a specific cart. The query
         // above would otherwise resolve to an arbitrary cart (an undefined
-        // filter value matches every row), so we bail out here to avoid
-        // acting on an unrelated cart.
-        if (!input.data?.session_id) {
+        // filter value matches every row), so we ignore its result here to
+        // avoid acting on an unrelated cart.
+        if (!input.data?.session_id || !paymentSessionResult.data[0]) {
           return undefined
         }
 
-        return cartPaymentCollection.data[0]?.cart_id
+        return cartPaymentCollectionResult.data[0]?.cart_id
       }
     )
 
@@ -181,12 +186,12 @@ export const processPaymentWorkflow = createWorkflow(
     })
 
     when(
-      { input, cartPaymentCollection },
-      ({ input, cartPaymentCollection }) => {
+      { input, cartId },
+      ({ input, cartId }) => {
         // Authorize payment session if no Cart is linked to the payment
         // When associated with a Cart, the complete cart workflow will handle the authorization
         return (
-          !cartPaymentCollection.data.length &&
+          !cartId &&
           input.action === PaymentActions.AUTHORIZED &&
           !!input.data?.session_id
         )
@@ -205,12 +210,12 @@ export const processPaymentWorkflow = createWorkflow(
     // the Payment record.
     when(
       "authorize-existing-order",
-      { input, paymentData, cartPaymentCollection, order },
-      ({ input, paymentData, cartPaymentCollection, order }) => {
+      { input, paymentData, cartId, order },
+      ({ input, paymentData, cartId, order }) => {
         return (
           !!order &&
           !paymentData.data.length &&
-          !!cartPaymentCollection.data.length &&
+          !!cartId &&
           input.action === PaymentActions.AUTHORIZED &&
           !!input.data?.session_id
         )
@@ -234,17 +239,17 @@ export const processPaymentWorkflow = createWorkflow(
     })
 
     when(
-      { input, cartPaymentCollection, order },
-      ({ input, cartPaymentCollection, order }) => {
+      { input, cartId, order },
+      ({ input, cartId, order }) => {
         return (
           !!input.data?.session_id &&
-          !!cartPaymentCollection.data.length &&
+          !!cartId &&
           !order
         )
       }
     ).then(() => {
       completeCartAfterPaymentStep({
-        cart_id: cartPaymentCollection.data[0].cart_id,
+        cart_id: cartId!,
       }).config({
         continueOnPermanentFailure: true, // Continue payment processing even if cart completion fails
       })

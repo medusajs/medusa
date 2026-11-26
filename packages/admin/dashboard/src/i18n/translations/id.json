@@ -3080,6 +3080,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Log Audit",
+    "subtitle": "Tinjau siapa yang melakukan apa di toko Anda, pada sumber daya mana, dan bagaimana hasilnya.",
+    "impersonatedBy": "Dipersonifikasikan oleh {{id}}",
+    "outcome": {
+      "succeeded": "Berhasil",
+      "denied": "Ditolak",
+      "failed": "Gagal"
+    },
+    "fields": {
+      "time": "Waktu",
+      "actor": "Aktor",
+      "actorType": "Tipe aktor",
+      "actorId": "ID aktor",
+      "impersonatorId": "ID personifikator",
+      "action": "Tindakan",
+      "resource": "Sumber daya",
+      "resourceType": "Tipe sumber daya",
+      "resourceId": "ID sumber daya",
+      "outcome": "Hasil",
+      "startedAt": "Dimulai pada",
+      "endedAt": "Berakhir pada",
+      "requestData": "Data permintaan",
+      "responseData": "Data respons"
+    },
+    "request": {
+      "header": "Permintaan",
+      "method": "Metode",
+      "route": "Rute",
+      "path": "Jalur",
+      "statusCode": "Kode status",
+      "requestId": "ID permintaan",
+      "ipAddress": "Alamat IP",
+      "userAgent": "Agen pengguna",
+      "none": "Log audit ini tidak direkam untuk permintaan API."
+    },
+    "list": {
+      "empty": {
+        "heading": "Belum ada log audit",
+        "description": "Tindakan yang dilakukan di toko Anda akan muncul di sini."
+      },
+      "filtered": {
+        "heading": "Tidak ada hasil",
+        "description": "Tidak ada log audit yang cocok dengan kriteria filter saat ini."
+      },
+      "searchError": {
+        "heading": "Pencarian gagal"
+      }
+    }
+  },
   "translations": {
     "domain": "Terjemahan",
     "settings": {
@@ -3678,6 +3728,10 @@
     "domain": "Label Properti",
     "title": "Label Properti",
     "subtitle": "Kelola label properti kustom untuk tabel yang dapat dikonfigurasi dari entitas Anda.",
+    "editTitle": "Edit Label Properti",
+    "editDescription": "Sesuaikan cara nama properti ditampilkan untuk {{entity}}",
+    "customLabel": "Label Kustom",
+    "updateSuccess": "Label properti berhasil diperbarui",
     "fields": {
       "module": "Modul",
       "model": "Model",
@@ -3725,6 +3779,9 @@
   "fields": {
     "actions": "Tindakan",
     "amount": "Jumlah",
+    "yes": "Ya",
+    "no": "Tidak",
+    "field": "Bidang",
     "reference": "Referensi",
     "reference_id": "ID Referensi",
     "refundAmount": "Jumlah pengembalian dana",

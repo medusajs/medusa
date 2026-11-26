@@ -67,10 +67,10 @@ export const useCreateApiKey = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.apiKey.create(payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -86,11 +86,11 @@ export const useUpdateApiKey = (
 ) => {
   return useMutation({
     mutationFn: (payload) => sdk.admin.apiKey.update(id, payload),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -102,11 +102,11 @@ export const useRevokeApiKey = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.apiKey.revoke(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })
 }
@@ -121,11 +121,11 @@ export const useDeleteApiKey = (
 ) => {
   return useMutation({
     mutationFn: () => sdk.admin.apiKey.delete(id),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })
 }
@@ -141,14 +141,14 @@ export const useBatchRemoveSalesChannelsFromApiKey = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.apiKey.batchSalesChannels(id, { remove: payload }),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })
@@ -165,14 +165,14 @@ export const useBatchAddSalesChannelsToApiKey = (
   return useMutation({
     mutationFn: (payload) =>
       sdk.admin.apiKey.batchSalesChannels(id, { add: payload }),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.lists() })
       queryClient.invalidateQueries({ queryKey: apiKeysQueryKeys.detail(id) })
       queryClient.invalidateQueries({
         queryKey: salesChannelsQueryKeys.lists(),
       })
 
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
     ...options,
   })

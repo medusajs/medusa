@@ -3089,6 +3089,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "監査ログ",
+    "subtitle": "ストアで誰が何をどのリソースに対して行い、どのような結果になったかを確認します。",
+    "impersonatedBy": "{{id}} によるなりすまし",
+    "outcome": {
+      "succeeded": "成功",
+      "denied": "拒否",
+      "failed": "失敗"
+    },
+    "fields": {
+      "time": "時刻",
+      "actor": "アクター",
+      "actorType": "アクタータイプ",
+      "actorId": "アクターID",
+      "impersonatorId": "なりすましID",
+      "action": "アクション",
+      "resource": "リソース",
+      "resourceType": "リソースタイプ",
+      "resourceId": "リソースID",
+      "outcome": "結果",
+      "startedAt": "開始日時",
+      "endedAt": "終了日時",
+      "requestData": "リクエストデータ",
+      "responseData": "レスポンスデータ"
+    },
+    "request": {
+      "header": "リクエスト",
+      "method": "メソッド",
+      "route": "ルート",
+      "path": "パス",
+      "statusCode": "ステータスコード",
+      "requestId": "リクエストID",
+      "ipAddress": "IPアドレス",
+      "userAgent": "ユーザーエージェント",
+      "none": "この監査ログはAPIリクエストに対して記録されていません。"
+    },
+    "list": {
+      "empty": {
+        "heading": "監査ログはまだありません",
+        "description": "ストアで実行されたアクションがここに表示されます。"
+      },
+      "filtered": {
+        "heading": "結果がありません",
+        "description": "現在のフィルター条件に一致する監査ログはありません。"
+      },
+      "searchError": {
+        "heading": "検索に失敗しました"
+      }
+    }
+  },
   "translations": {
     "domain": "翻訳",
     "settings": {
@@ -3689,6 +3739,10 @@
     "domain": "プロパティラベル",
     "title": "プロパティラベル",
     "subtitle": "エンティティの設定可能なテーブル向けにカスタムプロパティラベルを管理します。",
+    "editTitle": "プロパティラベルを編集",
+    "editDescription": "{{entity}}のプロパティ名の表示方法をカスタマイズします",
+    "customLabel": "カスタムラベル",
+    "updateSuccess": "プロパティラベルが正常に更新されました。",
     "fields": {
       "module": "モジュール",
       "model": "モデル",
@@ -3736,6 +3790,9 @@
   "fields": {
     "actions": "アクション",
     "amount": "金額",
+    "yes": "はい",
+    "no": "いいえ",
+    "field": "フィールド",
     "reference": "参照",
     "reference_id": "参照ID",
     "refundAmount": "返金額",

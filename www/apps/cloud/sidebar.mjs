@@ -72,7 +72,7 @@ export const sidebar = [
               },
               {
                 type: "link",
-                title: "ChatGPT App",
+                title: "ChatGPT Plugin",
                 path: "/ai-toolkit/medusa-mcp/chatgpt",
               },
               {
@@ -221,8 +221,18 @@ export const sidebar = [
             children: [
               {
                 type: "link",
-                title: "Connections",
+                title: "MCP and Connectors",
                 path: "/organizations/connections",
+              },
+              {
+                type: "link",
+                title: "License",
+                path: "/organizations/license",
+              },
+              {
+                type: "link",
+                title: "Roles and Permissions",
+                path: "/organizations/roles",
               },
             ],
           },
@@ -378,6 +388,49 @@ export const sidebar = [
             type: "link",
             title: "React Email Templates",
             path: "/emails/react-email",
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Payments",
+        children: [
+          {
+            type: "link",
+            title: "Medusa Payments",
+            path: "/payments",
+          },
+          {
+            type: "link",
+            title: "Payment Accounts",
+            path: "/payments/accounts",
+            children: [
+              {
+                type: "link",
+                title: "Medusa Payments",
+                path: "/payments/accounts/medusa-payments",
+              },
+              {
+                type: "link",
+                title: "Stripe",
+                path: "/payments/accounts/stripe",
+              },
+              {
+                type: "link",
+                title: "Adyen",
+                path: "/payments/accounts/adyen",
+              },
+            ],
+          },
+          {
+            type: "link",
+            title: "Set up Medusa Payments in Environments",
+            path: "/payments/environments",
+          },
+          {
+            type: "link",
+            title: "Add to Storefront",
+            path: "/payments/storefront",
           },
         ],
       },

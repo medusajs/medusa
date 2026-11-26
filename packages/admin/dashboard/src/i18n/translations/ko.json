@@ -3080,6 +3080,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "감사 로그",
+    "subtitle": "스토어에서 누가 어떤 작업을 어떤 리소스에서 수행했으며 결과가 어떻게 되었는지 검토합니다.",
+    "impersonatedBy": "{{id}}에 의해 대리 접속됨",
+    "outcome": {
+      "succeeded": "성공",
+      "denied": "거부됨",
+      "failed": "실패"
+    },
+    "fields": {
+      "time": "시간",
+      "actor": "행위자",
+      "actorType": "행위자 유형",
+      "actorId": "행위자 ID",
+      "impersonatorId": "대리 접속자 ID",
+      "action": "작업",
+      "resource": "리소스",
+      "resourceType": "리소스 유형",
+      "resourceId": "리소스 ID",
+      "outcome": "결과",
+      "startedAt": "시작 시간",
+      "endedAt": "종료 시간",
+      "requestData": "요청 데이터",
+      "responseData": "응답 데이터"
+    },
+    "request": {
+      "header": "요청",
+      "method": "메서드",
+      "route": "라우트",
+      "path": "경로",
+      "statusCode": "상태 코드",
+      "requestId": "요청 ID",
+      "ipAddress": "IP 주소",
+      "userAgent": "사용자 에이전트",
+      "none": "이 감사 로그는 API 요청에 대해 기록되지 않았습니다."
+    },
+    "list": {
+      "empty": {
+        "heading": "감사 로그 없음",
+        "description": "스토어에서 수행된 작업이 여기에 표시됩니다."
+      },
+      "filtered": {
+        "heading": "결과 없음",
+        "description": "현재 필터 조건과 일치하는 감사 로그가 없습니다."
+      },
+      "searchError": {
+        "heading": "검색 실패"
+      }
+    }
+  },
   "translations": {
     "domain": "번역",
     "settings": {
@@ -3678,6 +3728,10 @@
     "domain": "속성 레이블",
     "title": "속성 레이블",
     "subtitle": "항목의 구성 가능한 테이블에 대한 사용자 지정 속성 레이블을 관리합니다.",
+    "editTitle": "속성 레이블 편집",
+    "editDescription": "{{entity}}에 대한 속성 이름 표시 방법을 사용자 지정합니다",
+    "customLabel": "사용자 지정 레이블",
+    "updateSuccess": "속성 레이블이 성공적으로 업데이트되었습니다",
     "fields": {
       "module": "모듈",
       "model": "모델",
@@ -3725,6 +3779,9 @@
   "fields": {
     "actions": "작업",
     "amount": "금액",
+    "yes": "예",
+    "no": "아니오",
+    "field": "필드",
     "reference": "참조",
     "reference_id": "참조 ID",
     "refundAmount": "환불 금액",

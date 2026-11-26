@@ -1,5 +1,20 @@
 # @medusajs/caching-redis
 
+## 2.23.0
+
+### Patch Changes
+
+- [#17851](https://github.com/medusajs/medusa/pull/17851) [`1f706de`](https://github.com/medusajs/medusa/commit/1f706dedf8796622b6a1b7aac795625099e3f9d8) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(caching-redis): clear tagged entries in bounded batches to cap memory use
+
+- [#17908](https://github.com/medusajs/medusa/pull/17908) [`0f579db`](https://github.com/medusajs/medusa/commit/0f579db7254a159b1e5ba444e283b088a8e27309) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(caching-redis): remove expired entries from tag sets when a tag is cleared, so tag sets stop growing and clears stop re-processing dead keys
+
+- [#17909](https://github.com/medusajs/medusa/pull/17909) [`596230d`](https://github.com/medusajs/medusa/commit/596230d2ad16813858cbd09299514e09d9b67c23) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(caching-redis): never shorten a tag set's expiry when a shorter-lived entry is added, so longer-lived entries stay reachable for tag invalidation
+
+- [#17580](https://github.com/medusajs/medusa/pull/17580) [`d42343a`](https://github.com/medusajs/medusa/commit/d42343ac7c17f6c79b4999feb49d6574b23cbde3) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(workflow-engine-redis,event-bus-redis,utils,cache-redis,caching-redis,locking-redis): update bullmq to 6.7.6 and ioredis to 6.0.0, move scheduled workflows to job schedulers, and lower `EventPriority.LOWEST` to BullMQ's new maximum
+
+- Updated dependencies [[`00516a1`](https://github.com/medusajs/medusa/commit/00516a135a621293c224594378122d2e2e070c3a), [`542caef`](https://github.com/medusajs/medusa/commit/542caefc231959d2f98fefcea4291521b9aef94a), [`00516a1`](https://github.com/medusajs/medusa/commit/00516a135a621293c224594378122d2e2e070c3a), [`45ab5b6`](https://github.com/medusajs/medusa/commit/45ab5b68c954ea7c000952a5e3263c60deadfa99), [`2086f3d`](https://github.com/medusajs/medusa/commit/2086f3d573a1357815007c53f6a842227731898f), [`6d76b3b`](https://github.com/medusajs/medusa/commit/6d76b3b55154896d732d4f8ac6fc948bd36d958c), [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50), [`750659a`](https://github.com/medusajs/medusa/commit/750659aff00ee82bcdf232754a2c4010aed0fad2)]:
+  - @medusajs/framework@2.23.0
+
 ## 2.22.7
 
 ### Patch Changes

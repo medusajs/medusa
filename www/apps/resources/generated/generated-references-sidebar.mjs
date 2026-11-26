@@ -740,6 +740,14 @@ const generatedgeneratedReferencesSidebarSidebar = {
                 {
                   "loaded": true,
                   "type": "link",
+                  "path": "/references/medusa-workflows/steps/validateCartTaxCountryStep",
+                  "title": "validateCartTaxCountryStep",
+                  "description": "",
+                  "children": []
+                },
+                {
+                  "loaded": true,
+                  "type": "link",
                   "path": "/references/medusa-workflows/steps/validateLineItemPricesStep",
                   "title": "validateLineItemPricesStep",
                   "description": "",

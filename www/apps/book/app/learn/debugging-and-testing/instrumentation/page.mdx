@@ -47,7 +47,15 @@ As of [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0),
 
 </Note>
 
-Before you start, you must install the dependencies relevant for the exporter you use. If you're using Zipkin, install the following dependencies:
+Before you start, you must install the dependencies relevant for the exporter you use. Medusa uses OpenTelemetry JS SDK 3.0, so install a version of your exporter package that's compatible with it. Traces also include the `os.*` and `service.instance.id` resource attributes, which the SDK detects by default.
+
+<Note title="Before Medusa v2.23.0">
+
+Before Medusa [v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), Medusa used an OpenTelemetry JS SDK version earlier than 3.0. If you use a Medusa version before v2.23.0, install a version of your exporter package that's compatible with the SDK version your Medusa application uses. Traces also don't include the `os.*` and `service.instance.id` resource attributes by default.
+
+</Note>
+
+If you're using Zipkin, install the following dependencies:
 
 ```bash npm2yarn
 npm install @opentelemetry/exporter-zipkin

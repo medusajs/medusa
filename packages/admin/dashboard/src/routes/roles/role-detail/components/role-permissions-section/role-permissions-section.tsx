@@ -176,7 +176,7 @@ const GroupRow = ({ summary, group, heldIds }: GroupRowProps) => {
 
   return (
     <Collapsible.Root>
-      <Collapsible.Trigger className="group flex w-full items-center justify-between gap-x-4 px-6 py-4 text-start outline-none focus-visible:shadow-borders-focus">
+      <Collapsible.Trigger className="group flex w-full items-center justify-between gap-x-4 px-6 py-4 text-start outline-hidden focus-visible:shadow-borders-focus">
         <div className="flex min-w-0 items-start gap-x-2">
           <TriangleRightMini className="mt-0.5 shrink-0 text-ui-fg-muted transition-transform group-data-[state='open']:rotate-90 rtl:rotate-180 rtl:group-data-[state='open']:rotate-90" />
           <div className="flex min-w-0 flex-col gap-y-0.5">

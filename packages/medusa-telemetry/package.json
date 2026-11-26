@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/telemetry",
-  "version": "2.22.7",
+  "version": "2.23.0",
   "description": "Telemetry for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -37,7 +37,6 @@
   "dependencies": {
     "@babel/runtime": "^8.0.10",
     "axios": "^1.20.0",
-    "axios-retry": "^4.5.0",
     "boxen": "^9.0.0",
     "ci-info": "^4.4.0",
     "configstore": "^8.0.0",

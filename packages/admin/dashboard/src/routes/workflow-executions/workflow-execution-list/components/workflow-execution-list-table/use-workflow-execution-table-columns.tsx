@@ -1,5 +1,6 @@
 import { Badge } from "@medusajs/ui"
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
+import { DataTableFeatures } from "../../../../../components/table/data-table/data-table-features"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { StatusCell } from "../../../../../components/table/table-cells/common/status-cell"
@@ -11,12 +12,13 @@ import {
   DateHeader,
 } from "../../../../../components/table/table-cells/common/date-cell"
 
-const columnHelper =
-  createColumnHelper<
-    HttpTypes.AdminWorkflowExecutionResponse["workflow_execution"]
-  >()
+const columnHelper = createColumnHelper<
+  DataTableFeatures,
+  HttpTypes.AdminWorkflowExecutionResponse["workflow_execution"]
+>()
 
 export const useWorkflowExecutionTableColumns = (): ColumnDef<
+  DataTableFeatures,
   HttpTypes.AdminWorkflowExecutionResponse["workflow_execution"],
   any
 >[] => {

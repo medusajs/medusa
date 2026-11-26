@@ -224,6 +224,40 @@ moduleIntegrationTestRunner({
         expect(actions).toHaveLength(0) // No items to apply to
       })
 
+      it("should keep promotions with only ne rules when context has no attributes", async () => {
+        const promotion = await createDefaultPromotion(service, {
+          code: "NE_RULE_PROMO",
+          is_automatic: true,
+          rules: [
+            {
+              attribute: "customer.groups.id",
+              operator: "ne",
+              values: ["group_excluded"],
+            },
+          ],
+        })
+
+        let prefilteredPromotions: any[] | undefined
+        const originalPromotionServiceList = (service as any).promotionService_
+          .list
+
+        ;(service as any).promotionService_.list = async (...args: any[]) => {
+          const result = await originalPromotionServiceList.bind(
+            (service as any).promotionService_
+          )(...args)
+
+          prefilteredPromotions ??= result
+
+          return []
+        }
+
+        await service.computeActions([], {} as any)
+
+        ;(service as any).promotionService_.list = originalPromotionServiceList
+
+        expect(prefilteredPromotions!.map((p) => p.id)).toEqual([promotion.id])
+      })
+
       it("should prefilter automatic promotions when context values contain question marks", async () => {
         await createDefaultPromotion(service, {
           code: "QUESTION_MARK_PROMO",
@@ -268,6 +302,57 @@ moduleIntegrationTestRunner({
             item_id: "item_1",
             amount: 10,
             code: "QUESTION_MARK_PROMO",
+            is_tax_inclusive: false,
+          },
+        ])
+      })
+
+      it("should apply an automatic promotion with ne rules on attributes missing from the context", async () => {
+        await createDefaultPromotion(service, {
+          code: "NE_MISSING_ATTRIBUTE_PROMO",
+          is_automatic: true,
+          rules: [
+            {
+              attribute: "customer.groups.id",
+              operator: "ne",
+              values: ["group_excluded"],
+            },
+          ],
+          application_method: {
+            type: "fixed",
+            target_type: "items",
+            allocation: "each",
+            value: 10,
+            max_quantity: 1,
+            target_rules: [
+              {
+                attribute: "items.metadata.bundle_pricing",
+                operator: "ne",
+                values: ["set"],
+              },
+            ],
+          } as any,
+        })
+
+        const result = await service.computeActions([], {
+          currency_code: "usd",
+          items: [
+            {
+              id: "item_1",
+              quantity: 1,
+              subtotal: 100,
+              original_total: 100,
+              is_discountable: true,
+            },
+          ],
+        } as any)
+
+        expect(JSON.parse(JSON.stringify(result))).toEqual([
+          {
+            action: "addItemAdjustment",
+            item_id: "item_1",
+            amount: 10,
+            code: "NE_MISSING_ATTRIBUTE_PROMO",
             is_tax_inclusive: false,
           },
         ])

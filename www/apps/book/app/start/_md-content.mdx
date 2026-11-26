@@ -358,9 +358,7 @@ Don't commit the installed skills unless the user asks to.
 
 ## Step 9: Add the Docs MCP Server
 
-The Docs MCP server gives the agent live access to the Medusa documentation. The connection method depends on the agent.
-
-Add the MCP server but do not authenticate yet or block next steps. In the wrap up, remind the user to authenticate so the agent can use the docs.
+The Docs MCP server gives the agent live access to the Medusa documentation. The server is public and doesn't require authentication. The connection method depends on the agent.
 
 ### Claude Code
 
@@ -368,12 +366,6 @@ Run the following command to add the MCP server to the Claude Code agent:
 
 ```bash
 claude mcp add --transport http medusa https://docs.medusajs.com/mcp
-```
-
-Then instruct the user to authenticate the agent with Medusa Cloud so it can access the MCP server:
-
-```bash
-/mcp
 ```
 
 ### Cursor
@@ -390,8 +382,6 @@ Add the following to `.cursor/mcp.json` (project) or the user's Cursor settings:
 }
 ```
 
-Then ask the user to authenticate with Medusa Cloud from the Cursor settings.
-
 ### VS Code (with MCP support)
 
 Add the following to `.vscode/mcp.json`:
@@ -407,11 +397,9 @@ Add the following to `.vscode/mcp.json`:
 }
 ```
 
-Then ask the user to authenticate with Medusa Cloud from the VS Code MCP extension.
-
 ### Other agents
 
-Configure the agent to connect to the Streamable HTTP MCP server at `https://docs.medusajs.com/mcp`. The user authenticates with the Medusa Cloud account from Step 2.
+Configure the agent to connect to the Streamable HTTP MCP server at `https://docs.medusajs.com/mcp`.
 
 ---
 
@@ -494,7 +482,7 @@ Tell the user, in one short message:
 - Their ecommerce store is live on Medusa Cloud, with the URLs from Step 6.
 - If they set up the project locally: they can now build features by asking. The installed skills (`medusa-dev`, `ecommerce-storefront`) and the Docs MCP server give the agent everything it needs to add modules, API routes, admin UI, storefront pages, and integrations. Pushing to the repository's default branch deploys the changes to Cloud.
 - If they skipped the local setup: they can ask the agent to set it up at any time, or manage the store from the Medusa Admin.
-- Remind the user to authenticate the MCP servers they added from the agent's MCP settings. The Docs MCP server gives the agent access to the documentation, and the Medusa MCP server gives it access to the store's data and Cloud project. For the Medusa MCP server, they must select the store's environment on the consent page.
+- Remind the user to authenticate the Medusa MCP server from the agent's MCP settings. It gives the agent access to the store's data and Cloud project. On the consent page, they must select the store's environment and whether the agent can change data in it.
 - Suggest a question they can ask through the Medusa MCP server, such as "Why did my latest deployment fail?" or "Show me the 5 most recent orders in my store."
 - Before launch, they should follow the going-live checklist at https://docs.medusajs.com/cloud/going-live.md, such as adding a custom domain and setting up payment providers.
 - If any step was blocked due to execution mode or permissions, mention them in the message and tell the user how to re-run them.

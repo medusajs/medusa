@@ -356,6 +356,8 @@ stream new log lines continuously with `--follow`.
 
 ## Process Logs in an Agentic Workflow
 
+<RolesBadge roles={["developer"]} />
+
 {/* TODO revisit once we have skills */}
 
 Use `--json` to get machine-readable output that you can pass to `jq` or
@@ -397,6 +399,8 @@ mcloud logs --follow
 
 ## Stream Live Logs
 
+<RolesBadge roles={["developer"]} />
+
 Use `--follow` to tail an environment's logs continuously. This is useful
 when monitoring a deployment in progress or watching for errors in real time:
 
@@ -435,6 +439,8 @@ in a script, use a bounded time-window fetch instead.
 ---
 
 ## Search for Errors
+
+<RolesBadge roles={["developer"]} />
 
 If you're looking for errors in the logs, use `--search` to filter log lines by a substring. This works the same
 as the search bar in the Cloud dashboard logs view:
@@ -648,6 +654,8 @@ Storefront logs (`--type storefront`) expose a subset of these keys: `status`, `
 
 ## Fetch Logs for a Specific Deployment
 
+<RolesBadge roles={["developer"]} />
+
 When a deployment fails, query the logs for that deployment directly using
 its ID. Find the build or deployment ID from [`mcloud deployments list`](../deployments/page.mdx#deployments-list) or the Cloud
 dashboard. Pass a build ID and the CLI resolves it to that build's latest deployment automatically.
@@ -684,6 +692,8 @@ To fetch the build logs for a deployment instead of its runtime logs, use [`mclo
 ---
 
 ## Specify Logs Time Range
+
+<RolesBadge roles={["developer"]} />
 
 You can use the `--from` and `--to` flags to specify a time range for fetching logs instead of the default "last 15 minutes".
 
@@ -829,6 +839,8 @@ However, if you want to fetch logs until 20 minutes ago, you must also specify `
 ---
 
 ## Filter Storefront Logs
+
+<RolesBadge roles={["developer"]} />
 
 By default, `mcloud logs` fetches backend logs. To query storefront logs,
 pass `--type storefront`:

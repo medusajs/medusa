@@ -10,6 +10,8 @@ In this guide, you'll learn how to manage your Cloud projects using the CLI.
 
 ## projects list
 
+<RolesBadge roles={["developer", "billing"]} />
+
 List all projects in an organization. If you don't specify an organization, either through the `--organization` flag or the [active context](../use/page.mdx), the command lists projects across all organizations you have access to, grouped by organization.
 
 <CodeTabs group="cli-auth">
@@ -101,6 +103,8 @@ List all projects in an organization. If you don't specify an organization, eith
 ---
 
 ## projects get
+
+<RolesBadge roles={["developer", "billing"]} />
 
 Retrieve a single project by its ID or handle. This is useful if you want to get more details about the project, such as its status or region.
 
@@ -345,6 +349,8 @@ Returns the following information:
 ---
 
 ## projects delete
+
+<RolesBadge roles={["developer"]} />
 
 Delete a project by its ID or handle.
 

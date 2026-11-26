@@ -222,6 +222,11 @@ export const useRbacPolicyPermissions = () =>
   useResourcePermissions("rbac_policy")
 
 /**
+ * Hook for checking audit log permissions.
+ */
+export const useAuditLogPermissions = () => useResourcePermissions("audit_log")
+
+/**
  * Hook for checking API key-specific permissions.
  */
 export const useApiKeyPermissions = () => useResourcePermissions("api_key")

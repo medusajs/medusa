@@ -314,6 +314,76 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           expect(execution[0].state).toEqual(TransactionState.REVERTED)
         })
 
+        it("should revert the parent workflow when an async sub workflow fails", async () => {
+          const workflowId = "workflow-with-failing-sub-id" + ulid()
+          const transactionId = "transaction-with-failing-sub-id" + ulid()
+
+          const step1CompensateMock = jest.fn()
+          const step1 = createStep(
+            "step1",
+            async () => {
+              return new StepResponse("step1")
+            },
+            step1CompensateMock
+          )
+
+          const subStep = createStep("sub-step-with-error", async () => {
+            throw new Error("Sub step failed")
+          })
+
+          const step3Mock = jest.fn()
+          const step3 = createStep("step3", async () => {
+            step3Mock()
+          })
+
+          const subWorkflowId = "failing-sub-workflow-id" + ulid()
+          const subWorkflow = createWorkflow(
+            { name: subWorkflowId, retentionTime: 60 },
+            function () {
+              subStep()
+              return new WorkflowResponse(void 0)
+            }
+          )
+
+          createWorkflow({ name: workflowId, retentionTime: 60 }, function () {
+            step1()
+            subWorkflow.runAsStep({ input: {} }).config({ async: true })
+            step3()
+
+            return new WorkflowResponse("finished")
+          })
+
+          const onFinish = new Promise<void>((resolve) => {
+            void workflowOrcModule.subscribe({
+              workflowId,
+              transactionId,
+              subscriber: async (event) => {
+                if (event.eventType === "onFinish") {
+                  resolve()
+                }
+              },
+            })
+          })
+
+          await workflowOrcModule.run(workflowId, {
+            input: {},
+            transactionId,
+            throwOnError: false,
+            logOnError: false,
+          })
+
+          await onFinish
+
+          const execution = await workflowOrcModule.listWorkflowExecutions({
+            transaction_id: transactionId,
+          })
+
+          expect(execution.length).toEqual(1)
+          expect(execution[0].state).toEqual(TransactionState.REVERTED)
+          expect(step1CompensateMock).toHaveBeenCalledTimes(1)
+          expect(step3Mock).not.toHaveBeenCalled()
+        })
+
         it("should cancel an ongoing execution with sync steps only", async () => {
           const transactionId = "transaction-to-cancel-id" + ulid()
           const step1 = createStep("step1", async () => {

@@ -190,7 +190,7 @@ export const DataGridKeyboardShortcutModal = ({
             "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
           )}
         />
-        <RadixDialog.Content className="fixed left-[50%] top-[50%] flex h-full max-h-[612px] w-full max-w-[560px] translate-x-[-50%] translate-y-[-50%] flex-col divide-y overflow-hidden rounded-lg bg-ui-bg-subtle shadow-elevation-modal outline-none">
+        <RadixDialog.Content className="fixed left-[50%] top-[50%] flex h-full max-h-[612px] w-full max-w-[560px] translate-x-[-50%] translate-y-[-50%] flex-col divide-y overflow-hidden rounded-lg bg-ui-bg-subtle shadow-elevation-modal outline-hidden">
           <div className="flex flex-col gap-y-3 px-6 py-4">
             <div className="flex items-center justify-between">
               <div>

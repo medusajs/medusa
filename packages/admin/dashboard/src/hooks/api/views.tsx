@@ -179,7 +179,7 @@ export const useCreateViewConfiguration = (
       payload: Omit<HttpTypes.AdminCreateViewConfiguration, "entity">
     ) => sdk.admin.views.createConfiguration(entity, payload),
     ...options,
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: viewsQueryKeys.configurations(entity),
       })
@@ -189,7 +189,7 @@ export const useCreateViewConfiguration = (
           queryKey: viewsQueryKeys.active(entity),
         })
       }
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })
 }
@@ -208,14 +208,14 @@ export const useUpdateViewConfiguration = (
     mutationFn: (payload: HttpTypes.AdminUpdateViewConfiguration) =>
       sdk.admin.views.updateConfiguration(entity, id, payload),
     ...options,
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: viewsQueryKeys.configurations(entity),
       })
       queryClient.invalidateQueries({ queryKey: viewsQueryKeys.detail(id) })
       // Also invalidate active configuration if this view is currently active
       queryClient.invalidateQueries({ queryKey: viewsQueryKeys.active(entity) })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })
 }
@@ -233,7 +233,7 @@ export const useDeleteViewConfiguration = (
   return useMutation({
     mutationFn: () => sdk.admin.views.deleteConfiguration(entity, id),
     ...options,
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: viewsQueryKeys.configurations(entity),
       })
@@ -242,7 +242,7 @@ export const useDeleteViewConfiguration = (
       queryClient.invalidateQueries({
         queryKey: viewsQueryKeys.active(entity),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })
 }
@@ -259,7 +259,7 @@ export const useSetActiveViewConfiguration = (
       })
     },
     ...options,
-    onSuccess: async (data, variables, context) => {
+    onSuccess: async (data, variables, onMutateResult, context) => {
       // Invalidate active configuration
       await queryClient.invalidateQueries({
         queryKey: viewsQueryKeys.active(entity),
@@ -268,10 +268,10 @@ export const useSetActiveViewConfiguration = (
       await queryClient.invalidateQueries({
         queryKey: viewsQueryKeys.configurations(entity),
       })
-      options?.onSuccess?.(data, variables, context)
+      options?.onSuccess?.(data, variables, onMutateResult, context)
     },
-    onError: (error, variables, context) => {
-      options?.onError?.(error, variables, context)
+    onError: (error, variables, onMutateResult, context) => {
+      options?.onError?.(error, variables, onMutateResult, context)
     },
   })
 }

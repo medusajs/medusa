@@ -1,5 +1,11 @@
 # @medusajs/eslint-plugin
 
+## 2.23.0
+
+### Patch Changes
+
+- [#17843](https://github.com/medusajs/medusa/pull/17843) [`057f43d`](https://github.com/medusajs/medusa/commit/057f43d158b5b22cdbcaa902e95fc4263bd408a6) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(eslint-plugin): lint nested job and subscriber files the way Medusa loads them
+
 ## 2.22.7
 
 ## 2.22.6

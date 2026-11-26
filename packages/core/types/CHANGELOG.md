@@ -1,5 +1,27 @@
 # @medusajs/types
 
+## 2.23.0
+
+### Minor Changes
+
+- [#17588](https://github.com/medusajs/medusa/pull/17588) [`45ab5b6`](https://github.com/medusajs/medusa/commit/45ab5b68c954ea7c000952a5e3263c60deadfa99) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(framework,types,utils): update connect-redis to v11 and use node-redis for the Redis session store. `projectConfig.redisOptions` now takes `redis` (node-redis) client options instead of `ioredis` options.
+
+- [#17614](https://github.com/medusajs/medusa/pull/17614) [`6d76b3b`](https://github.com/medusajs/medusa/commit/6d76b3b55154896d732d4f8ac6fc948bd36d958c) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(medusa,framework,utils,types,test-utils,admin-bundler,cli,loyalty-plugin): update express to v5
+
+### Patch Changes
+
+- [#17872](https://github.com/medusajs/medusa/pull/17872) [`a80733d`](https://github.com/medusajs/medusa/commit/a80733d0aa30dd1b15428b9c52c92eac4723f2b2) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa,types,dashboard): guard admin-wide operations with dedicated RBAC policies instead of `*:*`, and require `search_index:read` to list search indexes
+
+- [#17823](https://github.com/medusajs/medusa/pull/17823) [`182cf74`](https://github.com/medusajs/medusa/commit/182cf748cb162ec177df8d9e912319a77ee83111) Thanks [@sradevski](https://github.com/sradevski)! - feat(utils,types,audit,rbac): add `MEDUSA_CLOUD_AUDIT_ENDPOINT`, register the Audit and RBAC Modules by default on Medusa Cloud when the license covers `audit` and `rbac`
+
+- [#17884](https://github.com/medusajs/medusa/pull/17884) [`00516a1`](https://github.com/medusajs/medusa/commit/00516a135a621293c224594378122d2e2e070c3a) Thanks [@sradevski](https://github.com/sradevski)! - feat(framework): record the impersonator from an `impersonator_id` token claim in audit logs
+
+- [#17873](https://github.com/medusajs/medusa/pull/17873) [`a26679b`](https://github.com/medusajs/medusa/commit/a26679b88e5bdbd52111346eaa54e9b2debe9e66) Thanks [@sradevski](https://github.com/sradevski)! - feat(audit): filter audit logs by metadata values
+
+- [#17671](https://github.com/medusajs/medusa/pull/17671) [`22a0676`](https://github.com/medusajs/medusa/commit/22a06766e1ecfbbb210b1e3d630230984c2d2508) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(admin-bundler,admin-vite-plugin,types): update vite to 8.3.8 and @vitejs/plugin-react to 6.3.0, and type the `admin.vite` config with Vite's `InlineConfig`
+
+- [#17869](https://github.com/medusajs/medusa/pull/17869) [`e4388b6`](https://github.com/medusajs/medusa/commit/e4388b665257736ca1a2f2736c8a8807f257ef15) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa,core-flows,types): scope admin feed notifications to the requesting user and address export and import notifications to the user who started them
+
 ## 2.22.7
 
 ### Patch Changes

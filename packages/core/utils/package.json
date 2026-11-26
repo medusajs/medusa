@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/utils",
-  "version": "2.22.7",
+  "version": "2.23.0",
   "description": "Medusa utilities functions shared by Medusa core and Modules",
   "main": "dist/index.js",
   "exports": {
@@ -31,17 +31,17 @@
   "llmsFull": "https://docs.medusajs.com/llms-full.txt",
   "mcpServer": "https://docs.medusajs.com/mcp",
   "author": "Medusa",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "2.22.7",
-    "express": "^4.21.0"
+    "@medusajs/types": "2.23.0",
+    "express": "^5.3.0"
   },
   "dependencies": {
-    "@graphql-codegen/core": "^6.2.2",
-    "@graphql-codegen/typescript": "^6.1.2",
+    "@graphql-codegen/core": "^7.0.0",
+    "@graphql-codegen/typescript": "^7.0.1",
     "@graphql-tools/merge": "^10.0.6",
     "@graphql-tools/schema": "^11.0.6",
-    "@medusajs/deps": "2.22.7",
+    "@medusajs/deps": "2.23.0",
     "@types/pluralize": "^0.0.33",
     "bignumber.js": "^11.1.5",
     "dotenv": "^18.0.9",
@@ -53,7 +53,7 @@
     "ulid": "^3.0.2"
   },
   "peerDependencies": {
-    "express": "^4.21.0"
+    "express": "^5.3.0"
   },
   "scripts": {
     "build": "yarn run -T rimraf dist && yarn run -T tsc --build",

@@ -1,4 +1,5 @@
-import type { Column, Table } from "@tanstack/react-table"
+import type { Column, Table, RowData } from "@tanstack/react-table"
+import { DataGridFeatures } from "../data-grid-features"
 import { useCallback } from "react"
 import type { FieldValues } from "react-hook-form"
 
@@ -6,9 +7,12 @@ import { DataGridMatrix } from "../models"
 import { GridColumnOption } from "../types"
 
 export function useDataGridColumnVisibility<
-  TData,
+  TData extends RowData,
   TFieldValues extends FieldValues,
->(grid: Table<TData>, matrix: DataGridMatrix<TData, TFieldValues>) {
+>(
+  grid: Table<DataGridFeatures, TData>,
+  matrix: DataGridMatrix<TData, TFieldValues>
+) {
   const columns = grid.getAllLeafColumns()
 
   const columnOptions: GridColumnOption[] = columns.map((column) => ({
@@ -47,7 +51,9 @@ export function useDataGridColumnVisibility<
   }
 }
 
-function getColumnName<TData>(column: Column<TData, unknown>): string {
+function getColumnName<TData extends RowData>(
+  column: Column<DataGridFeatures, TData, unknown>
+): string {
   const id = column.columnDef.id
   const enableHiding = column.columnDef.enableHiding
   const meta = column?.columnDef.meta as { name?: string } | undefined

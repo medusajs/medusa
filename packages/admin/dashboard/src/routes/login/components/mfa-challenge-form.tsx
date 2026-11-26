@@ -139,7 +139,7 @@ export const MfaChallengeForm = ({
         {onBack && (
           <Link
             to="/login"
-            className="txt-small text-center text-ui-fg-muted outline-none transition-fg hover:text-ui-fg-subtle focus-visible:text-ui-fg-subtle"
+            className="txt-small text-center text-ui-fg-muted outline-hidden transition-fg hover:text-ui-fg-subtle focus-visible:text-ui-fg-subtle"
             onClick={onBack}
           >
             {t("login.mfa.backToLogin")}
@@ -153,7 +153,7 @@ export const MfaChallengeForm = ({
             : t("login.mfa.useRecoveryCodePrompt")}{" "}
           <button
             type="button"
-            className="font-medium text-ui-fg-interactive outline-none transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover"
+            className="font-medium text-ui-fg-interactive outline-hidden transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover"
             onClick={() =>
               handleMethodChange(isRecoveryCode ? "totp" : "recovery_code")
             }

@@ -105,11 +105,11 @@ export const useCreateStoreCreditAccount = (
         `/admin/store-credit-accounts`,
         { body: payload, method: "POST" }
       ),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: storeCreditAccountQueryKey.lists(),
       });
-      options?.onSuccess?.(data, variables, context);
+      options?.onSuccess?.(data, variables, onMutateResult, context);
     },
     ...options,
   });
@@ -131,14 +131,14 @@ export const useCreditStoreCreditAccount = (
         `/admin/store-credit-accounts/${id}/credit`,
         { body: payload, method: "POST" }
       ),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: storeCreditAccountQueryKey.detail(id),
       });
       queryClient.invalidateQueries({
         queryKey: transactionQueryKey.list({ sca_id: id }),
       });
-      options?.onSuccess?.(data, variables, context);
+      options?.onSuccess?.(data, variables, onMutateResult, context);
     },
     ...options,
   });
@@ -160,14 +160,14 @@ export const useDebitStoreCreditAccount = (
         `/admin/store-credit-accounts/${id}/debit`,
         { body: payload, method: "POST" }
       ),
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({
         queryKey: storeCreditAccountQueryKey.detail(id),
       });
       queryClient.invalidateQueries({
         queryKey: transactionQueryKey.list({ sca_id: id }),
       });
-      options?.onSuccess?.(data, variables, context);
+      options?.onSuccess?.(data, variables, onMutateResult, context);
     },
     ...options,
   });

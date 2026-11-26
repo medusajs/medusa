@@ -434,7 +434,7 @@ function resolveModules(
           resolve:
             TEMPORARY_REDIS_MODULE_PACKAGE_NAMES[Modules.WORKFLOW_ENGINE],
           options: {
-            redis: { url: process.env.REDIS_URL },
+            redis: { redisUrl: process.env.REDIS_URL },
           },
         },
         {
@@ -595,21 +595,28 @@ function normalizeProjectConfig(
       ...http,
     },
     redisOptions: {
-      retryStrategy(retries) {
-        /**
-         * Exponentially increase delay with every retry
-         * attempt. Max to 4s
-         */
-        const delay = Math.min(Math.pow(2, retries) * 50, 4000)
-
-        /**
-         * Add a random jitter to not choke the server when multiple
-         * clients are retrying at the same time
-         */
-        const jitter = Math.floor(Math.random() * 200)
-        return delay + jitter
-      },
       ...redisOptions,
+      socket: {
+        reconnectStrategy(retries) {
+          /**
+           * Exponentially increase delay with every retry
+           * attempt. Max to 4s
+           */
+          const delay = Math.min(Math.pow(2, retries) * 50, 4000)
+
+          /**
+           * Add a random jitter to not choke the server when multiple
+           * clients are retrying at the same time
+           */
+          const jitter = Math.floor(Math.random() * 200)
+          return delay + jitter
+        },
+        ...redisOptions?.socket,
+      },
+      commandOptions: {
+        timeout: 60 * 1000,
+        ...redisOptions?.commandOptions,
+      },
     },
     sessionOptions: {
       ...(isCloud && process.env.SESSION_STORE === "dynamodb"

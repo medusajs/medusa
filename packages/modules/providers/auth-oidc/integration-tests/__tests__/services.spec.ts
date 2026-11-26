@@ -259,7 +259,7 @@ describe("OidcAuthService", () => {
       authIdentityService.getState.mockResolvedValue(validState)
       engine.exchangeCode.mockResolvedValue({
         claims: { sub: "user-1", email: "a@acme.com" },
-        tokens: {},
+        tokens: { id_token: "id-token", access_token: "access-token" },
       })
       engine.mapClaims.mockReturnValue({
         entityId: "user-1",
@@ -279,6 +279,10 @@ describe("OidcAuthService", () => {
 
       expect(result.success).toBe(true)
       expect(result.authIdentity).toEqual({ id: "authid_1" })
+      expect(result.providerData).toEqual({
+        token: { id_token: "id-token", access_token: "access-token" },
+        claims: { sub: "user-1", email: "a@acme.com" },
+      })
       expect(authIdentityService.getState).toHaveBeenCalledTimes(1)
       expect(authIdentityService.getState).toHaveBeenCalledWith("state-key")
       expect(engine.exchangeCode).toHaveBeenCalledWith(

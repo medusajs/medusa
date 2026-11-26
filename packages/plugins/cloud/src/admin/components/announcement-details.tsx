@@ -11,7 +11,7 @@ const contentClassName = [
   "[&_a]:text-ui-fg-interactive [&_a:hover]:text-ui-fg-interactive-hover",
   "[&_ul]:list-disc [&_ol]:list-decimal [&_ul]:pl-5 [&_ol]:pl-5 [&_li+li]:mt-2",
   "[&_blockquote]:border-ui-border-strong [&_blockquote]:border-l-2 [&_blockquote]:pl-3",
-  "[&_code]:txt-compact-xsmall [&_code]:bg-ui-bg-subtle [&_code]:rounded [&_code]:px-1 [&_code]:font-mono",
+  "[&_code]:txt-compact-xsmall [&_code]:bg-ui-bg-subtle [&_code]:rounded-sm [&_code]:px-1 [&_code]:font-mono",
   "[&_pre]:bg-ui-contrast-bg-base [&_pre]:text-ui-contrast-fg-primary [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:p-3",
   "[&_pre_code]:bg-transparent [&_pre_code]:p-0",
   "[&_img]:shadow-borders-base [&_img]:max-w-full [&_img]:rounded-lg",

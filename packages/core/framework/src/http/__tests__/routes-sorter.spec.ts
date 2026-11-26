@@ -195,6 +195,35 @@ describe("Routes sorter", () => {
     `)
   })
 
+  it("should sort {*splat} wildcard segments like bare * segments", () => {
+    const matchers = [
+      "/admin/products/:id",
+      "/admin/pr*ts",
+      "/admin/products",
+      "/admin/*/export",
+      "/admin/products/*",
+    ]
+    const toSplat = (matcher: string) =>
+      matcher
+        .split("/")
+        .map((segment) => {
+          return segment === "*" ? "{*splat}" : segment
+        })
+        .join("/")
+    const sort = (list: string[]) =>
+      new RoutesSorter(
+        list.map((matcher) => ({
+          matcher,
+          methods: ["GET"],
+          handler: () => {},
+        }))
+      )
+        .sort()
+        .map((route) => route.matcher)
+
+    expect(sort(matchers.map(toSplat))).toEqual(sort(matchers).map(toSplat))
+  })
+
   it("should handle all regex based routes", () => {
     const sorter = new RoutesSorter([
       {

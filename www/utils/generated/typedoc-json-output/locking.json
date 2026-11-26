@@ -1,13 +1,13 @@
 {
 	"schemaVersion": "2.0",
-	"id": 66959,
+	"id": 66997,
 	"name": "locking",
 	"variant": "project",
 	"kind": 1,
 	"flags": {},
 	"children": [
 		{
-			"id": 66960,
+			"id": 66998,
 			"name": "ILockingProvider",
 			"variant": "declaration",
 			"kind": 256,
@@ -50,7 +50,7 @@
 			},
 			"children": [
 				{
-					"id": 66961,
+					"id": 66999,
 					"name": "execute",
 					"variant": "declaration",
 					"kind": 2048,
@@ -60,12 +60,12 @@
 							"fileName": "index.ts",
 							"line": 173,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L173"
+							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L173"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66962,
+							"id": 67000,
 							"name": "execute",
 							"variant": "signature",
 							"kind": 4096,
@@ -191,12 +191,12 @@
 									"fileName": "index.ts",
 									"line": 173,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L173"
+									"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L173"
 								}
 							],
 							"typeParameters": [
 								{
-									"id": 66963,
+									"id": 67001,
 									"name": "T",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -213,7 +213,7 @@
 							],
 							"parameters": [
 								{
-									"id": 66964,
+									"id": 67002,
 									"name": "keys",
 									"variant": "param",
 									"kind": 32768,
@@ -244,7 +244,7 @@
 									}
 								},
 								{
-									"id": 66965,
+									"id": 67003,
 									"name": "job",
 									"variant": "param",
 									"kind": 32768,
@@ -260,21 +260,21 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 66966,
+											"id": 67004,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"signatures": [
 												{
-													"id": 66967,
+													"id": 67005,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
 													"flags": {},
 													"parameters": [
 														{
-															"id": 66968,
+															"id": 67006,
 															"name": "signal",
 															"variant": "param",
 															"kind": 32768,
@@ -303,7 +303,7 @@
 														"typeArguments": [
 															{
 																"type": "reference",
-																"target": 66963,
+																"target": 67001,
 																"name": "T",
 																"package": "@medusajs/types",
 																"refersToTypeParameter": true
@@ -318,7 +318,7 @@
 									}
 								},
 								{
-									"id": 66969,
+									"id": 67007,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -336,14 +336,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 66970,
+											"id": 67008,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 66971,
+													"id": 67009,
 													"name": "timeout",
 													"variant": "declaration",
 													"kind": 1024,
@@ -363,7 +363,7 @@
 															"fileName": "index.ts",
 															"line": 181,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L181"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L181"
 														}
 													],
 													"type": {
@@ -372,7 +372,7 @@
 													}
 												},
 												{
-													"id": 66972,
+													"id": 67010,
 													"name": "expire",
 													"variant": "declaration",
 													"kind": 1024,
@@ -392,7 +392,7 @@
 															"fileName": "index.ts",
 															"line": 187,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L187"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L187"
 														}
 													],
 													"type": {
@@ -405,8 +405,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														66971,
-														66972
+														67009,
+														67010
 													]
 												}
 											]
@@ -414,7 +414,7 @@
 									}
 								},
 								{
-									"id": 66973,
+									"id": 67011,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -451,7 +451,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 66963,
+										"target": 67001,
 										"name": "T",
 										"package": "@medusajs/types",
 										"refersToTypeParameter": true
@@ -464,7 +464,7 @@
 					]
 				},
 				{
-					"id": 66974,
+					"id": 67012,
 					"name": "acquire",
 					"variant": "declaration",
 					"kind": 2048,
@@ -474,12 +474,12 @@
 							"fileName": "index.ts",
 							"line": 265,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L265"
+							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L265"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66975,
+							"id": 67013,
 							"name": "acquire",
 							"variant": "signature",
 							"kind": 4096,
@@ -510,7 +510,7 @@
 										"kind": "inline-tag",
 										"tag": "@link",
 										"text": "execute",
-										"target": 66961
+										"target": 66999
 									},
 									{
 										"kind": "text",
@@ -615,12 +615,12 @@
 									"fileName": "index.ts",
 									"line": 265,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L265"
+									"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L265"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66976,
+									"id": 67014,
 									"name": "keys",
 									"variant": "param",
 									"kind": 32768,
@@ -651,7 +651,7 @@
 									}
 								},
 								{
-									"id": 66977,
+									"id": 67015,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -669,14 +669,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 66978,
+											"id": 67016,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 66979,
+													"id": 67017,
 													"name": "ownerId",
 													"variant": "declaration",
 													"kind": 1024,
@@ -696,7 +696,7 @@
 															"fileName": "index.ts",
 															"line": 271,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L271"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L271"
 														}
 													],
 													"type": {
@@ -714,7 +714,7 @@
 													}
 												},
 												{
-													"id": 66980,
+													"id": 67018,
 													"name": "expire",
 													"variant": "declaration",
 													"kind": 1024,
@@ -734,7 +734,7 @@
 															"fileName": "index.ts",
 															"line": 276,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L276"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L276"
 														}
 													],
 													"type": {
@@ -747,8 +747,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														66979,
-														66980
+														67017,
+														67018
 													]
 												}
 											]
@@ -756,7 +756,7 @@
 									}
 								},
 								{
-									"id": 66981,
+									"id": 67019,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -803,7 +803,7 @@
 					]
 				},
 				{
-					"id": 66982,
+					"id": 67020,
 					"name": "release",
 					"variant": "declaration",
 					"kind": 2048,
@@ -813,12 +813,12 @@
 							"fileName": "index.ts",
 							"line": 324,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L324"
+							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L324"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66983,
+							"id": 67021,
 							"name": "release",
 							"variant": "signature",
 							"kind": 4096,
@@ -904,12 +904,12 @@
 									"fileName": "index.ts",
 									"line": 324,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L324"
+									"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L324"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66984,
+									"id": 67022,
 									"name": "keys",
 									"variant": "param",
 									"kind": 32768,
@@ -940,7 +940,7 @@
 									}
 								},
 								{
-									"id": 66985,
+									"id": 67023,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -958,14 +958,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 66986,
+											"id": 67024,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 66987,
+													"id": 67025,
 													"name": "ownerId",
 													"variant": "declaration",
 													"kind": 1024,
@@ -985,7 +985,7 @@
 															"fileName": "index.ts",
 															"line": 331,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L331"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L331"
 														}
 													],
 													"type": {
@@ -1007,7 +1007,7 @@
 												{
 													"title": "Properties",
 													"children": [
-														66987
+														67025
 													]
 												}
 											]
@@ -1015,7 +1015,7 @@
 									}
 								},
 								{
-									"id": 66988,
+									"id": 67026,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -1062,7 +1062,7 @@
 					]
 				},
 				{
-					"id": 66989,
+					"id": 67027,
 					"name": "releaseAll",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1072,12 +1072,12 @@
 							"fileName": "index.ts",
 							"line": 364,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L364"
+							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L364"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66990,
+							"id": 67028,
 							"name": "releaseAll",
 							"variant": "signature",
 							"kind": 4096,
@@ -1146,12 +1146,12 @@
 									"fileName": "index.ts",
 									"line": 364,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L364"
+									"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L364"
 								}
 							],
 							"parameters": [
 								{
-									"id": 66991,
+									"id": 67029,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -1169,14 +1169,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 66992,
+											"id": 67030,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 66993,
+													"id": 67031,
 													"name": "ownerId",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1196,7 +1196,7 @@
 															"fileName": "index.ts",
 															"line": 369,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L369"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L369"
 														}
 													],
 													"type": {
@@ -1218,7 +1218,7 @@
 												{
 													"title": "Properties",
 													"children": [
-														66993
+														67031
 													]
 												}
 											]
@@ -1226,7 +1226,7 @@
 									}
 								},
 								{
-									"id": 66994,
+									"id": 67032,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -1277,10 +1277,10 @@
 				{
 					"title": "Methods",
 					"children": [
-						66961,
-						66974,
-						66982,
-						66989
+						66999,
+						67012,
+						67020,
+						67027
 					]
 				}
 			],
@@ -1289,19 +1289,19 @@
 					"fileName": "index.ts",
 					"line": 63,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L63"
+					"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L63"
 				}
 			]
 		},
 		{
-			"id": 66995,
+			"id": 67033,
 			"name": "ILockingModule",
 			"variant": "declaration",
 			"kind": 256,
 			"flags": {},
 			"children": [
 				{
-					"id": 66996,
+					"id": 67034,
 					"name": "execute",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1311,12 +1311,12 @@
 							"fileName": "index.ts",
 							"line": 411,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L411"
+							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L411"
 						}
 					],
 					"signatures": [
 						{
-							"id": 66997,
+							"id": 67035,
 							"name": "execute",
 							"variant": "signature",
 							"kind": 4096,
@@ -1390,12 +1390,12 @@
 									"fileName": "index.ts",
 									"line": 411,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L411"
+									"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L411"
 								}
 							],
 							"typeParameters": [
 								{
-									"id": 66998,
+									"id": 67036,
 									"name": "T",
 									"variant": "typeParam",
 									"kind": 131072,
@@ -1412,7 +1412,7 @@
 							],
 							"parameters": [
 								{
-									"id": 66999,
+									"id": 67037,
 									"name": "keys",
 									"variant": "param",
 									"kind": 32768,
@@ -1443,7 +1443,7 @@
 									}
 								},
 								{
-									"id": 67000,
+									"id": 67038,
 									"name": "job",
 									"variant": "param",
 									"kind": 32768,
@@ -1459,21 +1459,21 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 67001,
+											"id": 67039,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"signatures": [
 												{
-													"id": 67002,
+													"id": 67040,
 													"name": "__type",
 													"variant": "signature",
 													"kind": 4096,
 													"flags": {},
 													"parameters": [
 														{
-															"id": 67003,
+															"id": 67041,
 															"name": "signal",
 															"variant": "param",
 															"kind": 32768,
@@ -1502,7 +1502,7 @@
 														"typeArguments": [
 															{
 																"type": "reference",
-																"target": 66998,
+																"target": 67036,
 																"name": "T",
 																"package": "@medusajs/types",
 																"refersToTypeParameter": true
@@ -1517,7 +1517,7 @@
 									}
 								},
 								{
-									"id": 67004,
+									"id": 67042,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -1535,14 +1535,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 67005,
+											"id": 67043,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 67006,
+													"id": 67044,
 													"name": "timeout",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1578,7 +1578,7 @@
 															"fileName": "index.ts",
 															"line": 420,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L420"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L420"
 														}
 													],
 													"type": {
@@ -1587,7 +1587,7 @@
 													}
 												},
 												{
-													"id": 67007,
+													"id": 67045,
 													"name": "expire",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1623,7 +1623,7 @@
 															"fileName": "index.ts",
 															"line": 431,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L431"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L431"
 														}
 													],
 													"type": {
@@ -1632,7 +1632,7 @@
 													}
 												},
 												{
-													"id": 67008,
+													"id": 67046,
 													"name": "provider",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1660,7 +1660,7 @@
 															"fileName": "index.ts",
 															"line": 435,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L435"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L435"
 														}
 													],
 													"type": {
@@ -1673,9 +1673,9 @@
 												{
 													"title": "Properties",
 													"children": [
-														67006,
-														67007,
-														67008
+														67044,
+														67045,
+														67046
 													]
 												}
 											]
@@ -1683,7 +1683,7 @@
 									}
 								},
 								{
-									"id": 67009,
+									"id": 67047,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -1720,7 +1720,7 @@
 								"typeArguments": [
 									{
 										"type": "reference",
-										"target": 66998,
+										"target": 67036,
 										"name": "T",
 										"package": "@medusajs/types",
 										"refersToTypeParameter": true
@@ -1733,7 +1733,7 @@
 					]
 				},
 				{
-					"id": 67010,
+					"id": 67048,
 					"name": "acquire",
 					"variant": "declaration",
 					"kind": 2048,
@@ -1743,12 +1743,12 @@
 							"fileName": "index.ts",
 							"line": 475,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L475"
+							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L475"
 						}
 					],
 					"signatures": [
 						{
-							"id": 67011,
+							"id": 67049,
 							"name": "acquire",
 							"variant": "signature",
 							"kind": 4096,
@@ -1862,12 +1862,12 @@
 									"fileName": "index.ts",
 									"line": 475,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L475"
+									"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L475"
 								}
 							],
 							"parameters": [
 								{
-									"id": 67012,
+									"id": 67050,
 									"name": "keys",
 									"variant": "param",
 									"kind": 32768,
@@ -1898,7 +1898,7 @@
 									}
 								},
 								{
-									"id": 67013,
+									"id": 67051,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -1916,14 +1916,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 67014,
+											"id": 67052,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 67015,
+													"id": 67053,
 													"name": "ownerId",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1943,7 +1943,7 @@
 															"fileName": "index.ts",
 															"line": 481,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L481"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L481"
 														}
 													],
 													"type": {
@@ -1961,7 +1961,7 @@
 													}
 												},
 												{
-													"id": 67016,
+													"id": 67054,
 													"name": "expire",
 													"variant": "declaration",
 													"kind": 1024,
@@ -1981,7 +1981,7 @@
 															"fileName": "index.ts",
 															"line": 486,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L486"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L486"
 														}
 													],
 													"type": {
@@ -1990,7 +1990,7 @@
 													}
 												},
 												{
-													"id": 67017,
+													"id": 67055,
 													"name": "provider",
 													"variant": "declaration",
 													"kind": 1024,
@@ -2018,7 +2018,7 @@
 															"fileName": "index.ts",
 															"line": 490,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L490"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L490"
 														}
 													],
 													"type": {
@@ -2031,9 +2031,9 @@
 												{
 													"title": "Properties",
 													"children": [
-														67015,
-														67016,
-														67017
+														67053,
+														67054,
+														67055
 													]
 												}
 											]
@@ -2041,7 +2041,7 @@
 									}
 								},
 								{
-									"id": 67018,
+									"id": 67056,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -2088,7 +2088,7 @@
 					]
 				},
 				{
-					"id": 67019,
+					"id": 67057,
 					"name": "release",
 					"variant": "declaration",
 					"kind": 2048,
@@ -2098,12 +2098,12 @@
 							"fileName": "index.ts",
 							"line": 525,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L525"
+							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L525"
 						}
 					],
 					"signatures": [
 						{
-							"id": 67020,
+							"id": 67058,
 							"name": "release",
 							"variant": "signature",
 							"kind": 4096,
@@ -2209,12 +2209,12 @@
 									"fileName": "index.ts",
 									"line": 525,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L525"
+									"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L525"
 								}
 							],
 							"parameters": [
 								{
-									"id": 67021,
+									"id": 67059,
 									"name": "keys",
 									"variant": "param",
 									"kind": 32768,
@@ -2245,7 +2245,7 @@
 									}
 								},
 								{
-									"id": 67022,
+									"id": 67060,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -2263,14 +2263,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 67023,
+											"id": 67061,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 67024,
+													"id": 67062,
 													"name": "ownerId",
 													"variant": "declaration",
 													"kind": 1024,
@@ -2290,7 +2290,7 @@
 															"fileName": "index.ts",
 															"line": 532,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L532"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L532"
 														}
 													],
 													"type": {
@@ -2308,7 +2308,7 @@
 													}
 												},
 												{
-													"id": 67025,
+													"id": 67063,
 													"name": "provider",
 													"variant": "declaration",
 													"kind": 1024,
@@ -2336,7 +2336,7 @@
 															"fileName": "index.ts",
 															"line": 536,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L536"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L536"
 														}
 													],
 													"type": {
@@ -2349,8 +2349,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														67024,
-														67025
+														67062,
+														67063
 													]
 												}
 											]
@@ -2358,7 +2358,7 @@
 									}
 								},
 								{
-									"id": 67026,
+									"id": 67064,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -2405,7 +2405,7 @@
 					]
 				},
 				{
-					"id": 67027,
+					"id": 67065,
 					"name": "releaseAll",
 					"variant": "declaration",
 					"kind": 2048,
@@ -2415,12 +2415,12 @@
 							"fileName": "index.ts",
 							"line": 568,
 							"character": 2,
-							"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L568"
+							"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L568"
 						}
 					],
 					"signatures": [
 						{
-							"id": 67028,
+							"id": 67066,
 							"name": "releaseAll",
 							"variant": "signature",
 							"kind": 4096,
@@ -2493,12 +2493,12 @@
 									"fileName": "index.ts",
 									"line": 568,
 									"character": 2,
-									"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L568"
+									"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L568"
 								}
 							],
 							"parameters": [
 								{
-									"id": 67029,
+									"id": 67067,
 									"name": "args",
 									"variant": "param",
 									"kind": 32768,
@@ -2516,14 +2516,14 @@
 									"type": {
 										"type": "reflection",
 										"declaration": {
-											"id": 67030,
+											"id": 67068,
 											"name": "__type",
 											"variant": "declaration",
 											"kind": 65536,
 											"flags": {},
 											"children": [
 												{
-													"id": 67031,
+													"id": 67069,
 													"name": "ownerId",
 													"variant": "declaration",
 													"kind": 1024,
@@ -2543,7 +2543,7 @@
 															"fileName": "index.ts",
 															"line": 573,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L573"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L573"
 														}
 													],
 													"type": {
@@ -2561,7 +2561,7 @@
 													}
 												},
 												{
-													"id": 67032,
+													"id": 67070,
 													"name": "provider",
 													"variant": "declaration",
 													"kind": 1024,
@@ -2589,7 +2589,7 @@
 															"fileName": "index.ts",
 															"line": 577,
 															"character": 6,
-															"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L577"
+															"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L577"
 														}
 													],
 													"type": {
@@ -2602,8 +2602,8 @@
 												{
 													"title": "Properties",
 													"children": [
-														67031,
-														67032
+														67069,
+														67070
 													]
 												}
 											]
@@ -2611,7 +2611,7 @@
 									}
 								},
 								{
-									"id": 67033,
+									"id": 67071,
 									"name": "sharedContext",
 									"variant": "param",
 									"kind": 32768,
@@ -2662,10 +2662,10 @@
 				{
 					"title": "Methods",
 					"children": [
-						66996,
-						67010,
-						67019,
-						67027
+						67034,
+						67048,
+						67057,
+						67065
 					]
 				}
 			],
@@ -2674,7 +2674,7 @@
 					"fileName": "index.ts",
 					"line": 375,
 					"character": 17,
-					"url": "https://github.com/medusajs/medusa/blob/2ed5d39e343a7794363a90c57d70e89f74a75fde/packages/core/types/src/locking/index.ts#L375"
+					"url": "https://github.com/medusajs/medusa/blob/6369161c5ee22c1ffc92859838d6e72b54de3fc4/packages/core/types/src/locking/index.ts#L375"
 				}
 			]
 		}
@@ -2683,242 +2683,52 @@
 		{
 			"title": "Interfaces",
 			"children": [
-				66960,
-				66995
+				66998,
+				67033
 			]
 		}
 	],
 	"packageName": "@medusajs/types",
 	"symbolIdMap": {
-		"66959": {
+		"66997": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
 			"qualifiedName": ""
 		},
-		"66960": {
+		"66998": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
 			"qualifiedName": "ILockingProvider"
 		},
-		"66961": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingProvider.execute"
-		},
-		"66962": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingProvider.execute"
-		},
-		"66963": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "T"
-		},
-		"66964": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "keys"
-		},
-		"66965": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "job"
-		},
-		"66966": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type"
-		},
-		"66967": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type"
-		},
-		"66968": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "signal"
-		},
-		"66969": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "args"
-		},
-		"66970": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type"
-		},
-		"66971": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type.timeout"
-		},
-		"66972": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type.expire"
-		},
-		"66973": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "sharedContext"
-		},
-		"66974": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingProvider.acquire"
-		},
-		"66975": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingProvider.acquire"
-		},
-		"66976": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "keys"
-		},
-		"66977": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "args"
-		},
-		"66978": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type"
-		},
-		"66979": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type.ownerId"
-		},
-		"66980": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type.expire"
-		},
-		"66981": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "sharedContext"
-		},
-		"66982": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingProvider.release"
-		},
-		"66983": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingProvider.release"
-		},
-		"66984": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "keys"
-		},
-		"66985": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "args"
-		},
-		"66986": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type"
-		},
-		"66987": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type.ownerId"
-		},
-		"66988": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "sharedContext"
-		},
-		"66989": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingProvider.releaseAll"
-		},
-		"66990": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingProvider.releaseAll"
-		},
-		"66991": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "args"
-		},
-		"66992": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type"
-		},
-		"66993": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type.ownerId"
-		},
-		"66994": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "sharedContext"
-		},
-		"66995": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingModule"
-		},
-		"66996": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingModule.execute"
-		},
-		"66997": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingModule.execute"
-		},
-		"66998": {
-			"packageName": "@medusajs/types",
-			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "T"
-		},
 		"66999": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "keys"
+			"qualifiedName": "ILockingProvider.execute"
 		},
 		"67000": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "job"
+			"qualifiedName": "ILockingProvider.execute"
 		},
 		"67001": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "T"
 		},
 		"67002": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "keys"
 		},
 		"67003": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "signal"
+			"qualifiedName": "job"
 		},
 		"67004": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "args"
+			"qualifiedName": "__type"
 		},
 		"67005": {
 			"packageName": "@medusajs/types",
@@ -2928,102 +2738,102 @@
 		"67006": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type.timeout"
+			"qualifiedName": "signal"
 		},
 		"67007": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type.expire"
+			"qualifiedName": "args"
 		},
 		"67008": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type.provider"
+			"qualifiedName": "__type"
 		},
 		"67009": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "sharedContext"
+			"qualifiedName": "__type.timeout"
 		},
 		"67010": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingModule.acquire"
+			"qualifiedName": "__type.expire"
 		},
 		"67011": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingModule.acquire"
+			"qualifiedName": "sharedContext"
 		},
 		"67012": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "keys"
+			"qualifiedName": "ILockingProvider.acquire"
 		},
 		"67013": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "args"
+			"qualifiedName": "ILockingProvider.acquire"
 		},
 		"67014": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "keys"
 		},
 		"67015": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type.ownerId"
+			"qualifiedName": "args"
 		},
 		"67016": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type.expire"
+			"qualifiedName": "__type"
 		},
 		"67017": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type.provider"
+			"qualifiedName": "__type.ownerId"
 		},
 		"67018": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "sharedContext"
+			"qualifiedName": "__type.expire"
 		},
 		"67019": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingModule.release"
+			"qualifiedName": "sharedContext"
 		},
 		"67020": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingModule.release"
+			"qualifiedName": "ILockingProvider.release"
 		},
 		"67021": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "keys"
+			"qualifiedName": "ILockingProvider.release"
 		},
 		"67022": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "args"
+			"qualifiedName": "keys"
 		},
 		"67023": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type"
+			"qualifiedName": "args"
 		},
 		"67024": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type.ownerId"
+			"qualifiedName": "__type"
 		},
 		"67025": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type.provider"
+			"qualifiedName": "__type.ownerId"
 		},
 		"67026": {
 			"packageName": "@medusajs/types",
@@ -3033,12 +2843,12 @@
 		"67027": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingModule.releaseAll"
+			"qualifiedName": "ILockingProvider.releaseAll"
 		},
 		"67028": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "ILockingModule.releaseAll"
+			"qualifiedName": "ILockingProvider.releaseAll"
 		},
 		"67029": {
 			"packageName": "@medusajs/types",
@@ -3058,9 +2868,199 @@
 		"67032": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
-			"qualifiedName": "__type.provider"
+			"qualifiedName": "sharedContext"
 		},
 		"67033": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "ILockingModule"
+		},
+		"67034": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "ILockingModule.execute"
+		},
+		"67035": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "ILockingModule.execute"
+		},
+		"67036": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "T"
+		},
+		"67037": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "keys"
+		},
+		"67038": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "job"
+		},
+		"67039": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type"
+		},
+		"67040": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type"
+		},
+		"67041": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "signal"
+		},
+		"67042": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "args"
+		},
+		"67043": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type"
+		},
+		"67044": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type.timeout"
+		},
+		"67045": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type.expire"
+		},
+		"67046": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type.provider"
+		},
+		"67047": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"67048": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "ILockingModule.acquire"
+		},
+		"67049": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "ILockingModule.acquire"
+		},
+		"67050": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "keys"
+		},
+		"67051": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "args"
+		},
+		"67052": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type"
+		},
+		"67053": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type.ownerId"
+		},
+		"67054": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type.expire"
+		},
+		"67055": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type.provider"
+		},
+		"67056": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"67057": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "ILockingModule.release"
+		},
+		"67058": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "ILockingModule.release"
+		},
+		"67059": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "keys"
+		},
+		"67060": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "args"
+		},
+		"67061": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type"
+		},
+		"67062": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type.ownerId"
+		},
+		"67063": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type.provider"
+		},
+		"67064": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "sharedContext"
+		},
+		"67065": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "ILockingModule.releaseAll"
+		},
+		"67066": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "ILockingModule.releaseAll"
+		},
+		"67067": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "args"
+		},
+		"67068": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type"
+		},
+		"67069": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type.ownerId"
+		},
+		"67070": {
+			"packageName": "@medusajs/types",
+			"packagePath": "src/locking/index.ts",
+			"qualifiedName": "__type.provider"
+		},
+		"67071": {
 			"packageName": "@medusajs/types",
 			"packagePath": "src/locking/index.ts",
 			"qualifiedName": "sharedContext"
@@ -3071,7 +3071,7 @@
 			"1": "../../../../packages/core/types/src/locking/index.ts"
 		},
 		"reflections": {
-			"1": 66959
+			"1": 66997
 		}
 	}
 }

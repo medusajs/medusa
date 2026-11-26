@@ -1,9 +1,13 @@
+import { DataTableRowData } from "@medusajs/ui"
 import { useCallback } from "react"
 import { FieldValues, Path, PathValue } from "react-hook-form"
 import { DataGridBulkUpdateCommand, DataGridMatrix } from "../models"
 import { DataGridCoordinates } from "../types"
 
-type UseDataGridMouseUpEventOptions<TData, TFieldValues extends FieldValues> = {
+type UseDataGridMouseUpEventOptions<
+  TData extends DataTableRowData,
+  TFieldValues extends FieldValues,
+> = {
   matrix: DataGridMatrix<TData, TFieldValues>
   anchor: DataGridCoordinates | null
   dragEnd: DataGridCoordinates | null
@@ -23,7 +27,7 @@ type UseDataGridMouseUpEventOptions<TData, TFieldValues extends FieldValues> = {
 }
 
 export const useDataGridMouseUpEvent = <
-  TData,
+  TData extends DataTableRowData,
   TFieldValues extends FieldValues,
 >({
   matrix,

@@ -92,7 +92,7 @@ const Item = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
       <FormItemContext.Provider value={{ id }}>
         <div
           ref={ref}
-          className={clx("flex flex-col space-y-2", className)}
+          className={clx("flex flex-col gap-y-2", className)}
           {...props}
         />
       </FormItemContext.Provider>

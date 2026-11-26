@@ -3093,6 +3093,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Journaux d'audit",
+    "subtitle": "Consultez qui a fait quoi dans votre boutique, sur quelle ressource, et avec quel résultat.",
+    "impersonatedBy": "Impersonné par {{id}}",
+    "outcome": {
+      "succeeded": "Réussi",
+      "denied": "Refusé",
+      "failed": "Échoué"
+    },
+    "fields": {
+      "time": "Heure",
+      "actor": "Acteur",
+      "actorType": "Type d'acteur",
+      "actorId": "ID de l'acteur",
+      "impersonatorId": "ID de l'impersonateur",
+      "action": "Action",
+      "resource": "Ressource",
+      "resourceType": "Type de ressource",
+      "resourceId": "ID de la ressource",
+      "outcome": "Résultat",
+      "startedAt": "Démarré à",
+      "endedAt": "Terminé à",
+      "requestData": "Données de la requête",
+      "responseData": "Données de la réponse"
+    },
+    "request": {
+      "header": "Requête",
+      "method": "Méthode",
+      "route": "Route",
+      "path": "Chemin",
+      "statusCode": "Code de statut",
+      "requestId": "ID de la requête",
+      "ipAddress": "Adresse IP",
+      "userAgent": "Agent utilisateur",
+      "none": "Ce journal d'audit n'a pas été enregistré pour une requête API."
+    },
+    "list": {
+      "empty": {
+        "heading": "Aucun journal d'audit pour l'instant",
+        "description": "Les actions effectuées dans votre boutique apparaîtront ici."
+      },
+      "filtered": {
+        "heading": "Aucun résultat",
+        "description": "Aucun journal d'audit ne correspond aux critères de filtre actuels."
+      },
+      "searchError": {
+        "heading": "Échec de la recherche"
+      }
+    }
+  },
   "translations": {
     "domain": "Traductions",
     "settings": {
@@ -3693,6 +3743,10 @@
     "domain": "Libellés de propriété",
     "title": "Libellés de propriété",
     "subtitle": "Gérer les libellés de propriété personnalisés pour les tableaux configurables de vos entités.",
+    "editTitle": "Modifier les libellés de propriété",
+    "editDescription": "Personnalisez la façon dont les noms de propriété sont affichés pour {{entity}}",
+    "customLabel": "Libellé personnalisé",
+    "updateSuccess": "Libellés de propriété mis à jour avec succès",
     "fields": {
       "module": "Module",
       "model": "Modèle",
@@ -3740,6 +3794,9 @@
   "fields": {
     "actions": "Actions",
     "amount": "Montant",
+    "yes": "Oui",
+    "no": "Non",
+    "field": "Champ",
     "reference": "Référence",
     "reference_id": "ID de référence",
     "refundAmount": "Montant de remboursement",

@@ -3091,6 +3091,56 @@
       }
     }
   },
+  "auditLogs": {
+    "domain": "Auditlogboeken",
+    "subtitle": "Bekijk wie wat heeft gedaan in uw winkel, op welke resource, en hoe het is afgelopen.",
+    "impersonatedBy": "Nagebootst door {{id}}",
+    "outcome": {
+      "succeeded": "Geslaagd",
+      "denied": "Geweigerd",
+      "failed": "Mislukt"
+    },
+    "fields": {
+      "time": "Tijd",
+      "actor": "Acteur",
+      "actorType": "Acteurtype",
+      "actorId": "Acteur-ID",
+      "impersonatorId": "Nagebootste ID",
+      "action": "Actie",
+      "resource": "Resource",
+      "resourceType": "Resourcetype",
+      "resourceId": "Resource-ID",
+      "outcome": "Uitkomst",
+      "startedAt": "Gestart om",
+      "endedAt": "Beëindigd om",
+      "requestData": "Verzoekgegevens",
+      "responseData": "Antwoordgegevens"
+    },
+    "request": {
+      "header": "Verzoek",
+      "method": "Methode",
+      "route": "Route",
+      "path": "Pad",
+      "statusCode": "Statuscode",
+      "requestId": "Verzoek-ID",
+      "ipAddress": "IP-adres",
+      "userAgent": "Gebruikersagent",
+      "none": "Dit auditlogboek is niet opgeslagen voor een API-verzoek."
+    },
+    "list": {
+      "empty": {
+        "heading": "Nog geen auditlogboeken",
+        "description": "Acties uitgevoerd in uw winkel worden hier weergegeven."
+      },
+      "filtered": {
+        "heading": "Geen resultaten",
+        "description": "Geen auditlogboeken komen overeen met de huidige filtercriteria."
+      },
+      "searchError": {
+        "heading": "Zoeken mislukt"
+      }
+    }
+  },
   "translations": {
     "domain": "Vertalingen",
     "settings": {
@@ -3691,6 +3741,10 @@
     "domain": "Eigenschaplabels",
     "title": "Eigenschaplabels",
     "subtitle": "Beheer aangepaste eigenschaplabels voor configureerbare tabellen van uw entiteiten.",
+    "editTitle": "Eigenschapslabels bewerken",
+    "editDescription": "Pas aan hoe eigenschapsnamen worden weergegeven voor {{entity}}",
+    "customLabel": "Aangepast label",
+    "updateSuccess": "Eigenschapslabels succesvol bijgewerkt",
     "fields": {
       "module": "Module",
       "model": "Model",
@@ -3738,6 +3792,9 @@
   "fields": {
     "actions": "Acties",
     "amount": "Bedrag",
+    "yes": "Ja",
+    "no": "Nee",
+    "field": "Veld",
     "reference": "Referentie",
     "reference_id": "Referentie-ID",
     "refundAmount": "Terug te betalen bedrag",

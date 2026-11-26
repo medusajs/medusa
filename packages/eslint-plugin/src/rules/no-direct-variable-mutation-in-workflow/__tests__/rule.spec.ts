@@ -71,6 +71,19 @@ ruleTester.run("no-direct-variable-mutation-in-workflow", rule, {
         })
       `,
     },
+    // Assigning a hook created inside a when().then() callback is fine.
+    {
+      code: `
+        import { createHook, createWorkflow, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
+        createWorkflow("my-workflow", (input) => {
+          let validated
+          when("is-valid", { input }, (data) => data.input.valid).then(() => {
+            validated = createHook("validated", { input })
+          })
+          return new WorkflowResponse(input, { hooks: [validated] })
+        })
+      `,
+    },
     // Not the workflows-sdk import — nothing tracked.
     {
       code: `
@@ -185,6 +198,32 @@ ruleTester.run("no-direct-variable-mutation-in-workflow", rule, {
             result.count = 10
           })
           return result
+        })
+      `,
+      errors: [{ messageId: "mutateInWorkflow" }],
+    },
+    // Assigning a hook directly in the constructor is still flagged.
+    {
+      code: `
+        import { createHook, createWorkflow } from "@medusajs/framework/workflows-sdk"
+        createWorkflow("my-workflow", (input) => {
+          let validated
+          validated = createHook("validated", { input })
+          return input
+        })
+      `,
+      errors: [{ messageId: "mutateInWorkflow" }],
+    },
+    // Assigning a hook to a property inside when().then() is still flagged.
+    {
+      code: `
+        import { createHook, createWorkflow, when } from "@medusajs/framework/workflows-sdk"
+        createWorkflow("my-workflow", (input) => {
+          const hooks = {}
+          when("is-valid", { input }, (data) => data.input.valid).then(() => {
+            hooks.validated = createHook("validated", { input })
+          })
+          return input
         })
       `,
       errors: [{ messageId: "mutateInWorkflow" }],

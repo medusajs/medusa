@@ -1,5 +1,35 @@
 # @medusajs/dashboard
 
+## 2.23.0
+
+### Minor Changes
+
+- [#17628](https://github.com/medusajs/medusa/pull/17628) [`b1911eb`](https://github.com/medusajs/medusa/commit/b1911ebf3aef01dfebe897133dd8c4a320d297a1) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(dashboard,ui,icons,medusa,draft-order,loyalty-plugin): update react to v19
+
+- [#17672](https://github.com/medusajs/medusa/pull/17672) [`940553e`](https://github.com/medusajs/medusa/commit/940553ec2da5d6cb157c3380106e121b79b1a082) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(ui,dashboard,loyalty-plugin): update @tanstack/react-table to v9
+
+- [#17568](https://github.com/medusajs/medusa/pull/17568) [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(deps): update pinned dependencies (fdir 6.5.0, http-errors 2.0.1, radix-ui 1.8.1, react-hook-form 7.92.0, react-router-dom 7.18.5, @tanstack/react-query 5.107.1, zod 4.6.7, i18next 27.1.1, react-i18next 18.0.1, i18next-browser-languagedetector 8.3.0), fix new data table filter popovers staying hidden with radix-ui 1.8.1, forward all mutation callback arguments in admin hooks, and translate loyalty plugin validation messages with the dashboard's i18n instance
+
+- [#17632](https://github.com/medusajs/medusa/pull/17632) [`4f1baa0`](https://github.com/medusajs/medusa/commit/4f1baa07fb117a900400a61ebb2e7c6729717e04) Thanks [@shahednasser](https://github.com/shahednasser)! - chore: update to Tailwind CSS 4. The admin and admin extensions now compile with Tailwind CSS 4
+
+### Patch Changes
+
+- [#17872](https://github.com/medusajs/medusa/pull/17872) [`a80733d`](https://github.com/medusajs/medusa/commit/a80733d0aa30dd1b15428b9c52c92eac4723f2b2) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa,types,dashboard): guard admin-wide operations with dedicated RBAC policies instead of `*:*`, and require `search_index:read` to list search indexes
+
+- [#17919](https://github.com/medusajs/medusa/pull/17919) [`f70d4c7`](https://github.com/medusajs/medusa/commit/f70d4c7bbdcccac69ebf0629fb00e11468f068c1) Thanks [@sradevski](https://github.com/sradevski)! - feat(dashboard): audit log pages
+
+- [#17888](https://github.com/medusajs/medusa/pull/17888) [`63b9624`](https://github.com/medusajs/medusa/commit/63b9624a124001966a1b47c68e5dc7652d697de9) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): keep search focus on the inventory, reservation and location lists
+
+- [#17859](https://github.com/medusajs/medusa/pull/17859) [`858968d`](https://github.com/medusajs/medusa/commit/858968de74908cccc17a44ecf318b4d605847b2c) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): keep list page and filters on back navigation with view configurations
+
+- [#17896](https://github.com/medusajs/medusa/pull/17896) [`b012802`](https://github.com/medusajs/medusa/commit/b012802716924f04301d12ef49ca71c83c0e5daf) Thanks [@medusa-os-bot](https://github.com/apps/medusa-os-bot)! - fix(dashboard): add missing boolean and property label translation keys
+
+- Updated dependencies [[`f70d4c7`](https://github.com/medusajs/medusa/commit/f70d4c7bbdcccac69ebf0629fb00e11468f068c1), [`b1911eb`](https://github.com/medusajs/medusa/commit/b1911ebf3aef01dfebe897133dd8c4a320d297a1), [`940553e`](https://github.com/medusajs/medusa/commit/940553ec2da5d6cb157c3380106e121b79b1a082), [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50), [`cc31b24`](https://github.com/medusajs/medusa/commit/cc31b247bce8640a634aadf7ece469cbda020c8c), [`19a7e08`](https://github.com/medusajs/medusa/commit/19a7e083dcb8727cfe3e1c0a1cfdfb4b86595d33)]:
+  - @medusajs/admin-shared@2.23.0
+  - @medusajs/ui@4.3.0
+  - @medusajs/icons@2.23.0
+  - @medusajs/js-sdk@2.23.0
+
 ## 2.22.7
 
 ### Patch Changes

@@ -1,5 +1,24 @@
 # @medusajs/utils
 
+## 2.23.0
+
+### Minor Changes
+
+- [#17588](https://github.com/medusajs/medusa/pull/17588) [`45ab5b6`](https://github.com/medusajs/medusa/commit/45ab5b68c954ea7c000952a5e3263c60deadfa99) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(framework,types,utils): update connect-redis to v11 and use node-redis for the Redis session store. `projectConfig.redisOptions` now takes `redis` (node-redis) client options instead of `ioredis` options.
+
+- [#17614](https://github.com/medusajs/medusa/pull/17614) [`6d76b3b`](https://github.com/medusajs/medusa/commit/6d76b3b55154896d732d4f8ac6fc948bd36d958c) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(medusa,framework,utils,types,test-utils,admin-bundler,cli,loyalty-plugin): update express to v5
+
+### Patch Changes
+
+- [#17823](https://github.com/medusajs/medusa/pull/17823) [`182cf74`](https://github.com/medusajs/medusa/commit/182cf748cb162ec177df8d9e912319a77ee83111) Thanks [@sradevski](https://github.com/sradevski)! - feat(utils,types,audit,rbac): add `MEDUSA_CLOUD_AUDIT_ENDPOINT`, register the Audit and RBAC Modules by default on Medusa Cloud when the license covers `audit` and `rbac`
+
+- [#17931](https://github.com/medusajs/medusa/pull/17931) [`a0c4da4`](https://github.com/medusajs/medusa/commit/a0c4da4ddd112d663679d09b7ba759ca006b7314) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(utils): pass `redisUrl` instead of the deprecated `url` option to the Redis Workflow Engine in `defineConfig`
+
+- [#17580](https://github.com/medusajs/medusa/pull/17580) [`d42343a`](https://github.com/medusajs/medusa/commit/d42343ac7c17f6c79b4999feb49d6574b23cbde3) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(workflow-engine-redis,event-bus-redis,utils,cache-redis,caching-redis,locking-redis): update bullmq to 6.7.6 and ioredis to 6.0.0, move scheduled workflows to job schedulers, and lower `EventPriority.LOWEST` to BullMQ's new maximum
+
+- Updated dependencies [[`2086f3d`](https://github.com/medusajs/medusa/commit/2086f3d573a1357815007c53f6a842227731898f), [`840b266`](https://github.com/medusajs/medusa/commit/840b266aaff7fa425a59a28fe154e7aef8409f50)]:
+  - @medusajs/deps@2.23.0
+
 ## 2.22.7
 
 ### Patch Changes

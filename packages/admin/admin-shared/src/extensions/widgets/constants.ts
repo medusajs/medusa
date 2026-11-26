@@ -365,6 +365,8 @@ const LEGACY_POLICY_INJECTION_ZONES = [
 
 const POLICY_INJECTION_ZONES = ["policy.details", "policy.list"] as const
 
+const AUDIT_LOG_INJECTION_ZONES = ["audit_log.details", "audit_log.list"] as const
+
 const LEGACY_DRAFT_ORDER_INJECTION_ZONES = [
   "draft_order.details.before",
   "draft_order.details.after",
@@ -503,6 +505,7 @@ export const INJECTION_ZONES = [
   ...ROLE_INJECTION_ZONES,
   ...LEGACY_POLICY_INJECTION_ZONES,
   ...POLICY_INJECTION_ZONES,
+  ...AUDIT_LOG_INJECTION_ZONES,
   ...LEGACY_DRAFT_ORDER_INJECTION_ZONES,
   ...DRAFT_ORDER_INJECTION_ZONES,
   ...LEGACY_STORE_CREDIT_ACCOUNT_INJECTION_ZONES,

@@ -16,7 +16,7 @@ This rule requires the default-exported scheduled job function to be async.
 
 ## What it Targets
 
-This rule targets files in your project's `src/jobs` directory. It reports a default-exported scheduled job that isn't an async function.
+This rule targets files at any depth in your project's `src/jobs` directory, except `index` files, files whose names start with `_`, and `.d.ts` files, which Medusa doesn't load as scheduled jobs. It reports a default-exported scheduled job that isn't an async function.
 
 The following code is reported by the rule:
 

@@ -20,7 +20,15 @@ For example, instead of importing `@mikro-orm/core`, you now import it from `@me
 - `@opentelemetry/instrumentation-pg` -> `@medusajs/framework/opentelemetry/instrumentation-pg`
 - `@opentelemetry/resources` -> `@medusajs/framework/opentelemetry/resources`
 - `@opentelemetry/sdk-node` -> `@medusajs/framework/opentelemetry/sdk-node`
-- `@opentelemetry/sdk-trace-node` -> `@medusajs/framework/opentelemetry/sdk-trace-node`
+- `@opentelemetry/sdk-trace` -> `@medusajs/framework/opentelemetry/sdk-trace`
+
+<Note title="Before Medusa v2.23.0">
+
+Before Medusa [v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), Medusa used an OpenTelemetry JS SDK version earlier than 3.0, which provided `@opentelemetry/sdk-trace-node` instead of `@opentelemetry/sdk-trace`. So, the subpath was `@medusajs/framework/opentelemetry/sdk-trace-node`.
+
+If you use a Medusa version before v2.23.0, import from `@medusajs/framework/opentelemetry/sdk-trace-node` instead of `@medusajs/framework/opentelemetry/sdk-trace`. Also, use `NodeTracerProvider` instead of `TracerProvider`, and pass the exporter directly to `SimpleSpanProcessor` and `BatchSpanProcessor`. For example, `new SimpleSpanProcessor(exporter)`.
+
+</Note>
 
 To help you update your codebase to reflect these changes, Medusa provides a codemod that automatically replaces imports of these packages throughout your codebase.
 
@@ -63,9 +71,9 @@ const replacements = [
     replacement: 'from "@medusajs/framework/pg"',
   },
   // OpenTelemetry imports - replace @opentelemetry/instrumentation-pg, @opentelemetry/resources, 
-  // @opentelemetry/sdk-node, and @opentelemetry/sdk-trace-node with @medusajs/framework/opentelemetry/{subpath}
+  // @opentelemetry/sdk-node, @opentelemetry/sdk-trace, and @opentelemetry/sdk-trace-node with @medusajs/framework/opentelemetry/{subpath}
   {
-    pattern: /from\s+['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace-node)['"]/g,
+    pattern: /from\s+['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace|sdk-trace-node)['"]/g,
     // eslint-disable-next-line quotes
     replacement: 'from "@medusajs/framework/opentelemetry/$1"',
   },
@@ -88,10 +96,10 @@ const replacements = [
     replacement: 'require("@medusajs/framework/pg")',
   },
   // OpenTelemetry require statements - replace require('@opentelemetry/instrumentation-pg'), 
-  // require('@opentelemetry/resources'), require('@opentelemetry/sdk-node'), and 
-  // require('@opentelemetry/sdk-trace-node') with require('@medusajs/framework/opentelemetry/{subpath}')
+  // require('@opentelemetry/resources'), require('@opentelemetry/sdk-node'),
+  // require('@opentelemetry/sdk-trace'), and require('@opentelemetry/sdk-trace-node') with require('@medusajs/framework/opentelemetry/{subpath}')
   {
-    pattern: /require\s*\(\s*['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace-node)['"]\s*\)/g,
+    pattern: /require\s*\(\s*['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace|sdk-trace-node)['"]\s*\)/g,
     // eslint-disable-next-line quotes
     replacement: 'require("@medusajs/framework/opentelemetry/$1")',
   },
@@ -160,7 +168,9 @@ function getTargetFiles() {
           /from\s+['"]pg['"]/.test(content) ||
           /require\s*\(\s*['"]@?mikro-orm\//.test(content) ||
           /require\s*\(\s*['"]awilix['"]/.test(content) ||
-          /require\s*\(\s*['"]pg['"]/.test(content)
+          /require\s*\(\s*['"]pg['"]/.test(content) ||
+          /from\s+['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace|sdk-trace-node)['"]/.test(content) ||
+          /require\s*\(\s*['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace|sdk-trace-node)['"]/.test(content)
         ) {
           targetFiles.push(file.startsWith("./") ? file.slice(2) : file)
         }
@@ -240,7 +250,7 @@ if (require.main === module) {
 module.exports = { processFile, getTargetFiles, main }
 ```
 
-This script scans your project for files that import from `mikro-orm/{subpath}`, `awilix`, or `pg`, and replaces those imports with their new equivalents from `@medusajs/framework`. It handles both ES module `import` statements and CommonJS `require` statements in JavaScript and TypeScript files.
+This script scans your project for files that import from `mikro-orm/{subpath}`, `awilix`, `pg`, or the OpenTelemetry packages listed above, and replaces those imports with their new equivalents from `@medusajs/framework`. It handles both ES module `import` statements and CommonJS `require` statements in JavaScript and TypeScript files.
 
 Next, run the following command in your terminal to make the script executable:
 
@@ -276,4 +286,4 @@ If everything is working correctly, you can remove the `replace-imports.js` file
 - `@opentelemetry/instrumentation-pg`
 - `@opentelemetry/resources`
 - `@opentelemetry/sdk-node`
-- `@opentelemetry/sdk-trace-node`
+- `@opentelemetry/sdk-trace`

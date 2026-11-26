@@ -1,0 +1,73 @@
+export const metadata = {
+  title: `Enterprise License on Cloud`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to view your organization's [Enterprise](!resources!/enterprise) license, the features it includes, and how to use its license key in local development.
+
+## What is an Enterprise License?
+
+An Enterprise license unlocks licensed Medusa features for your organization. Your organization's License settings page shows whether your organization has an active license, its license key, and which licensed features it includes.
+
+The licensed features currently are:
+
+- [Role-Based Access Control (RBAC)](!resources!/enterprise/rbac)
+- [SSO or OIDC Authentication](!resources!/enterprise/sso)
+
+---
+
+## Get an Enterprise License
+
+Organizations on the **Scale** and **Enterprise** plans get an Enterprise license that includes the [RBAC](!resources!/enterprise/rbac) feature by default. You don't need to request it, and you can [view it](#view-your-organizations-enterprise-license) on the License settings page.
+
+If your organization is on a different plan, you can [upgrade to the Scale plan](../../billing/plans/page.mdx) to get a license with RBAC. To get a license with other licensed features, such as SSO, you need to contact the Medusa team.
+
+If your organization doesn't have a license, the License settings page shows a card prompting you to contact the Medusa team.
+
+To get a license, click the **Contact sales** button on the License settings page. This opens the [Medusa contact page](https://medusajs.com/contact/) in a new tab.
+
+After you fill out the contact form, the Medusa team will reach out to you regarding your Enterprise license.
+
+---
+
+## View Your Organization's Enterprise License
+
+To view your organization's Enterprise license:
+
+1. If you're in a different organization, [switch to the organization](../page.mdx#switch-organization) whose license you want to view.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. In the Sidebar, click **Settings** > **License**.
+
+When your organization has an active Enterprise license, you can see an **Active** badge at the top right of the page. You can also see the following sections:
+
+- **License Key**: Shows your organization's license key in an obfuscated form.
+- **Included Features**: Lists all licensed features, each with a name, description, and an **Included** or **Not included** badge.
+- **Local Development**: Shows the steps to use your license key when running Medusa locally.
+
+---
+
+## Copy the License Key
+
+To copy your organization's license key:
+
+1. Go to your organization's [License settings page](#view-your-organizations-enterprise-license).
+2. In the **License Key** section, click the **Copy** button.
+
+The license key is now copied to your clipboard.
+
+---
+
+## Use the License Key in Local Development
+
+To use your licensed features while developing your Medusa application locally, set the license key in the `MEDUSA_LICENSE_KEY` environment variable of your local Medusa application.
+
+For example, add the following to your Medusa application's `.env` file:
+
+```bash title=".env"
+MEDUSA_LICENSE_KEY=<your-license-key>
+```
+
+Where `<your-license-key>` is the license key you [copied from the Enterprise License settings page](#copy-the-license-key).
+
+Learn more in the [Enterprise documentation](!resources!/enterprise).

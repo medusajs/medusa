@@ -44,13 +44,13 @@ module.exports = defineConfig({
 
 ## Development
 
-- `yarn build`, `yarn test` (unit specs in `src/services/__tests__`: ACL, binary encoding, URL encoding).
+- `yarn build`, `yarn test` (unit specs in `src/services/__tests__`: ACL, binary encoding, URL encoding, presigned upload size).
 - `integration-tests/__tests__/services.spec.ts` is `describe.skip`: it hits a real bucket and is meant to be run manually with `S3_TEST_*` env vars.
 
 ## Gotchas
 
 - `"s3-iam-role"` passes no credentials, so the AWS SDK default credential chain (env vars, instance/task role) is used.
 - ACL: by default uploads send `public-read` or `private` based on `access`. Buckets with Object Ownership "BucketOwnerEnforced" reject ACL headers; set `acl: false` to omit them. A string `acl` forces that ACL for every server-side upload.
-- `getPresignedUploadUrl` only sets an ACL when `access` is passed, and uses the sanitized filename as the key (no ulid suffix), so same-named uploads overwrite each other.
+- `getPresignedUploadUrl` only sets an ACL when `access` is passed, and uses the sanitized filename as the key (no ulid suffix), so same-named uploads overwrite each other. A `size` is signed as `ContentLength`, so S3 rejects an upload whose length differs. A presigned PUT can only enforce an exact length, not a maximum: callers check the size against their limit before asking for the URL.
 - `delete` swallows S3 errors (logged only).
 - `file_url` must not end with `/`; it's concatenated with `/` + key.
