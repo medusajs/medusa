@@ -5,7 +5,10 @@ import {
   IAuthModuleService,
 } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
-import { getAllowedAuthProvidersForActor } from "../../utils/auth-methods-per-actor"
+import {
+  assertKnownActorType,
+  getAllowedAuthProvidersForActor,
+} from "../../utils/auth-methods-per-actor"
 
 export const GET = async (
   req: MedusaRequest,
@@ -17,6 +20,8 @@ export const GET = async (
   const config: ConfigModule = req.scope.resolve(
     ContainerRegistrationKeys.CONFIG_MODULE
   )
+
+  assertKnownActorType(config, actor_type)
 
   const allowedProviderIds = getAllowedAuthProvidersForActor(config, actor_type)
 
