@@ -60,6 +60,26 @@ describe("validateScopeProviderAssociation", () => {
     )
   })
 
+  it("rejects an actor type the app doesn't know", async () => {
+    const req = buildRequest(
+      { actor_type: "banana", auth_provider: "emailpass" },
+      { user: ["emailpass"] }
+    )
+
+    await expect(run(req)).rejects.toThrow(
+      "The actor type banana is not supported. Add it to projectConfig.http.authMethodsPerActor to use it"
+    )
+  })
+
+  it("allows a custom actor type with an entry", async () => {
+    const req = buildRequest(
+      { actor_type: "manager", auth_provider: "emailpass" },
+      { user: ["emailpass"], manager: ["emailpass"] }
+    )
+
+    expect(await run(req)).toHaveBeenCalled()
+  })
+
   it("allows a pinned actor type whose allowlist includes the provider", async () => {
     const req = buildRequest(
       { auth_provider: "oidc-okta" },
