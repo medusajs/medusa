@@ -120,6 +120,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.generateAuthMfaRecoveryCodes/page.json"
   },
   {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.getCredentialsUpdatedAt",
+    "newSlug": "/references/auth/getCredentialsUpdatedAt",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.getCredentialsUpdatedAt/page.json"
+  },
+  {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCountAuthIdentities",
     "newSlug": "/references/auth/listAndCountAuthIdentities",
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCountAuthIdentities/page.json"
@@ -685,6 +690,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.setAuthAppMetadataStep/page.json"
   },
   {
+    "origSlug": "/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.validateAuthCallbackStep",
+    "newSlug": "/references/medusa-workflows/steps/validateAuthCallbackStep",
+    "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.validateAuthCallbackStep/page.json"
+  },
+  {
     "origSlug": "/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.generateResetPasswordTokenWorkflow",
     "newSlug": "/references/medusa-workflows/generateResetPasswordTokenWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.generateResetPasswordTokenWorkflow/page.json"
@@ -698,6 +708,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.setAuthAppMetadataWorkflow",
     "newSlug": "/references/medusa-workflows/setAuthAppMetadataWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.setAuthAppMetadataWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.validateAuthCallbackWorkflow",
+    "newSlug": "/references/medusa-workflows/validateAuthCallbackWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.validateAuthCallbackWorkflow/page.json"
   },
   {
     "origSlug": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.addShippingMethodToCartStep",
@@ -1918,6 +1933,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Line_Item/Steps_Line_Item/functions/core_flows.Line_Item.Steps_Line_Item.updateLineItemsStepWithSelector",
     "newSlug": "/references/medusa-workflows/steps/updateLineItemsStepWithSelector",
     "filePath": "/www/apps/resources/references/core_flows/Line_Item/Steps_Line_Item/functions/core_flows.Line_Item.Steps_Line_Item.updateLineItemsStepWithSelector/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Line_Item/Steps_Line_Item/functions/core_flows.Line_Item.Steps_Line_Item.validateLineItemsInCartStep",
+    "newSlug": "/references/medusa-workflows/steps/validateLineItemsInCartStep",
+    "filePath": "/www/apps/resources/references/core_flows/Line_Item/Steps_Line_Item/functions/core_flows.Line_Item.Steps_Line_Item.validateLineItemsInCartStep/page.json"
   },
   {
     "origSlug": "/references/core_flows/Line_Item/Workflows_Line_Item/functions/core_flows.Line_Item.Workflows_Line_Item.deleteLineItemsWorkflow",
