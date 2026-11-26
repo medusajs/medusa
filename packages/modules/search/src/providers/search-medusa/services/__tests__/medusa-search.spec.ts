@@ -233,6 +233,33 @@ describe("MedusaSearchService", () => {
     )
   })
 
+  it("sends a distance metric when writing vectors the app supplies", async () => {
+    const service = createService()
+    const write = jest.fn().mockResolvedValue({ status: "OK" })
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ write })),
+    }
+
+    await service.upsertDocuments({
+      index: "product",
+      definition: {
+        ...definition,
+        fields: {
+          ...definition.fields,
+          embedding: { type: "vector", dimensions: 3 },
+        },
+      },
+      documents: [{ id: "prod_1", title: "Red shoe", embedding: [1, 0, 0] }],
+    })
+
+    expect(write).toHaveBeenCalledWith(
+      expect.objectContaining({
+        upsert_rows: [expect.objectContaining({ embedding: [1, 0, 0] })],
+        distance_metric: "cosine_distance",
+      })
+    )
+  })
+
   it("maps multi-query hits, counts and value facets", async () => {
     const service = createService()
     const multiQuery = jest.fn().mockResolvedValue({

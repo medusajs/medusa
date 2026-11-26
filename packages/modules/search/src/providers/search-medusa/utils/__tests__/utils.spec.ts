@@ -1130,6 +1130,29 @@ describe("Medusa search utilities", () => {
   })
 
   describe("vector search", () => {
+    it("measures vectors by cosine distance unless the index says otherwise", () => {
+      // Cloud rejects writes to an index with a vector field and no metric.
+      expect(plan.options.distance_metric).toBe("cosine_distance")
+
+      const configured = buildIndexPlan({
+        ...definition,
+        settings: {
+          provider_options: {
+            "search-medusa": { distance_metric: "euclidean_squared" },
+          },
+        },
+      })
+      expect(configured.options.distance_metric).toBe("euclidean_squared")
+    })
+
+    it("sets no distance metric on an index without a vector field", () => {
+      const { embedding, ...fields } = definition.fields
+
+      expect(
+        buildIndexPlan({ ...definition, fields }).options.distance_metric
+      ).toBeUndefined()
+    })
+
     it("ranks by a client-supplied embedding", () => {
       const query = buildQueryPlan(
         {

@@ -290,12 +290,21 @@ export function buildIndexPlan(
     }
   }
 
+  const options = providerOptions<MedusaSearchIndexOptions>(definition.settings)
+
   return {
     fields,
     schema,
     searchable,
     primary_key: definition.primary_key,
-    options: providerOptions<MedusaSearchIndexOptions>(definition.settings),
+    options: {
+      ...options,
+      // Cloud rejects a write to an index with a vector field and no metric.
+      // It fills this in itself only for the fields it embeds.
+      distance_metric:
+        options.distance_metric ??
+        (vectors.length ? "cosine_distance" : undefined),
+    },
     typo_tolerance: typoTolerance,
     vectors,
   }
