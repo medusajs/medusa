@@ -6,27 +6,25 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll go through the steps that prepare your Medusa store for selling to customers.
-
-The steps build on each other, so it helps to follow them in order. Each step explains why it matters, what's involved, and where to find the detailed instructions.
+In this guide, you'll prepare your Medusa store for selling to customers. The steps build on each other, so follow them in order.
 
 <Note title="Working with an AI agent?">
 
-An AI agent can help with many of these steps. Where it can, the step ends with a note on which tool your agent needs and an example prompt. To set up these tools, refer to the [AI Toolkit](../ai-toolkit/page.mdx) guide.
+Where an AI agent can help, the step ends with a note on the tool your agent needs and an example prompt. To set up these tools, refer to the [AI Toolkit](../ai-toolkit/page.mdx) guide.
 
 </Note>
 
 ## 1. Choose a Plan for Production
 
-The Develop plan is designed for building and testing your store. It runs on a single shared server with fixed resources, which keeps costs predictable while you develop. For the same reason, it leaves out the features that a store with real customers depends on:
+The Develop plan is for building and testing. It runs on a single shared server with fixed resources, which keeps costs predictable but leaves out features a live store depends on:
 
 - **Autoscaling**: A Develop environment doesn't scale when traffic spikes, such as during a sale.
 - **Zero-downtime deployments**: Deployments on Develop may briefly interrupt your store.
 - **Database backups**: Develop doesn't back up your database, so you can't restore your orders and customers if something goes wrong.
 - **Storefront custom domains**: A Develop storefront is only available at its `medusajs.site` subdomain.
-- **Email sender domains**: Without one, Medusa only delivers emails to members of your Cloud organization. Customers wouldn't receive their order confirmations.
+- **Email sender domains**: Without one, Medusa only delivers emails to members of your Cloud organization, so customers don't receive order confirmations.
 
-The other plans include all of these features, so they're the ones to consider for production. The following table helps you find the plan that fits your store:
+The other plans include all of these features. Find the one that fits your store:
 
 <Table>
   <Table.Header>
@@ -74,30 +72,28 @@ The other plans include all of these features, so they're the ones to consider f
   </Table.Body>
 </Table>
 
-If you're unsure, Launch is a good starting point. You can move to Scale later from the Cloud dashboard as your store grows.
+If you're unsure, start with Launch and move to Scale from the Cloud dashboard as your store grows. To switch to Launch or Scale, follow the [Change Plan](../billing/plans/page.mdx#change-plan) guide. For Enterprise, [contact the Medusa team](https://medusajs.com/contact/).
 
-To switch to Launch or Scale, follow the [Change Plan](../billing/plans/page.mdx#change-plan) guide. For Enterprise, [contact the Medusa team](https://medusajs.com/contact/).
-
-You can compare each plan's full limits in the [Plans & Pricing](../pricing/page.mdx) guide.
+Compare each plan's full limits in the [Plans & Pricing](../pricing/page.mdx) guide.
 
 ---
 
 ## 2. Connect a Live Payment Provider
 
-To accept payments, your store needs a payment provider that's configured with live credentials. While building, you've likely used test keys, which don't charge real payment methods.
+To accept payments, your store needs a payment provider configured with live credentials, not the test keys you likely used while building.
 
-If you haven't chosen a payment provider yet, [Stripe](!resources!/commerce-modules/payment/payment-provider/stripe) is a good place to start, since Medusa provides an official integration for it. Setting it up for production involves these steps:
+If you haven't chosen a provider, start with [Stripe](!resources!/commerce-modules/payment/payment-provider/stripe), which has an official Medusa integration. To set it up for production:
 
-1. Register the Stripe Module Provider in your project's code, if you haven't already. The [Stripe](!resources!/commerce-modules/payment/payment-provider/stripe#register-the-stripe-module-provider) guide walks you through it.
-2. Create a webhook endpoint in Stripe that points to your Production backend's URL. In production, Medusa relies on webhooks to learn about payment updates. The [Setup Stripe Webhooks](!resources!/commerce-modules/payment/payment-provider/stripe#setup-stripe-webhooks) section explains the URL and events to use.
+1. [Register the Stripe Module Provider](!resources!/commerce-modules/payment/payment-provider/stripe#register-the-stripe-module-provider) in your project's code, if you haven't already.
+2. Create a webhook endpoint in Stripe that points to your Production backend's URL. Medusa relies on webhooks to learn about payment updates. The [Setup Stripe Webhooks](!resources!/commerce-modules/payment/payment-provider/stripe#setup-stripe-webhooks) section explains the URL and events to use.
 3. [Add environment variables](../environments/environment-variables/page.mdx#add-environment-variables-on-cloud) to your Production environment with Stripe's live secret API key and webhook secret.
-4. [Redeploy the environment](../environments/long-lived/page.mdx#redeploy-environment), since changes to environment variables only take effect after a redeployment.
+4. [Redeploy the environment](../environments/long-lived/page.mdx#redeploy-environment), since environment variable changes only take effect after a redeployment.
 
-The last two steps apply to any other third-party service you use. It's worth reviewing your Production environment's variables to make sure none of them still hold test or sandbox credentials.
+The last two steps apply to any other third-party service. Review your Production environment's variables to make sure none still hold test or sandbox credentials.
 
 <Note title="With an AI agent" forceMultiline>
 
-A coding agent with the [Docs MCP server](../ai-toolkit/docs-mcp/integrate-providers/page.mdx) can register the payment provider in your code. With the [Cloud CLI](../cli/agents/page.mdx), it can also give you the commands to add the secret values yourself, so that you don't share them with the agent, then redeploy the environment.
+A coding agent with the [Docs MCP server](../ai-toolkit/docs-mcp/integrate-providers/page.mdx) can register the payment provider in your code. With the [Cloud CLI](../cli/agents/page.mdx), it can give you the commands to add the secret values yourself, so you don't share them with the agent, then redeploy the environment.
 
 ```bash title="Prompt"
 Set up Stripe as a payment provider in my Medusa project for production. Then, give me the Cloud CLI commands to add the secret values to my Production environment, and redeploy it after I run them.
@@ -109,29 +105,25 @@ Set up Stripe as a payment provider in my Medusa project for production. Then, g
 
 ## 3. Add Your Storefront's Custom Domain
 
-By default, Medusa serves your storefront from a `medusajs.site` subdomain. Serving it from your own domain gives customers a URL they recognize and trust. To set it up:
+By default, Medusa serves your storefront from a `medusajs.site` subdomain. Your own domain gives customers a URL they recognize and trust. To set it up:
 
 1. Add your domain to the Production environment, as explained in the [Storefront Custom Domains](../environments/custom-domains/page.mdx#storefront-custom-domains) guide.
 2. Add the DNS records that Cloud shows you at your domain registrar.
-3. Wait for the domain's [status](../environments/custom-domains/page.mdx#domain-status-indicators) to become **Verified**. This can take from a few minutes to 48 hours, so it helps to start this step early.
-4. Set canonical URLs in your storefront that point to your custom domain. Your storefront remains accessible at its `medusajs.site` subdomain, and canonical URLs tell search engines which of the two to show. Learn how in the [Avoid Duplicate Content with Custom Domains](../deployments/access/page.mdx#avoid-duplicate-content-with-custom-domains) section.
+3. Wait for the domain's [status](../environments/custom-domains/page.mdx#domain-status-indicators) to become **Verified**. This takes from a few minutes to 48 hours, so start early.
+4. Set canonical URLs in your storefront that point to your custom domain. The storefront stays accessible at its `medusajs.site` subdomain, and canonical URLs tell search engines which one to show. Learn how in the [Avoid Duplicate Content with Custom Domains](../deployments/access/page.mdx#avoid-duplicate-content-with-custom-domains) section.
 
-Your backend and admin stay on their `medusajs.app` subdomain. Customers don't see this URL, so most stores don't need to change it. If you prefer a branded admin or API URL, you can add a [backend custom domain](../environments/custom-domains/page.mdx#backend-custom-domains) on the Scale plan.
+Your backend and admin stay on their `medusajs.app` subdomain. Customers don't see it, so most stores keep it. For a branded admin or API URL, add a [backend custom domain](../environments/custom-domains/page.mdx#backend-custom-domains) on the Scale plan.
 
 ---
 
 ## 4. Add an Email Sender Domain
 
-Medusa Emails works out of the box, but until you add a sender domain, it only delivers emails to members of your Cloud organization. That's useful while testing, but it means customers don't receive order confirmations or password reset emails. Adding a sender domain is what allows Medusa to send emails to anyone.
-
-To add a sender domain:
+Until you add a sender domain, Medusa Emails only delivers emails to members of your Cloud organization, so customers don't receive order confirmations or password reset emails. A sender domain lets Medusa send emails to anyone. To add one:
 
 1. Follow the [Add Email Sender Domain](../emails/page.mdx#add-email-sender-domain-to-cloud) guide to add your domain and its DNS records.
 2. Wait for Cloud to verify the domain.
 
-Using the same domain as your storefront helps customers recognize who the email is from.
-
-It's also useful to know your plan's email allowance. You can find each plan's daily and monthly email limits in the [Plans & Pricing](../pricing/page.mdx) guide.
+Using your storefront's domain helps customers recognize the sender. Find each plan's daily and monthly email limits in the [Plans & Pricing](../pricing/page.mdx) guide.
 
 <Note>
 
@@ -143,14 +135,12 @@ If your project uses another Notification Module Provider for the `email` channe
 
 ## 5. Set Up Order and Account Emails
 
-Customers expect emails from your store at key moments, such as when they place an order or reset their password. Setting up these emails requires adding email templates to your project that match your store's brand, including its logo, colors, and tone.
+Customers expect emails when they place an order or reset their password. Add email templates to your project that match your store's logo, colors, and tone. A live store needs at least these two, each with a starter template to customize:
 
-A live store needs at least these two emails:
+1. **Order confirmation**: [Order Placed Email Template](../emails/react-email/page.mdx#order-placed-email-template).
+2. **Password reset**: [Reset Password Email Template](../emails/react-email/page.mdx#reset-password-email-template).
 
-1. **Order confirmation**: The [Order Placed Email Template](../emails/react-email/page.mdx#order-placed-email-template) gives you a template to start from and customize.
-2. **Password reset**: The [Reset Password Email Template](../emails/react-email/page.mdx#reset-password-email-template) gives you a template to start from and customize.
-
-If you haven't added email templates to your project before, the [React Email Templates](../emails/react-email/page.mdx) guide walks you through creating a template, previewing it, and sending it.
+To learn how to create, preview, and send a template, refer to the [React Email Templates](../emails/react-email/page.mdx) guide.
 
 <Note title="With an AI agent" forceMultiline>
 
@@ -166,18 +156,18 @@ Fetch https://docs.medusajs.com/cloud/emails/react-email and add order confirmat
 
 ## 6. Configure Your Store in the Medusa Admin
 
-Your Production environment has its own database, so its store settings are separate from the ones in your local or preview environments. You configure them in the Medusa Admin of your Production environment, which you can open as explained in the [Access Deployment](../deployments/access/page.mdx#access-the-deployments-medusa-admin) guide.
+Your Production environment has its own database, so its store settings are separate from your local or preview environments. Configure them in the Production environment's Medusa Admin, which you open as explained in the [Access Deployment](../deployments/access/page.mdx#access-the-deployments-medusa-admin) guide.
 
-Some settings depend on others, so it helps to go through them in this order:
+Some settings depend on others, so go through them in this order:
 
 1. **Store details**: Set your store's name and supported currencies in the [store settings](!user-guide!/settings/store).
 2. **Regions**: A region represents a market you sell in, with its countries and currency. [Create a region](!user-guide!/settings/regions#create-region) for each market, and enable the payment provider from step 2 in each one so customers there can pay.
 3. **Tax regions**: Add a [tax region](!user-guide!/settings/tax-regions) for every country you sell in, so Medusa calculates the right taxes at checkout.
-4. **Locations and shipping**: Customers choose a shipping option during checkout, so every region needs at least one. You create shipping options for a stock location, as explained in the [Locations & Shipping](!user-guide!/settings/locations-and-shipping) guide.
+4. **Locations and shipping**: Every region needs at least one shipping option for checkout. You create shipping options for a stock location, as explained in the [Locations & Shipping](!user-guide!/settings/locations-and-shipping) guide.
 5. **Products**: Add your [products](!user-guide!/products) with their inventory quantities. A product is only purchasable in a region when it has a price in that region's currency.
 6. **Admin users**: [Invite the team members](!user-guide!/settings/users) who operate the store. Admin users are unlimited on all plans.
 
-If you added sample products, regions, or test orders while building your store, this is a good time to delete them.
+Delete any sample products, regions, or test orders you added while building.
 
 <Note title="With an AI agent" forceMultiline>
 
@@ -193,16 +183,14 @@ Review my Production store's setup. List any regions without a payment provider 
 
 ## 7. Keep Non-Production Environments Out of Search Results
 
-Cloud serves your application's responses unchanged and doesn't add a `noindex` directive to any environment. This means search engines can index your preview and staging storefronts, which may then compete with your live store in search results.
-
-You can prevent that with two changes in your code:
+Cloud doesn't add a `noindex` directive to any environment, so search engines can index your preview and staging storefronts, which may then compete with your live store. Prevent that with two code changes:
 
 1. Add a `noindex` directive to your storefront in every environment except Production. The [Prevent Indexing of Non-Production Storefronts](../deployments/access/page.mdx#prevent-indexing-of-non-production-storefronts) section shows how to detect the environment type.
 2. Disallow crawling of your backend's domain, which serves the Medusa Admin and API routes. The [Prevent Crawling of the Medusa Backend](../deployments/access/page.mdx#prevent-crawling-of-the-medusa-backend) section has an example.
 
 <Note title="With an AI agent" forceMultiline>
 
-Both changes are in your project's code, so a coding agent can make them.
+A coding agent can make both changes.
 
 ```bash title="Prompt"
 Fetch https://docs.medusajs.com/cloud/deployments/access and apply its search engine indexing recommendations to my project: add a noindex directive to my storefront outside the Production environment, and disallow crawling of my Medusa backend.
@@ -214,33 +202,33 @@ Fetch https://docs.medusajs.com/cloud/deployments/access and apply its search en
 
 ## 8. Confirm Medusa Security is Enabled
 
-Medusa Security protects your store from malicious traffic with a web application firewall (WAF), DDoS protection, and bot detection. Medusa enables it by default for new projects, so this step is usually a quick check.
+Medusa Security protects your store with a web application firewall (WAF), DDoS protection, and bot detection. Medusa enables it by default for new projects, so this is usually a quick check.
 
-To check, open your project's dashboard, click **Security** in the sidebar, then click **Settings**. If Medusa Security isn't enabled for the Production environment, the [Enable Medusa Security](../security/page.mdx#enable-medusa-security) guide explains how to enable it.
+Open your project's dashboard, click **Security** in the sidebar, then click **Settings**. If it isn't enabled for the Production environment, follow the [Enable Medusa Security](../security/page.mdx#enable-medusa-security) guide.
 
 ---
 
 ## 9. Turn On Failure Notifications
 
-Once your store is live, a failed build or deployment can affect your customers. Notifications help you learn about a failure right away:
+Once your store is live, a failed build or deployment can affect customers. Notifications tell you about failures right away:
 
 1. Enable both the **Emails** and **Feedback** notifications in your organization's settings, as explained in the [Change Notification Preferences](../notifications/page.mdx#change-notification-preferences) guide.
-2. Medusa sends email notifications to your organization's billing email. If that's an inbox nobody checks, you can [change it](../organizations/page.mdx#edit-organization-details) to one that your team monitors.
-3. Subscribe to incident updates on the [status page](../status/page.mdx), so you know when an issue comes from Cloud rather than your application.
+2. Medusa sends email notifications to your organization's billing email. If nobody checks that inbox, [change it](../organizations/page.mdx#edit-organization-details) to one your team monitors.
+3. Subscribe to incident updates on the [status page](../status/page.mdx) to know when an issue comes from Cloud rather than your application.
 
 ---
 
 ## 10. Place a Test Order
 
-A test order on your live domain confirms that the previous steps work together, from payment to emails. It's the closest you can get to a customer's experience before announcing your store:
+A test order on your live domain confirms that the previous steps work together, from payment to emails:
 
 1. Open your storefront at its custom domain.
 2. Add a product to the cart and complete checkout with a real payment method.
-3. Check that the order confirmation email arrives. Use an email address outside your Cloud organization, since that's what confirms your sender domain works.
-4. Open the order in the Medusa Admin and check that its payment appears in the order's details.
+3. Check that the order confirmation email arrives. Use an email address outside your Cloud organization to confirm your sender domain works.
+4. Open the order in the Medusa Admin and check that its payment appears in its details.
 5. Cancel or refund the order from the Medusa Admin.
 
-If something doesn't work as expected, your Production environment's [runtime logs](../logs/page.mdx) are the best place to start looking for the cause.
+If something fails, start with your Production environment's [runtime logs](../logs/page.mdx).
 
 <Note title="With an AI agent" forceMultiline>
 
@@ -256,17 +244,17 @@ Find the most recent order in my Production store and show me its payment and fu
 
 ## 11. Monitor Your Store and Usage
 
-Once customers start visiting your store, its traffic and resource consumption change. Knowing where to follow them helps you spot issues early and avoid surprises on your bill:
+Once customers arrive, track traffic and resource consumption to spot issues early and avoid billing surprises:
 
-1. **Performance**: In your Production environment's dashboard, click **Monitoring** in the sidebar to track the CPU and memory usage of your servers and workers, and the response times and errors of HTTP requests. The [Performance](../monitoring/page.mdx) guide explains each metric and how to troubleshoot common issues.
-2. **Logs**: The environment's [runtime logs](../logs/page.mdx#view-runtime-logs-on-cloud) show what your backend and storefront are doing, which makes them the first place to look when something fails.
-3. **Usage**: Click **Usage** in your organization's sidebar to see how much of your plan's allowances you've consumed across all projects, such as compute hours and data transfer. Usage beyond those allowances is Flex Usage, which Medusa bills separately. The [Usage](../usage/page.mdx#what-is-flex-usage) guide explains how to monitor it.
+1. **Performance**: In your Production environment's dashboard, click **Monitoring** in the sidebar to track CPU and memory usage of your servers and workers, and HTTP response times and errors. The [Performance](../monitoring/page.mdx) guide explains each metric and how to troubleshoot common issues.
+2. **Logs**: The environment's [runtime logs](../logs/page.mdx#view-runtime-logs-on-cloud) show what your backend and storefront are doing, so check them first when something fails.
+3. **Usage**: Click **Usage** in your organization's sidebar to see how much of your plan's allowances, such as compute hours and data transfer, you've consumed across all projects. Medusa bills usage beyond those allowances separately as Flex Usage. The [Usage](../usage/page.mdx#what-is-flex-usage) guide explains how to monitor it.
 
-It helps to check these pages daily during your first week, when you're still learning your store's traffic patterns. If you regularly exceed your plan's allowances, it may be worth moving to the next plan.
+Check these pages daily during your first week while you learn your store's traffic patterns. If you regularly exceed your plan's allowances, consider the next plan.
 
 <Note title="With an AI agent" forceMultiline>
 
-An agent with the [Cloud CLI](../cli/agents/page.mdx) or the [Medusa MCP server](../ai-toolkit/medusa-mcp/page.mdx) can read your environment's logs and deployments, which helps you check on your store without opening the dashboard.
+An agent with the [Cloud CLI](../cli/agents/page.mdx) or the [Medusa MCP server](../ai-toolkit/medusa-mcp/page.mdx) can read your environment's logs and deployments, so you can check on your store without opening the dashboard.
 
 ```bash title="Prompt"
 Check my Production environment's runtime logs from the last 24 hours. Summarize any errors, group them by cause, and suggest a fix for each.
@@ -278,17 +266,17 @@ Check my Production environment's runtime logs from the last 24 hours. Summarize
 
 ## After Going Live
 
-Once your store is live, a few practices help you keep it stable:
+A few practices keep your live store stable:
 
-- **Test every change in a Staging environment first**: Every push to your production branch deploys to your live store, so it helps to keep that branch for features that are ready for customers. A Staging [long-lived environment](../environments/long-lived/page.mdx#create-a-long-lived-environment-on-cloud) is a production-like setup that's good for testing. A typical flow looks like this:
-    1. Open a pull request to your staging branch. Medusa creates a [preview environment](../environments/preview/page.mdx) where you can test the change in isolation.
-    2. Merge the pull request to deploy the change to Staging, and test it there with the rest of your store, even if it worked in the preview environment.
-    3. Merge the staging branch into your production branch only when the feature is ready for customers to use.
+- **Test every change in a Staging environment first**: Every push to your production branch deploys to your live store, so keep that branch for customer-ready features. A Staging [long-lived environment](../environments/long-lived/page.mdx#create-a-long-lived-environment-on-cloud) gives you a production-like setup for testing. A typical flow:
+    1. Open a pull request to your staging branch. Medusa creates a [preview environment](../environments/preview/page.mdx) to test the change in isolation.
+    2. Merge the pull request to deploy to Staging, and test the change there with the rest of your store, even if it worked in the preview environment.
+    3. Merge the staging branch into your production branch only when the feature is ready for customers.
 - **Keep Medusa updated**: Updates bring new features and fixes. The [Update Medusa](!docs!/learn/update) guide explains how to update safely on Cloud.
 
 <Note title="With an AI agent" forceMultiline>
 
-An agent with the [Cloud CLI](../cli/agents/page.mdx) can create the Staging environment for you. The branch it tracks must exist in your repository first, so the prompt asks the agent to create it.
+An agent with the [Cloud CLI](../cli/agents/page.mdx) can create the Staging environment. The branch it tracks must exist first, so the prompt asks the agent to create it.
 
 ```bash title="Prompt"
 Create a staging branch from my production branch and push it to my repository. Then, use the Cloud CLI to create a long-lived environment named Staging in my project that tracks the staging branch.

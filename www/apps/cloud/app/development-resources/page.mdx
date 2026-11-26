@@ -6,11 +6,11 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll find resources and guides to help you build features, customize your store, and integrate third-party services in your Medusa application, admin dashboard, and storefront.
+In this guide, you'll find resources for building features, customizing your store, and integrating third-party services in your Medusa application, admin dashboard, and storefront.
 
 ## Find Your Starting Point
 
-The following table helps you choose the right guides based on what you want to build:
+Choose the right guides based on what you want to build:
 
 <Table>
   <Table.Header>
@@ -83,7 +83,7 @@ The following table helps you choose the right guides based on what you want to 
 
 If your business needs a feature that Medusa doesn't provide, such as a new data model with its own logic and API, start with the [Customization Guide](!docs!/learn/customization/custom-features).
 
-The guide teaches Medusa's concepts in the order you use them, by building a brands feature step by step. You learn how to:
+The guide builds a brands feature step by step, teaching Medusa's concepts in the order you use them. You learn how to:
 
 - [Create a module](!docs!/learn/customization/custom-features/module) with a data model that's stored in the database.
 - [Build a workflow](!docs!/learn/customization/custom-features/workflow) that performs your feature's logic, with rollback if a step fails.
@@ -92,17 +92,15 @@ The guide teaches Medusa's concepts in the order you use them, by building a bra
 - Add a [page](!docs!/learn/customization/customize-admin/route) and a [widget](!docs!/learn/customization/customize-admin/widget) to the Medusa Admin to manage your data.
 - [Sync your data](!docs!/learn/customization/integrate-systems) with a third-party system.
 
-This guide is the most useful when you're new to Medusa, since the patterns you learn in it apply to any feature you build afterwards. The other guides on this page assume you're familiar with these concepts.
+Start here if you're new to Medusa, since its patterns apply to any feature you build. The other guides on this page assume you know these concepts.
 
 ---
 
 ## Add Common Commerce Features
 
-The [How-to and Tutorials](!resources!/how-to-tutorials) section provides step-by-step guides for implementing common commerce features in your Medusa store.
+The [How-to and Tutorials](!resources!/how-to-tutorials) section has step-by-step guides for common commerce features. Each tutorial implements one feature end to end, including its data models, workflows, API routes, admin customizations, and storefront changes. Follow a tutorial as is, or use it as a base and change what differs in your store.
 
-Each tutorial implements one feature from start to end, covering the parts it needs, such as data models, workflows, API routes, admin customizations, and storefront changes. So, you can follow a tutorial as is, or use it as a base and change the parts that differ in your store.
-
-Some of the features that the tutorials cover are:
+Tutorials cover features such as:
 
 - [Product reviews](!resources!/how-to-tutorials/tutorials/product-reviews), [wishlists](!resources!/plugins/guides/wishlist), and [pre-orders](!resources!/how-to-tutorials/tutorials/preorder).
 - [Quote management](!resources!/examples/guides/quote-management) and [re-ordering](!resources!/how-to-tutorials/tutorials/re-order).
@@ -113,11 +111,11 @@ Some of the features that the tutorials cover are:
 
 ## Build Complex Use Cases
 
-If you're building a store whose business model differs from a standard online store, such as a marketplace or a subscription-based store, refer to the [Recipes](!resources!/recipes).
+If your business model differs from a standard online store, such as a marketplace or a subscription-based store, refer to the [Recipes](!resources!/recipes).
 
-A recipe explains how to approach a use case as a whole, rather than a single feature. It shows which of Medusa's commerce features you can use as is, which parts you need to build, and how they fit together. Some recipes also have a full example that you can follow.
+A recipe approaches a whole use case rather than a single feature. It shows which Medusa commerce features you can use as is, which parts you need to build, and how they fit together. Some recipes include a full example.
 
-Some of the use cases that the recipes cover are:
+Recipes cover use cases such as:
 
 - [Marketplaces](!resources!/recipes/marketplace) with multiple vendors.
 - [Subscriptions](!resources!/recipes/subscriptions) and [digital products](!resources!/recipes/digital-products).
@@ -125,17 +123,13 @@ Some of the use cases that the recipes cover are:
 - [Bundled](!resources!/recipes/bundled-products) and [personalized](!resources!/recipes/personalized-products) products.
 - [Point of Sale (POS)](!resources!/recipes/pos) and [omnichannel](!resources!/recipes/omnichannel) stores.
 
-Recipes are useful early on, when you're planning your store's architecture and want to know what's possible before you write code.
+Recipes are most useful when you're planning your store's architecture, before you write code.
 
 ---
 
 ## Integrate Third-Party Services
 
-If your store relies on other services, such as a payment provider, a CMS, or an ERP, refer to the [Integrations](../integrations/page.mdx) section.
-
-You'll find on the Integrations page a list of all available third-party services, such as payment providers, fulfillment services, notification platforms, search engines, and analytics tools. Each integration is either a Medusa-provided module provider, or a tutorial that guides you through building the integration.
-
-You can also find guides on how to create your own integrations for services that aren't listed.
+If your store relies on other services, such as a payment provider, a CMS, or an ERP, refer to the [Integrations](../integrations/page.mdx) section. It lists available third-party services, such as payment providers, fulfillment services, notification platforms, search engines, and analytics tools. Each integration is either a Medusa-provided module provider or a tutorial for building it. It also links guides for building integrations for unlisted services.
 
 ---
 
@@ -143,13 +137,11 @@ You can also find guides on how to create your own integrations for services tha
 
 Your Cloud project's storefront is in the same repository as your Medusa application, and Cloud deploys it with your project. Learn more in the [Storefront](../storefront/page.mdx) guide.
 
-To customize that storefront or build a new one, refer to the [Storefront Development](!resources!/storefront-development) guides.
-
-The guides explain how to implement a storefront's features with any frontend framework, by sending requests to the Medusa application. They cover the flows that every storefront needs:
+To customize that storefront or build a new one, refer to the [Storefront Development](!resources!/storefront-development) guides. They explain how to implement a storefront's features with any frontend framework by sending requests to the Medusa application, covering the flows every storefront needs:
 
 - Showing [products](!resources!/storefront-development/products/list), their [prices](!resources!/storefront-development/products/price), and their [inventory](!resources!/storefront-development/products/inventory).
 - Managing the [cart](!resources!/storefront-development/cart/create) and implementing the [checkout flow](!resources!/storefront-development/checkout).
 - [Registering](!resources!/storefront-development/customers/register) and [logging in](!resources!/storefront-development/customers/login) customers.
 - Supporting multiple [regions](!resources!/storefront-development/regions) and [languages](!resources!/storefront-development/localization).
 
-The guides are useful whether you're changing one flow in your existing storefront, or building a storefront for another channel, such as a mobile app.
+Use them to change one flow in your existing storefront or to build a storefront for another channel, such as a mobile app.

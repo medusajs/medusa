@@ -15,7 +15,7 @@ The Cloud Assistant is an AI agent that answers questions about Medusa and about
 
 - Help you find answers relevant to your organization, settings, and projects.
 - Diagnose why your builds and deployments are failing.
-- Remember important information about your projects to assist you better in the future.
+- Remember important information about your projects for later chats.
 
 <Note>
 
@@ -31,17 +31,15 @@ The Cloud Assistant can make mistakes. Verify its suggestions before you apply t
 
 Click **Agent** at the top right of the Cloud dashboard to open the Cloud Assistant's panel.
 
-On wide screens, the panel docks next to the page, so you can keep browsing the dashboard while you chat. On smaller screens, the panel opens on top of the page, and you close it by pressing <Kbd>Esc</Kbd> or clicking outside it.
+On wide screens, the panel docks next to the page so you can keep browsing while you chat. On smaller screens, it opens over the page, and you close it with <Kbd>Esc</Kbd> or by clicking outside it.
 
-Type your question in the message input at the bottom of the panel, then press <Kbd>↵</Kbd> to send it. To add a line break instead, press <Kbd>⇧</Kbd> + <Kbd>↵</Kbd>.
+Type your question in the message input at the bottom of the panel, then press <Kbd>↵</Kbd> to send it, or <Kbd>⇧</Kbd> + <Kbd>↵</Kbd> to add a line break.
 
 ---
 
 ## Ask Questions in Context
 
-The Cloud Assistant knows which page you're on. A badge in the message input shows the context it uses, such as the project, environment, or build you're viewing.
-
-Since the Cloud Assistant has this context, you can ask questions like "Why did this build fail?" without naming the project or the build. You can still ask about other projects by naming them in your message.
+The Cloud Assistant knows which page you're on. A badge in the message input shows the context it uses, such as the project, environment, or build you're viewing. So, you can ask "Why did this build fail?" without naming the project or build, or name other projects to ask about them.
 
 ---
 
@@ -49,16 +47,16 @@ Since the Cloud Assistant has this context, you can ask questions like "Why did 
 
 <RolesBadge roles={["developer"]} />
 
-The Cloud Assistant's panel header holds the actions to manage your chats:
+Manage your chats from the panel header:
 
 - Click the <InlineIcon Icon={PlusMini} alt="plus" /> icon to start a new chat.
 - Click the <InlineIcon Icon={History} alt="history" /> icon to view your previous chats. Select a chat to continue it.
 
-Your chats are scoped to the organization you started them in. When you switch organizations, the assistant opens the last chat you had in the organization you switched to.
+Chats are scoped to the organization you started them in. When you switch organizations, the assistant opens your last chat in that organization.
 
 ### Avoid Long Chats
 
-When a chat gets long, the Cloud Assistant shows a **Starting a new task?** notice suggesting that you start a new chat for your next task. This is recommended to keep the assistant's context relevant to your current task.
+When a chat gets long, the Cloud Assistant shows a **Starting a new task?** notice. Start a new chat for your next task to keep the assistant's context relevant.
 
 ---
 
@@ -66,19 +64,15 @@ When a chat gets long, the Cloud Assistant shows a **Starting a new task?** noti
 
 <RolesBadge roles={["developer"]} />
 
-To view the AI tools available to Cloud users, such as the Docs MCP server, skills, and migration prompts, click the <InlineIcon Icon={CommandLine} alt="command line" /> icon in the panel's header.
-
-This will open a side window with a list of the tools and how to use them.
+To view the AI tools available to Cloud users, such as the Docs MCP server, skills, and migration prompts, click the <InlineIcon Icon={CommandLine} alt="command line" /> icon in the panel's header. A side window lists the tools and how to use them.
 
 ---
 
 ## Assistant Memory
 
-The Cloud Assistant can record details you share, such as your stack or previous issues you ran into, and use them in later chats. It shows an **Updating memory** step in the chat when it records a memory.
+The Cloud Assistant can record details you share, such as your stack or past issues, and use them in later chats. It shows an **Updating memory** step when it records a memory.
 
-Memories are scoped to you within an organization, so a memory from one organization doesn't apply to another.
-
-The Cloud Assistant also knows how to update memories when their information changes. For example, if you change your project's stack, the Cloud Assistant will update its memory when it encounters the new stack in a chat.
+Memories are scoped to you within an organization, so they don't carry over to other organizations. The Cloud Assistant also updates memories when their information changes, such as when it encounters your project's new stack in a chat.
 
 ---
 
@@ -86,9 +80,7 @@ The Cloud Assistant also knows how to update memories when their information cha
 
 <RolesBadge roles={["developer"]} />
 
-When the Cloud Assistant suggests code changes, it shows a **Get instructions for local agent** button under its message. Click it to generate a summary of the suggested changes that you can copy into a local coding agent, such as Claude Code or Cursor.
-
-You can then pass the instructions as a prompt to the local agent to apply the changes in your codebase.
+When the Cloud Assistant suggests code changes, it shows a **Get instructions for local agent** button under its message. Click it to generate a summary of the changes, then pass it as a prompt to a local coding agent, such as Claude Code or Cursor, to apply them in your codebase.
 
 ---
 

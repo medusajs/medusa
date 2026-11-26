@@ -6,13 +6,13 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll learn how to connect an AI agent that you build yourself to the [Medusa MCP server](../page.mdx) using OAuth and a Client ID Metadata Document.
+In this guide, you'll learn how to connect an AI agent that you build to the [Medusa MCP server](../page.mdx) using OAuth and a Client ID Metadata Document.
 
 ## How Custom Agents Authenticate
 
-The Medusa MCP server follows the [2026-07-28 MCP specification](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization) and authenticates agents with OAuth 2.1. Your agent sends the user to Cloud to log in and approve the connection, then receives an access token that it sends with every request to the Medusa MCP server.
+The Medusa MCP server follows the [2026-07-28 MCP specification](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization) and authenticates agents with OAuth 2.1. Your agent sends the user to Cloud to log in and approve the connection, then sends the access token it receives with every request.
 
-Before the OAuth flow starts, your agent must identify itself with a client ID. The 2026-07-28 specification deprecates Dynamic Client Registration in favor of Client ID Metadata Documents, so use a Client ID Metadata Document for new agents. The Medusa MCP server only supports Dynamic Client Registration for local agents, for backwards compatibility:
+Before the OAuth flow starts, your agent identifies itself with a client ID. The 2026-07-28 specification deprecates Dynamic Client Registration in favor of Client ID Metadata Documents, so use a Client ID Metadata Document for new agents. The Medusa MCP server only supports Dynamic Client Registration for local agents, for backwards compatibility:
 
 <Table>
   <Table.Header>
@@ -60,11 +60,11 @@ Before the OAuth flow starts, your agent must identify itself with a client ID. 
   </Table.Body>
 </Table>
 
-Both methods use the same [authorization flow](#run-the-authorization-flow) after your agent has a client ID.
+Both methods then use the same [authorization flow](#run-the-authorization-flow).
 
 <Note title="Tip">
 
-The official [MCP SDKs](https://modelcontextprotocol.io/docs/sdk) discover the Medusa MCP server's OAuth endpoints, register the client, and run the authorization flow for you. If your agent uses an MCP SDK, refer to [Use an MCP SDK](#use-an-mcp-sdk).
+The official [MCP SDKs](https://modelcontextprotocol.io/docs/sdk) discover the OAuth endpoints, register the client, and run the authorization flow for you. Refer to [Use an MCP SDK](#use-an-mcp-sdk).
 
 </Note>
 
@@ -87,9 +87,7 @@ The official [MCP SDKs](https://modelcontextprotocol.io/docs/sdk) discover the M
 
 ## Option 1: Client ID Metadata Document
 
-A Client ID Metadata Document (CIMD) is a JSON file that describes your agent, such as its name and the URLs that Medusa can redirect the user to after they approve the connection. You host the document at an HTTPS URL, and that URL becomes your agent's client ID.
-
-When your agent starts the authorization flow, Cloud fetches the document from the client ID URL, validates it, and shows the agent's name on the consent page.
+A Client ID Metadata Document (CIMD) is a JSON file that describes your agent, such as its name and the URLs Medusa can redirect the user to after approval. You host it at an HTTPS URL, which becomes your agent's client ID. When the authorization flow starts, Cloud fetches and validates the document, and shows the agent's name on the consent page.
 
 ### Prerequisite: Request Host Approval
 
@@ -102,7 +100,7 @@ When your agent starts the authorization flow, Cloud fetches the document from t
   ]}
 />
 
-To protect the Medusa MCP server from requests to unknown servers, Cloud only fetches metadata documents from approved hosts. Until Medusa approves your document's host, Medusa rejects authorization requests from your agent with an `invalid_client_id` error.
+Cloud only fetches metadata documents from approved hosts. Until Medusa approves your document's host, it rejects your agent's authorization requests with an `invalid_client_id` error.
 
 Before you set up the document, email [support@medusajs.com](mailto:support@medusajs.com) to request approval with:
 
@@ -110,7 +108,7 @@ Before you set up the document, email [support@medusajs.com](mailto:support@medu
 - The URL that you'll host your document at, for example, `https://agent.example.com/oauth/client.json`.
 - A short description of your agent.
 
-Once Medusa informs you that it approved your host, follow the steps below.
+Once Medusa approves your host, follow the steps below.
 
 ### Step 1: Create the Document
 
@@ -129,14 +127,14 @@ Create a JSON document with the following properties:
 
 Where:
 
-- `client_id`: The exact URL that you host the document at. Medusa rejects the document if this value doesn't match the URL it fetched the document from.
-- `client_name`: The agent's name. Cloud shows it on the consent page.
+- `client_id`: The exact URL that you host the document at. Medusa rejects the document if it doesn't match the fetched URL.
+- `client_name`: The agent's name, shown on the consent page.
 - `client_uri`: (Optional) Your agent's website. Cloud only shows it on the consent page if it's an HTTPS URL.
 - `redirect_uris`: The URLs that Medusa can redirect the user to with the authorization code. Your agent's authorization request must use one of these URLs exactly.
 
 <Note>
 
-If your agent runs on the user's machine and listens on a random `localhost` port, add the redirect URI without worrying about the port, such as `http://localhost/callback`. Medusa ignores the port when it compares `localhost`, `127.0.0.1`, and `[::1]` redirect URIs.
+If your agent runs on the user's machine and listens on a random `localhost` port, add the redirect URI without a port, such as `http://localhost/callback`. Medusa ignores the port when it compares `localhost`, `127.0.0.1`, and `[::1]` redirect URIs.
 
 </Note>
 
@@ -149,15 +147,15 @@ Host the document at the URL that you set in `client_id`. The URL must:
 - Return the document directly with a `200` status. Cloud doesn't follow redirects.
 - Return a document smaller than 64 KB within five seconds.
 
-Medusa caches the document based on its `Cache-Control` response header, for between five minutes and one day. If the response has no `Cache-Control` header, Medusa caches it for one hour. So, changes to the document, such as new redirect URIs, can take up to the cache duration to take effect.
+Medusa caches the document based on its `Cache-Control` response header, for between five minutes and one day, or one hour without the header. Changes to the document, such as new redirect URIs, take effect when the cache expires.
 
-After you host the document, use its URL as the `client_id` in the [authorization flow](#run-the-authorization-flow).
+Then, use the document's URL as the `client_id` in the [authorization flow](#run-the-authorization-flow).
 
 ---
 
 ## Option 2: Dynamic Client Registration for Local Agents
 
-If your agent runs on your or the user's machine and receives the authorization code on a `localhost` redirect URI, you can register it with Dynamic Client Registration without approval from Medusa. For example, Claude Code can use this method to register a local agent.
+If your agent runs on your or the user's machine and receives the authorization code on a `localhost` redirect URI, you can register it with Dynamic Client Registration without Medusa's approval. For example, Claude Code can use this method.
 
 <Note type="warning">
 
@@ -178,17 +176,17 @@ curl -X POST "$REGISTRATION_ENDPOINT" \
   }'
 ```
 
-The response includes a `client_id` that you use in the [authorization flow](#run-the-authorization-flow). Medusa returns the same shared client ID to every agent that registers this way, so the consent page doesn't show your agent's `client_name`.
+Use the response's `client_id` in the [authorization flow](#run-the-authorization-flow). Medusa returns the same shared client ID to every agent registered this way, so the consent page doesn't show your agent's `client_name`.
 
-The registration fails with an `invalid_redirect_uri` error if any redirect URI isn't a `localhost`, `127.0.0.1`, or `[::1]` URL. To use other redirect URIs, use a [Client ID Metadata Document](#option-1-client-id-metadata-document) instead.
+Registration fails with an `invalid_redirect_uri` error if any redirect URI isn't a `localhost`, `127.0.0.1`, or `[::1]` URL. For other redirect URIs, use a [Client ID Metadata Document](#option-1-client-id-metadata-document) instead.
 
 ---
 
 ## Run the Authorization Flow
 
-After your agent has a client ID, it runs the OAuth authorization code flow with PKCE to get an access token.
+With a client ID, your agent runs the OAuth authorization code flow with PKCE to get an access token.
 
-PKCE (Proof Key for Code Exchange) protects the authorization code from interception. Your agent generates a random secret called the code verifier, sends a hash of it when it starts the flow, and sends the verifier itself when it exchanges the code for a token. The Medusa MCP server requires PKCE with the `S256` method.
+PKCE (Proof Key for Code Exchange) protects the authorization code from interception. Your agent generates a random secret called the code verifier, sends its hash when it starts the flow, and sends the verifier itself when it exchanges the code for a token. The Medusa MCP server requires the `S256` method.
 
 ### Step 1: Discover the OAuth Endpoints
 
@@ -203,7 +201,7 @@ The response includes the `authorization_endpoint`, `token_endpoint`, and `regis
 
 <Note>
 
-The Medusa MCP server also returns a `401` response with a `WWW-Authenticate` header when your agent calls it without a token. The header's `resource_metadata` parameter points to the protected resource metadata, which lists Medusa as the authorization server. MCP clients that follow the [MCP authorization specification](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization) use this to discover the endpoints.
+The Medusa MCP server also returns a `401` response with a `WWW-Authenticate` header to calls without a token. The header's `resource_metadata` parameter points to the protected resource metadata, which lists Medusa as the authorization server. MCP clients that follow the [MCP authorization specification](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization) use this to discover the endpoints.
 
 </Note>
 
@@ -225,12 +223,12 @@ Generate a code verifier and its `S256` code challenge, then open the following 
 
 Where:
 
-- `authorization_endpoint`: The `authorization_endpoint` URL from the [authorization server metadata](#step-1-discover-the-oauth-endpoints) that you retrieved in the previous step.
+- `authorization_endpoint`: The `authorization_endpoint` URL from the [authorization server metadata](#step-1-discover-the-oauth-endpoints).
 - `client_id`: Your document's URL, or the client ID returned by Dynamic Client Registration. URL-encode it.
 - `redirect_uri`: One of your registered redirect URIs.
 - `scope`: One or more of `openid`, `email`, and `profile`, separated by spaces. Medusa rejects other scopes with an `unsupported_scope` error.
 - `code_challenge`: The Base64URL-encoded SHA-256 hash of the code verifier.
-- `state`: A random value that your agent checks when Cloud redirects back, to prevent cross-site request forgery.
+- `state`: A random value your agent checks on redirect, to prevent cross-site request forgery.
 - `resource`: The Medusa MCP server's URL, `https://cloud.medusajs.com/mcp`. If you omit it, the access token doesn't grant access to the Medusa MCP server.
 
 <Note type="warning">
@@ -239,7 +237,7 @@ Use a new code verifier and `state` value for every authorization request, and n
 
 </Note>
 
-The user logs in to their Medusa account and [approves the connection](../page.mdx#approve-the-connection) on the consent page, selecting the environments that your agent can access. Medusa then redirects the user to your `redirect_uri` with a `code` and the `state` query parameters.
+The user logs in and [approves the connection](../page.mdx#approve-the-connection), selecting the environments your agent can access. Medusa then redirects the user to your `redirect_uri` with the `code` and `state` query parameters.
 
 ### Step 3: Exchange the Code for Tokens
 
@@ -255,15 +253,13 @@ curl -X POST "$TOKEN_ENDPOINT" \
   --data-urlencode "code_verifier=$CODE_VERIFIER"
 ```
 
-The `redirect_uri` must be the same value that you sent in the authorization request. Your agent doesn't send a client secret.
+The `redirect_uri` must match the authorization request's value. Your agent doesn't send a client secret.
 
 The response includes an `access_token`, its `expires_in` duration in seconds, and a `refresh_token`. Store both tokens securely.
 
 ### Step 4: Call the Medusa MCP Server
 
-Connect your agent's MCP client to the Medusa MCP server, which is a Streamable HTTP server at `https://cloud.medusajs.com/mcp`. Send the access token in the `Authorization` header of every request.
-
-For example, the following request calls the `list_connected_environments` tool:
+Connect your agent's MCP client to the Medusa MCP server, a Streamable HTTP server at `https://cloud.medusajs.com/mcp`, and send the access token in every request's `Authorization` header. For example, this request calls the `list_connected_environments` tool:
 
 ```bash
 curl -X POST https://cloud.medusajs.com/mcp \
@@ -308,7 +304,7 @@ curl -X POST "$TOKEN_ENDPOINT" \
   --data-urlencode "client_id=$CLIENT_ID"
 ```
 
-The response includes a new access token and a new refresh token. Cloud rotates the refresh token on every refresh, so store the new refresh token and discard the old one. A refresh token expires after seven days.
+The response includes a new access token and refresh token. Cloud rotates the refresh token on every refresh, so store the new one and discard the old one. A refresh token expires after seven days.
 
 If the refresh fails with an `invalid_grant` error, start the [authorization flow](#step-2-send-the-user-to-the-authorization-endpoint) again.
 
@@ -316,7 +312,7 @@ If the refresh fails with an `invalid_grant` error, start the [authorization flo
 
 ## Use an MCP SDK
 
-The official [MCP SDKs](https://modelcontextprotocol.io/docs/sdk) implement the authorization flow in this guide. You provide your client's details and storage for tokens, and the SDK discovers the endpoints, registers the client, and refreshes tokens.
+The official [MCP SDKs](https://modelcontextprotocol.io/docs/sdk) implement this guide's authorization flow. You provide your client's details and token storage, and the SDK discovers the endpoints, registers the client, and refreshes tokens.
 
 For example, with the [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk), set the `clientMetadataUrl` property of your `OAuthClientProvider` implementation to your document's URL:
 
@@ -344,7 +340,7 @@ class MedusaAuthProvider implements OAuthClientProvider {
 }
 ```
 
-Because the Medusa MCP server sets `client_id_metadata_document_supported` in its metadata, the SDK uses your document's URL as the client ID. If you don't set `clientMetadataUrl`, the SDK falls back to [Dynamic Client Registration](#option-2-dynamic-client-registration-for-local-agents), which only works with `localhost` redirect URIs.
+Since the Medusa MCP server sets `client_id_metadata_document_supported` in its metadata, the SDK uses your document's URL as the client ID. Without `clientMetadataUrl`, the SDK falls back to [Dynamic Client Registration](#option-2-dynamic-client-registration-for-local-agents), which only works with `localhost` redirect URIs.
 
 Refer to the [MCP TypeScript SDK's OAuth documentation](https://github.com/modelcontextprotocol/typescript-sdk/blob/main/docs/clients/oauth.md) for the full provider implementation.
 
@@ -363,12 +359,10 @@ If the authorization endpoint returns an `invalid_client_id` error for your Clie
 
 ### invalid_redirect_uri Error
 
-If the authorization endpoint returns an `invalid_redirect_uri` error, the `redirect_uri` in your authorization request doesn't exactly match one of your registered redirect URIs. For a Client ID Metadata Document, add the URI to `redirect_uris` and wait for Cloud's cached copy of the document to expire.
-
-If you use Dynamic Client Registration, only `localhost`, `127.0.0.1`, and `[::1]` redirect URIs are allowed.
+The `redirect_uri` in your authorization request doesn't exactly match a registered redirect URI. For a Client ID Metadata Document, add the URI to `redirect_uris` and wait for Cloud's cached copy of the document to expire. With Dynamic Client Registration, only `localhost`, `127.0.0.1`, and `[::1]` redirect URIs are allowed.
 
 ### Agent Gets 401 Errors After Authorization
 
-If the Medusa MCP server returns a `401` error for requests with your access token, make sure that you sent `resource=https://cloud.medusajs.com/mcp` in the authorization request. Tokens issued without the `resource` parameter don't grant access to the Medusa MCP server.
+Make sure that you sent `resource=https://cloud.medusajs.com/mcp` in the authorization request. Tokens issued without it don't grant access to the Medusa MCP server.
 
 For other errors, refer to the [Medusa MCP troubleshooting](../page.mdx#troubleshooting) section.

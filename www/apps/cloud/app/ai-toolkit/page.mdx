@@ -16,24 +16,22 @@ Your AI agent can set up the AI Toolkit for you. Run the following prompt in you
 Fetch https://docs.medusajs.com/cloud/ai-toolkit.md and set up the Medusa AI Toolkit for me
 ```
 
-The agent connects the Medusa MCP server, installs the Cloud CLI and Medusa's agent skills, and connects the Docs MCP server. It asks you to log in to your Medusa account in the browser when needed.
+The agent connects the Medusa MCP server, installs the Cloud CLI and Medusa's agent skills, and connects the Docs MCP server, asking you to log in to Medusa in the browser when needed.
 
-To set up the AI Toolkit yourself instead, follow the steps in the [Set Up the AI Toolkit](#set-up-the-ai-toolkit) section.
+To set it up yourself, follow the [Set Up the AI Toolkit](#set-up-the-ai-toolkit) section.
 
 ---
 
 ## What Makes Medusa AI-Native?
 
-A common issue with traditional commerce platforms is that they aren't built to support AI agents. This leads to unreliable implementations, security risks, and agents that don't understand the platform's architecture.
+Traditional commerce platforms aren't built for AI agents, which leads to unreliable implementations, security risks, and agents that don't understand the platform's architecture.
 
-Medusa's architecture, Framework, and AI tools support developers and non-technical store owners in using AI agents to build stores efficiently and securely, and go live faster. Anything you can do with Medusa, your AI agent can do too.
-
-With the tools in the AI Toolkit, you and your AI agents can:
+Medusa's architecture, Framework, and AI tools let developers and non-technical store owners use AI agents to build stores securely and go live faster. Anything you can do with Medusa, your agent can do too. With the AI Toolkit, you and your agents can:
 
 1. Create and deploy a Medusa store.
 2. Debug its builds and deployments.
-3. Build features tailored to your business, without worrying about the complexities of the platform's architecture.
-4. Build storefronts that follow commerce best practices and provide a great customer experience.
+3. Build features tailored to your business without wrestling with the platform's architecture.
+4. Build storefronts that follow commerce best practices.
 5. Ask about your store's orders, products, customers, and custom data in natural language.
 6. Find accurate answers from the Medusa documentation while you build.
 
@@ -41,7 +39,7 @@ With the tools in the AI Toolkit, you and your AI agents can:
 
 ## Set Up the AI Toolkit
 
-Follow these steps to give your AI agent the tools it needs to work with Medusa. If you're an AI agent following this guide, use the commands and configuration for the agent you're running in, and ask the user to complete any login in the browser.
+If you're an AI agent following this guide, use the commands and configuration for the agent you're running in, and ask the user to complete any login in the browser.
 
 ### Step 1: Connect the Medusa MCP Server
 
@@ -60,22 +58,22 @@ claude mcp add --transport http medusa-commerce \
   https://cloud.medusajs.com/mcp
 ```
 
-Then, authenticate the server. For example, in Claude Code, run the `/mcp` command, select the `medusa-commerce` server, and choose **Authenticate**. Medusa opens a browser window where you log in, select the environments your agent can access, and approve the connection.
+Then, authenticate the server. In Claude Code, run `/mcp`, select the `medusa-commerce` server, and choose **Authenticate**. In the browser window that opens, log in, select the environments your agent can access, and approve the connection.
 
-For the configuration of other agents, prerequisites, and how to approve the connection, refer to the [Medusa MCP](./medusa-mcp/page.mdx) guide.
+For other agents, prerequisites, and approval details, refer to the [Medusa MCP](./medusa-mcp/page.mdx) guide.
 
 ### Step 2: Install the Cloud CLI
 
 The Cloud CLI lets your agent deploy, manage, and debug your Medusa projects. It requires Node.js v22 or later.
 
-Install the CLI globally, then log in to your Medusa account:
+Install the CLI globally, then log in:
 
 ```bash
 npm install -g @medusajs/mcloud
 mcloud login
 ```
 
-The `mcloud login` command opens the browser to log in. If you don't have a Medusa account, run `mcloud signup` first. Learn more in the [Cloud CLI](../cli/page.mdx) guide.
+`mcloud login` opens the browser to log in. Without a Medusa account, run `mcloud signup` first. Learn more in the [Cloud CLI](../cli/page.mdx) guide.
 
 ### Step 3: Install Agent Skills
 
@@ -88,7 +86,7 @@ npx -y skills add medusajs/medusa-agent-skills \
   --skill '*' --yes
 ```
 
-To install the skills for a specific agent, pass the `--agent` option, such as `--agent claude-code`, `--agent cursor`, `--agent codex`, or `--agent gemini-cli`. Learn more in the [Agent Skills](./agent-skills/page.mdx) guide.
+To target a specific agent, pass the `--agent` option, such as `--agent claude-code`, `--agent cursor`, `--agent codex`, or `--agent gemini-cli`. Learn more in the [Agent Skills](./agent-skills/page.mdx) guide.
 
 ### Step 4: Connect the Docs MCP Server
 
@@ -107,13 +105,13 @@ claude mcp add --transport http medusa \
   https://docs.medusajs.com/mcp
 ```
 
-For the configuration of other agents, such as Cursor, Codex, and VS Code, refer to the [Docs MCP](./docs-mcp/page.mdx) guide.
+For other agents, such as Cursor, Codex, and VS Code, refer to the [Docs MCP](./docs-mcp/page.mdx) guide.
 
 ---
 
 ## AI Toolkit Tools
 
-The following table helps you choose the right tool for your use case:
+Choose the right tool for your use case:
 
 <Table>
   <Table.Header>

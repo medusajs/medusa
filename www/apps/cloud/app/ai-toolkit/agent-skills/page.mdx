@@ -10,13 +10,11 @@ export const metadata = {
 
 # {metadata.title}
 
-Medusa provides [agent skills](https://github.com/medusajs/medusa-agent-skills) to assist you in learning and building with Medusa. You can use them as plugins in Claude Code, or copy them into other AI tools that support custom skills.
-
-These skills are useful to developers and non-technical shop owners looking to build stores efficiently, get assistance in their development, and learn Medusa interactively.
+Medusa provides [agent skills](https://github.com/medusajs/medusa-agent-skills) that help developers and non-technical shop owners build stores, get development help, and learn Medusa interactively. Use them as plugins in Claude Code, or copy them into other AI tools that support custom skills.
 
 ## Deployment and Management Skills
 
-If you want your AI agent to deploy, manage, and debug your Medusa projects, install the `medusa-cloud` plugin and its skills. They teach your agent how to use the [Cloud CLI](../../cli/agents/page.mdx):
+To have your AI agent deploy, manage, and debug your Medusa projects, install the `medusa-cloud` plugin. Its skills teach your agent to use the [Cloud CLI](../../cli/agents/page.mdx):
 
 <CodeTabs group="agent-skills">
   <CodeTab label="Claude Code" value="claude-code">
@@ -39,7 +37,7 @@ npx skills add medusajs/medusa-agent-skills
   </CodeTab>
 </CodeTabs>
 
-Then, you can ask your AI agent to manage your projects and environments. For example:
+Then, ask your agent to manage your projects and environments. For example:
 
 ```bash title="Example Prompts"
 Why did my latest deployment fail? Check its build logs.
@@ -50,7 +48,7 @@ Add the STRIPE_API_KEY environment variable to my Production environment.
 
 ## Medusa Development Assistance Skills
 
-If you want assistance in building features with Medusa, install the `medusa-dev` plugin and its skills:
+For help building features with Medusa, install the `medusa-dev` plugin:
 
 <CodeTabs group="agent-skills">
   <CodeTab label="Claude Code" value="claude-code">
@@ -78,9 +76,7 @@ npx skills add medusajs/medusa-agent-skills
   </CodeTab>
 </CodeTabs>
 
-Then, you can ask Claude Code (or other AI agents) to build Medusa features, fix bugs, and more. They will use the skills in the plugin to provide you with accurate and relevant Medusa code.
-
-Examples of prompts you can use:
+Then, ask your agent to build Medusa features, fix bugs, and more. It uses the plugin's skills to write accurate Medusa code. For example:
 
 ```bash title="Example Prompts"
 Implement a product reviews feature. Authenticated customers can add reviews. Admin users can view and approve or reject reviews from the dashboard
@@ -91,7 +87,7 @@ Help me integrate the custom reviews API into my Next.js storefront. Show produc
 
 ### Available Commands
 
-The plugin also provides the following commands (as skills) you can use with your AI agents:
+The plugin also provides the following commands as skills:
 
 <Table>
   <Table.Header>
@@ -134,9 +130,7 @@ The plugin also provides the following commands (as skills) you can use with you
 
 ## Ecommerce Storefront Best Practices
 
-Medusa provides the `ecommerce-storefront` plugin with a `storefront-best-practices` skill to help you build ecommerce storefronts for any ecommerce platform, including Medusa, and any frontend framework, such as Next.js or Tanstack Start.
-
-To install the plugin in Claude Code (or other AI agents), run the following commands:
+The `ecommerce-storefront` plugin's `storefront-best-practices` skill helps you build storefronts for any ecommerce platform, including Medusa, with any frontend framework, such as Next.js or Tanstack Start. Install it with:
 
 <CodeTabs group="agent-skills">
   <CodeTab label="Claude Code" value="claude-code">
@@ -159,7 +153,7 @@ npx skills add medusajs/medusa-agent-skills
   </CodeTab>
 </CodeTabs>
 
-You can then run prompts to make changes to your ecommerce storefront or build it from scratch. For example:
+Then, prompt your agent to change your storefront or build one from scratch. For example:
 
 ```bash title="Example Prompts"
 Build a Next.js ecommerce storefront that uses Medusa as the backend. The storefront should have product listing, product detail, cart, and checkout pages.
@@ -170,7 +164,7 @@ Add a megamenu to the storefront's header that displays product categories and s
 
 ## Interactive Learning
 
-If you're a Medusa beginner, and you want to learn the basics of Medusa, install the `learn-medusa` plugin or its skill to start an interactive learning experience:
+If you're new to Medusa, install the `learn-medusa` plugin or its skill to learn the basics interactively:
 
 <CodeTabs group="agent-skills">
   <CodeTab label="Claude Code" value="claude-code">
@@ -205,10 +199,10 @@ You can also run the skill using the `/learn-medusa:learning-medusa` command in 
 
 </Note>
 
-This starts the interactive learning experience where you'll learn Medusa concepts step-by-step by building a brands feature, similar to the [Brands tutorial](!docs!/learn/customization/custom-features). You will:
+You learn Medusa concepts step by step by building a brands feature, similar to the [Brands tutorial](!docs!/learn/customization/custom-features). You:
 
 1. Create a Brand Module with API routes to manage brands.
 2. Link brands to products to associate products with brands.
-3. Customize the Medusa Admin dashboard to allow admin users to manage brands.
+3. Customize the Medusa Admin dashboard to manage brands.
 
-By the end, you'll have a solid understanding of Medusa's architecture and how to build custom features.
+By the end, you understand Medusa's architecture and how to build custom features.

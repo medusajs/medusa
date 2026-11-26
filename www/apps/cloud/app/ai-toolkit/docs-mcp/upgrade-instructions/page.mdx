@@ -10,11 +10,11 @@ In this guide, you'll learn how to use the [Docs MCP server](../page.mdx) to upg
 
 ## What is the Upgrade Instructions Tool?
 
-The Docs MCP server exposes a `get_medusa_upgrade_instructions` tool that returns step-by-step upgrade instructions for moving a Medusa project to a specific target version.
+The `get_medusa_upgrade_instructions` tool returns step-by-step instructions for upgrading a Medusa project to a specific target version.
 
-You name the version you want to move to, and your AI agent produces an upgraded project: packages bumped, breaking changes applied across your backend, admin, and storefront, migrations run, and the result built and typechecked to prove the changes hold together. Before any of that happens, it presents a plan for your approval.
+Name the target version, and your AI agent presents a plan for your approval. It then bumps the packages, applies breaking changes across your backend, admin, and storefront, runs migrations, and builds and typechecks the result.
 
-If the Docs MCP server has a curated guide for the version you asked for, your agent works from it directly. If not, the tool directs your agent to build the plan from the [GitHub release notes](https://github.com/medusajs/medusa/releases) for every release between your current version and the target, the official documentation, and the `ask_medusa_question` tool for anything it's unsure about.
+If the Docs MCP server has a curated guide for that version, your agent works from it. Otherwise, your agent builds the plan from the [GitHub release notes](https://github.com/medusajs/medusa/releases) of every release between your current and target versions, the official documentation, and the `ask_medusa_question` tool for anything it's unsure about.
 
 ---
 
@@ -31,19 +31,19 @@ This tool is useful for:
 
 ## Why Use This Tool?
 
-Upgrades are the task where an AI agent's default behavior is most misleading. Asked to upgrade Medusa, an agent will bump `@medusajs/*` versions from memory, report success, and leave you with a project that no longer boots, because the breaking changes those releases introduced were never applied. Nothing about the output signals that anything is missing.
+In upgrades, an AI agent's default behavior is most misleading. Asked to upgrade Medusa, an agent bumps `@medusajs/*` versions from memory, reports success, and leaves you with a project that no longer boots, because it never applied the releases' breaking changes. Nothing in the output signals that anything is missing.
 
 Compared to reading the release notes yourself or [asking a Medusa question](../ask-medusa-question/page.mdx), this tool gives you:
 
-- **An upgrade, not a version bump.** The tool exists to make sure the changes each release requires are actually applied, rather than just the numbers in `package.json` changing.
-- **Coverage across every release in between.** Upgrading several versions at once means several sets of breaking changes. The tool accounts for all of them, which is easy to miss when you're only looking at the target release's notes.
-- **A plan you approve before files change.** You see the intended version bumps and the specific edits, with file paths, while it's still cheap to stop. Anything your agent can't resolve on its own is flagged for you to decide rather than guessed at.
-- **Your whole project considered.** Upgrades touch the backend, the admin dashboard, the storefront, configuration, dependencies, and database migrations. The tool works through all of them rather than the packages alone.
-- **Verification as part of the job.** The upgrade isn't finished until the install, the migrations, and the build and typecheck have each been run and reported, so a broken upgrade surfaces immediately instead of on your next deploy. If any of them fail, your agent reports the error and stops rather than piling on speculative fixes.
+- **An upgrade, not a version bump.** Your agent applies the changes each release requires, not only the numbers in `package.json`.
+- **Coverage across every release in between.** Upgrading several versions means several sets of breaking changes. The tool accounts for all of them, which is easy to miss when you only read the target release's notes.
+- **A plan you approve before files change.** You see the version bumps and specific edits, with file paths, while it's still cheap to stop. Your agent flags anything it can't resolve for you to decide instead of guessing.
+- **Your whole project considered.** The tool works through the backend, admin dashboard, storefront, configuration, dependencies, and database migrations, not only the packages.
+- **Verification as part of the job.** Your agent runs and reports the install, migrations, build, and typecheck, so a broken upgrade surfaces immediately instead of on your next deploy. If any step fails, your agent reports the error and stops instead of piling on speculative fixes.
 
 <Note title="Tip">
 
-Some versions also ship [codemods](!docs!/learn/codemods) that automate large mechanical changes across your codebase. When a codemod exists for a change, using it is faster and safer than having your agent rewrite every occurrence by hand.
+Some versions ship [codemods](!docs!/learn/codemods) that automate large mechanical changes across your codebase. When a codemod exists, it's faster and safer than having your agent rewrite every occurrence by hand.
 
 </Note>
 

@@ -9,9 +9,7 @@ export const metadata = {
 
 # {metadata.title}
 
-The Medusa documentation provides a remote Model Context Protocol (MCP) server that allows you to find information from the Medusa documentation right in your IDEs or AI tools, such as Cursor.
-
-Medusa hosts a public Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` that you can add to AI agents supporting MCP server connections.
+The Docs MCP server is a remote Model Context Protocol (MCP) server that brings the Medusa documentation into your IDE or AI tool, such as Cursor. Medusa hosts it as a public Streamable HTTP server at `https://docs.medusajs.com/mcp`, which you can add to any AI agent that supports MCP server connections.
 
 ---
 
@@ -19,7 +17,7 @@ Medusa hosts a public Streamable HTTP MCP server at `https://docs.medusajs.com/m
 
 ### Claude Code
 
-To connect to the Docs MCP server in Claude Code, run the following command in your terminal:
+Run the following command in your terminal:
 
 ```bash
 claude mcp add --transport http medusa https://docs.medusajs.com/mcp
@@ -27,7 +25,7 @@ claude mcp add --transport http medusa https://docs.medusajs.com/mcp
 
 ### Codex
 
-To connect to the Docs MCP server in Codex, run the following command in your terminal:
+Run the following command in your terminal:
 
 ```bash
 codex mcp add medusa --url https://docs.medusajs.com/mcp
@@ -51,7 +49,7 @@ Add the following to your `.cursor/mcp.json` file or Cursor settings, as explain
 
 <Link href="https://vscode.dev/redirect/mcp/install?name=medusa&config=%7B%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fdocs.medusajs.com%2Fmcp%22%7D" target="_blank" rel="noopener noreferrer" variant="content">Click here</Link> to add the Docs MCP server to VSCode.
 
-To manually connect to the Docs MCP server in VSCode, add the following to your `.vscode/mcp.json` file in your workspace:
+To connect manually, add the following to your workspace's `.vscode/mcp.json` file:
 
 ```json title=".vscode/mcp.json"
 {
@@ -84,7 +82,7 @@ Add the following to your [OpenCode config file](https://opencode.ai/docs/config
 
 ## How to Use the Docs MCP Server
 
-After connecting to the Docs MCP server in your AI tool or IDE, you can start asking questions or requesting your AI assistant to build Medusa customizations. It will fetch the relevant information from the Medusa documentation and provide you with accurate answers, code snippets, and explanations.
+After you connect the Docs MCP server, ask your AI assistant questions or have it build Medusa customizations. It fetches the relevant documentation to give you accurate answers, code snippets, and explanations.
 
 For example, you can ask:
 
@@ -97,8 +95,6 @@ For example, you can ask:
 
 ## Docs MCP Server Tools
 
-Beyond answering questions from the documentation, the Docs MCP server provides tools that return curated, step-by-step implementation guides for common tasks. These guides tell your AI agent exactly which Medusa APIs and patterns to use, so it doesn't have to infer them.
-
-The following guides cover each tool, who it's useful for, and how to use it:
+The Docs MCP server also provides tools that return curated, step-by-step implementation guides for common tasks, so your AI agent uses the right Medusa APIs and patterns instead of inferring them. The following guides cover each tool, who it's useful for, and how to use it:
 
 <ChildDocs type="item" onlyTopLevel />

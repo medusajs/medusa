@@ -10,11 +10,9 @@ In this guide, you'll learn how to use the [Docs MCP server](../page.mdx) to let
 
 ## What is the Ask Medusa Question Tool?
 
-The Docs MCP server exposes an `ask_medusa_question` tool that searches the official Medusa documentation and returns the most relevant sections for a query, each with its source URL and its actual content.
+The `ask_medusa_question` tool searches the official Medusa documentation and returns the most relevant sections for a query, each with its source URL and content. Your AI agent answers from the current documentation instead of its training data, and cites its sources.
 
-This tool helps your AI agent answer Medusa questions from the current documentation rather than from what it memorized during training, and cites where each answer came from. This is the foundational tool of the Docs MCP server: the other tools decide how to approach a task, and this one supplies the accurate details they're built on.
-
-Everything in the Medusa documentation is available through it, from architecture and concepts to the Framework's tools, Commerce Modules, configuration, deployment, the API references, and integration guides.
+It's the foundational tool of the Docs MCP server: the other tools decide how to approach a task, and this one supplies the accurate details. It covers the entire documentation, from architecture and concepts to the Framework, Commerce Modules, configuration, deployment, API references, and integration guides.
 
 ---
 
@@ -33,10 +31,10 @@ This tool is useful for:
 
 Compared to browsing the documentation yourself, this tool gives you:
 
-- **Verifiable answers.** Every result carries its source URL, so you can check any claim your agent makes against the page it came from.
-- **The documentation where you're working.** Your agent retrieves what it needs mid-task without you switching to a browser, searching, and pasting context back in.
-- **Documentation your agent can act on directly.** The tool returns the actual content of the relevant sections, so your agent works from the real text rather than from a summary or a link it can't read.
-- **Fewer wrong turns while building.** When your agent checks the exact shape of an API before using it, you spend less time debugging code that was never going to work.
+- **Verifiable answers.** Every result carries its source URL, so you can check your agent's claims against the source page.
+- **The documentation where you're working.** Your agent retrieves what it needs mid-task, so you don't switch to a browser and paste context back in.
+- **Documentation your agent can act on.** The tool returns the sections' actual content, not a summary or a link your agent can't read.
+- **Fewer wrong turns.** Your agent checks an API's exact shape before using it, so you spend less time debugging code that was never going to work.
 
 ---
 
@@ -51,7 +49,7 @@ Compared to browsing the documentation yourself, this tool gives you:
   ]}
 />
 
-After [connecting to the Docs MCP server](../page.mdx#connect-to-the-docs-mcp-server), just ask your question. Your AI agent calls the tool whenever answering requires Medusa knowledge, and you don't need to invoke it explicitly.
+After [connecting to the Docs MCP server](../page.mdx#connect-to-the-docs-mcp-server), ask your question. Your AI agent calls the tool whenever it needs Medusa knowledge, so you don't need to invoke it explicitly.
 
 For example:
 
@@ -63,13 +61,11 @@ Explain the Medusa workflow system.
 How do I create a custom API route that requires admin authentication?
 ```
 
-The tool is also useful mid-implementation, when your agent needs an exact shape rather than a concept:
+Your agent also calls the tool mid-implementation, when it needs exact details, such as how to implement a custom module:
 
 ```bash title="Example prompts"
 Create a Product Review module for Medusa.
 ```
-
-The agent will call the tool whenever it needs information from the documentation, such as how to implement a custom module.
 
 ### What to Expect
 
@@ -80,6 +76,6 @@ The agent will call the tool whenever it needs information from the documentatio
 
 <Note>
 
-If the tool can't find relevant documentation for your question, that's a documentation gap worth reporting. Ask your agent to [submit feedback](../submit-feedback/page.mdx) so the Medusa team can add coverage.
+If the tool can't find relevant documentation, that's a gap worth reporting. Ask your agent to [submit feedback](../submit-feedback/page.mdx) so the Medusa team can add coverage.
 
 </Note>
