@@ -83,14 +83,15 @@ export async function GET(req: NextRequest, { params }: Params) {
                 !!process.env.CLOUDFLARE_ENV,
             },
           ],
+        ] as unknown as Plugin[],
+        after: [
           // in "content" mode there is no vfile path, so pass the current
-          // page's file path explicitly to resolve relative `page.mdx` links
+          // page's file path explicitly to resolve relative `page.mdx` links.
+          // Runs after component parsers so their links (e.g. Prerequisites) resolve too.
           [
             localLinksRehypePlugin,
             { filePath: filePathFromMap, basePath: appDir },
           ],
-        ] as unknown as Plugin[],
-        after: [
           // links in the doc are app-relative (without the base path), so
           // prepend both the base URL and the base path to make them absolute
           [

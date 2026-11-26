@@ -76,6 +76,8 @@ export async function GET(req: NextRequest, { params }: Params) {
             !!process.env.CLOUDFLARE_ENV,
         },
       ],
+    ] as unknown as Plugin[],
+    after: [
       [
         localLinksRehypePlugin,
         {
@@ -83,8 +85,6 @@ export async function GET(req: NextRequest, { params }: Params) {
           basePath: appDir,
         },
       ],
-    ] as unknown as Plugin[],
-    after: [
       [
         addUrlToRelativeLink,
         { url: `${process.env.NEXT_PUBLIC_BASE_URL || ""}${basePath}` },
