@@ -52,19 +52,27 @@ export function generateTotpCode({
 /**
  * Verifies a TOTP code across the configured time-step window.
  */
-export function verifyTotpCode({
+export function verifyTotpCode(options: TotpOptions): boolean {
+  return findTotpTimeStep(options) !== null
+}
+
+/**
+ * Returns the RFC 6238 time step a TOTP code matches within the configured
+ * window, or `null` if it doesn't match.
+ */
+export function findTotpTimeStep({
   secret,
   code,
   digits = 6,
   period = 30,
   window = 1,
   timestamp = Date.now(),
-}: TotpOptions): boolean {
+}: TotpOptions): number | null {
   if (!code || !/^\d+$/.test(code) || code.length !== digits) {
-    return false
+    return null
   }
 
-  return verifySync({
+  const result = verifySync({
     secret,
     crypto,
     base32,
@@ -73,7 +81,9 @@ export function verifyTotpCode({
     period,
     epoch: Math.floor(timestamp / 1000),
     epochTolerance: window * period,
-  }).valid
+  })
+
+  return result.valid ? result.timeStep : null
 }
 
 /**

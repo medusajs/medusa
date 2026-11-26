@@ -6,6 +6,12 @@ import {
 } from "../../../../helpers/create-admin-user"
 import { generateTotpCode } from "../../../../../packages/modules/auth/src/utils/totp"
 
+// A TOTP code is accepted once, so enrollment uses the previous time step's
+// code (still inside the default window) and leaves the current one for the
+// MFA challenge that follows.
+const enrollmentCode = (secret: string) =>
+  generateTotpCode({ secret, timestamp: Date.now() - 30_000 })
+
 jest.setTimeout(100000)
 
 const EMAIL = "admin@medusa.js"
@@ -25,7 +31,7 @@ const enrollTotpFactor = async (api) => {
 
   const verified = await api.post(
     `/auth/mfa/factors/${setup.data.mfa_factor.id}/verify`,
-    { code: generateTotpCode({ secret: setup.data.secret }) },
+    { code: enrollmentCode(setup.data.secret) },
     adminHeaders
   )
 
@@ -116,7 +122,7 @@ medusaIntegrationTestRunner({
 
         const verified = await api.post(
           `/auth/mfa/factors/${setup.data.mfa_factor.id}/verify`,
-          { code: generateTotpCode({ secret: setup.data.secret }) },
+          { code: enrollmentCode(setup.data.secret) },
           headers
         )
         expect(verified.data.mfa_factor.status).toEqual("enabled")
@@ -313,6 +319,31 @@ medusaIntegrationTestRunner({
       })
     })
 
+    describe("Reusing a TOTP code", () => {
+      it("does not complete a second challenge with a code that was already accepted", async () => {
+        const { secret } = await enrollTotpFactor(api)
+        const code = generateTotpCode({ secret })
+
+        const first = await loginWithoutCompletingMfa(api)
+        await api.post(
+          `/auth/mfa/challenges/${first.challenge.id}/verify`,
+          { method: "totp", code },
+          first.headers
+        )
+
+        const second = await loginWithoutCompletingMfa(api)
+        const err = await api
+          .post(
+            `/auth/mfa/challenges/${second.challenge.id}/verify`,
+            { method: "totp", code },
+            second.headers
+          )
+          .catch((e) => e)
+
+        expect(err.response.status).toEqual(400)
+      })
+    })
+
     describe("MFA challenge ownership", () => {
       it("does not verify a challenge belonging to another auth identity", async () => {
         const { secret } = await enrollTotpFactor(api)
@@ -429,7 +460,7 @@ medusaIntegrationTestRunner({
 
         const verified = await api.post(
           `/auth/mfa/factors/${setup.data.mfa_factor.id}/verify`,
-          { code: generateTotpCode({ secret: setup.data.secret }) },
+          { code: enrollmentCode(setup.data.secret) },
           registrationHeaders
         )
 

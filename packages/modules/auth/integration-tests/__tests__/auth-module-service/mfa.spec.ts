@@ -476,6 +476,14 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           id: setup.mfa.id,
           code,
         })
+
+        // The setup code was used, so the challenge needs the next one.
+        jest.spyOn(Date, "now").mockReturnValue(1_710_000_030_000)
+        const nextCode = generateTotpCode({
+          secret: setup.secret,
+          timestamp: Date.now(),
+        })
+
         const challenge = await service.createAuthMfaChallenge({
           auth_identity_id: "test-id",
         })
@@ -483,7 +491,7 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         const completed = await service.verifyAuthMfaChallenge({
           id: challenge.id,
           method: "totp",
-          code,
+          code: nextCode,
         })
 
         expect(completed).toEqual(
@@ -498,9 +506,52 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           service.verifyAuthMfaChallenge({
             id: challenge.id,
             method: "totp",
-            code,
+            code: nextCode,
           })
         ).rejects.toThrow("MFA challenge has already been completed")
+      })
+
+      it("does not accept a TOTP code twice", async () => {
+        const setup = await service.startAuthMfa({
+          auth_identity_id: "test-id",
+          provider: "totp",
+        })
+
+        await service.verifyAuthMfa({
+          id: setup.mfa.id,
+          code: generateTotpCode({
+            secret: setup.secret,
+            timestamp: Date.now(),
+          }),
+        })
+
+        jest.spyOn(Date, "now").mockReturnValue(1_710_000_030_000)
+        const code = generateTotpCode({
+          secret: setup.secret,
+          timestamp: Date.now(),
+        })
+
+        const first = await service.createAuthMfaChallenge({
+          auth_identity_id: "test-id",
+        })
+        await service.verifyAuthMfaChallenge({
+          id: first.id,
+          method: "totp",
+          code,
+        })
+
+        // Still within the code's time step, but it was already used.
+        const second = await service.createAuthMfaChallenge({
+          auth_identity_id: "test-id",
+        })
+
+        await expect(
+          service.verifyAuthMfaChallenge({
+            id: second.id,
+            method: "totp",
+            code,
+          })
+        ).rejects.toThrow("Invalid MFA challenge code")
       })
 
       it("tracks failed MFA challenge attempts", async () => {
@@ -596,14 +647,12 @@ moduleIntegrationTestRunner<IAuthModuleService>({
           auth_identity_id: "test-id",
           provider: "totp",
         })
-        const code = generateTotpCode({
-          secret: setup.secret,
-          timestamp: Date.now(),
-        })
-
         await service.verifyAuthMfa({
           id: setup.mfa.id,
-          code,
+          code: generateTotpCode({
+            secret: setup.secret,
+            timestamp: Date.now(),
+          }),
         })
 
         // A new login gets a new challenge, but the failures add up.
@@ -620,6 +669,13 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             })
           ).rejects.toThrow("Invalid MFA challenge code")
         }
+
+        // The setup code was used, so the next one is a valid, unused code.
+        jest.spyOn(Date, "now").mockReturnValue(1_710_000_030_000)
+        const code = generateTotpCode({
+          secret: setup.secret,
+          timestamp: Date.now(),
+        })
 
         const challenge = await service.createAuthMfaChallenge({
           auth_identity_id: "test-id",
@@ -640,6 +696,19 @@ moduleIntegrationTestRunner<IAuthModuleService>({
             code,
           })
         ).rejects.toThrow("Too many failed MFA attempts. Try again later.")
+
+        // Once the failures expire, the same code completes the challenge.
+        mockCache.delete("auth:mfa:failed_attempts:test-id")
+
+        await expect(
+          service.verifyAuthMfaChallenge({
+            id: challenge.id,
+            method: "totp",
+            code,
+          })
+        ).resolves.toEqual(
+          expect.objectContaining({ completed_at: expect.any(Date) })
+        )
       })
 
       it("rejects expired MFA challenges", async () => {

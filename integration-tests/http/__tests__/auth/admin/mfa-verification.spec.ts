@@ -5,6 +5,12 @@ import jwt from "jsonwebtoken"
 import path from "path"
 import { generateTotpCode } from "../../../../../packages/modules/auth/src/utils/totp"
 
+// A TOTP code is accepted once, so enrollment uses the previous time step's
+// code (still inside the default window) and leaves the current one for the
+// MFA challenge that follows.
+const enrollmentCode = (secret: string) =>
+  generateTotpCode({ secret, timestamp: Date.now() - 30_000 })
+
 jest.setTimeout(100000)
 
 const createUserWithMfa = async (
@@ -48,7 +54,7 @@ const createUserWithMfa = async (
     authHeader
   )
 
-  const code = generateTotpCode({ secret: setup.data.secret })
+  const code = enrollmentCode(setup.data.secret)
   await api.post(
     `/auth/mfa/factors/${setup.data.mfa_factor.id}/verify`,
     { code },

@@ -10,9 +10,9 @@ import { AuthMfaFactor } from "@models"
 import { TotpMfaProviderOptions } from "@types"
 import { decryptSecret, encryptSecret } from "../../utils/mfa"
 import {
+  findTotpTimeStep,
   generateTotpSecret,
   generateTotpUri,
-  verifyTotpCode,
 } from "../../utils/totp"
 
 type InjectedDependencies = {
@@ -142,7 +142,7 @@ export class TotpMfaProvider implements AuthMfaProvider {
       )
     }
 
-    const valid = this.verifyCode_(factor, data.code)
+    const valid = await this.verifyCode_(factor, data.code, sharedContext)
 
     if (!valid) {
       throw new MedusaError(MedusaError.Types.NOT_ALLOWED, "Invalid TOTP code")
@@ -173,7 +173,9 @@ export class TotpMfaProvider implements AuthMfaProvider {
       sharedContext
     )
 
-    return factor ? this.verifyCode_(factor, data.code) : false
+    return factor
+      ? await this.verifyCode_(factor, data.code, sharedContext)
+      : false
   }
 
   protected async serializeFactor_(
@@ -190,20 +192,48 @@ export class TotpMfaProvider implements AuthMfaProvider {
     return serialized
   }
 
-  private verifyCode_(factor: any, code: string): boolean {
+  // A code is accepted once: its time step is stored on the factor, and codes
+  // from that time step or an earlier one are rejected after that.
+  private async verifyCode_(
+    factor: any,
+    code: string,
+    sharedContext: Context
+  ): Promise<boolean> {
     const totpConfig = this.getTotpConfig_()
     const secret = decryptSecret(
       factor.provider_metadata?.secret,
       this.getEncryptionKey_()
     )
 
-    return verifyTotpCode({
+    const timeStep = findTotpTimeStep({
       secret,
       code,
       digits: totpConfig.digits,
       period: totpConfig.period,
       window: totpConfig.window,
     })
+
+    const lastUsedTimeStep = factor.provider_metadata?.last_used_time_step
+
+    if (
+      timeStep === null ||
+      (typeof lastUsedTimeStep === "number" && timeStep <= lastUsedTimeStep)
+    ) {
+      return false
+    }
+
+    await this.authMfaFactorService_.update(
+      {
+        id: factor.id,
+        provider_metadata: {
+          ...factor.provider_metadata,
+          last_used_time_step: timeStep,
+        },
+      },
+      sharedContext
+    )
+
+    return true
   }
 
   protected getEncryptionKey_(): string {
