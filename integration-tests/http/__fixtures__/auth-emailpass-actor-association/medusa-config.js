@@ -15,6 +15,10 @@ module.exports = defineConfig({
   projectConfig: {
     http: {
       jwtSecret: "test",
+      // A custom actor type must have an entry to use the /auth routes.
+      authMethodsPerActor: {
+        "some-actor": ["emailpass"],
+      },
       requireActorAssociation: {
         emailpass: true,
       },
