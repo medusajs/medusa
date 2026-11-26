@@ -108,6 +108,20 @@ The `require_verification` option was removed since Medusa [v2.16.0](https://git
 
 ---
 
+## Password Updates and Existing Tokens
+
+<Note>
+
+This behavior is available since [Medusa v2.23.1](https://github.com/medusajs/medusa/releases/tag/v2.23.1).
+
+</Note>
+
+When a user's password is updated, for example, after they [reset their password](../../reset-password/page.mdx), the Emailpass provider stores the date of the update in the provider identity's `provider_metadata.password_updated_at` property.
+
+Medusa then refuses to [refresh](../../authentication-route/page.mdx#refresh-token-route) any token issued before that date, or to use it to [verify an MFA challenge](../../mfa/page.mdx#step-2-verify-the-challenge). So, the user must log in again with their new password.
+
+---
+
 ## Related Guides
 
 - [How to register a customer using email and password](../../../../storefront-development/customers/register/page.mdx)
