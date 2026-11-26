@@ -374,6 +374,46 @@ describe("Email password auth provider", () => {
     })
   })
 
+  it("takes about as long to refuse an unknown email as a wrong password", async () => {
+    const passwordHash = Buffer.from(
+      await Scrypt.kdf("somepass", { logN: 15, r: 8, p: 1 })
+    ).toString("base64")
+    const knownEmail = {
+      retrieve: jest.fn().mockResolvedValue({
+        provider_identities: [
+          {
+            entity_id: "test@admin.com",
+            provider: "emailpass",
+            provider_metadata: { password: passwordHash },
+          },
+        ],
+      }),
+    }
+    const unknownEmail = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+    }
+
+    const medianMs = async (authIdentityService: object) => {
+      const durations: number[] = []
+      for (let i = 0; i < 5; i++) {
+        const start = performance.now()
+        await emailpassService.authenticate(
+          { body: { email: "test@admin.com", password: "otherpass" } },
+          authIdentityService as any
+        )
+        durations.push(performance.now() - start)
+      }
+      return durations.sort((a, b) => a - b)[2]
+    }
+
+    const knownEmailMs = await medianMs(knownEmail)
+    const unknownEmailMs = await medianMs(unknownEmail)
+
+    expect(unknownEmailMs).toBeGreaterThan(knownEmailMs / 2)
+  })
+
   it("falls back to a fixed dummy hash when the configured one can't be made", async () => {
     const logger = { error: jest.fn() }
     const service = new EmailPassAuthService({ logger: logger as any }, {
