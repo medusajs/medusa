@@ -959,6 +959,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                     {
                       "loaded": true,
                       "type": "link",
+                      "path": "/references/auth/getCredentialsUpdatedAt",
+                      "title": "getCredentialsUpdatedAt",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
                       "path": "/references/auth/listAndCountAuthIdentities",
                       "title": "listAndCountAuthIdentities",
                       "description": "",
