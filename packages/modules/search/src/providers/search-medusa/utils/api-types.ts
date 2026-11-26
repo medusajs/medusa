@@ -149,9 +149,20 @@ export type IndexQuery = {
   compute_attributes?: ComputeAttributes
 }
 
+/**
+ * Fuses the rows of every query into one list by reciprocal rank, `weights`
+ * being one positive number per query.
+ */
+export type RerankBy = ["RRF"] | ["RRF", { weights?: number[] }]
+
 export type IndexMultiQueryParams = {
   queries: IndexQuery[]
   consistency?: { level: "strong" | "eventual" }
+  /** When set, the response holds a single result: the fused rows. */
+  rerank_by?: RerankBy
+  /** Pages the fused rows. Only read alongside `rerank_by`. */
+  limit?: number | Limit
+  offset?: number
 }
 
 export type IndexQueryResult = {

@@ -7,6 +7,7 @@ import type {
   FuzzyEditDistanceThreshold,
   HighlightFragment,
   Limit,
+  IndexMultiQueryParams,
   IndexQuery,
   RankBy,
   Row,
@@ -29,6 +30,11 @@ export type QueryPlan = {
   options: MedusaSearchQueryOptions
   highlight?: HighlightPlan
   distinct?: string
+  /**
+   * Set for a hybrid search, whose hits come from this request instead of
+   * `query`: a keyword and a vector query that Cloud fuses by rank.
+   */
+  hybrid?: IndexMultiQueryParams
 }
 
 function fail(message: string): never {
@@ -443,6 +449,59 @@ function vectorRank(
   return [field, "ANN", ["Embed", text]] as RankBy
 }
 
+const MAX_QUERY_RESULTS = 10000
+const MIN_HYBRID_CANDIDATES = 40
+
+/**
+ * How many rows each side of a hybrid search hands to the fusion. Rows a side
+ * leaves out can't be ranked, even when both sides would have placed them
+ * just past the page, so each side fetches well beyond it.
+ */
+function hybridCandidates(skip: number, take: number): number {
+  return Math.min(
+    Math.max(skip + take, MIN_HYBRID_CANDIDATES) * 2,
+    MAX_QUERY_RESULTS
+  )
+}
+
+/**
+ * Both sides supply candidates, and the page itself is cut from the fused
+ * list.
+ */
+function hybridQuery(
+  text: IndexQuery,
+  vector: { rank_by: RankBy; semantic_ratio: number },
+  { skip, take, distinct }: { skip: number; take: number; distinct?: string }
+): IndexMultiQueryParams {
+  // Fusing already keeps one row per document.
+  const per = distinct && distinct !== "id" ? distinct : undefined
+  const side: IndexQuery = {
+    ...text,
+    // Cloud only deduplicates by an attribute the rows carry.
+    include_attributes:
+      per &&
+      Array.isArray(text.include_attributes) &&
+      !text.include_attributes.includes(per)
+        ? [...text.include_attributes, per]
+        : text.include_attributes,
+    limit: hybridCandidates(skip, take),
+    offset: undefined,
+  }
+
+  return {
+    queries: [side, { ...side, rank_by: vector.rank_by }],
+    rerank_by: [
+      "RRF",
+      { weights: [1 - vector.semantic_ratio, vector.semantic_ratio] },
+    ],
+    // Like a single query, a deduplicated page has no `offset` and is sliced.
+    limit: per
+      ? { total: skip + take, per: { attributes: [per], limit: 1 } }
+      : take,
+    offset: per ? undefined : skip || undefined,
+  }
+}
+
 export function buildQueryPlan(
   input: SearchTypes.ProviderSearchQuery,
   plan: IndexPlan
@@ -454,7 +513,7 @@ export function buildQueryPlan(
   if (input.pagination?.cursor !== undefined) {
     fail("The Medusa search provider does not support cursor pagination")
   }
-  if (skip + take > 10000) {
+  if (skip + take > MAX_QUERY_RESULTS) {
     fail("Medusa search can return at most 10,000 results per query")
   }
   if (options.locales?.length) {
@@ -468,6 +527,7 @@ export function buildQueryPlan(
 
   const ordered = attributeRank(input)
   let rankBy: RankBy
+  let hybrid: { rank_by: RankBy; semantic_ratio: number } | undefined
 
   if (options.vector) {
     if (ordered) {
@@ -480,16 +540,12 @@ export function buildQueryPlan(
       if (applyTypoTolerance(input, plan)) {
         text = boostWithTypoTolerance(input, plan, text)
       }
-      rankBy =
-        semanticRatio === 0
-          ? text
-          : ([
-              "Sum",
-              [
-                ["Product", 1 - semanticRatio, text],
-                ["Product", semanticRatio, rankBy],
-              ],
-            ] as RankBy)
+      // Cloud only ranks by a vector on its own, never inside a weighted
+      // sum, so a hybrid search is two queries that Cloud fuses by rank.
+      if (semanticRatio > 0) {
+        hybrid = { rank_by: rankBy, semantic_ratio: semanticRatio }
+      }
+      rankBy = text
     }
   } else if (input.q) {
     // Text matching is a filter (ContainsAllTokens). Attribute order is a
@@ -534,15 +590,18 @@ export function buildQueryPlan(
     ? buildHighlightPlan(input, plan, highlight)
     : undefined
 
+  const query: IndexQuery = {
+    rank_by: rankBy,
+    filters: buildQueryFilters(input, plan),
+    include_attributes: input.attributes_to_retrieve,
+    limit,
+    offset,
+    compute_attributes: highlightPlan?.compute_attributes,
+  }
+
   return {
-    query: {
-      rank_by: rankBy,
-      filters: buildQueryFilters(input, plan),
-      include_attributes: input.attributes_to_retrieve,
-      limit,
-      offset,
-      compute_attributes: highlightPlan?.compute_attributes,
-    },
+    query,
+    hybrid: hybrid && hybridQuery(query, hybrid, { skip, take, distinct }),
     skip,
     take,
     options: providerOptions(input),

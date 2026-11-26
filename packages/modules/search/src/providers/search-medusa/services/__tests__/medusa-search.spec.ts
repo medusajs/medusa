@@ -315,6 +315,65 @@ describe("MedusaSearchService", () => {
     expect(facetQuery).not.toHaveProperty("limit")
   })
 
+  it("asks Cloud to fuse a hybrid search's keyword and vector queries", async () => {
+    const service = createService()
+    const multiQuery = jest.fn(async (body: any) =>
+      body.rerank_by
+        ? {
+            results: [
+              {
+                rows: [
+                  { id: "prod_1", title: "Red shoe", $dist: 0.016 },
+                  { id: "prod_2", title: "Crimson sneaker", $dist: 0.008 },
+                ],
+              },
+            ],
+            performance: {},
+          }
+        : { results: [{ aggregations: { count: 2 } }], performance: {} }
+    )
+    ;(service as any).client_ = {
+      index: jest.fn(() => ({ multiQuery })),
+    }
+
+    const result = await service.search({
+      index: {
+        ...definition,
+        fields: {
+          ...definition.fields,
+          embedding: { type: "vector", dimensions: 3 },
+        },
+      },
+      q: "red shoe",
+      attributes_to_retrieve: ["title"],
+      search_options: {
+        vector: { value: [0.1, 0.2, 0.3] },
+        include_score: true,
+      },
+    })
+
+    // Cloud fuses every query of a request, so the hits get one of their own
+    // and the count stays out of it.
+    const bodies = multiQuery.mock.calls.map(([body]) => body)
+    const fused = bodies.find((body) => body.rerank_by)
+    const rest = bodies.find((body) => !body.rerank_by)
+    expect(bodies).toHaveLength(2)
+    expect(fused.queries.map((query: any) => query.rank_by)).toEqual([
+      ["title", "BM25", "red shoe"],
+      ["embedding", "ANN", [0.1, 0.2, 0.3]],
+    ])
+    expect(fused.rerank_by).toEqual(["RRF", { weights: [0.5, 0.5] }])
+    expect(rest.queries).toEqual([
+      { aggregate_by: { count: ["Count"] }, filters: undefined },
+    ])
+
+    expect(result.hits.map((hit) => [hit.id, hit.score])).toEqual([
+      ["prod_1", 0.016],
+      ["prod_2", 0.008],
+    ])
+    expect(result.metadata.count).toBe(2)
+  })
+
   it("counts groups rather than documents when results are deduplicated", async () => {
     const service = createService()
     const multiQuery = jest.fn().mockResolvedValue({

@@ -45,6 +45,8 @@ type BuiltMultiQuery = {
   /** What is sent: `queries` with shared aggregations merged. */
   packed: PackedQueries
   hitsIndex: number
+  /** A hybrid search's hits, fetched in a request of their own. */
+  hybrid?: IndexMultiQueryParams
   countIndex: number
   facetOffset: number
 }
@@ -242,7 +244,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
     }
 
     const built = inputs.map((input) => this.buildMultiQuery(input))
-    const results: SearchTypes.SearchResult[] = new Array(inputs.length)
+    const responses: IndexMultiQueryResponse[] = new Array(inputs.length)
     const emptyResponse: IndexMultiQueryResponse = {
       results: [],
       performance: {},
@@ -252,7 +254,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
 
     built.forEach((item, index) => {
       if (!item.packed.queries.length) {
-        results[index] = this.parseMultiQueryResult(emptyResponse, item)
+        responses[index] = emptyResponse
         return
       }
 
@@ -267,7 +269,9 @@ export class MedusaSearchService extends AbstractSearchProviderService {
       groups.set(key, [{ item, index }])
     })
 
-    await Promise.all(
+    const hybridRows = Promise.all(built.map((item) => this.hybridRows(item)))
+
+    const grouped = Promise.all(
       [...groups].map(async ([, group]) => {
         const chunks: { item: BuiltMultiQuery; index: number }[][] = []
         let current: { item: BuiltMultiQuery; index: number }[] = []
@@ -314,17 +318,35 @@ export class MedusaSearchService extends AbstractSearchProviderService {
                 performance: response.performance,
               }
               offset += packed.queries.length
-              results[entry.index] = this.parseMultiQueryResult(
-                sliced,
-                entry.item
-              )
+              responses[entry.index] = sliced
             }
           })
         )
       })
     )
 
-    return results
+    const [rows] = await Promise.all([hybridRows, grouped])
+
+    return built.map((item, index) =>
+      this.parseMultiQueryResult(responses[index], item, rows[index])
+    )
+  }
+
+  /** The fused hits of a hybrid search, `undefined` for any other search. */
+  protected async hybridRows(
+    item: BuiltMultiQuery
+  ): Promise<Row[] | undefined> {
+    if (!item.hybrid) {
+      return undefined
+    }
+
+    const consistency = item.base.options.consistency
+    const response = await this.multiQuery(item.input.index.physical_name, {
+      ...item.hybrid,
+      consistency: consistency ? { level: consistency } : undefined,
+    })
+
+    return response.results[0]?.rows ?? []
   }
 
   protected async multiQuery(
@@ -364,9 +386,12 @@ export class MedusaSearchService extends AbstractSearchProviderService {
     const includeHits = (input.pagination?.take ?? 20) > 0
     const includeCount = input.search_options?.count !== "none"
     const queries: IndexQuery[] = []
-    const hitsIndex = includeHits ? queries.length : -1
+    // Cloud fuses every query of a request, so a hybrid search's hits can't
+    // share one with the count and the facets.
+    const hybrid = includeHits ? base.hybrid : undefined
+    const hitsIndex = includeHits && !hybrid ? queries.length : -1
 
-    if (includeHits) {
+    if (hitsIndex !== -1) {
       queries.push(base.query)
     }
 
@@ -409,6 +434,7 @@ export class MedusaSearchService extends AbstractSearchProviderService {
       queries,
       packed,
       hitsIndex,
+      hybrid,
       countIndex,
       facetOffset,
     }
@@ -416,13 +442,18 @@ export class MedusaSearchService extends AbstractSearchProviderService {
 
   protected parseMultiQueryResult(
     response: IndexMultiQueryResponse,
-    built: BuiltMultiQuery
+    built: BuiltMultiQuery,
+    hybridRows?: Row[]
   ): SearchTypes.SearchResult {
     const { input, base, facets, hitsIndex, countIndex, facetOffset } = built
-    const hitResult = hitsIndex === -1 ? undefined : response.results[hitsIndex]
+    const hitRows =
+      hybridRows ??
+      (hitsIndex === -1 ? undefined : response.results[hitsIndex]?.rows) ??
+      []
     // Without an `offset` (deduplicated queries), the page starts at `skip`.
-    const start = base.query.offset === undefined ? base.skip : 0
-    const rows = (hitResult?.rows ?? []).slice(start, start + base.take)
+    const paged = built.hybrid ?? base.query
+    const start = paged.offset === undefined ? base.skip : 0
+    const rows = hitRows.slice(start, start + base.take)
     const parsedFacets = parseFacetResults(
       facets,
       response.results.slice(facetOffset)
