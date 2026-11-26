@@ -38,7 +38,8 @@ export const RootLayout = ({
             <div
               className={clsx(
                 "w-full flex-1 min-h-0",
-                "grid grid-cols-1 lg:mx-auto lg:grid-cols-[221px_1fr]",
+                "grid grid-cols-1 grid-rows-[minmax(0,1fr)]",
+                "lg:mx-auto lg:grid-cols-[221px_1fr]",
                 bodyClassName
               )}
               id="root-layout"
