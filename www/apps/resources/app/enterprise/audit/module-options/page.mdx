@@ -1,0 +1,153 @@
+---
+sidebar_label: "Module Options"
+---
+
+export const metadata = {
+  title: `Audit Module Options`,
+}
+
+# {metadata.title}
+
+<EnterpriseNotice />
+
+In this guide, you'll learn about the options of the Audit Module.
+
+<Note>
+
+On Cloud, Medusa configures the Audit Module for you if your organization's license covers the `audit` feature. You don't need to set any of these options.
+
+</Note>
+
+## enabled
+
+The `enabled` option is a boolean that indicates whether Medusa records audit logs. It's `true` by default.
+
+When you set it to `false`, Medusa stops recording audit logs, but you can still read existing ones. Code that records audit logs doesn't need any change.
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/audit",
+      options: {
+        enabled: process.env.AUDIT_ENABLED !== "false",
+      },
+    },
+  ],
+})
+```
+
+---
+
+## retention_days
+
+The `retention_days` option is a number that indicates how many days Medusa keeps audit logs in your database. Medusa deletes older audit logs in the background as it records new ones.
+
+When you don't set it, Medusa keeps audit logs forever.
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/audit",
+      options: {
+        retention_days: 90,
+      },
+    },
+  ],
+})
+```
+
+The option only applies to the default storage in your database. When you set the [providers](#providers) option, retention is the provider's responsibility, and Medusa logs a warning if you also set this option.
+
+---
+
+## providers
+
+The `providers` option is an array of [custom providers](/references/audit/provider) that store audit logs, replacing the default storage in your database.
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/audit",
+      options: {
+        providers: [
+          {
+            resolve: "./src/modules/my-audit",
+            id: "my-audit",
+            options: {
+              url: process.env.AUDIT_STORAGE_URL,
+            },
+          },
+        ],
+      },
+    },
+  ],
+})
+```
+
+Each provider accepts the following properties:
+
+- `resolve`: The path to the provider's package or module.
+- `id`: The provider's ID, which you can use in the [default_provider](#default_provider) option.
+- `options`: The options to pass to the provider.
+
+---
+
+## default_provider
+
+The `default_provider` option is a string that indicates the ID of the provider that Medusa writes audit logs to and reads them from.
+
+You only need this option when you register more than one provider. With a single provider, Medusa uses it as the default.
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/audit",
+      options: {
+        providers: [
+          // ...
+        ],
+        default_provider: "my-audit",
+      },
+    },
+  ],
+})
+```
+
+---
+
+## buffer
+
+The Audit Module doesn't write audit logs when you record them. Instead, it buffers them in memory and writes them in batches, so recording an audit log never delays a request.
+
+The `buffer` option is an object that configures this behavior. It accepts the following properties:
+
+- `max_size`: The number of buffered audit logs that triggers a write, and the largest batch Medusa writes at once. It's `100` by default.
+- `flush_interval_ms`: How long, in milliseconds, Medusa waits after the first buffered audit log before it writes the batch. It's `1000` by default.
+- `max_buffered`: The maximum number of audit logs held in memory. When the buffer is full, Medusa drops the oldest ones with a warning. It's `10000` by default.
+
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  modules: [
+    {
+      resolve: "@medusajs/medusa/audit",
+      options: {
+        buffer: {
+          max_size: 200,
+          flush_interval_ms: 2000,
+        },
+      },
+    },
+  ],
+})
+```
+
+If a batch fails to be written, Medusa retries it up to three times in total before it drops the batch and logs an error. Buffered audit logs are also lost if the process stops before Medusa writes them.

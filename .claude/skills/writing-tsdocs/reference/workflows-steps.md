@@ -19,7 +19,7 @@ Document the exported workflow `const` with:
 export const myWorkflowId = "my-workflow"
 /**
  * This workflow [does X]. It's executed by the
- * [Some API Route](https://docs.medusajs.com/api/admin#resource_postresourceid).
+ * [Some API Route](https://docs.medusajs.com/api/admin/resources/create-resource).
  *
  * You can use this workflow within your own customizations or custom workflows,
  * allowing you to wrap custom logic around [the operation].

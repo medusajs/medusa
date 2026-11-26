@@ -115,7 +115,7 @@ const sidebarMappings: {
       import("@/generated/generated-enterprise-sidebar.mjs") as Promise<{
         default: Sidebar.Sidebar
       }>,
-    paths: ["/enterprise", "/references/rbac"],
+    paths: ["/enterprise", "/references/audit", "/references/rbac"],
   },
   {
     module: async () =>
