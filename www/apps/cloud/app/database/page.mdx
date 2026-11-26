@@ -311,7 +311,7 @@ pg_dump -Fc -d postgres://postgres:secret@localhost:5432/mydatabase -f mydata.du
 
 <Note>
 
-Make sure you're generating the database dump from PostgreSQL v16 and that [pg_dump](https://www.postgresql.org/docs/16/app-pgdump.html) is compatible with that version.
+Make sure you're generating the database dump from PostgreSQL v16 and that [pg_dump](https://www.postgresql.org/docs/16/app-pgdump.html) is compatible with that version. If your database uses a newer version, such as v17 or v18, restore it into a local PostgreSQL v16 database first, as explained in the [Migrate from Self-Hosted](../migrate-self-hosted/page.mdx#migrate-from-a-newer-postgresql-version) guide.
 
 </Note>
 

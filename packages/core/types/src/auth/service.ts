@@ -147,6 +147,27 @@ export interface IAuthModuleService extends IModuleService {
   ): Promise<AuthenticationResponse>
 
   /**
+   * This method retrieves when the credentials of a provider identity, such as its password, were last updated.
+   * It uses the `getCredentialsUpdatedAt` method of the underlying provider, if the provider implements it.
+   *
+   * @param {string} provider - The ID of the provider that the provider identity belongs to.
+   * @param {ProviderIdentityDTO} providerIdentity - The provider identity to get the date of.
+   * @returns {Promise<Date | null>} The date the credentials were last updated, or `null` if they were never updated
+   * or the provider doesn't track it.
+   *
+   * @example
+   * const credentialsUpdatedAt =
+   *   await authModuleService.getCredentialsUpdatedAt(
+   *     "emailpass",
+   *     providerIdentity
+   *   )
+   */
+  getCredentialsUpdatedAt(
+    provider: string,
+    providerIdentity: ProviderIdentityDTO
+  ): Promise<Date | null>
+
+  /**
    * Issue a single-use password reset token bound to a provider identity.
    * The returned `jti` should be embedded as the JWT's `jti` claim so the
    * password-update flow can verify it against the stored token on use.
