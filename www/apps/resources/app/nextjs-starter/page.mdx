@@ -186,12 +186,12 @@ Refer to [this guide](./guides/customize-stripe/page.mdx) to learn how to custom
 
 ## Change Medusa Application URL
 
-By default, the Medusa application runs at `http://localhost:9000`. This value is defined in your Next.js Starter storefront under the environment variable `MEDUSA_BACKEND_URL`.
+By default, the Medusa application runs at `http://localhost:9000`. This value is defined in your Next.js Starter storefront under the environment variable `NEXT_PUBLIC_MEDUSA_BACKEND_URL`.
 
-To change the URL of the Medusa application in the storefront, set the `MEDUSA_BACKEND_URL` environment variable:
+To change the URL of the Medusa application in the storefront, set the `NEXT_PUBLIC_MEDUSA_BACKEND_URL` environment variable in `apps/storefront/.env.local`:
 
-```bash
-MEDUSA_BACKEND_URL=https://example.com
+```bash title="apps/storefront/.env.local"
+NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://example.com
 ```
 
 ---
