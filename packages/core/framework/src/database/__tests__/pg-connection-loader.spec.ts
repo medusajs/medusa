@@ -117,6 +117,7 @@ describe("pgConnectionLoader", () => {
     const projectConfig = configManager.config.projectConfig
     const databaseUrl = projectConfig.databaseUrl
     projectConfig.databaseUrl = undefined
+    const env = { ...process.env }
     for (const key of Object.keys(process.env)) {
       if (key.startsWith("PG")) {
         delete process.env[key]
@@ -129,6 +130,7 @@ describe("pgConnectionLoader", () => {
       expect(mockCreatePgConnection).not.toHaveBeenCalled()
     } finally {
       projectConfig.databaseUrl = databaseUrl
+      process.env = env
     }
   })
 
@@ -136,6 +138,7 @@ describe("pgConnectionLoader", () => {
     const projectConfig = configManager.config.projectConfig
     const databaseUrl = projectConfig.databaseUrl
     projectConfig.databaseUrl = undefined
+    const env = { ...process.env }
     process.env.PGDATABASE = "medusa"
     const connection = {
       client: { pool: new EventEmitter() },
@@ -147,6 +150,7 @@ describe("pgConnectionLoader", () => {
       await expect(pgConnectionLoader()).resolves.toBe(connection)
     } finally {
       projectConfig.databaseUrl = databaseUrl
+      process.env = env
     }
   })
 

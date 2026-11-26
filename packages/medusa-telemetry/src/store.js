@@ -4,6 +4,18 @@ import { InMemoryConfigStore } from "./util/in-memory-config"
 import isTruthy from "./util/is-truthy"
 import OutboxStore from "./util/outbox-store"
 
+// configstore stores dotted keys as nested objects, while InMemoryConfigStore uses flat keys
+function copyNestedConfig(source, target, prefix = "") {
+  for (const [key, value] of Object.entries(source ?? {})) {
+    const path = prefix ? `${prefix}.${key}` : key
+    if (value && typeof value === "object" && !Array.isArray(value)) {
+      copyNestedConfig(value, target, path)
+    } else {
+      target.set(path, value)
+    }
+  }
+}
+
 class Store {
   constructor() {
     try {
@@ -60,7 +72,7 @@ class Store {
       // e.g. EPERM when running as root and the config file can't be chowned
       const fallback = new InMemoryConfigStore()
       try {
-        Object.assign(fallback.config, this.config_.all)
+        copyNestedConfig(this.config_.all, fallback)
       } catch (_) {}
       this.config_ = fallback
       return this.config_.set(path, val)

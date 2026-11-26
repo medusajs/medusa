@@ -6,7 +6,7 @@ jest.mock(
   () => ({
     default: jest.fn().mockImplementation(() => ({
       path: "/tmp/medusa/config.json",
-      get: jest.fn((key) => mockStoredConfig[key]),
+      get: jest.fn(),
       set: mockSet,
       get all() {
         return { ...mockStoredConfig }
@@ -33,7 +33,7 @@ describe("Store.setConfig", () => {
   })
 
   it("keeps the values read from disk when falling back", () => {
-    mockStoredConfig["telemetry.enabled"] = false
+    mockStoredConfig.telemetry = { enabled: false, machine_id: "machine-id" }
     mockSet.mockImplementation(() => {
       throw Object.assign(new Error("EPERM: operation not permitted, chown"), {
         code: "EPERM",
@@ -44,6 +44,7 @@ describe("Store.setConfig", () => {
 
     store.setConfig("star.prompted", true)
     expect(store.getConfig("telemetry.enabled")).toBe(false)
+    expect(store.getConfig("telemetry.machine_id")).toBe("machine-id")
     expect(store.getConfig("star.prompted")).toBe(true)
   })
 })
