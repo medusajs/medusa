@@ -30,7 +30,7 @@ await bundleBackend({
 
 - `bundle-backend.ts`: `bundleBackend`, the orchestration. Collects, selects the files, snapshots what boot reads from disk, writes the entry, runs esbuild, traces what is still loaded from disk, writes the launcher.
 - `selection.ts`: what goes into the bundle (`createRegistrable`, `scanDirectory`, `findUnusedModuleEntries`, `packagesResolvedByName`, `addPackageExportResolutions`), `BUILD_TOOLING` (never bundled or traced) and the stubs for build-only commands (`createBuildOnlyCommandMatcher`).
-- `transforms.ts`: `createTransforms`, the esbuild plugins: external handling, lazy re-export files, lazy top-level requires (`usedOnlyThroughMembers`), and keeping each file's identity (`__filename`, `defineFileConfig`).
+- `transforms.ts`: `createTransforms`, the esbuild plugins: external handling, lazy re-export files, and keeping each file's identity (`__filename`, `defineFileConfig`).
 - `trace.ts`: `copyTracedFiles` (`@vercel/nft`, copied next to the bundle in the same `node_modules` layout) and `vendorPackages` (packages with native addons).
 - `packages.ts`: package lookups (`findPackageRoot`, `readPackageName`, `packageNameOf`, `packageDistOf`, `nearestPackageDir`, `findNodeModulesRoot`, `resolveFrom`).
 - `paths.ts`: the `app:` and `nm:` keys that make paths relocatable, and their run-time counterpart.

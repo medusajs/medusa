@@ -1,16 +1,11 @@
 import { readdirSync, readFileSync } from "fs"
 import { readFile } from "fs/promises"
-import Module, { createRequire } from "module"
+import { createRequire } from "module"
 import path from "path"
 import { EXTERNAL_PREFIX } from "./constants"
 import { findPackageRoot, packageNameOf, readPackageName } from "./packages"
 import { BUILD_ONLY_COMMAND_STUB, BUILD_TOOLING } from "./selection"
 
-const LAZY_HELPER = `var __lazyReq = (load) => { let m; const get = () => (m ??= load()); return new Proxy({}, { get: (_, k) => get()[k], has: (_, k) => k in get(), ownKeys: () => Reflect.ownKeys(get()), getOwnPropertyDescriptor: (_, k) => { const d = Reflect.getOwnPropertyDescriptor(get(), k); if (d) d.configurable = true; return d; }, set: (_, k, v) => { get()[k] = v; return true; } }); };`
-const LAZY_REQUIRE =
-  /^(const|var|let) ([A-Za-z_$][\w$]*) = (__importDefault\(|__importStar\()?require\("([^"]+)"\)\)?;$/gm
-const NEVER_LAZY =
-  /^(@sentry\/|@opentelemetry\/|@medusajs\/framework$|@medusajs\/framework\/(utils|types)$|reflect-metadata|dotenv|source-map-support)/
 const STAR = /^__exportStar\(require\("([^"]+)"\), exports\);$/
 const NAMESPACE =
   /^exports\.([A-Za-z_$][\w$]*) = __importStar\(require\("([^"]+)"\)\);$/
@@ -48,8 +43,6 @@ export function createTransforms({
   const isApp = (file: string) =>
     file.startsWith(appPrefix) &&
     !file.includes(`${path.sep}node_modules${path.sep}`)
-  const isFirstParty = (file: string) =>
-    isApp(file) || !!packageNameOf(file)?.startsWith("@medusajs/")
 
   const sideEffects = new Map<string, boolean>()
   const hasSideEffects = (file: string): boolean => {
@@ -141,38 +134,6 @@ export function createTransforms({
   }
 
   /**
-   * In first-party code, top-level `const x = require("...")` becomes a proxy
-   * requiring on first access: imports only used later (in functions) no
-   * longer evaluate at boot.
-   */
-  const lazyRequires = (file: string, src: string) => {
-    if (
-      !isFirstParty(file) ||
-      file === path.join(outDir, "instrumentation.js")
-    ) {
-      return src
-    }
-    let count = 0
-    const out = src.replace(LAZY_REQUIRE, (line, kind, name, wrap, spec) => {
-      if (
-        Module.isBuiltin(spec) ||
-        NEVER_LAZY.test(spec) ||
-        // The proxy only stands in for property access: a module that's
-        // called, constructed or passed around stays as it is
-        !usedOnlyThroughMembers(name, src.replace(line, ""))
-      ) {
-        return line
-      }
-      count++
-      const load = wrap
-        ? `${wrap}require(${JSON.stringify(spec)}))`
-        : `require(${JSON.stringify(spec)})`
-      return `${kind} ${name} = __lazyReq(() => ${load});`
-    })
-    return count ? LAZY_HELPER + "\n" + out : src
-  }
-
-  /**
    * Keep each module's identity: its own __filename/__dirname (resolved for
    * where the bundle runs), the file it's evaluating as for stack-based
    * helpers, and explicit paths for defineFileConfig.
@@ -255,7 +216,6 @@ export function createTransforms({
     // A shebang means nothing inside a bundle
     let src = (await readFile(file, "utf8")).replace(/^#![^\n]*\n/, "\n")
     src = lazyBarrel(file, src) ?? src
-    src = lazyRequires(file, src)
     return keepIdentity(file, src)
   }
 
@@ -345,22 +305,4 @@ export function createTransforms({
       },
     },
   }
-}
-
-/**
- * Whether every use of a binding is a property access (`x.y`, `x?.y`,
- * `x[y]`), so a lazy proxy for it behaves exactly like the value. Matches in
- * strings or comments only make this stricter.
- */
-export function usedOnlyThroughMembers(name: string, src: string): boolean {
-  const escaped = name.replace(/\$/g, "\\$")
-  for (const match of src.matchAll(
-    new RegExp(`(?<![\\w$.])${escaped}(?![\\w$])`, "g")
-  )) {
-    const after = src.slice(match.index! + name.length).trimStart()
-    if (!/^(\?\.(?!\()|\.|\[)/.test(after)) {
-      return false
-    }
-  }
-  return true
 }
