@@ -9,6 +9,7 @@ import CloudSectionDeploymentsIllustration from "../Illustrations/deployments"
 import CloudSectionPreviewEnvironmentsIllustration from "../Illustrations/preview-environments"
 import CloudSectionSearchIllustration from "../Illustrations/search"
 import CloudSectionEmailsIllustration from "../Illustrations/emails"
+import CloudSectionPaymentsIllustration from "../Illustrations/payments"
 import CloudSectionMonitoringIllustration from "../Illustrations/monitoring"
 import CloudSectionSecurityIllustration from "../Illustrations/security"
 
@@ -33,6 +34,13 @@ const tabs: Tab[] = [
       "Every pull request gets its own live environment, so you can review changes before they ship.",
     link: "https://docs.medusajs.com/cloud/environments/preview",
     Illustration: CloudSectionPreviewEnvironmentsIllustration,
+  },
+  {
+    title: "Medusa Payments",
+    content:
+      "Take payments at checkout with Medusa Payments, powered by Stripe, and manage payouts and disputes from the Cloud dashboard.",
+    link: "https://docs.medusajs.com/cloud/payments",
+    Illustration: CloudSectionPaymentsIllustration,
   },
   {
     title: "Medusa Search",
