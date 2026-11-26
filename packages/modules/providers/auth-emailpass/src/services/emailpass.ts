@@ -52,7 +52,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
   protected config_: LocalServiceConfig
   protected logger_: Logger
-  private dummyPasswordHash_?: Promise<string>
+  private dummyPasswordHash_: Promise<string>
 
   constructor(
     { logger }: InjectedDependencies,
@@ -62,6 +62,8 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     super(...arguments)
     this.config_ = options
     this.logger_ = logger
+    this.dummyPasswordHash_ = this.hashPassword(randomUUID())
+    this.dummyPasswordHash_.catch(() => {})
   }
 
   protected async hashPassword(password: string) {
@@ -257,7 +259,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     const hasStoredHash = isString(storedHash)
     const passwordHash = hasStoredHash
       ? storedHash
-      : await (this.dummyPasswordHash_ ??= this.hashPassword(randomUUID()))
+      : await this.dummyPasswordHash_
 
     const Scrypt = await loadScrypt()
     const matches = await Scrypt.verify(
