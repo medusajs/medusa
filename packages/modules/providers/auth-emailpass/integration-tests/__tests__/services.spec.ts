@@ -353,4 +353,50 @@ describe("Email password auth provider", () => {
 
     expect(resp.error).toEqual("Invalid email or password")
   })
+
+  it("checks the password against a hash when the email doesn't exist, so the answer takes as long", async () => {
+    const verify = jest.spyOn(Scrypt, "verify")
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+    }
+
+    const resp = await emailpassService.authenticate(
+      { body: { email: "unknown@admin.com", password: "somepass" } },
+      authServiceSpies as any
+    )
+
+    expect(verify).toHaveBeenCalledTimes(1)
+    expect(resp).toEqual({
+      error: "Invalid email or password",
+      success: false,
+    })
+  })
+
+  it("checks the password against a hash when the identity has no password, and refuses it", async () => {
+    const verify = jest.spyOn(Scrypt, "verify")
+    const authServiceSpies = {
+      retrieve: jest.fn().mockResolvedValue({
+        provider_identities: [
+          {
+            entity_id: "test@admin.com",
+            provider: "emailpass",
+            provider_metadata: {},
+          },
+        ],
+      }),
+    }
+
+    const resp = await emailpassService.authenticate(
+      { body: { email: "test@admin.com", password: "somepass" } },
+      authServiceSpies as any
+    )
+
+    expect(verify).toHaveBeenCalledTimes(1)
+    expect(resp).toEqual({
+      error: "Invalid email or password",
+      success: false,
+    })
+  })
 })

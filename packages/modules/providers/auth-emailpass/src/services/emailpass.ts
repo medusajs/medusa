@@ -13,6 +13,7 @@ import {
   MedusaError,
 } from "@medusajs/framework/utils"
 import { isPresent } from "@medusajs/utils"
+import { randomUUID } from "crypto"
 
 type ScryptKdf = typeof import("scrypt-kdf", {
   with: { "resolution-mode": "import" },
@@ -51,6 +52,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
   protected config_: LocalServiceConfig
   protected logger_: Logger
+  private dummyPasswordHash_?: Promise<string>
 
   constructor(
     { logger }: InjectedDependencies,
@@ -146,6 +148,8 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
       })
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
+        await this.isPasswordMatch_(password)
+
         return {
           success: false,
           error: "Invalid email or password",
@@ -240,19 +244,28 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     return this.sanitizeAuthIdentity_(authIdentity)
   }
 
+  // Without a stored hash, the password is checked against a dummy hash, so
+  // the answer takes as long as for an identity that has a password
   private async isPasswordMatch_(
     password: string,
-    authIdentity: AuthIdentityDTO
+    authIdentity?: AuthIdentityDTO
   ): Promise<boolean> {
-    const providerIdentity = this.getProviderIdentity_(authIdentity)
-    const passwordHash = providerIdentity?.provider_metadata?.password
-
-    if (!isString(passwordHash)) {
-      return false
-    }
+    const providerIdentity = authIdentity
+      ? this.getProviderIdentity_(authIdentity)
+      : undefined
+    const storedHash = providerIdentity?.provider_metadata?.password
+    const hasStoredHash = isString(storedHash)
+    const passwordHash = hasStoredHash
+      ? storedHash
+      : await (this.dummyPasswordHash_ ??= this.hashPassword(randomUUID()))
 
     const Scrypt = await loadScrypt()
-    return await Scrypt.verify(Buffer.from(passwordHash, "base64"), password)
+    const matches = await Scrypt.verify(
+      Buffer.from(passwordHash, "base64"),
+      password
+    )
+
+    return hasStoredHash && matches
   }
 
   private async getProviderMetadata_(
