@@ -24,6 +24,17 @@ There are two types of logs for your environment's deployments:
 - **Build logs**: Messages generated during the build process before deploying and starting the application. These logs are useful for debugging when a deployment's build fails.
 - **Runtime logs**: Messages logged by the Medusa backend and storefront when they start and while they're running, such as informational startup messages, HTTP requests, errors, and more. These logs are useful for debugging the application's deployment and runtime errors.
 
+### Data in Runtime Logs
+
+Runtime logs contain the messages that your backend and storefront write to their output, including messages logged by your customizations. If your application logs personal data, such as customer emails, that data is also stored in the runtime logs.
+
+In addition, HTTP request logs include the following data:
+
+- **Backend**: The request's method, path, status code, duration, request ID, request and response sizes, and HTTP version, along with the client's IP address, user agent, and referrer.
+- **Storefront**: The request's method, URL, status code, duration, and log level.
+
+Refer to the [mcloud logs reference](../cli/commands/logs/page.mdx#available-metadata-keys) for the full list of metadata keys per source.
+
 ---
 
 ## View Build Logs on Cloud
@@ -134,8 +145,7 @@ Apply filters from the "Filters" sidebar. You can select multiple filters at onc
 When selecting a custom date range for the **Timeline** filter, the date picker enforces the following rules:
 
 - The "from" date must be earlier than the "to" date.
-- The range cannot start before your plan's data-retention boundary.
-- The range cannot exceed the maximum query duration allowed by the API.
+- The range cannot be longer than 30 days.
 
 If any of these conditions are not met, a warning alert appears inside the date picker and the range is not applied until you correct it.
 
