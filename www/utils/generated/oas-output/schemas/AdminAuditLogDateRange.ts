@@ -1,0 +1,25 @@
+/**
+ * @schema AdminAuditLogDateRange
+ * type: object
+ * description: A date range filter, with dates as ISO 8601 strings.
+ * x-schemaName: AdminAuditLogDateRange
+ * properties:
+ *   $gt:
+ *     type: string
+ *     title: $gt
+ *     description: Filter by values greater than this parameter. Useful for numbers and dates only.
+ *   $gte:
+ *     type: string
+ *     title: $gte
+ *     description: Filter by values greater than or equal to this parameter. Useful for numbers and dates only.
+ *   $lt:
+ *     type: string
+ *     title: $lt
+ *     description: Filter by values less than this parameter. Useful for numbers and dates only.
+ *   $lte:
+ *     type: string
+ *     title: $lte
+ *     description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
+ * 
+*/
+
