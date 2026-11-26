@@ -4,7 +4,7 @@ export const generatedEditDates = {
   "app/tips/lists/page.mdx": "2026-07-10T06:21:44.183Z",
   "app/settings/sales-channels/page.mdx": "2026-07-31T12:45:34.271Z",
   "app/settings/users/page.mdx": "2026-08-20T07:43:17.621Z",
-  "app/page.mdx": "2026-11-18T13:44:48.913Z",
+  "app/page.mdx": "2026-11-26T08:27:55.108Z",
   "app/settings/page.mdx": "2026-11-13T07:37:39.406Z",
   "app/products/export/page.mdx": "2026-04-10T09:45:36.841Z",
   "app/settings/return-reasons/page.mdx": "2025-05-30T13:31:05.596Z",
@@ -68,12 +68,14 @@ export const generatedEditDates = {
   "app/loyalty/store-credits/manage/page.mdx": "2026-09-17T11:25:03.695Z",
   "app/loyalty/store-credits/page.mdx": "2026-04-20T08:52:31.091Z",
   "app/products/options/page.mdx": "2026-06-04T06:35:45.837Z",
-  "app/tips/layout-configurations/page.mdx": "2026-07-23T12:50:25.531Z",
+  "app/tips/layout-configurations/page.mdx": "2026-11-26T08:27:55.117Z",
   "app/settings/property-labels/page.mdx": "2026-07-23T12:34:12.839Z",
-  "app/tips/table-views/page.mdx": "2026-07-23T12:12:44.850Z",
+  "app/tips/table-views/page.mdx": "2026-11-26T08:27:55.119Z",
   "app/inventory/export/page.mdx": "2026-07-28T15:35:53.767Z",
-  "app/settings/search/page.mdx": "2026-11-18T12:01:12.306Z",
-  "app/settings/roles/page.mdx": "2026-11-12T17:43:44.092Z",
+  "app/settings/search/page.mdx": "2026-11-26T08:27:55.114Z",
+  "app/settings/roles/page.mdx": "2026-11-26T08:27:55.114Z",
   "app/settings/announcements/page.mdx": "2026-11-13T07:37:39.112Z",
-  "app/tips/login-options/page.mdx": "2026-11-18T12:01:20.925Z"
+  "app/tips/login-options/page.mdx": "2026-11-18T12:01:20.925Z",
+  "app/settings/policies/page.mdx": "2026-11-26T08:27:55.110Z",
+  "app/settings/roles/common-roles/page.mdx": "2026-11-26T08:27:55.112Z"
 }

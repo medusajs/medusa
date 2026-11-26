@@ -148,6 +148,10 @@ export const locking = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/adjustInventoryLevelsStep"
   },
   {
+    "title": "acceptInviteWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/acceptInviteWorkflow"
+  },
+  {
     "title": "deleteLineItemsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteLineItemsWorkflow"
   },
@@ -282,6 +286,14 @@ export const locking = [
   {
     "title": "updateReservationsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateReservationsWorkflow"
+  },
+  {
+    "title": "createUserAccountWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createUserAccountWorkflow"
+  },
+  {
+    "title": "createUsersWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createUsersWorkflow"
   },
   {
     "title": "deleteUsersWorkflow",

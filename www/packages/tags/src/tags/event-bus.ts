@@ -364,6 +364,38 @@ export const eventBus = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductCategoriesWorkflow"
   },
   {
+    "title": "addOrRemoveCampaignPromotionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addOrRemoveCampaignPromotionsWorkflow"
+  },
+  {
+    "title": "batchPromotionRulesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/batchPromotionRulesWorkflow"
+  },
+  {
+    "title": "createCampaignsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createCampaignsWorkflow"
+  },
+  {
+    "title": "createPromotionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createPromotionsWorkflow"
+  },
+  {
+    "title": "deleteCampaignsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteCampaignsWorkflow"
+  },
+  {
+    "title": "deletePromotionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deletePromotionsWorkflow"
+  },
+  {
+    "title": "updateCampaignsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCampaignsWorkflow"
+  },
+  {
+    "title": "updatePromotionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updatePromotionsWorkflow"
+  },
+  {
     "title": "createRegionsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createRegionsWorkflow"
   },

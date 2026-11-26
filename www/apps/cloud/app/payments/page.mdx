@@ -14,17 +14,17 @@ Medusa Payments is in beta. Its features and behavior may change.
 
 </Note>
 
-## Set Up and Test Medusa Payments with an AI Agent
+<Note title="Agent Hand-off">
 
-If you use an AI agent, such as Claude Code or Codex, ask it to fetch the [Add Medusa Payments to Your Storefront](./storefront/page.mdx) guide:
+Your AI agent can set up and test Medusa Payments in your storefront. Run the following prompt in your agent from your storefront's directory:
 
-```bash
-Fetch https://docs.medusajs.com/cloud/payments/storefront and follow the instructions to set up and test Medusa Payments in my storefront.
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/cloud/payments/storefront.md and follow the instructions to set up and test Medusa Payments in my storefront
 ```
 
 The agent receives a prompt that checks whether your storefront already supports Medusa Payments, adds the support if it doesn't, and walks you through placing a test order.
 
----
+</Note>
 
 ## What is Medusa Payments?
 
@@ -69,7 +69,7 @@ To place a test payment:
 
 1. In the [environment's dashboard](../environments/long-lived/page.mdx#open-environment-dashboard), click **Payments** in the sidebar, and check that the test account under **Test** shows the **Active** badge.
 2. [Redeploy the environment](../environments/long-lived/page.mdx#redeploy-environment) so that it takes payments with its test account.
-3. In the environment's Medusa Admin, enable the **Medusa Payments** payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide.
+3. In the environment's Medusa Admin, enable the **Medusa Payments** payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) Merchant Guide.
 4. Open the environment's storefront, add a product to the cart, and go to checkout.
 5. In the payment step, choose **Credit card** and enter one of [Stripe's test cards](https://docs.stripe.com/testing#cards), such as `4242 4242 4242 4242`, with any future expiry date and any CVC.
 6. Place the test order.
@@ -104,7 +104,7 @@ To take live payments in an environment:
 2. In the **Account** section, find your payment account under **Live**, and click **Use this account**.
 3. Confirm the switch.
 4. [Redeploy the environment](../environments/long-lived/page.mdx#redeploy-environment). The environment takes payments with the account from its next deployment.
-5. In the environment's Medusa Admin, enable the payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide. The provider's name is:
+5. In the environment's Medusa Admin, enable the payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) Merchant Guide. The provider's name is:
    - **Medusa Payments** if you use a Medusa Payments account.
    - **Stripe** if you connected your own Stripe account.
 

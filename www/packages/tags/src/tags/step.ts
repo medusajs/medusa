@@ -168,6 +168,10 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateCartStep"
   },
   {
+    "title": "validateCartTaxCountryStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateCartTaxCountryStep"
+  },
+  {
     "title": "validateLineItemPricesStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateLineItemPricesStep"
   },
@@ -202,6 +206,10 @@ export const step = [
   {
     "title": "retrieveGiftCardBalanceStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/retrieveGiftCardBalanceStep"
+  },
+  {
+    "title": "updateCartPromotionsValidateInput",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCartPromotionsValidateInput"
   },
   {
     "title": "validateCartGiftCardStep",
@@ -530,6 +538,10 @@ export const step = [
   {
     "title": "deleteInvitesStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteInvitesStep"
+  },
+  {
+    "title": "getInviteRolesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getInviteRolesStep"
   },
   {
     "title": "refreshInviteTokensStep",
@@ -1040,10 +1052,6 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPaymentAccountHolderStep"
   },
   {
-    "title": "createPaymentSessionStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPaymentSessionStep"
-  },
-  {
     "title": "createRefundReasonStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRefundReasonStep"
   },
@@ -1054,6 +1062,14 @@ export const step = [
   {
     "title": "deleteRefundReasonsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRefundReasonsStep"
+  },
+  {
+    "title": "replacePaymentAccountHolderStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/replacePaymentAccountHolderStep"
+  },
+  {
+    "title": "tryCreatePaymentSessionStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/tryCreatePaymentSessionStep"
   },
   {
     "title": "updatePaymentCollectionStep",
@@ -1352,8 +1368,76 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updatePromotionsValidationStep"
   },
   {
+    "title": "createRbacPoliciesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRbacPoliciesStep"
+  },
+  {
+    "title": "createRbacRolePoliciesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRbacRolePoliciesStep"
+  },
+  {
+    "title": "createRbacRolesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRbacRolesStep"
+  },
+  {
+    "title": "createRoleAssignmentsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRoleAssignmentsStep"
+  },
+  {
+    "title": "deleteRbacPoliciesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRbacPoliciesStep"
+  },
+  {
+    "title": "deleteRbacRolePoliciesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRbacRolePoliciesStep"
+  },
+  {
+    "title": "deleteRbacRolesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRbacRolesStep"
+  },
+  {
+    "title": "deleteRoleAssignmentsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRoleAssignmentsStep"
+  },
+  {
+    "title": "ensureSuperAdminRemainsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/ensureSuperAdminRemainsStep"
+  },
+  {
+    "title": "getAssignablePoliciesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getAssignablePoliciesStep"
+  },
+  {
+    "title": "getAssignableRolesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getAssignableRolesStep"
+  },
+  {
     "title": "getRoleAssignmentsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getRoleAssignmentsStep"
+  },
+  {
+    "title": "updateRbacPoliciesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateRbacPoliciesStep"
+  },
+  {
+    "title": "updateRbacRolesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateRbacRolesStep"
+  },
+  {
+    "title": "validateActorPermissionsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateActorPermissionsStep"
+  },
+  {
+    "title": "validateActorRolePermissionsStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateActorRolePermissionsStep"
+  },
+  {
+    "title": "validateAssignmentReferencesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateAssignmentReferencesStep"
+  },
+  {
+    "title": "validateRolesExistStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateRolesExistStep"
   },
   {
     "title": "createRegionsStep",

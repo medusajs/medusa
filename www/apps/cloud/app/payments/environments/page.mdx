@@ -48,7 +48,7 @@ To take payments in an environment:
 
 Each environment gets its own test account, even before your organization sets up a payment account. The environment uses the test account by default, so its store takes test payments, and nothing is charged.
 
-Before you take test payments, [redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment), then enable the **Medusa Payments** payment provider in the regions of the environment's Medusa Admin. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide.
+Before you take test payments, [redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment), then enable the **Medusa Payments** payment provider in the regions of the environment's Medusa Admin. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) Merchant Guide.
 
 To pay at checkout in test mode, use [Stripe's test cards](https://docs.stripe.com/testing#cards), such as `4242 4242 4242 4242`.
 
@@ -68,7 +68,7 @@ To use a live account in an environment:
 2. In the **Account** section, find the account under **Live**, and click **Use this account**. The button only shows on active accounts.
 3. Confirm the switch.
 4. [Redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment). You can also redeploy from the notification shown after the switch.
-5. In the environment's Medusa Admin, enable the payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide. The provider's name is:
+5. In the environment's Medusa Admin, enable the payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) Merchant Guide. The provider's name is:
    - **Medusa Payments** if you use a Medusa Payments account.
    - **Stripe** if you connected your own Stripe account.
 
@@ -90,7 +90,7 @@ To switch an environment back to its test account:
 2. In the **Account** section, find the account under **Test**, and click **Use this account**.
 3. Confirm the switch.
 4. [Redeploy the environment](../../environments/long-lived/page.mdx#redeploy-environment). You can also redeploy from the notification shown after the switch.
-5. In the environment's Medusa Admin, enable the **Medusa Payments** payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide.
+5. In the environment's Medusa Admin, enable the **Medusa Payments** payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) Merchant Guide.
 
 The environment then stops taking payments with your organization's live accounts.
 
@@ -133,7 +133,7 @@ To turn on local development for an environment:
 
 Your Medusa application then registers the Medusa Payments payment provider with the environment's test account. You don't need to change `medusa-config.ts`.
 
-Before you place a test order, enable the provider in the regions of your local Medusa Admin. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide.
+Before you place a test order, enable the provider in the regions of your local Medusa Admin. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) Merchant Guide.
 
 After you turn on local development or regenerate its key, the key can take up to a few minutes to start working. If your local application's payments fail right after, wait a few minutes and try again. Similarly, after you turn off local development or regenerate the key, the previous key can keep working for a few minutes.
 

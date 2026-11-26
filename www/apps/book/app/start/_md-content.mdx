@@ -405,9 +405,9 @@ Configure the agent to connect to the Streamable HTTP MCP server at `https://doc
 
 ## Step 10: Add the Medusa MCP Server
 
-The Medusa MCP server gives the agent read-only access to the user's deployed store and Cloud project: commerce data (orders, products, customers), data from custom `GET` API routes, and Cloud data (deployments, build and runtime logs, environment variables). This lets the agent answer questions about the live store and debug deployments. Learn more at https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp.md.
+The Medusa MCP server gives the agent access to the user's deployed store and Cloud project: commerce data (orders, products, customers), data from custom `GET` API routes, and Cloud data (deployments, build and runtime logs, environment variables). In environments the user gives write access, the agent can also create, update, and delete commerce data. This lets the agent answer questions about the live store, change its data, and debug deployments. Learn more at https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp.md.
 
-Add the MCP server but do not authenticate yet or block next steps. In the wrap up, remind the user to authenticate. When they authenticate, Cloud shows a consent page where they select the environments the agent can access, such as the Production environment of the project from Step 4, and click **Approve**.
+Add the MCP server but do not authenticate yet or block next steps. In the wrap up, remind the user to authenticate. When they authenticate, Cloud shows a consent page where they select the environments the agent can access, such as the Production environment of the project from Step 4, choose whether the agent can change data in each of them, and click **Approve**.
 
 ### Claude Code
 

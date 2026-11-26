@@ -180,6 +180,10 @@ export const userGuide = [
     "path": "https://docs.medusajs.com/user-guide/reset-password"
   },
   {
+    "title": "Manage Announcements",
+    "path": "https://docs.medusajs.com/user-guide/settings/announcements"
+  },
+  {
     "title": "Manage Publishable API Keys",
     "path": "https://docs.medusajs.com/user-guide/settings/developer/publishable-api-keys"
   },

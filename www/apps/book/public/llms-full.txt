@@ -1070,7 +1070,11 @@ For example, instead of importing `@mikro-orm/core`, you now import it from `@me
 - `@opentelemetry/instrumentation-pg` -> `@medusajs/framework/opentelemetry/instrumentation-pg`
 - `@opentelemetry/resources` -> `@medusajs/framework/opentelemetry/resources`
 - `@opentelemetry/sdk-node` -> `@medusajs/framework/opentelemetry/sdk-node`
-- `@opentelemetry/sdk-trace-node` -> `@medusajs/framework/opentelemetry/sdk-trace-node`
+- `@opentelemetry/sdk-trace` -> `@medusajs/framework/opentelemetry/sdk-trace`
+
+Before Medusa [v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), Medusa used an OpenTelemetry JS SDK version earlier than 3.0, which provided `@opentelemetry/sdk-trace-node` instead of `@opentelemetry/sdk-trace`. So, the subpath was `@medusajs/framework/opentelemetry/sdk-trace-node`.
+
+If you use a Medusa version before v2.23.0, import from `@medusajs/framework/opentelemetry/sdk-trace-node` instead of `@medusajs/framework/opentelemetry/sdk-trace`. Also, use `NodeTracerProvider` instead of `TracerProvider`, and pass the exporter directly to `SimpleSpanProcessor` and `BatchSpanProcessor`. For example, `new SimpleSpanProcessor(exporter)`.
 
 To help you update your codebase to reflect these changes, Medusa provides a codemod that automatically replaces imports of these packages throughout your codebase.
 
@@ -1113,9 +1117,9 @@ const replacements = [
     replacement: 'from "@medusajs/framework/pg"',
   },
   // OpenTelemetry imports - replace @opentelemetry/instrumentation-pg, @opentelemetry/resources, 
-  // @opentelemetry/sdk-node, and @opentelemetry/sdk-trace-node with @medusajs/framework/opentelemetry/{subpath}
+  // @opentelemetry/sdk-node, @opentelemetry/sdk-trace, and @opentelemetry/sdk-trace-node with @medusajs/framework/opentelemetry/{subpath}
   {
-    pattern: /from\s+['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace-node)['"]/g,
+    pattern: /from\s+['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace|sdk-trace-node)['"]/g,
     // eslint-disable-next-line quotes
     replacement: 'from "@medusajs/framework/opentelemetry/$1"',
   },
@@ -1138,10 +1142,10 @@ const replacements = [
     replacement: 'require("@medusajs/framework/pg")',
   },
   // OpenTelemetry require statements - replace require('@opentelemetry/instrumentation-pg'), 
-  // require('@opentelemetry/resources'), require('@opentelemetry/sdk-node'), and 
-  // require('@opentelemetry/sdk-trace-node') with require('@medusajs/framework/opentelemetry/{subpath}')
+  // require('@opentelemetry/resources'), require('@opentelemetry/sdk-node'),
+  // require('@opentelemetry/sdk-trace'), and require('@opentelemetry/sdk-trace-node') with require('@medusajs/framework/opentelemetry/{subpath}')
   {
-    pattern: /require\s*\(\s*['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace-node)['"]\s*\)/g,
+    pattern: /require\s*\(\s*['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace|sdk-trace-node)['"]\s*\)/g,
     // eslint-disable-next-line quotes
     replacement: 'require("@medusajs/framework/opentelemetry/$1")',
   },
@@ -1210,7 +1214,9 @@ function getTargetFiles() {
           /from\s+['"]pg['"]/.test(content) ||
           /require\s*\(\s*['"]@?mikro-orm\//.test(content) ||
           /require\s*\(\s*['"]awilix['"]/.test(content) ||
-          /require\s*\(\s*['"]pg['"]/.test(content)
+          /require\s*\(\s*['"]pg['"]/.test(content) ||
+          /from\s+['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace|sdk-trace-node)['"]/.test(content) ||
+          /require\s*\(\s*['"]@?opentelemetry\/(instrumentation-pg|resources|sdk-node|sdk-trace|sdk-trace-node)['"]/.test(content)
         ) {
           targetFiles.push(file.startsWith("./") ? file.slice(2) : file)
         }
@@ -1290,7 +1296,7 @@ if (require.main === module) {
 module.exports = { processFile, getTargetFiles, main }
 ```
 
-This script scans your project for files that import from `mikro-orm/{subpath}`, `awilix`, or `pg`, and replaces those imports with their new equivalents from `@medusajs/framework`. It handles both ES module `import` statements and CommonJS `require` statements in JavaScript and TypeScript files.
+This script scans your project for files that import from `mikro-orm/{subpath}`, `awilix`, `pg`, or the OpenTelemetry packages listed above, and replaces those imports with their new equivalents from `@medusajs/framework`. It handles both ES module `import` statements and CommonJS `require` statements in JavaScript and TypeScript files.
 
 Next, run the following command in your terminal to make the script executable:
 
@@ -1322,7 +1328,7 @@ If everything is working correctly, you can remove the `replace-imports.js` file
 - `@opentelemetry/instrumentation-pg`
 - `@opentelemetry/resources`
 - `@opentelemetry/sdk-node`
-- `@opentelemetry/sdk-trace-node`
+- `@opentelemetry/sdk-trace`
 
 
 # Replace Zod Imports Codemod (v2.13.0+)
@@ -6681,7 +6687,11 @@ Medusa uses [OpenTelemetry](https://opentelemetry.io/) for instrumentation and r
 
 As of [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0), OpenTelemetry dependencies are installed by default in new Medusa projects. If you're using an older version of Medusa, you need to install the `@opentelemetry/sdk-node`, `@opentelemetry/resources`, `@opentelemetry/sdk-trace-node`, and `@opentelemetry/instrumentation-pg` dependencies.
 
-Before you start, you must install the dependencies relevant for the exporter you use. If you're using Zipkin, install the following dependencies:
+Before you start, you must install the dependencies relevant for the exporter you use. Medusa uses OpenTelemetry JS SDK 3.0, so install a version of your exporter package that's compatible with it. Traces also include the `os.*` and `service.instance.id` resource attributes, which the SDK detects by default.
+
+Before Medusa [v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), Medusa used an OpenTelemetry JS SDK version earlier than 3.0. If you use a Medusa version before v2.23.0, install a version of your exporter package that's compatible with the SDK version your Medusa application uses. Traces also don't include the `os.*` and `service.instance.id` resource attributes by default.
+
+If you're using Zipkin, install the following dependencies:
 
 ```bash
 npm install @opentelemetry/exporter-zipkin
@@ -9540,11 +9550,10 @@ The Medusa Admin is built with [Vite v7](https://v7.vite.dev/). When you [set up
 
 If you don't have an admin user, use the [Medusa CLI](https://docs.medusajs.com/resources/medusa-cli/commands/user/index.html.md) to create one.
 
-The Medusa Admin was migrated from Vite v5 to v7.3.6 and `react-router-dom` v6 to v7.18.2 in [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0).
-
-As of that version, the Medusa Admin supports Chrome v107+, Edge v107+, Firefox v104+, and Safari v16+. If you need to support older browsers, change the `build.target` option in the [admin.vite configuration](https://docs.medusajs.com/learn/configurations/medusa-config#vite/index.html.md).
-
-If your project installs `react-router-dom` directly, update it to v7. Learn more in the [Admin Routing Customizations](https://docs.medusajs.com/learn/fundamentals/admin/routing/index.html.md) chapter.
+- Since [Medusa v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), the Medusa Admin uses Vite v8 and supports Chrome v111+, Edge v111+, Firefox v114+, and Safari v16.4+. If you need to support older browsers, change the `build.target` option in the [admin.vite configuration](https://docs.medusajs.com/learn/configurations/medusa-config#vite/index.html.md).
+- Since Medusa v2.23.0, the Medusa Admin and the Medusa UI package use React v19, and the `@medusajs/medusa` package requires `react-dom` v19.3.1 or later as a peer dependency. If your project or plugin installs `react`, `react-dom`, `@types/react`, or `@types/react-dom`, update them to v19 and make sure your admin customizations are compatible with React v19. For example, `useRef` now requires an initial value, and refs created with `useRef<HTMLDivElement>(null)` have the type `RefObject<HTMLDivElement | null>`. Learn more in the [React 19 Upgrade Guide](https://react.dev/blog/2024/04/25/react-19-upgrade-guide).
+- Since Medusa v2.23.0, the Medusa Admin and your admin customizations compile with [Tailwind CSS v4](https://tailwindcss.com/). The admin build scans your project's and plugins' admin files for Tailwind classes, so you don't need a `tailwind.config` file in your project or plugin. The admin build also doesn't load PostCSS configuration files. Make sure your admin customizations use Tailwind CSS v4 class names. For example, use `outline-hidden` instead of `outline-none`, and `rounded-sm` instead of `rounded`. Learn more in the [Tailwind CSS v4 Upgrade Guide](https://tailwindcss.com/docs/upgrade-guide).
+- Since [Medusa v2.19.0](https://github.com/medusajs/medusa/releases/tag/v2.19.0), the Medusa Admin uses `react-router-dom` v7. If your project installs `react-router-dom` directly, update it to v7. Learn more in the [Admin Routing Customizations](https://docs.medusajs.com/learn/fundamentals/admin/routing/index.html.md) chapter.
 
 ***
 
@@ -12171,7 +12180,7 @@ export default defineMiddlewares({
 The `defineMiddlewares` function accepts a middleware configurations object that has the property `routes`. `routes`'s value is an array of middleware route objects, each having the following properties:
 
 - `matcher`: the API route path to apply the middleware on. Its value can be one of the following:
-  - A string, which Medusa compiles using [path-to-regexp](https://github.com/pillarjs/path-to-regexp). So, the string can include patterns like `/custom*`.
+  - A string, which Medusa compiles using [path-to-regexp](https://github.com/pillarjs/path-to-regexp). So, the string can include patterns like `/custom*`. Learn more in the [String Matcher Syntax](#string-matcher-syntax) section.
   - A regular expression (`RegExp`), which Medusa matches against the request path directly. For example, `/^\/custom(\/.*)?$/`.
 
 - `middlewares`: An array of global and route middleware functions.
@@ -12201,6 +12210,35 @@ If the middleware didn't run, make sure you've correctly created the middleware 
 
 ***
 
+## String Matcher Syntax
+
+This section is applicable starting from [Medusa v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), where Medusa's server uses Express 5. Previous versions were using Express 4.
+
+Medusa's server is based on Express 5, which uses the [path-to-regexp](https://github.com/pillarjs/path-to-regexp) syntax to match string matchers. To match any path under a route, use a named wildcard, such as `{*splat}`:
+
+```ts title="src/api/middlewares.ts"
+import { defineMiddlewares } from "@medusajs/framework/http"
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/custom{*splat}",
+      middlewares: [
+        // ...
+      ],
+    },
+  ],
+})
+```
+
+This middleware applies to `/custom` and any route starting with `/custom`, such as `/custom/products`.
+
+For backward compatibility of Express 4 string matchers, Medusa converts a bare `*` in a string matcher to an optional named wildcard. So, the matchers `/custom*` and `/custom/*` keep working as they did with Express 4. For example, `/custom/*` matches `/custom/` and any nested route, such as `/custom/products/123`.
+
+Express 5 doesn't support other Express 4 string patterns, such as `(products|collections)`, `?`, and `+`. A string matcher that uses these patterns throws an error when the Medusa application starts. Use a [regular expression matcher](#apply-a-middleware-using-a-regular-expression) instead.
+
+***
+
 ## Apply a Middleware Using a Regular Expression
 
 You can set the `matcher` property to a regular expression (`RegExp`) to apply a middleware to routes matching a pattern.
@@ -12209,7 +12247,7 @@ A `RegExp` matcher must account for the full request path, including the leading
 
 ### Global Middleware
 
-For a global middleware (a middleware without a `method`), Medusa registers the `RegExp` using Express's [app.use](https://expressjs.com/en/4x/api.html#app.use) method. Express matches a `RegExp` in `app.use` only if the pattern matches from the start of the request path.
+For a global middleware (a middleware without a `method`), Medusa registers the `RegExp` using Express's [app.use](https://expressjs.com/en/5x/api.html#app.use) method. Express matches a `RegExp` in `app.use` only if the pattern matches from the start of the request path.
 
 So, you must anchor the pattern with `^` and include the leading slash:
 
@@ -12438,8 +12476,8 @@ The global middleware runs first, then the route middleware, and finally the rou
 
 On top of the previous ordering, Medusa sorts global and route middlewares based on their matcher pattern in the following order:
 
-1. Wildcard matchers. For example, `/custom*`.
-2. Regex matchers. For example, `/custom/(products|collections)`.
+1. Wildcard matchers. For example, `/custom*` or `/custom/{*splat}`.
+2. Regex matchers. For example, `/^\/custom\/(products|collections)$/`.
 3. Static matchers without parameters. For example, `/custom`.
 4. Static matchers with parameters. For example, `/custom/:id`.
 
@@ -16906,7 +16944,7 @@ Events are assigned a priority level that determines their processing order. Low
 |`HIGH` (50)|High priority for important operations. For example, you can assign this priority to customer account-related events.|
 |`DEFAULT` (100)|The default priority used if no specific priority is assigned. All Medusa business events except for order placement use this priority.|
 |`LOW` (500)|Low priority for background operations. For example, you can assign this priority to third-party sync events.|
-|`LOWEST` (2,097,152)|Lowest priority. Medusa assigns this to internal system events.|
+|`LOWEST` (2,097,151)|Lowest priority. Medusa assigns this to internal system events.|
 
 ***
 
@@ -16945,7 +16983,7 @@ You pass the priority level in the `options` parameter of the `emitEventStep`. Y
 - `EventPriority.HIGH` (50): For high-priority operations.
 - `EventPriority.DEFAULT` (100): The default priority level. If you don't specify a priority, this level is used.
 - `EventPriority.LOW` (500): For low-priority background tasks.
-- `EventPriority.LOWEST` (2,097,152): For the lowest priority events like internal system operations.
+- `EventPriority.LOWEST` (2,097,151): For the lowest priority events like internal system operations.
 
 ***
 
@@ -31891,7 +31929,7 @@ MEDUSA_FF_ANALYTICS=false
 
 In this chapter, you'll learn about updating your Medusa application and packages.
 
-Medusa's current version is v2.22.7. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.22.7).
+Medusa's current version is v2.23. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.23.0).
 
 ## Medusa Versioning
 
@@ -36979,6 +37017,16 @@ Medusa determines the tax rates from the country in the cart's shipping address,
 
 If the cart's region has only one country, Medusa sets that country as the cart's shipping address country when creating the cart. So, Medusa can calculate tax lines without the customer setting their address. For a region with multiple countries, the customer must set their shipping address's country before Medusa calculates tax lines.
 
+### Cart Completion Requires a Shipping Address Country
+
+Since Medusa v2.23.0, the [completeCartWorkflow](https://docs.medusajs.com/references/medusa-workflows/completeCartWorkflow/index.html.md) checks that the cart's shipping address has a country before it places the order. The workflow throws an error if all of the following are true:
+
+- The cart's region has `automatic_taxes` enabled and has at least one country.
+- The cart has shipping methods or line items that aren't gift cards.
+- The cart has a shipping address without a `country_code`.
+
+This prevents Medusa from placing an order without tax lines. So, make sure your storefront sets the shipping address's country before completing the cart.
+
 ### Tax Recalculation by Cart Operation
 
 The following table explains how each cart operation affects the cart's tax lines when `automatic_taxes` is enabled:
@@ -36992,6 +37040,8 @@ The following table explains how each cart operation affects the cart's tax line
 |Remove a line item|Medusa doesn't recalculate the tax lines of the cart's other items.|
 
 To force Medusa to recalculate a cart's tax lines, even when `automatic_taxes` is disabled, send a request to the [Calculate Cart Taxes API route](https://docs.medusajs.com/api/store/carts/calculate-taxes). This also triggers a fresh calculation from your third-party tax provider, if you use one.
+
+Since Medusa v2.23.0, the Calculate Cart Taxes API route also refreshes the cart's payment collection, so its amount matches the cart's new total. If you run the `updateTaxLinesWorkflow` in your customizations, pass the `force_refresh_payment_collection: true` input to refresh the payment collection after updating the tax lines.
 
 ***
 
@@ -39906,6 +39956,8 @@ const { data: carts } = useQueryGraphStep({
 
 // carts[0].gift_cards
 ```
+
+The Store API routes for carts and orders don't accept `*gift_cards` in the `fields` query parameter, and they don't return the gift card's `reference` and `reference_id` properties, which hold the purchasing order's ID. Instead, request individual gift card fields, such as `+gift_cards.code` and `+gift_cards.value`.
 
 ### Manage with Link
 
@@ -57370,17 +57422,17 @@ CACHE_REDIS_URL=redis://localhost:6379
 
 The Redis Caching Module Provider stores a tag index in Redis for every [cache tag](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/infrastructure-modules/caching/concepts#cache-tags/index.html.md). The tag index is a set of the keys of all cache entries that use the tag. The provider uses it to find and remove the entries when the tag is invalidated.
 
-All entries that share a tag also share that tag's index. Every time you cache an entry, the provider resets the expiration of each of the entry's tag indexes to the entry's TTL plus 60 seconds.
+All entries that share a tag also share that tag's index. Every time you cache an entry, the provider makes sure each of the entry's tag indexes lives at least as long as the entry's TTL plus 60 seconds. The provider only extends a tag index's expiration and never shortens it. If you cache an entry without a TTL, its tag indexes don't expire.
 
-So, if you cache entries with different TTLs under the same tag, the most recently cached entry decides when the tag index expires. For example:
+So, a tag index outlives all the entries that use it, even if you cache them with different TTLs. For example:
 
 1. You cache entry A with the `Product:list:*` tag and a TTL of one hour.
 2. You then cache entry B with the same tag and a TTL of one minute.
-3. The `Product:list:*` tag index expires after two minutes, while entry A remains cached for the rest of its hour.
+3. The `Product:list:*` tag index keeps its expiration of one hour and one minute, so invalidating the `Product:list:*` tag still clears entry A.
 
-After the tag index expires, invalidating the `Product:list:*` tag no longer clears entry A, so the cache can serve stale data until entry A expires.
+Before Medusa v2.23.0, the provider reset the expiration of each tag index to the TTL of the most recently cached entry plus 60 seconds. In the example above, the `Product:list:*` tag index would expire after two minutes, and invalidating the tag would no longer clear entry A, so the cache could serve stale data until entry A expired.
 
-To avoid this, use the same TTL for all cache entries that share a tag. If you need a shorter TTL for some data, cache it under different tags, or [clear](https://docs.medusajs.com/references/caching-service#clear/index.html.md) it by its key.
+If you're using an older version, use the same TTL for all cache entries that share a tag. If you need a shorter TTL for some data, cache it under different tags, or [clear](https://docs.medusajs.com/references/caching-service#clear/index.html.md) it by its key.
 
 ***
 
@@ -58722,10 +58774,40 @@ In this subscriber, you:
 
 - Resolve the Notification Module's main service from the [Medusa container](https://docs.medusajs.com/docs/learn/fundamentals/medusa-container/index.html.md).
 - Use the `createNotifications` method of the Notification Module's main service to create a notification to be sent to the admin dashboard. By specifying the `feed` channel, the Local Notification Module Provider is used to send the notification.
+- The `to` property sets which admin users see the notification. Set it to an empty string to show the notification to all admin users, or to an admin user's ID to show it only to that user. Learn more in the [Send Notifications to a Specific Admin User](#send-notifications-to-a-specific-admin-user) section.
 - The `template` property of the `createNotifications` method's parameter must be set to `admin-ui`.
 - The `data` property allows you to customize the content of the admin notification. It must contain `title` and `description` properties.
 
 Medusa stores the `data` property of every notification, and the [List Notifications](https://docs.medusajs.com/api/admin/notifications/list-notifications) and [Get Notification](https://docs.medusajs.com/api/admin/notifications/get-a-notification) API routes return it. Any admin user with the `notification:read` [RBAC policy](https://docs.medusajs.com/Users/shahednasser/medusa/www/apps/resources/app/enterprise/rbac/concepts#policy/index.html.md) can view it, so don't pass data that those users shouldn't see.
+
+### Send Notifications to a Specific Admin User
+
+Scoping feed notifications to a specific admin user is available since [Medusa v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0).
+
+The [List Notifications](https://docs.medusajs.com/api/admin/notifications/list-notifications) and [Get Notification](https://docs.medusajs.com/api/admin/notifications/get-a-notification) API routes only return a `feed` notification to an admin user if the notification's `to` property is either:
+
+- An empty string, which shows the notification to all admin users.
+- The ID of the authenticated admin user.
+
+Notifications on other channels aren't affected by this scoping.
+
+So, to show an admin notification to a single admin user, set the `to` property to that user's ID. For example:
+
+```ts
+await notificationModuleService.createNotifications({
+  to: userId,
+  channel: "feed",
+  template: "admin-ui",
+  data: {
+    title: "Export ready",
+    description: "Your export is ready to download",
+  },
+})
+```
+
+Where `userId` is the ID of the admin user. In an API route, you can get the ID of the authenticated admin user from `req.auth_context.actor_id`.
+
+Medusa's product import and export, order export, and inventory item export features use this to send their feed notifications only to the admin user who started the import or export. If you execute their workflows, such as `exportProductsWorkflow` or `importProductsWorkflow`, pass the admin user's ID in the workflow's `to` input. If you don't pass `to`, the notifications are shown to all admin users.
 
 ### Test Sending Notification
 
@@ -131749,8 +131831,10 @@ To set up instrumentation in Medusa, you need to install the dependencies necess
 So, run the following command to install the necessary Sentry dependencies:
 
 ```bash
-npm install @sentry/node @opentelemetry/api @opentelemetry/exporter-trace-otlp-grpc @sentry/opentelemetry-node @opentelemetry/core@1.x @opentelemetry/sdk-trace-base@1.x @opentelemetry/semantic-conventions@1.x
+npm install @sentry/node@11 @opentelemetry/exporter-trace-otlp-http
 ```
+
+Since Medusa [v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0), Medusa uses OpenTelemetry JS SDK 3.0, and the latest `@opentelemetry/exporter-trace-otlp-http` version targets it. If you use an older Medusa version, install a version of `@opentelemetry/exporter-trace-otlp-http` that's compatible with the OpenTelemetry JS SDK version your Medusa application uses.
 
 ### b. Configure Instrumentation
 
@@ -131761,29 +131845,18 @@ You can configure instrumentation in a special `instrumentation.ts` file at the 
 You should already have a file named `instrumentation.ts` in your Medusa application with commented-out code. Replace the file's content with the following:
 
 ```ts title="instrumentation.ts"
-import Sentry from "@sentry/node"
-import otelApi from "@opentelemetry/api"
+import * as Sentry from "@sentry/node"
 import { registerOtel } from "@medusajs/medusa"
-import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc" 
-import { 
-  SentrySpanProcessor, 
-  SentryPropagator,
-} from "@sentry/opentelemetry-node"
-
-Sentry.init({
-  dsn: process.env.SENTRY_DSN,
-  tracesSampleRate: 1.0,
-  // @ts-ignore
-  instrumenter: "otel",
-})
-
-otelApi.propagation.setGlobalPropagator(new SentryPropagator())
+import {
+  OTLPTraceExporter,
+} from "@opentelemetry/exporter-trace-otlp-http"
 
 export function register() {
   registerOtel({
     serviceName: "medusa",
-    spanProcessors: [new SentrySpanProcessor()],
-    traceExporter: new OTLPTraceExporter(),
+    exporter: new OTLPTraceExporter(
+      Sentry.getOtlpTracesEndpoint(process.env.SENTRY_DSN!)
+    ),
     instrument: {
       http: true,
       workflows: true,
@@ -131791,17 +131864,23 @@ export function register() {
       db: true,
     },
   })
+
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    integrations: [Sentry.openTelemetryIntegration()],
+  })
 }
 ```
 
-You first initialize Sentry with your Data Source Name (DSN), which you'll retrieve and set as an environment variable soon. You also set the `tracesSampleRate` to `1.0`, which enables tracing in your Sentry project.
-
-Next, you set the global propagator to Sentry's propagator, which allows Sentry to propagate trace context across your application.
-
-Finally, you export a `register` function that registers OpenTelemetry. It uses the `registerOtel` function from Medusa, which accepts [OpenTelemetry configurations](https://open-telemetry.github.io/opentelemetry-js/interfaces/_opentelemetry_sdk-node.NodeSDKConfiguration.html) with the following custom Medusa options:
+You export a `register` function that registers OpenTelemetry. It uses the `registerOtel` function from Medusa, which accepts [OpenTelemetry configurations](https://open-telemetry.github.io/opentelemetry-js/interfaces/_opentelemetry_sdk-node.NodeSDKConfiguration.html) with the following custom Medusa options:
 
 - `serviceName`: The name of your service, which you set to "medusa". You can change it to a more descriptive name if needed.
+- `exporter`: The exporter that sends traces. You pass an OTLP exporter that sends traces to Sentry. The `Sentry.getOtlpTracesEndpoint` function returns the URL and authentication headers of your Sentry project's OTLP endpoint based on your Data Source Name (DSN), which you'll retrieve and set as an environment variable soon.
 - `instrument`: An object that specifies what to trace in your Medusa application. You enable tracing for HTTP requests, workflows, Query usages, and database operations by setting their respective properties to `true`. Since Medusa v2.22.0, you can also pass an object to `http` to choose which query parameter values Medusa reports to Sentry. Learn more in the [Instrumentation](https://docs.medusajs.com/docs/learn/debugging-and-testing/instrumentation#configure-http-tracing/index.html.md) chapter.
+
+After registering OpenTelemetry, you initialize Sentry with your DSN and the `openTelemetryIntegration`, which attaches errors that Sentry captures to the active OpenTelemetry trace. You must initialize Sentry after registering OpenTelemetry.
+
+Don't set the `tracesSampleRate` or `tracesSampler` options in `Sentry.init`. OpenTelemetry handles tracing, so enabling Sentry's tracing creates duplicate spans.
 
 You can add any additional configurations to either Sentry or OpenTelemetry as needed for your use case.
 
@@ -155927,7 +156006,7 @@ import { DatePicker } from "@medusajs/ui"
 - onKeyDown: (signature) Handler that is called when a key is pressed.
 - onKeyUp: (signature) Handler that is called when a key is released.
 - onOpenChange: (signature) Handler that is called when the overlay's open state changes.
-- pageBehavior: (PageBehavior) Controls the behavior of paging. Pagination either works by advancing the visible page by
+- pageBehavior: (union) Controls the behavior of paging. Pagination either works by advancing the visible page by
   visibleDuration (default) or one unit of visibleDuration.
 - placeholderValue: (union) A placeholder date that influences the format of the placeholder shown when no value is
   selected. Defaults to today's date at midnight.
@@ -156749,8 +156828,8 @@ import { FocusModal } from "@medusajs/ui"
 This component is based on the \[Radix UI Dialog]\(https://www.radix-ui.com/primitives/docs/components/dialog) primitives.
 
 - defaultOpen: (boolean) Whether the modal is opened by default.
-- open: (boolean) Whether the modal is opened.
 - onOpenChange: (signature) A function to handle when the modal is opened or closed.
+- open: (boolean) Whether the modal is opened.
 
 ### FocusModal.Trigger Props
 
@@ -158234,7 +158313,7 @@ This component is based on the \[Radix UI Tabs]\(https://radix-ui.com/primitives
 
 - activationMode: (union) Whether a tab is activated automatically or manually.
 - defaultValue: (string) The value of the tab to select by default, if uncontrolled
-- dir: (Direction) The direction of navigation between toolbar items.
+- dir: (union) The direction of navigation between toolbar items.
 - onValueChange: (signature) A function called when a new tab is selected
 - orientation: (union) The orientation the tabs are layed out.
   Mainly so arrow navigation is done accordingly (left & right vs. up & down)
@@ -159705,7 +159784,7 @@ This component is based on the \[Radix UI Tabs]\(https://radix-ui.com/primitives
 
 - activationMode: (union) Whether a tab is activated automatically or manually.
 - defaultValue: (string) The value of the tab to select by default, if uncontrolled
-- dir: (Direction) The direction of navigation between toolbar items.
+- dir: (union) The direction of navigation between toolbar items.
 - onValueChange: (signature) A function called when a new tab is selected
 - orientation: (union) The orientation the tabs are layed out.
   Mainly so arrow navigation is done accordingly (left & right vs. up & down)

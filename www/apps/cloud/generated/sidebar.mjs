@@ -95,7 +95,7 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "type": "link",
-                "title": "ChatGPT App",
+                "title": "ChatGPT Plugin",
                 "path": "/ai-toolkit/medusa-mcp/chatgpt",
                 "children": []
               },
@@ -281,8 +281,22 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "type": "link",
-                "title": "Connections",
+                "title": "MCP and Connectors",
                 "path": "/organizations/connections",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "License",
+                "path": "/organizations/license",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Roles and Permissions",
+                "path": "/organizations/roles",
                 "children": []
               }
             ]
@@ -491,6 +505,63 @@ export const generatedSidebars = [
             "type": "link",
             "title": "React Email Templates",
             "path": "/emails/react-email",
+            "children": []
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Payments",
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Medusa Payments",
+            "path": "/payments",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Payment Accounts",
+            "path": "/payments/accounts",
+            "children": [
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Medusa Payments",
+                "path": "/payments/accounts/medusa-payments",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Stripe",
+                "path": "/payments/accounts/stripe",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
+                "title": "Adyen",
+                "path": "/payments/accounts/adyen",
+                "children": []
+              }
+            ]
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Set up Medusa Payments in Environments",
+            "path": "/payments/environments",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Add to Storefront",
+            "path": "/payments/storefront",
             "children": []
           }
         ]
