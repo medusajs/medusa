@@ -1,6 +1,6 @@
 import { MedusaResponse } from "@medusajs/framework/http"
 import { IAuthModuleService } from "@medusajs/framework/types"
-import { MedusaError, Modules } from "@medusajs/framework/utils"
+import { AuthEvents, MedusaError, Modules } from "@medusajs/framework/utils"
 import { ResetPasswordRequest } from "../../../utils/validate-token"
 
 export const POST = async (req: ResetPasswordRequest, res: MedusaResponse) => {
@@ -19,6 +19,11 @@ export const POST = async (req: ResetPasswordRequest, res: MedusaResponse) => {
   )
 
   if (success && authIdentity) {
+    await req.scope.resolve(Modules.EVENT_BUS).emit({
+      name: AuthEvents.CREDENTIALS_UPDATED,
+      data: { auth_identity_id: authIdentity.id, provider: auth_provider },
+    })
+
     return res.status(200).json({ success: true })
   }
 

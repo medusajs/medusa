@@ -1,4 +1,8 @@
-import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+  Modules,
+} from "@medusajs/utils"
 import { NextFunction } from "express"
 import { sign } from "jsonwebtoken"
 import { authenticate, AuthType } from "../authenticate-middleware"
@@ -7,6 +11,10 @@ import { MedusaRequest, MedusaResponse } from "../../types"
 type ResolveOverrides = {
   jwtSecret?: string
   apiKeyModule?: { authenticate: jest.Mock }
+  authModule?: {
+    retrieveAuthIdentity: jest.Mock
+    getCredentialsUpdatedAt: jest.Mock
+  }
 }
 
 const createRequest = (
@@ -34,6 +42,10 @@ const createRequest = (
           authenticate: jest.fn().mockResolvedValue(null),
         }
       )
+    }
+
+    if (key === Modules.AUTH) {
+      return overrides.authModule
     }
 
     return undefined
@@ -332,6 +344,72 @@ describe("authenticate middleware", () => {
     expect((req as any).auth_context).toEqual(
       expect.objectContaining({ actor_id: "apk_1", actor_type: "api-key" })
     )
+  })
+
+  describe("session credentials", () => {
+    const issuedAt = Math.floor(Date.now() / 1000) - 60
+
+    const createSession = () => ({
+      auth_context: {
+        actor_id: "user_1",
+        actor_type: "user",
+        auth_identity_id: "authid_1",
+        auth_provider: "emailpass",
+        app_metadata: {},
+        user_metadata: {},
+        iat: issuedAt,
+      },
+    })
+
+    const createAuthModule = (credentialsUpdatedAt: Date | null) => ({
+      retrieveAuthIdentity: jest.fn().mockResolvedValue({
+        id: "authid_1",
+        provider_identities: [{ provider: "emailpass" }],
+      }),
+      getCredentialsUpdatedAt: jest
+        .fn()
+        .mockResolvedValue(credentialsUpdatedAt),
+    })
+
+    it("accepts a session created after the credentials were last updated", async () => {
+      const authModule = createAuthModule(new Date((issuedAt - 60) * 1000))
+      const req = createRequest({ session: createSession() }, { authModule })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate("user", ["session"])(req, res, next)
+
+      expect(next).toHaveBeenCalledTimes(1)
+      expect(req.session.auth_context).toBeDefined()
+    })
+
+    it("ends a session created before the credentials were updated", async () => {
+      const authModule = createAuthModule(new Date((issuedAt + 30) * 1000))
+      const req = createRequest({ session: createSession() }, { authModule })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate("user", ["session"])(req, res, next)
+
+      expect(next).not.toHaveBeenCalled()
+      expect(res.status).toHaveBeenCalledWith(401)
+      expect(req.session.auth_context).toBeUndefined()
+    })
+
+    it("ends a session whose auth identity no longer exists", async () => {
+      const authModule = createAuthModule(null)
+      authModule.retrieveAuthIdentity.mockRejectedValue(
+        new MedusaError(MedusaError.Types.NOT_FOUND, "not found")
+      )
+      const req = createRequest({ session: createSession() }, { authModule })
+      const res = createResponse()
+      const next = jest.fn() as NextFunction
+
+      await authenticate("user", ["session"])(req, res, next)
+
+      expect(next).not.toHaveBeenCalled()
+      expect(res.status).toHaveBeenCalledWith(401)
+    })
   })
 
   describe("prototype pollution", () => {

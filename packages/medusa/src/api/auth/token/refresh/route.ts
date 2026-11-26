@@ -1,6 +1,7 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
+  validateTokenIssuedAfterCredentialsUpdate,
 } from "@medusajs/framework/http"
 import { ConfigModule, IAuthModuleService } from "@medusajs/framework/types"
 import {
@@ -12,7 +13,6 @@ import {
   generateJwtTokenForAuthIdentity,
   generateJwtTokenWithChecks,
 } from "../../utils/generate-jwt-token"
-import { validateTokenIssuedAfterCredentialsUpdate } from "../../utils/validate-token-issued-after-credentials-update"
 
 // Retrieve a newly generated JWT token. Checking the existing token is valid already happens in the auth middleware.
 export const POST = async (

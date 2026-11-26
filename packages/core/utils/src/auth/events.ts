@@ -44,4 +44,17 @@ export const AuthEvents = {
    * ```
    */
   MFA_RECOVERY_CODES_GENERATED: "auth.mfa_recovery_codes_generated",
+  /**
+   * Emitted when an auth identity's credentials are updated with a provider, such as a password reset.
+   * @since 2.23.2
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   auth_identity_id, // The ID of the auth identity whose credentials were updated.
+   *   provider, // The auth provider whose credentials were updated, such as `emailpass`.
+   * }
+   * ```
+   */
+  CREDENTIALS_UPDATED: "auth.credentials_updated",
 } as const
