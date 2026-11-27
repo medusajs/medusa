@@ -68,8 +68,8 @@ The Cloud CLI lets your agent deploy, manage, and debug your Medusa projects. It
 
 Install the CLI globally, then log in:
 
-```bash
-npm install -g @medusajs/mcloud
+```bash npm2yarn
+npm install @medusajs/mcloud -g
 mcloud login
 ```
 
@@ -81,7 +81,7 @@ Agent skills teach your agent Medusa's best practices for building features and 
 
 Run the following command from your Medusa application's directory:
 
-```bash
+```bash npx2yarn
 npx -y skills add medusajs/medusa-agent-skills \
   --skill '*' --yes
 ```
