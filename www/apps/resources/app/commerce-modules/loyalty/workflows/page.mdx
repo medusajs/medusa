@@ -82,6 +82,14 @@ await addGiftCardToCartWorkflow(container)
   })
 ```
 
+The workflow acquires a lock on the cart while it runs, using the same lock key as the cart completion flow, so it can't run at the same time as the cart's completion. It also throws an error if the cart doesn't exist or is already completed.
+
+<Note title="Tip">
+
+If you create a custom workflow that adds or removes a cart's credit lines, acquire the cart lock with [acquireLockStep](/references/medusa-workflows/steps/acquireLockStep) using the cart's ID as the key, and reject completed carts. Otherwise, your workflow can conflict with the cart's completion.
+
+</Note>
+
 #### validate Hook
 
 <Note>
@@ -109,7 +117,7 @@ The hook receives the workflow `input`, the resolved `cart`, and the resolved `g
 
 ### Remove Gift Card from Cart
 
-Remove a gift card from a cart:
+Remove a gift card from a cart. Like `addGiftCardToCartWorkflow`, this workflow locks the cart while it runs and throws an error if the cart is already completed:
 
 ```ts
 import { removeGiftCardFromCartWorkflow } from "@medusajs/loyalty-plugin/workflows"

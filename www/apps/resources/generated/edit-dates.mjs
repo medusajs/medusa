@@ -429,7 +429,7 @@ export const generatedEditDates = {
   "app/commerce-modules/order/secure-order-retrieval/page.mdx": "2026-09-24T14:56:28.873Z",
   "app/commerce-modules/order/secure-return-creation/page.mdx": "2026-09-24T14:56:43.194Z",
   "app/commerce-modules/loyalty/gift-cards/page.mdx": "2026-08-13T17:02:02.369Z",
-  "app/commerce-modules/loyalty/workflows/page.mdx": "2026-09-08T03:46:56.257Z",
+  "app/commerce-modules/loyalty/workflows/page.mdx": "2026-11-27T14:25:18.278Z",
   "app/lint/rules/when-block-must-have-name/page.mdx": "2026-09-01T19:21:07.718Z",
   "app/lint/rules/no-nested-when-in-workflow/page.mdx": "2026-09-02T09:46:03.888Z",
   "app/admin-components/hooks/page.mdx": "2026-09-11T07:43:18.395Z",
@@ -524,5 +524,6 @@ export const generatedEditDates = {
   "app/enterprise/audit/record-custom-audit-logs/page.mdx": "2026-11-27T07:40:23.436Z",
   "app/commerce-modules/user/links-to-other-modules/page.mdx": "2026-11-27T07:40:23.436Z",
   "app/enterprise/audit/js-sdk/page.mdx": "2026-11-27T07:40:23.436Z",
-  "app/lint/rules/no-direct-variable-mutation-in-workflow/page.mdx": "2026-11-27T07:40:23.437Z"
+  "app/lint/rules/no-direct-variable-mutation-in-workflow/page.mdx": "2026-11-27T07:40:23.437Z",
+  "app/commerce-modules/store-credit/workflows/page.mdx": "2026-11-27T14:25:19.686Z"
 }
