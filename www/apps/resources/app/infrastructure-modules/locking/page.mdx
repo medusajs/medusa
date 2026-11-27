@@ -71,6 +71,12 @@ For example:
 
     This ensures that only one instance of the workflow can modify the order at a time, preventing issues like double charging the customer.
 
+    <Note>
+
+    The example doesn't pass an `ownerId`, so the lock has no owner. If the lock expires while the workflow is still running, another execution can acquire it, and the `releaseLockStep` of the first execution releases the other execution's lock. To avoid that, set a `ttl` longer than the time your workflow takes, or pass an `ownerId` that's unique to each execution to both steps. Learn more in the [Locking Operations in Workflows](!docs!/learn/fundamentals/workflows/locks) chapter.
+
+    </Note>
+
     </TabsContent>
     <TabsContent value="step">
 

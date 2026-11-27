@@ -141,7 +141,7 @@ const { result } = await debitAccountsWorkflow(container)
 
 ### Add Store Credits to Cart
 
-Apply store credits to a cart as a credit line:
+Apply store credits to a cart as a credit line. The workflow locks the cart while it runs, so it can't run at the same time as the cart's completion. It throws an error if the cart is already completed, has no customer, or has no currency:
 
 ```ts
 import { addStoreCreditsToCartWorkflow } from "@medusajs/loyalty-plugin/workflows"
