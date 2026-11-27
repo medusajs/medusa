@@ -797,6 +797,69 @@ medusaIntegrationTestRunner({
       expect(freshRefresh.data).toEqual({ token: expect.any(String) })
     })
 
+    it("should end sessions created before the password was reset", async () => {
+      const email = "stale-session@medusa-commerce.com"
+      await createAdminUser(dbConnection, { headers: {} }, container, {
+        email,
+      })
+
+      const login = await api.post("/auth/user/emailpass", {
+        email,
+        password: "somepassword",
+      })
+      const createSession = await api.post(
+        "/auth/session",
+        {},
+        { headers: { authorization: `Bearer ${login.data.token}` } }
+      )
+      const [cookie] = createSession.headers["set-cookie"][0].split(";")
+      const cookieHeader = { headers: { Cookie: cookie } }
+
+      const beforeReset = await api.get("/admin/users/me", cookieHeader)
+      expect(beforeReset.status).toEqual(200)
+
+      // JWT issue dates have a one second resolution
+      await new Promise((resolve) => setTimeout(resolve, 1100))
+
+      const { result: resetToken } = await generateResetPasswordTokenWorkflow(
+        container
+      ).run({
+        input: {
+          entityId: email,
+          actorType: "user",
+          provider: "emailpass",
+          secret: "test",
+        },
+      })
+
+      await api.post(
+        `/auth/user/emailpass/update`,
+        { password: "new_password" },
+        { headers: { authorization: `Bearer ${resetToken}` } }
+      )
+
+      const afterReset = await api
+        .get("/admin/users/me", cookieHeader)
+        .catch((e) => e.response)
+      expect(afterReset.status).toEqual(401)
+
+      const newLogin = await api.post("/auth/user/emailpass", {
+        email,
+        password: "new_password",
+      })
+      const newSession = await api.post(
+        "/auth/session",
+        {},
+        { headers: { authorization: `Bearer ${newLogin.data.token}` } }
+      )
+      const [newCookie] = newSession.headers["set-cookie"][0].split(";")
+
+      const withNewSession = await api.get("/admin/users/me", {
+        headers: { Cookie: newCookie },
+      })
+      expect(withNewSession.status).toEqual(200)
+    })
+
     it("should preserve custom app_metadata fields on token refresh", async () => {
       // Register a new identity via emailpass
       const signup = await api.post("/auth/user/emailpass/register", {

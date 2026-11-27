@@ -1,5 +1,14 @@
-import { ApiKeyDTO, IApiKeyModuleService, Logger } from "@medusajs/types"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/utils"
+import {
+  ApiKeyDTO,
+  IApiKeyModuleService,
+  IAuthModuleService,
+  Logger,
+} from "@medusajs/types"
+import {
+  ContainerRegistrationKeys,
+  MedusaError,
+  Modules,
+} from "@medusajs/utils"
 import { NextFunction, RequestHandler } from "express"
 import type {
   JwtPayload,
@@ -15,6 +24,7 @@ import {
   MedusaRequest,
   MedusaResponse,
 } from "../types"
+import { validateTokenIssuedAfterCredentialsUpdate } from "../utils/validate-token-issued-after-credentials-update"
 
 const SESSION_AUTH = "session"
 const BEARER_AUTH = "bearer"
@@ -85,6 +95,11 @@ export const authenticate = (
       authTypes,
       actorTypes
     )
+
+    if (authContext && !(await isSessionStillValid(req, authContext))) {
+      delete req.session.auth_context
+      authContext = null
+    }
 
     if (!authContext) {
       const {
@@ -256,6 +271,46 @@ const getAuthContextFromSession = (
   }
 
   return null
+}
+
+// A session keeps the auth context of the token it was created from, so it
+// ends once the auth identity's credentials are updated (e.g. a password reset).
+const isSessionStillValid = async (
+  req: MedusaRequest,
+  authContext: AuthContext
+): Promise<boolean> => {
+  const authService = req.scope.resolve<IAuthModuleService | undefined>(
+    Modules.AUTH,
+    { allowUnregistered: true }
+  )
+
+  if (!authService || !authContext.auth_identity_id) {
+    return true
+  }
+
+  try {
+    const authIdentity = await authService.retrieveAuthIdentity(
+      authContext.auth_identity_id,
+      { relations: ["provider_identities"] }
+    )
+
+    await validateTokenIssuedAfterCredentialsUpdate(authService, {
+      authContext,
+      authIdentity,
+      authProvider: authContext.auth_provider,
+    })
+
+    return true
+  } catch (error) {
+    if (
+      error.type === MedusaError.Types.NOT_FOUND ||
+      error.type === MedusaError.Types.UNAUTHORIZED
+    ) {
+      return false
+    }
+
+    throw error
+  }
 }
 
 export const getAuthContextFromJwtToken = (

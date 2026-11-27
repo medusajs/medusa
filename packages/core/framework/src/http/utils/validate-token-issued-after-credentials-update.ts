@@ -2,8 +2,8 @@ import {
   AuthContext,
   AuthIdentityDTO,
   IAuthModuleService,
-} from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
+} from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 
 /**
  * Throws when the token was issued before the credentials of the auth identity

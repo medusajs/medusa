@@ -1,6 +1,7 @@
 import {
   AuthenticatedMedusaRequest,
   MedusaResponse,
+  validateTokenIssuedAfterCredentialsUpdate,
 } from "@medusajs/framework/http"
 import { ConfigModule, IAuthModuleService } from "@medusajs/framework/types"
 import {
@@ -9,7 +10,6 @@ import {
   Modules,
 } from "@medusajs/framework/utils"
 import { generateJwtTokenForAuthIdentity } from "../../../../utils/generate-jwt-token"
-import { validateTokenIssuedAfterCredentialsUpdate } from "../../../../utils/validate-token-issued-after-credentials-update"
 import { AuthMfaVerifyChallengeRequestType } from "../../../../validators"
 
 /**

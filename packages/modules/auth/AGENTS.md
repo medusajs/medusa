@@ -48,7 +48,7 @@ module.exports = defineConfig({
 ### Custom service methods (`src/services/auth-module.ts`)
 
 - Provider flow: `register`, `authenticate`, `validateCallback`, `updateProvider`, `validateAuthIdentity`, `listAuthProviders`. These catch errors and return `{ success: false, error }` instead of throwing.
-- `getCredentialsUpdatedAt(provider, providerIdentity)`: calls the provider's optional `getCredentialsUpdatedAt` and returns `null` when it isn't implemented or the provider isn't registered. The refresh and MFA challenge verify routes use it to reject tokens issued before a credentials update.
+- `getCredentialsUpdatedAt(provider, providerIdentity)`: calls the provider's optional `getCredentialsUpdatedAt` and returns `null` when it isn't implemented or the provider isn't registered. The refresh and MFA challenge verify routes use it to reject tokens issued before a credentials update, and the `authenticate` middleware uses it to end sessions created before one.
 - MFA: `startAuthMfa`, `verifyAuthMfa`, `createAuthMfaChallenge`, `verifyAuthMfaChallenge`, `disableAuthMfa`, `retrieveAuthMfa`, `listAuthMfa`, `generateAuthMfaRecoveryCodes`, `useAuthMfaRecoveryCode`.
 - Verification: `requestAuthVerification` (requires `code_provider`), `confirmAuthVerification` (defaults to `"token"`).
 - Password reset: `createPasswordResetToken`, `consumePasswordResetToken`.
@@ -56,7 +56,7 @@ module.exports = defineConfig({
 
 ### Events and links
 
-- The module defines no event constants. `auth.password_reset` and `auth.verification_requested` (`AuthWorkflowEvents`) are emitted by core-flows workflows (`generate-reset-password-token.ts`, `request-verification.ts`).
+- The module defines no event constants. `auth.password_reset` and `auth.verification_requested` (`AuthWorkflowEvents`) are emitted by core-flows workflows (`generate-reset-password-token.ts`, `request-verification.ts`). `auth.credentials_updated` (`AuthEvents.CREDENTIALS_UPDATED`) is emitted by the `POST /auth/:actor_type/:auth_provider/update` route after `updateProvider` succeeds.
 - No module links in `link-modules`; actors are associated through `app_metadata.<actor_type>_id`.
 
 ### Docs
