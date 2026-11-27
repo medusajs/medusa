@@ -30,7 +30,7 @@
 ## Docs Contributions
 
 **What counts as a docs contribution:**
-- MDX files under `www/apps/` (book, resources, ui, user-guide, cloud, api-reference)
+- MDX files under `www/apps/` (book, resources, ui, user-guide (Merchant Guide), cloud, api-reference)
 - Changes to shared docs components or tooling under `www/packages/`
 
 **Checklist:**
@@ -42,6 +42,7 @@
 - [ ] Cross-project links use the correct syntax (e.g., `!resources!`, `!api!`, `!ui!`) — not hardcoded URLs
 - [ ] If adding a new page, a corresponding sidebar entry exists
 - [ ] Prose does not use first-person pronouns
+- [ ] Content is Cloud-first (see `writing-docs/reference/cloud-first.md`): no self-hosting or non-Cloud deployment instructions, no `create-medusa-app` installs outside its reference page, and "Merchant Guide" instead of "User Guide"
 - [ ] **Components under `www/packages/docs-ui/` must include tests** — check for a `__tests__/` directory or `.spec.tsx` / `.test.tsx` alongside the component
 
 ---

@@ -30,7 +30,7 @@ export const EnterpriseNotice = ({
         tooltipChildren={
           <span className={tooltipTextClassName}>
             This {featureName} requires an{" "}
-            <Link href="https://docs.medusajs.com/resources/enterprise">
+            <Link href="https://docs.medusajs.com/cloud/enterprise">
               enterprise license
             </Link>
             .

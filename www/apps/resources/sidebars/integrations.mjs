@@ -1,8 +1,8 @@
 /** @type {import('types').Sidebar.SidebarItem[]} */
 export const integrationsSidebar = [
   {
-    type: "link",
-    path: "/integrations",
+    type: "external",
+    path: "https://docs.medusajs.com/cloud/integrations",
     title: "Overview",
   },
   {

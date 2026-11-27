@@ -1,0 +1,290 @@
+# Set Up the Medusa AI Toolkit
+
+You are an AI coding agent setting up Medusa's AI Toolkit for the user, so you can build, deploy, and manage their Medusa store. Follow this prompt end-to-end. Each section is a discrete step: finish it, verify it, then move to the next.
+
+You set up four tools, in this order:
+
+1. **Medusa MCP server**: access to the user's store data (orders, products, customers, custom data) and Cloud project data (deployments, build and runtime logs, environment variables).
+2. **Cloud CLI (`mcloud`)**: deploy, manage, and debug Cloud projects from the terminal.
+3. **Medusa agent skills**: Medusa's best practices for building features, admin customizations, and storefronts, and for using the Cloud CLI.
+4. **Docs MCP server**: answers and implementation guides from the Medusa documentation.
+
+## Operating Rules
+
+- Identify the agent you're running in (Claude Code, Cursor, VS Code with GitHub Copilot, Codex, OpenCode, Gemini CLI, or another agent) and use only the commands and configuration for that agent. If you can't tell, ask the user.
+- Before running a command that changes system state (installing software, logging in, editing a config file), state what you're about to do in one sentence so the user can interrupt.
+- Some steps happen in the user's browser, such as logging in to their Medusa account. You can't perform those steps. Give the user the exact steps, then wait for them to confirm before verifying the result.
+- Before editing an MCP config file, read it if it exists and merge the new server into it. Never overwrite other servers. If a server with the same name already exists with the same URL, skip adding it.
+- After each command, check its exit code and output. If a step fails, stop and show the error with a concrete next action. Don't silently continue.
+- Prefer non-interactive flags, and don't run commands that block on a terminal prompt unless the step says to.
+- Don't commit secrets, `.env` files, access keys, or the installed skills unless the user asks to.
+- If a step is already done, such as a tool that's already installed or a server that's already connected, verify it and move on.
+
+---
+
+## Step 1: Connect the Medusa MCP Server
+
+The Medusa MCP server is a Streamable HTTP server at `https://cloud.medusajs.com/mcp`. It authenticates with OAuth, so the user doesn't need an access key.
+
+The user needs a Medusa account to authenticate. If they don't have one, tell them to sign up at https://cloud.medusajs.com/signup. They don't need a project yet: they can connect its environments later. The server can only access environments with a live deployment running Medusa v2.12.4 or later.
+
+Name the server `medusa-commerce`, and add it based on your agent.
+
+### Claude Code
+
+```bash
+claude mcp add --transport http medusa-commerce \
+  https://cloud.medusajs.com/mcp
+```
+
+Then, ask the user to run the `/mcp` command, select the `medusa-commerce` server, and choose **Authenticate**.
+
+### Cursor
+
+Add the server to `.cursor/mcp.json` in the project, or to the user's Cursor settings:
+
+```json
+{
+  "mcpServers": {
+    "medusa-commerce": {
+      "url": "https://cloud.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+Then, ask the user to open **Settings > Tools & MCPs** and click **Connect** next to the `medusa-commerce` server.
+
+### VS Code (including GitHub Copilot)
+
+Add the server to `.vscode/mcp.json` in the workspace:
+
+```json
+{
+  "servers": {
+    "medusa-commerce": {
+      "type": "http",
+      "url": "https://cloud.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+VS Code prompts the user to log in to their Medusa account when the server starts.
+
+### Codex
+
+```bash
+codex mcp add medusa-commerce \
+  --url https://cloud.medusajs.com/mcp
+```
+
+Then, ask the user to run `codex mcp login medusa-commerce`.
+
+### OpenCode
+
+Add the server to the OpenCode config file, for example, `~/.config/opencode/opencode.json`:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "medusa-commerce": {
+      "type": "remote",
+      "url": "https://cloud.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+Then, ask the user to run `opencode mcp auth medusa-commerce`.
+
+### Gemini CLI
+
+Install the Medusa extension for Gemini CLI, which adds the Medusa MCP server:
+
+```bash
+gemini extensions install \
+  https://github.com/medusajs/gemini-cli-extension
+```
+
+Then, ask the user to start Gemini CLI and run `/mcp auth medusa`.
+
+### Other agents
+
+Configure the agent to connect to the Streamable HTTP MCP server at `https://cloud.medusajs.com/mcp` with OAuth.
+
+### Approve the connection
+
+When the user authenticates, the browser opens a Medusa login page, then a consent page. Tell the user to:
+
+1. Check **Read** for each environment you can access. **Read** gives access to the environment's commerce data and its project's Cloud data.
+2. Check **Write** for each environment where you can also create, update, and delete commerce data.
+3. Click **Approve**.
+
+If the consent page has no environments because the user doesn't have a project yet, they can skip authenticating for now. After they create a project, they authenticate the server again and select its environments.
+
+Tell the user to approve the connection only if they started it themselves, since you act as them with their role in each organization.
+
+Don't block on the authentication. Continue to the next step, and verify the connection in Step 5.
+
+---
+
+## Step 2: Install the Cloud CLI
+
+Check whether Node.js and `mcloud` are already installed:
+
+```bash
+node --version
+mcloud --version
+```
+
+The CLI requires Node.js v22 or later. If Node.js is missing or older, ask the user how they want to install it. Recommend Node.js 22 LTS from https://nodejs.org/en/download or with `nvm`.
+
+If `mcloud --version` succeeds, skip to logging in. Otherwise, install the CLI globally with the first package manager that's installed, in this order: `pnpm`, `yarn`, `npm`:
+
+```bash
+# pnpm
+pnpm add -g @medusajs/mcloud
+# yarn
+yarn global add @medusajs/mcloud
+# npm
+npm install -g @medusajs/mcloud
+```
+
+Run `mcloud --version` again to confirm the binary is on `PATH`. If it isn't, ask the user to add their global package bin directory to `PATH`.
+
+Then, check whether the user is logged in:
+
+```bash
+mcloud whoami --json
+```
+
+If the `auth.kind` field is `"none"`, run the following command, which opens the browser to log in. Wait for the user to confirm they've logged in:
+
+```bash
+mcloud login
+```
+
+If the user doesn't have a Medusa account, run `mcloud signup` first, wait for them to confirm they've signed up, then run `mcloud login`.
+
+Run `mcloud whoami --json` again. The `auth.kind` field must not be `"none"`. If it is, retry `mcloud login`.
+
+For every `mcloud` command you run later, pass `--json` when you need to parse its output. To avoid passing `--organization`, `--project`, and `--environment` to every command, set the active context with `mcloud use --organization <id> --project <handle> --environment <handle>`. Find the values with `mcloud organizations list --json` and `mcloud projects list --json`.
+
+---
+
+## Step 3: Install Medusa Agent Skills
+
+Run the following command from the root of the user's Medusa application. If the user has no local application, run it from their current directory. Replace `<agent>` with your agent: `claude-code`, `cursor`, `codex`, or `gemini-cli`. For other agents, remove the `--agent` option.
+
+```bash
+npx -y skills add medusajs/medusa-agent-skills \
+  --skill '*' --yes --agent <agent>
+```
+
+This installs the following skills:
+
+- `using-medusa-cloud`: deploy, manage, and debug Cloud projects with the Cloud CLI.
+- `building-with-medusa`: build backend features, such as modules, workflows, and API routes.
+- `building-admin-dashboard-customizations`: build admin widgets and pages.
+- `building-storefronts`: connect storefronts to the Medusa backend.
+- `storefront-best-practices`: build ecommerce storefronts that follow commerce best practices.
+- `db-generate`, `db-migrate`, and `new-user`: generate and run database migrations, and create admin users.
+- `learning-medusa`: an interactive guide to learning Medusa.
+
+Confirm the command succeeded and list the installed skills to the user.
+
+---
+
+## Step 4: Connect the Docs MCP Server
+
+The Docs MCP server is a public Streamable HTTP server at `https://docs.medusajs.com/mcp`. It doesn't require authentication.
+
+Name the server `medusa`, and add it based on your agent.
+
+### Claude Code
+
+```bash
+claude mcp add --transport http medusa \
+  https://docs.medusajs.com/mcp
+```
+
+### Cursor
+
+Add the server to `.cursor/mcp.json` in the project, or to the user's Cursor settings:
+
+```json
+{
+  "mcpServers": {
+    "medusa": {
+      "url": "https://docs.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+### VS Code (including GitHub Copilot)
+
+Add the server to `.vscode/mcp.json` in the workspace:
+
+```json
+{
+  "servers": {
+    "medusa": {
+      "type": "http",
+      "url": "https://docs.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+### Codex
+
+```bash
+codex mcp add medusa --url https://docs.medusajs.com/mcp
+```
+
+### OpenCode
+
+Add the server to the OpenCode config file, for example, `~/.config/opencode/opencode.json`:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "medusa": {
+      "type": "remote",
+      "url": "https://docs.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+### Other agents
+
+Configure the agent to connect to the Streamable HTTP MCP server at `https://docs.medusajs.com/mcp`.
+
+---
+
+## Step 5: Verify and Wrap Up
+
+Most agents load new MCP servers and skills only when they start. If your agent can't use the new MCP servers yet, ask the user to restart it.
+
+Then, verify each tool:
+
+- **Medusa MCP server**: if its tools are available, call `list_connected_environments` and show the user the environments you can access. If its tools aren't available, remind the user to authenticate the `medusa-commerce` server as explained in Step 1.
+- **Cloud CLI**: `mcloud whoami --json` shows the user's account.
+- **Agent skills**: the skills from Step 3 are installed.
+- **Docs MCP server**: if its tools are available, call `ask_medusa_question` with a short question, such as "What is a workflow in Medusa?".
+
+Tell the user, in one short message:
+
+- Which tools are set up, and which still need an action from them, such as authenticating the Medusa MCP server or restarting the agent.
+- Any step that was blocked due to permissions or the execution mode, and how to re-run it.
+- Two or three prompts they can try, for example:
+  - "Why did my latest deployment fail? Check its build logs."
+  - "Show me the 5 most recent orders in my store."
+  - "Add a product reviews feature with admin moderation and a customer-facing form on the storefront."
+
+Stop. Don't start building features unless the user asks.

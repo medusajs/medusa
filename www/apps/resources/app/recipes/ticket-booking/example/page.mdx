@@ -42,11 +42,12 @@ This tutorial provides an approach to implement a ticket booking system using Me
 
 By following this tutorial, you will learn how to:
 
-- Install and set up Medusa with the Next.js Starter Storefront.
+- Create a Cloud project and set it up locally.
 - Create data models for venues and tickets, and link them to Medusa's data models.
 - Customize the Medusa Admin to manage venues and shows or events.
 - Implement custom validation and flows for ticket booking.
 - Generate QR codes for tickets and verify them at the venue.
+- Publish the customizations to Cloud.
 - [Extend the Next.js Starter Storefront to allow booking tickets and choosing seats](./storefront/page.mdx): This part of the tutorial is covered separately.
 
 ![Diagram showing the architecture of the ticket booking system with Medusa](https://res.cloudinary.com/dza7lstvk/image/upload/v1757512301/Medusa%20Resources/ticket-booking-diagram_egbpye.jpg)
@@ -66,13 +67,27 @@ By following this tutorial, you will learn how to:
   },
 ]} />
 
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/recipes/ticket-booking/example.md and implement a ticket booking system in my Medusa project
+```
+
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/first-project"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -85,23 +100,11 @@ By following this tutorial, you will learn how to:
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose Yes.
-
-the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors?">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -4362,17 +4365,24 @@ The last step is to send order confirmation emails to customers with their ticke
 
 To send an email in Medusa when an order is placed, you'll need:
 
-- A [Notification Module Provider](../../../infrastructure-modules/notification/page.mdx) to handle sending emails. For example, [SendGrid](../../../infrastructure-modules/notification/sendgrid/page.mdx) or [Resend](../../../integrations/guides/resend/page.mdx).
-    - You also need to define an email template for the order confirmation email in the provider.
+- [Medusa Emails](!cloud!/emails), Cloud's built-in email service, to send the emails. You'll also define the order confirmation email template with [React Email](https://react.email).
 - A method in the Ticket Booking Module's service that generates the ticket QR codes.
 - A [Subscriber](!docs!/learn/fundamentals/events-and-subscribers) that listens to the `order.placed` event and sends an email with the order details.
 - A workflow and API route to handle verifying scanned QR codes at the event entrance.
 
-### a. Set Up Notification Module
+### a. Set Up Email Sending
 
-First, set up a Notification Module Provider in your Medusa application.
+Cloud projects send notifications of the `email` channel with [Medusa Emails](!cloud!/emails). Medusa Emails is enabled by default, so you don't need to configure a Notification Module Provider or add API keys.
 
-For example, to set up the SendGrid Notification Module Provider, add it to `medusa-config.ts`:
+<Note>
+
+Without a verified sender domain, Medusa Emails only sends emails to addresses of users in your Cloud organization. To send order confirmation emails to your customers, [add an email sender domain](!cloud!/emails#add-email-sender-domain-to-cloud) to your Cloud project.
+
+</Note>
+
+Medusa Emails isn't available when you run the Medusa application locally. So, register the [Local Notification Module Provider](../../../infrastructure-modules/notification/local/page.mdx) for the `email` channel during development. It logs the emails' details in the terminal instead of sending them.
+
+Add the following to `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -4384,12 +4394,14 @@ module.exports = defineConfig({
       options: {
         providers: [
           {
-            resolve: "@medusajs/medusa/notification-sendgrid",
-            id: "sendgrid",
+            resolve: "@medusajs/medusa/notification-local",
+            id: "local",
             options: {
-              channels: ["email"],
-              api_key: process.env.SENDGRID_API_KEY,
-              from: process.env.SENDGRID_FROM,
+              channels: [
+                process.env.NODE_ENV === "development"
+                  ? "email"
+                  : "feed",
+              ],
             },
           },
         ],
@@ -4399,131 +4411,141 @@ module.exports = defineConfig({
 })
 ```
 
-Make sure to set the `SENDGRID_API_KEY` and `SENDGRID_FROM` environment variables in your `.env` file, as explained in the [SendGrid Notification Module Provider guide](../../../infrastructure-modules/notification/sendgrid/page.mdx).
+The Local Notification Module Provider handles the `email` channel only in development. In your Cloud environments, it handles the `feed` channel, so Medusa Emails sends the `email` notifications.
 
-You also need to define an email template for the order confirmation email in SendGrid. The following is a dynamic template you can use:
+#### Create the Email Template
 
-```html
-<!doctype html>
-<html lang="en" style="margin:0;padding:0;">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Order Confirmation – {{brand_name}}</title>
-  <style>
-    /* Dark mode friendly neutrals, safe for most clients */
-    :root { color-scheme: light dark; supported-color-schemes: light dark; }
-    body { margin:0; padding:0; background:#f6f7f9; -webkit-text-size-adjust:100%; }
-    .wrapper { width:100%; table-layout:fixed; background:#f6f7f9; padding:24px 0; }
-    .container { margin:0 auto; width:100%; max-width:640px; background:#ffffff; border-radius:12px; overflow:hidden; }
-    .header { padding:24px; text-align:left; background:#0e1116; color:#ffffff; }
-    .brand { font: 600 20px/1.2 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif; }
-    .content { padding:24px; color:#0e1116; font: 400 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif; }
-    .muted { color:#6b7280; font-size:14px; }
-    .section-title { font-weight:600; margin:24px 0 8px; }
-    .card { border:1px solid #e5e7eb; border-radius:12px; padding:16px; }
-    .divider { height:1px; background:#e5e7eb; margin:24px 0; }
-    .btn {
-      display:inline-block; text-decoration:none; background:#0e1116; color:#ffffff !important;
-      padding:12px 18px; border-radius:10px; font-weight:600;
-    }
-    /* QR grid */
-    .qr-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:16px; }
-    @media (max-width:480px) { .qr-grid { grid-template-columns: 1fr; } }
-    .qr-item { border:1px solid #e5e7eb; border-radius:10px; padding:14px; text-align:center; }
-    .qr-item img { display:block; margin:0 auto 10px; width:220px; height:220px; object-fit:contain; }
-    .qr-label { font-weight:600; margin-bottom:2px; }
-    .qr-meta { font-size:13px; color:#6b7280; }
-    .ticket-note { font-size:13px; color:#374151; margin-top:8px; }
-    /* Small print */
-    .footer { padding:18px 24px 28px; text-align:center; color:#6b7280; font-size:12px; }
-    .nowrap { white-space:nowrap; }
-    a { color:#0e63ff; }
-  </style>
-</head>
-<body>
-  <table role="presentation" class="wrapper" cellpadding="0" cellspacing="0" width="100%">
-    <tr>
-      <td align="center">
-        <table role="presentation" class="container" cellpadding="0" cellspacing="0" width="100%">
-          <!-- Header -->
-          <tr>
-            <td class="header">
-              <div class="brand">Medusa</div>
-            </td>
-          </tr>
+Medusa Emails sends the HTML content that you pass in the notification. To build the HTML, you'll create a React Email template, then render it to an HTML string when sending the notification.
 
-          <!-- Greeting & Summary -->
-          <tr>
-            <td class="content">
-              <p>Hi {{customer.first_name}},</p>
-              <p>Thanks for your order! Your tickets for <strong>{{show.name}}</strong> are confirmed.</p>
+First, install the React Email dependencies in the Medusa application:
 
-              <div class="card">
-                <div><strong>Order #:</strong> {{order.display_id}}</div>
-                <div><strong>Date:</strong> {{order.created_at}}</div>
-                {{#if order.email}}
-                  <div><strong>Sent to:</strong> {{order.email}}</div>
-                {{/if}}
-                {{#if show.date}}
-                  <div><strong>Event:</strong> {{show.date}}</div>
-                {{/if}}
-                {{#if show.venue}}
-                  <div><strong>Venue:</strong> {{show.venue}}</div>
-                {{/if}}
-              </div>
-
-              <div class="divider"></div>
-
-              <!-- QR Codes -->
-              <h3 class="section-title">Your Tickets (QR Codes)</h3>
-              <p class="muted" style="margin-top:0;">Show each QR code at the entrance. Each QR admits one person unless noted otherwise.</p>
-
-              <div class="qr-grid">
-                {{#each tickets}}
-                  <div class="qr-item">
-                    <!-- `qr` can be a full https URL or a data URI (e.g. data:image/png;base64,...) -->
-                    <img src="{{this.qr}}" alt="QR code for {{this.label}}" width="220" height="220" />
-                    <div class="qr-label">{{this.label}}</div>
-                    {{#if this.seat}}
-                      <div class="qr-meta">Seat: {{this.seat}}</div>
-                    {{/if}}
-                    {{#if this.row}}
-                      <div class="qr-meta">Row: {{this.row}}</div>
-                    {{/if}}
-                  </div>
-                {{/each}}
-              </div>
-
-              <p class="muted" style="margin-top:18px;">Please arrive at least 15 minutes before showtime and have your tickets ready.</p>
-
-              <div class="divider"></div>
-
-              <!-- Billing snippet -->
-              <h3 class="section-title">Billing</h3>
-                <div class="card">
-                  {{#if billing_address}}
-                    <div><strong>Billing address</strong><br/>
-                      {{billing_address.first_name}} {{billing_address.last_name}}<br/>
-                      {{billing_address.address_1}}{{#if billing_address.address_2}}, {{billing_address.address_2}}{{/if}}<br/>
-                      {{billing_address.city}}, {{billing_address.province}} {{billing_address.postal_code}}<br/>
-                      {{billing_address.country_code}}
-                    </div>
-                  {{/if}}
-                </div>
-
-              <p style="margin-top:24px;">Enjoy the show!</p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>
+```bash npm2yarn
+npm install @react-email/components@0.3.3 @react-email/render@1.1.4 react react-dom
 ```
 
-You can customize the template to fit your brand and requirements. If you change any variable names or add new variables, make sure to update the code in the next sections accordingly.
+<Note>
+
+Newer versions of React Email are not supported due to Node version incompatibilities on Cloud.
+
+</Note>
+
+Then, create the file `src/emails/order-tickets.tsx` with the following content:
+
+```tsx title="src/emails/order-tickets.tsx"
+import {
+  Body,
+  Container,
+  Heading,
+  Hr,
+  Html,
+  Img,
+  Preview,
+  Section,
+  Tailwind,
+  Text,
+} from "@react-email/components"
+
+type OrderTicketsEmailProps = {
+  customerName?: string
+  orderId: string
+  showName: string
+  showDate?: string
+  venue?: string
+  tickets: {
+    label: string
+    seat?: string
+    row?: string
+    qr: string
+  }[]
+}
+
+function Template({
+  customerName,
+  orderId,
+  showName,
+  showDate,
+  venue,
+  tickets,
+}: OrderTicketsEmailProps) {
+  return (
+    <Tailwind>
+      <Html className="font-sans bg-gray-100">
+        <Preview>{`Your tickets for ${showName}`}</Preview>
+        <Body className="bg-white my-10 mx-auto max-w-2xl">
+          <Container className="p-6">
+            <Heading className="text-xl font-semibold">
+              Hi {customerName || "there"},
+            </Heading>
+            <Text>
+              Thanks for your order! Your tickets for{" "}
+              <strong>{showName}</strong> are confirmed.
+            </Text>
+            <Section className="border border-gray-200 p-4">
+              <Text className="m-0">Order: {orderId}</Text>
+              {showDate && (
+                <Text className="m-0">Event: {showDate}</Text>
+              )}
+              {venue && (
+                <Text className="m-0">Venue: {venue}</Text>
+              )}
+            </Section>
+            <Hr />
+            <Heading as="h3" className="text-base">
+              Your Tickets
+            </Heading>
+            <Text className="text-sm text-gray-600">
+              Show each QR code at the entrance.
+            </Text>
+            {tickets.map((ticket, index) => (
+              <Section
+                key={index}
+                className="text-center border border-gray-200 p-4 mb-4"
+              >
+                <Img
+                  src={ticket.qr}
+                  alt={`QR code for ${ticket.label}`}
+                  width="220"
+                  height="220"
+                  className="mx-auto"
+                />
+                <Text className="font-semibold m-0">
+                  {ticket.label}
+                </Text>
+                {ticket.row && (
+                  <Text className="m-0">Row: {ticket.row}</Text>
+                )}
+                {ticket.seat && (
+                  <Text className="m-0">Seat: {ticket.seat}</Text>
+                )}
+              </Section>
+            ))}
+            <Text>Enjoy the show!</Text>
+          </Container>
+        </Body>
+      </Html>
+    </Tailwind>
+  )
+}
+
+export default function getOrderTicketsTemplate(
+  props?: OrderTicketsEmailProps
+) {
+  return (
+    <Template
+      customerName={props?.customerName}
+      orderId={props?.orderId ?? "order_123"}
+      showName={props?.showName ?? "Your Event"}
+      showDate={props?.showDate}
+      venue={props?.venue}
+      tickets={props?.tickets ?? []}
+    />
+  )
+}
+```
+
+The template shows the order and event details, and a QR code for each ticket. The file's default export is a function that returns the template with default props. You'll use it to render the template to HTML when sending the notification.
+
+You can customize the template to fit your brand and requirements. Learn how to preview your email templates during development in the [Set Up React Email Templates](!cloud!/emails/react-email#step-3-preview-email-template-optional) guide.
 
 ### b. Generate Ticket QR Codes
 
@@ -4588,7 +4610,9 @@ To create a subscriber that sends a notification to the customer when an order i
 
 ```ts title="src/subscribers/order-placed.ts"
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/medusa"
+import { render } from "@react-email/render"
 import { TICKET_BOOKING_MODULE } from "../modules/ticket-booking"
+import getOrderTicketsTemplate from "../emails/order-tickets"
 import {
   Modules,
   ContainerRegistrationKeys,
@@ -4634,37 +4658,30 @@ export default async function handleOrderPlaced({
   )
   const firstTicketPurchase = order.ticket_purchases?.[0]
 
+  const showName = firstTicketPurchase?.ticket_product?.product?.title || 
+    "Your Event"
+
+  const html = await render(getOrderTicketsTemplate({
+    customerName: order.customer?.first_name || 
+      order.billing_address?.first_name || undefined,
+    orderId: order.id,
+    showName,
+    showDate: firstTicketPurchase?.show_date.toLocaleString(),
+    venue: firstTicketPurchase?.ticket_product?.venue?.name,
+    tickets: order.ticket_purchases?.map((purchase) => ({
+      label: purchase?.venue_row.row_type.toUpperCase() || "",
+      seat: purchase?.seat_number,
+      row: purchase?.venue_row.row_number,
+      qr: qrCodes[purchase?.id || ""] || "",
+    })) || [],
+  }))
+
   await notificationModuleService.createNotifications({
     to: order.email || "",
-    channel: "feed",
-    // TODO replace with a proper template
-    template: "order.placed",
-    data: {
-      customer: {
-        first_name: order.customer?.first_name || 
-          order.billing_address?.first_name,
-        last_name: order.customer?.last_name || 
-          order.billing_address?.last_name,
-      },
-      order: {
-        display_id: order.id,
-        created_at: order.created_at,
-        email: order.email,
-      },
-      show: {
-        name: firstTicketPurchase?.ticket_product?.product?.title || 
-          "Your Event",
-        date: firstTicketPurchase?.show_date.toLocaleString(),
-        venue: firstTicketPurchase?.ticket_product?.venue?.name || 
-          "Venue Name",
-      },
-      tickets: order.ticket_purchases?.map((purchase) => ({
-        label: purchase?.venue_row.row_type.toUpperCase(),
-        seat: purchase?.seat_number,
-        row: purchase?.venue_row.row_number,
-        qr: qrCodes[purchase?.id || ""] || "",
-      })),
-      billing_address: order.billing_address,
+    channel: "email",
+    content: {
+      subject: `Your tickets for ${showName}`,
+      html,
     },
   })
 }
@@ -4686,9 +4703,8 @@ In the subscriber, you:
 - Retrieve the order details, including ticket purchases, customer information, and billing address.
 - Extract the ticket purchase IDs from the order.
 - Generate QR codes for the ticket purchases.
-- Use the Notification Module's service to send an email to the customer with the order details and tickets.
-    - The `data` object contains the variables used in the email template you defined earlier.
-    - Make sure to change the `template` property to match the template ID you created in your Notification Module Provider. For example, the ID of the dynamic template in SendGrid.
+- Render the order tickets email template to an HTML string using React Email's `render` function.
+- Use the Notification Module's service to send an email to the customer with the rendered HTML. On Cloud, Medusa Emails sends the email.
 
 ### Test Order Confirmation Email
 
@@ -4700,7 +4716,7 @@ Place an order with at least one ticket product. After placing the order, you'll
 info:    Processing order.placed which has 1 subscribers
 ```
 
-If no errors occur, you should receive an order confirmation email at the email address you used when placing the order. The email should contain the order details and the tickets with QR codes.
+If no errors occur, the Local Notification Module Provider logs the order confirmation email's details in the terminal. After you publish the customizations to Cloud, Medusa Emails sends the email with the order details and the tickets' QR codes to the customer.
 
 ### d. Verify Ticket QR Code Workflow
 
@@ -4908,6 +4924,29 @@ curl -X POST http://localhost:9000/tickets/{ticket_purchase_id}/verify
 Replace `{ticket_purchase_id}` with the actual ticket purchase ID you obtained from the QR code.
 
 If the ticket is valid, you'll receive a success response. Otherwise, you'll receive an error response indicating the ticket is invalid or has already been scanned.
+
+---
+
+## Step 14: Publish to Cloud
+
+After you test ticket booking locally, publish the customizations to your Cloud project.
+
+### Push Changes and Open a Pull Request
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/ticket-booking
+git add .
+git commit -m "Add ticket booking"
+git push origin feat/ticket-booking
+```
+
+Then, on GitHub, open a pull request from the `feat/ticket-booking` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+Venues and ticket products that you created locally aren't copied to deployed environments. So, create them again in the deployed environment's Medusa Admin.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

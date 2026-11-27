@@ -42,9 +42,7 @@ const HomepageStartPrompt = () => {
           ]}
           className="!justify-start"
         />
-        <h2 className="text-h1 text-medusa-fg-base">
-          Get started with your AI agent.
-        </h2>
+        <h2 className="text-h1 text-medusa-fg-base">Set up with your agent</h2>
         <p className="txt-large text-medusa-fg-base">
           Use this prompt with any AI agent to install and deploy a
           Medusa-powered ecommerce store.

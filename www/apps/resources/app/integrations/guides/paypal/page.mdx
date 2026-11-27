@@ -23,9 +23,10 @@ When you install a Medusa application, you get a fully-fledged commerce platform
 
 By following this tutorial, you'll learn how to:
 
-- Install and set up Medusa.
+- Create a Cloud project and set it up locally.
 - Integrate PayPal as a Payment Module Provider in Medusa.
 - Customize the Next.js Starter Storefront to include PayPal as a payment option.
+- Publish the customizations to Cloud.
 
 You can follow this tutorial whether you're new to Medusa or an advanced Medusa developer.
 
@@ -38,13 +39,27 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
   icon={Github}
 />
 
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/paypal.md and integrate PayPal with my Medusa project
+```
+
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/first-project"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -57,23 +72,11 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose "Yes."
-
-Afterwards, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -1331,6 +1334,8 @@ PAYPAL_CLIENT_ID=your_paypal_client_id
 PAYPAL_CLIENT_SECRET=your_paypal_client_secret
 ```
 
+You'll add these variables to your Cloud environment when you [publish to Cloud](#step-5-publish-to-cloud).
+
 #### PayPal Environment and Auto-Capture Option
 
 Next, you can set the following optional environment variables in your `.env` file:
@@ -1345,13 +1350,15 @@ Where:
 - `PAYPAL_ENVIRONMENT`: The PayPal environment to use, either `sandbox` for testing or `production` for live transactions. Default is `sandbox`.
 - `PAYPAL_AUTO_CAPTURE`: Whether to capture payments immediately (`true`) or authorize only (`false`). Default is `false`.
 
+You'll add these variables to your Cloud environment when you [publish to Cloud](#step-5-publish-to-cloud).
+
 #### PayPal Webhook ID
 
 Finally, you'll set up a webhook in the PayPal Developer Dashboard to receive payment events. Webhooks require a publicly accessible URL. In this section, you'll use [ngrok](https://ngrok.com/) to create a temporary public URL for testing webhooks locally.
 
-<Note title="Tip">
+<Note>
 
-Deploy your Medusa application with [Cloud](!cloud!/sign-up) in minutes. Benefit from features like zero-configuration deployments, automatic scaling, GitHub integration, and more.
+When you [publish to Cloud](#step-5-publish-to-cloud), you create another webhook that points to your deployed backend URL instead of the ngrok URL.
 
 </Note>
 
@@ -1382,6 +1389,8 @@ Then, copy the **Webhook ID** from the webhook details. Set it as an environment
 ```shell title=".env"
 PAYPAL_WEBHOOK_ID=your_paypal_webhook_id
 ```
+
+You'll add this variable to your Cloud environment when you [publish to Cloud](#step-5-publish-to-cloud).
 
 Make sure the ngrok command remains running while you test PayPal webhooks locally. If you restart ngrok, you'll get a new public URL, and you'll need to update the webhook URL in the PayPal Developer Dashboard accordingly.
 
@@ -1446,6 +1455,8 @@ Copy the same PayPal Client ID you used in the Medusa application, then add it t
 ```shell title=".env.local" badgeLabel="Storefront" badgeColor="blue"
 NEXT_PUBLIC_PAYPAL_CLIENT_ID=your_paypal_client_id
 ```
+
+You'll add this variable to your Cloud environment when you [publish to Cloud](#step-5-publish-to-cloud).
 
 ### c. Add PayPal Wrapper Component
 
@@ -1901,7 +1912,7 @@ Once you complete the payment, PayPal redirects you back to the storefront's ord
 
 #### Check Webhook Event Handling
 
-If you've [set up webhooks](#paypal-webhook-id) using ngrok or with your deployed Medusa instance, PayPal sends webhook events to your Medusa application after payment completion.
+If you've [set up webhooks](#paypal-webhook-id) using ngrok, PayPal sends webhook events to your Medusa application after payment completion.
 
 You'll see the following logged in your Medusa application's terminal:
 
@@ -1919,6 +1930,51 @@ In the Medusa Admin dashboard, you can go to Orders and view the order you just 
 From the order's details page, you can capture the authorized payment, and refund the captured payment from the **Payments** section. Medusa will use your PayPal Payment Module Provider to perform these actions.
 
 ![Medusa Admin dashboard showing order payment details with capture and refund options](https://res.cloudinary.com/dza7lstvk/image/upload/v1765267658/Medusa%20Resources/CleanShot_2025-12-09_at_10.06.57_2x_qsazep.png)
+
+---
+
+## Step 5: Publish to Cloud
+
+After you test the PayPal integration locally, publish the customizations to your Cloud project.
+
+First, create a webhook for your deployed backend in the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/). Follow the same steps as in the [PayPal Webhook ID](#paypal-webhook-id) section, but set the **Webhook URL** to your deployed environment's backend URL followed by `/hooks/payment/paypal_paypal`. For example, `https://my-project.medusajs.app/hooks/payment/paypal_paypal`. You can find the backend URL in your environment's dashboard on Cloud. Then, copy the new webhook's ID.
+
+<Note>
+
+If the environment you publish to accepts live payments, create the app credentials and webhook in the **Live** environment of the PayPal Developer Dashboard, and set `PAYPAL_ENVIRONMENT` to `production`.
+
+</Note>
+
+Next, create the environment variables that you added in the `.env` files in your Cloud project:
+
+- `PAYPAL_CLIENT_ID`: Add it in the environment's **Backend** variables.
+- `PAYPAL_CLIENT_SECRET`: Add it in the environment's **Backend** variables.
+- `PAYPAL_ENVIRONMENT`: Add it in the environment's **Backend** variables, if you set it locally.
+- `PAYPAL_AUTO_CAPTURE`: Add it in the environment's **Backend** variables, if you set it locally.
+- `PAYPAL_WEBHOOK_ID`: Add it in the environment's **Backend** variables. Set it to the ID of the webhook you created for the deployed backend, not the ngrok webhook.
+- `NEXT_PUBLIC_PAYPAL_CLIENT_ID`: Add it in the environment's **Storefront** variables.
+
+Add the variables in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variables in the environment variables section. Preview environments created afterward inherit them. Learn more in the [Preview Environments](!cloud!/environments/preview#manage-shared-previews-settings) guide.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variables and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
+
+In both places, enable the **Build** toggle of all the variables, since `medusa-config.ts` reads the `PAYPAL_*` variables and Next.js includes `NEXT_PUBLIC_PAYPAL_CLIENT_ID` in the storefront's build. Mark `PAYPAL_CLIENT_SECRET` as **Sensitive**. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+
+Then, create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/paypal-integration
+git add .
+git commit -m "Add PayPal integration"
+git push origin feat/paypal-integration
+```
+
+Then, on GitHub, open a pull request from the `feat/paypal-integration` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+After you merge the pull request, [enable the PayPal Module Provider in a region](#step-3-enable-paypal-module-provider) of the deployed environment's Medusa Admin, as you did locally.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

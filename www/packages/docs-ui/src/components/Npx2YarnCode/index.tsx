@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react"
 import { CodeBlock, CodeBlockMetaFields } from "@/components/CodeBlock"
 import { CodeTabs } from "@/components/CodeTabs"

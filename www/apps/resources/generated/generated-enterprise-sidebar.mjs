@@ -5,7 +5,7 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
     {
       "loaded": true,
       "type": "link",
-      "path": "/enterprise",
+      "path": "https://docs.medusajs.com/cloud/enterprise",
       "title": "Overview",
       "children": []
     },
@@ -327,7 +327,7 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+rbac",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",

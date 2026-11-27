@@ -6,7 +6,7 @@ import { ssoSidebar } from "./sso.mjs"
 export const enterpriseSidebar = [
   {
     type: "link",
-    path: "/enterprise",
+    path: "https://docs.medusajs.com/cloud/enterprise",
     title: "Overview",
   },
   {

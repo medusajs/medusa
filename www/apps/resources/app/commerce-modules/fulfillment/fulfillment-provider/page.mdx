@@ -8,7 +8,7 @@ In this guide, you’ll learn about the Fulfillment Module Provider and how it's
 
 <Note title="Looking for no-code docs?">
 
-Refer to this [Medusa Admin User Guide](!user-guide!/settings/locations-and-shipping/locations#manage-fulfillment-providers) to learn how to add a fulfillment provider to a location using the dashboard.
+Refer to this [Merchant Guide](!user-guide!/settings/locations-and-shipping/locations#manage-fulfillment-providers) to learn how to add a fulfillment provider to a location using the dashboard.
 
 </Note>
 
@@ -44,9 +44,7 @@ The module can have multiple fulfillment provider services, where each are regis
 
 Refer to the [Create Fulfillment Module Provider](/references/fulfillment/provider) guide to learn how to create a Fulfillment Module Provider.
 
-{/* TODO add link to user guide */}
-
-After you create a fulfillment provider, you can choose it as the default Fulfillment Module Provider for a stock location in the Medusa Admin dashboard.
+After you create a fulfillment provider, you can choose it as the default Fulfillment Module Provider for a stock location in the Medusa Admin dashboard. Learn how in the [Manage Fulfillment Providers](!user-guide!/settings/locations-and-shipping/locations#manage-fulfillment-providers) Merchant Guide.
 
 ---
 
@@ -63,6 +61,14 @@ Learn more about this option in the [Module Options](../module-options/page.mdx)
 When the Medusa application starts, it registers the Fulfillment Module Providers defined in the `providers` option of the Fulfillment Module.
 
 For each Fulfillment Module Provider, the Medusa application finds all fulfillment provider services defined in them to register.
+
+### Register Fulfillment Providers on Cloud
+
+On Cloud, Medusa registers the Manual Fulfillment Provider by default, the same as locally. To use another fulfillment provider in a deployed environment:
+
+1. Add the provider to the `providers` option of the Fulfillment Module in `medusa-config.ts`.
+2. Add the environment variables that the provider's options use in your Cloud environment's [Environment variables settings](!cloud!/environments/environment-variables#add-environment-variables-on-cloud). Mark secrets, such as API keys, as **Sensitive**, and enable the **Build** toggle, since `medusa-config.ts` reads them during the build. For local development, add the same variables to your `.env` file.
+3. Commit the changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created), and the Medusa application registers the provider when it starts.
 
 ### FulfillmentProvider Data Model
 

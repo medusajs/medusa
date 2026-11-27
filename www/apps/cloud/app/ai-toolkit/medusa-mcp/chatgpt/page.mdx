@@ -1,0 +1,109 @@
+import { Note, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa ChatGPT Plugin`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to connect ChatGPT to the Medusa MCP server and use it to ask questions about your Medusa stores.
+
+## What is the Medusa ChatGPT Plugin?
+
+The ChatGPT plugin connects ChatGPT to the [Medusa MCP server](../page.mdx), so you can ask ChatGPT about your stores' orders, products, customers, and other commerce data. The plugin:
+
+- Can retrieve store data, but can't create, update, or delete it yet. Write access is coming soon.
+- Uses the Medusa MCP server's [static mode](../page.mdx#static-mode), so ChatGPT can only call a fixed set of tools that retrieve common commerce data, such as orders, products, and customers.
+
+To change store data or access all of your store's API routes, including custom ones, [add the Medusa MCP server as a custom plugin](#add-medusa-mcp-as-a-custom-plugin-in-chatgpt) instead, and give it [read and write access](../page.mdx#read-and-write-access) to your environments.
+
+<Note>
+
+[Rebuild](../page.mdx#step-1-rebuild-environments) any environment whose latest build is from before October 8, 2026 before you connect it to ChatGPT.
+
+</Note>
+
+---
+
+## Prerequisites
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa account",
+      link: "/first-project",
+    },
+    {
+      text: "ChatGPT account",
+      link: "https://chatgpt.com",
+    },
+  ]}
+/>
+
+---
+
+## Add the Medusa Plugin to ChatGPT
+
+To add the ChatGPT plugin:
+
+1. Open the [Medusa plugin in ChatGPT](https://chatgpt.com/plugins/plugin_asdk_app_6aed956ee81c81919f9ade97457321f1), or click **Plugins** in ChatGPT's sidebar, search for `Medusa`, and select the plugin.
+2. Click **Install Plugin**.
+3. In the browser window that opens, log in to your Medusa account.
+4. On the [consent page](../page.mdx#approve-the-connection), select the environments that ChatGPT can access and whether it can change data in each, then click **Approve**.
+
+<Note>
+
+On ChatGPT Business and Enterprise plans, a workspace admin may need to enable the plugin before members can connect.
+
+</Note>
+
+---
+
+## Add Medusa MCP as a Custom Plugin in ChatGPT
+
+To use all of the Medusa MCP server's tools in ChatGPT, not only the [static tools](../page.mdx#static-mode), add it as a custom plugin. This requires ChatGPT's developer mode:
+
+1. In ChatGPT, go to **Settings** > **Security and login**, then turn on **Developer mode**.
+2. Click **Plugins** in the sidebar, then click the plus button.
+3. Enter a name, such as `Medusa`, and an optional description.
+4. Under **Connection**, enter the URL `https://cloud.medusajs.com/mcp` and choose OAuth authentication.
+5. Create the plugin, then connect it and log in to your Medusa account.
+6. On the consent page, select the environments that ChatGPT can access and whether it can change data in each, then click **Approve**.
+
+Refer to [OpenAI's documentation](https://developers.openai.com/plugins/deploy/connect-chatgpt) for more details on developer mode and custom plugins.
+
+<Note>
+
+Developer mode's availability depends on your ChatGPT plan and workspace settings. On Business and Enterprise plans, a workspace admin may need to allow developer mode.
+
+</Note>
+
+---
+
+## Use Medusa in ChatGPT
+
+Select the plugin from the tools menu in the message input, or mention it in your message, then ask ChatGPT about your stores. For example:
+
+- "Which Medusa stores do I have connected?"
+- "Show me the 5 most recent orders in my store, with each order's total and status."
+- "How many orders are waiting to be fulfilled?"
+- "How much stock is left for the SKU `SHIRT-S-BLACK`?"
+
+The ChatGPT plugin can call the [static mode tools](../page.mdx#static-mode). As a custom plugin, ChatGPT can call all [available tools](../page.mdx#available-tools).
+
+---
+
+## Remove Medusa from ChatGPT
+
+To remove the Medusa plugin from ChatGPT:
+
+1. In ChatGPT, click **Plugins** in the sidebar.
+2. Select the Medusa plugin and click **Disconnect**.
+
+To change which stores ChatGPT can access or their access levels, [change the connector's environments](../../../organizations/connections/page.mdx#change-environments-and-access) from your organization's **MCP and Connectors** settings, or disconnect and reconnect the plugin, then select the environments on the consent page.
+
+---
+
+## Troubleshooting
+
+Refer to the [Medusa MCP troubleshooting](../page.mdx#troubleshooting) section for common errors and how to fix them.

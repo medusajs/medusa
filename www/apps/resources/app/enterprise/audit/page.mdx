@@ -16,7 +16,7 @@ In this section of the documentation, you will find resources to learn more abou
 
 <Note title="Looking for no-code docs?">
 
-Refer to the [Medusa Admin User Guide](!user-guide!/settings/audit-logs) to learn how to view audit logs using the dashboard.
+Refer to the [Merchant Guide](!user-guide!/settings/audit-logs) to learn how to view audit logs using the dashboard.
 
 </Note>
 
@@ -58,21 +58,21 @@ Audit logs on Cloud are available for organizations on the **Scale** and **Enter
 
 </Note>
 
-The following steps are only for running Medusa outside Cloud, such as in local development or in a self-hosted deployment. Outside Cloud, the Audit Module stores audit logs in your application's database by default, not in Cloud.
+The following steps are only for running Medusa in local development. Locally, the Audit Module stores audit logs in your application's database by default, not in Cloud.
 
 ### 1. Configure an Enterprise License Key
 
-The Audit Module is an [enterprise feature](../page.mdx), so it only loads when you configure a license key that covers the `audit` feature:
+The Audit Module is an [enterprise feature](!cloud!/enterprise), so it only loads when you configure a license key that covers the `audit` feature:
 
 ```shell
 MEDUSA_LICENSE_KEY=your_license_key
 ```
 
-If the key is missing or doesn't cover the `audit` feature, the Medusa application exits at boot with an error. Learn how to obtain and configure a key in the [Enterprise Features](../page.mdx) documentation.
+If the key is missing or doesn't cover the `audit` feature, the Medusa application exits at boot with an error. Learn how to obtain and configure a key in the [Enterprise Features](!cloud!/enterprise) documentation.
 
 ### 2. Register the Audit Module
 
-To use the Audit Module outside Cloud, add it to the `modules` array in `medusa-config.ts`:
+To use the Audit Module locally, add it to the `modules` array in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({

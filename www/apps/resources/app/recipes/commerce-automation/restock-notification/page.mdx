@@ -44,10 +44,11 @@ Customers browsing your store may be interested in a product that is currently o
 
 This guide will teach you how to:
 
-- Install and set up Medusa.
+- Create a Cloud project and set it up locally.
 - Implement the data model to subscribe for variant restocking.
 - Add a custom endpoint to subscribe a customer to a variant's restock notification.
 - Build a flow to send a notification to customers subscribed to a variant when it's restocked.
+- Publish the customizations to Cloud.
 
 You can follow this guide whether you're new to Medusa or an advanced Medusa developer.
 
@@ -58,13 +59,27 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
   icon={Github}
 />
 
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/recipes/commerce-automation/restock-notification.md and implement restock notifications in my Medusa project
+```
+
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/first-project"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -77,23 +92,11 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this guide locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. You can also optionally choose to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx).
-
-the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory. This guide only uses the Medusa application.
 
 <Note>
 
@@ -1109,13 +1112,19 @@ The workflow has the following steps:
 
 The `useQueryGraphStep` is from Medusa's workflows. So, you'll only implement the other steps.
 
-### Optional Prerequisite: Notification Module Provider
+### Prerequisite: Email Sending Setup
 
 Within this workflow, you'll use Medusa's [Notification Module](../../../infrastructure-modules/notification/page.mdx) to send an email to the customer.
 
-The module delegates the email sending to a module provider, such as [SendGrid](../../../infrastructure-modules/notification/sendgrid/page.mdx) or [Resend](../../../integrations/guides/resend/page.mdx). You can refer to their linked guides to set up either module providers.
+Cloud projects send notifications of the `email` channel with [Medusa Emails](!cloud!/emails), Cloud's built-in email service. Medusa Emails is enabled by default, so you don't need to configure a Notification Module Provider or add API keys.
 
-Alternatively, for development and debugging purposes, you can use the default Notification Module Provider that only logs a message in the terminal instead of sending an email. To do that, add the following to the `modules` array in `medusa-config.ts`:
+<Note>
+
+Without a verified sender domain, Medusa Emails only sends emails to addresses of users in your Cloud organization. To send restock emails to your customers, [add an email sender domain](!cloud!/emails#add-email-sender-domain-to-cloud) to your Cloud project.
+
+</Note>
+
+Medusa Emails isn't available when you run the Medusa application locally. So, register the [Local Notification Module Provider](../../../infrastructure-modules/notification/local/page.mdx) for the `email` channel during development. It logs a message in the terminal instead of sending an email. Add the following to the `modules` array in `medusa-config.ts`:
 
 ```ts title="medusa-config.ts"
 module.exports = defineConfig({
@@ -1130,7 +1139,11 @@ module.exports = defineConfig({
             resolve: "@medusajs/medusa/notification-local",
             id: "local",
             options: {
-              channels: ["email", "feed"],
+              channels: [
+                process.env.NODE_ENV === "development"
+                  ? "email"
+                  : "feed",
+              ],
             },
           },
         ],
@@ -1138,8 +1151,9 @@ module.exports = defineConfig({
     },
   ],
 })
-
 ```
+
+The Local Notification Module Provider handles the `email` channel only in development. In your Cloud environments, it handles the `feed` channel, so Medusa Emails sends the `email` notifications.
 
 ## getDistinctSubscriptionsStep
 
@@ -1279,9 +1293,9 @@ export const sendRestockNotificationStep = createStep(
     const notificationData = input.map((subscription) => ({
       to: subscription.email,
       channel: "email",
-      template: "variant-restock",
-      data: {
-        variant: subscription.product_variant,
+      content: {
+        subject: "Back in stock!",
+        html: `<p>${subscription.product_variant?.title} is back in stock.</p>`,
       },
     }))
 
@@ -1296,8 +1310,9 @@ To send a notification, you use the `createNotifications` method of the Notifica
 
 - `to`: The email to send the notification to.
 - `channel`: The channel to send the notification through, which is `email` for sending an email.
-- `template`: The email template to use for this notification.
-- `data`: Data to pass to the template relevant for the notification. Since the email will probably include details about the variant, you pass the variant's details.
+- `content`: The email's subject and HTML content. On Cloud, Medusa Emails sends this content to the subscriber.
+
+The email's HTML is basic, for simplicity. To build richer email templates, such as one that shows the variant's image and a link to its product page, use React Email as explained in the [Set Up React Email Templates](!cloud!/emails/react-email) guide.
 
 ### deleteRestockSubscriptionStep
 
@@ -1505,11 +1520,41 @@ export const config = {
 }
 ```
 
-After the application restarts, wait for the scheduled job to execute. If you're using the default Notification Module Provider that logs notifications in the terminal, you'll see a message similar to the following:
+After the application restarts, wait for the scheduled job to execute. The Local Notification Module Provider logs a message similar to the following in the terminal:
 
 ```bash
-Attempting to send a notification to: 'customer@gmail.com' on the channel: 'email' with template: 'variant-restock' and data: '{"variant":{"id":"variant_01JE3H6WHFMJ2WS64RM2MV1CJ6",...}}'
+Attempting to send a notification to: 'customer@gmail.com' on the channel: 'email' ...
 ```
+
+---
+
+## Step 8: Publish to Cloud
+
+After you test the restock notifications locally, publish them to your Cloud project.
+
+Before you publish, change the scheduled job's configuration back to run at midnight every day:
+
+```ts title="src/jobs/check-restock.ts"
+export const config = {
+  // ...
+  schedule: "0 0 * * *",
+}
+```
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/restock-notifications
+git add .
+git commit -m "Add restock notifications"
+git push origin feat/restock-notifications
+```
+
+Then, on GitHub, open a pull request from the `feat/restock-notifications` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+After the changes are deployed, Medusa Emails sends the restock emails. You can track their delivery on the [Email Activity page](!cloud!/emails#monitor-email-sending-activity-on-cloud) of your Cloud project.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

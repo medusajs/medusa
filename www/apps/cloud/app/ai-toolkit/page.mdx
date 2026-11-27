@@ -1,0 +1,189 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Setting Up AI Agents`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to set up your AI agent with Medusa's AI Toolkit, so it can build, deploy, and manage your store.
+
+## Set Up Your Agent with a Prompt
+
+Your AI agent can set up the AI Toolkit for you. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/cloud/ai-toolkit.md and set up the Medusa AI Toolkit for me
+```
+
+The agent connects the Medusa MCP server, installs the Cloud CLI and Medusa's agent skills, and connects the Docs MCP server, asking you to log in to Medusa in the browser when needed.
+
+To set it up yourself, follow the [Set Up the AI Toolkit](#set-up-the-ai-toolkit) section.
+
+---
+
+## What Makes Medusa AI-Native?
+
+Traditional commerce platforms aren't built for AI agents, which leads to unreliable implementations, security risks, and agents that don't understand the platform's architecture.
+
+Medusa's architecture, Framework, and AI tools let developers and non-technical store owners use AI agents to build stores securely and go live faster. Anything you can do with Medusa, your agent can do too. With the AI Toolkit, you and your agents can:
+
+1. Create and deploy a Medusa store.
+2. Debug its builds and deployments.
+3. Build features tailored to your business without wrestling with the platform's architecture.
+4. Build storefronts that follow commerce best practices.
+5. Ask about your store's orders, products, customers, and custom data in natural language.
+6. Find accurate answers from the Medusa documentation while you build.
+
+---
+
+## Set Up the AI Toolkit
+
+If you're an AI agent following this guide, use the commands and configuration for the agent you're running in, and ask the user to complete any login in the browser.
+
+### Step 1: Connect the Medusa MCP Server
+
+The Medusa MCP server gives your agent access to your store's commerce data and your Cloud projects' deployments, logs, and environment variables.
+
+Add the Streamable HTTP MCP server at the following URL to your agent:
+
+```text
+https://cloud.medusajs.com/mcp
+```
+
+For example, in Claude Code:
+
+```bash
+claude mcp add --transport http medusa-commerce \
+  https://cloud.medusajs.com/mcp
+```
+
+Then, authenticate the server. In Claude Code, run `/mcp`, select the `medusa-commerce` server, and choose **Authenticate**. In the browser window that opens, log in, select the environments your agent can access, and approve the connection.
+
+For other agents, prerequisites, and approval details, refer to the [Medusa MCP](./medusa-mcp/page.mdx) guide.
+
+### Step 2: Install the Cloud CLI
+
+The Cloud CLI lets your agent deploy, manage, and debug your Medusa projects. It requires Node.js v22 or later.
+
+Install the CLI globally, then log in:
+
+```bash
+npm install -g @medusajs/mcloud
+mcloud login
+```
+
+`mcloud login` opens the browser to log in. Without a Medusa account, run `mcloud signup` first. Learn more in the [Cloud CLI](../cli/page.mdx) guide.
+
+### Step 3: Install Agent Skills
+
+Agent skills teach your agent Medusa's best practices for building features and storefronts, and how to use the Cloud CLI.
+
+Run the following command from your Medusa application's directory:
+
+```bash
+npx -y skills add medusajs/medusa-agent-skills \
+  --skill '*' --yes
+```
+
+To target a specific agent, pass the `--agent` option, such as `--agent claude-code`, `--agent cursor`, `--agent codex`, or `--agent gemini-cli`. Learn more in the [Agent Skills](./agent-skills/page.mdx) guide.
+
+### Step 4: Connect the Docs MCP Server
+
+The Docs MCP server gives your agent accurate answers and implementation guides from the Medusa documentation.
+
+Add the Streamable HTTP MCP server at the following URL to your agent:
+
+```text
+https://docs.medusajs.com/mcp
+```
+
+For example, in Claude Code:
+
+```bash
+claude mcp add --transport http medusa \
+  https://docs.medusajs.com/mcp
+```
+
+For other agents, such as Cursor, Codex, and VS Code, refer to the [Docs MCP](./docs-mcp/page.mdx) guide.
+
+---
+
+## AI Toolkit Tools
+
+Choose the right tool for your use case:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        If you want to
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Use
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Ask AI tools like Claude and ChatGPT about your store's commerce data and deployments
+      </Table.Cell>
+      <Table.Cell>
+
+      [Medusa MCP](./medusa-mcp/page.mdx)
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Give your coding agent accurate answers and implementation guides from the documentation
+      </Table.Cell>
+      <Table.Cell>
+
+      [Docs MCP](./docs-mcp/page.mdx)
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Ask about Medusa and your projects from the Cloud dashboard
+      </Table.Cell>
+      <Table.Cell>
+
+      [Cloud Assistant](./assistant/page.mdx)
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Teach your coding agent Medusa's best practices for building features and storefronts
+      </Table.Cell>
+      <Table.Cell>
+
+      [Skills](./agent-skills/page.mdx)
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Let your agent deploy, manage, and debug your Medusa projects
+      </Table.Cell>
+      <Table.Cell>
+
+      [Cloud CLI](../cli/agents/page.mdx)
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Let your agent navigate, search, and read the documentation with the docs `SKILL.md`, retrieval endpoint, and WebMCP tools
+      </Table.Cell>
+      <Table.Cell>
+
+      [AI-Friendly Docs](./ai-friendly-docs/page.mdx)
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>

@@ -15,16 +15,16 @@ export const metadata = {
 
 In this guide, you'll add [Medusa Payments](../page.mdx) support to your storefront's checkout.
 
-<Note title="Already supported in starters since v2.23.0">
+<Note title="Already supported in starters since v2.22.3">
 
-All Medusa starters support Medusa Payments since [Medusa v2.23.0](https://github.com/medusajs/medusa/releases/tag/v2.23.0). If you created your storefront from a starter of v2.23.0 or later, you don't need this guide.
+All Medusa starters support Medusa Payments since [Medusa v2.22.3](https://github.com/medusajs/medusa/releases/tag/v2.22.3). If you created your storefront from a starter of v2.22.3 or later, you don't need this guide.
 
 </Note>
 
 <Prerequisites
   items={[
     {
-      text: "Medusa application using Medusa v2.23.0 or later",
+      text: "Medusa application using Medusa v2.22.3 or later",
       link: "!docs!/learn/update",
     },
     {
@@ -34,115 +34,24 @@ All Medusa starters support Medusa Payments since [Medusa v2.23.0](https://githu
   ]}
 />
 
-## Add Medusa Payments with an AI Agent
+<Note title="Agent Hand-off">
 
-If you use an AI agent, such as Claude Code or Codex, ask it to fetch this page:
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your storefront's directory:
 
-```bash
-Fetch https://docs.medusajs.com/cloud/payments/storefront and follow the instructions.
-```
-
-It will receive the following prompt with instructions on adding Medusa Payments support to your storefront:
-
-```md title="Medusa Payments Prompt" collapsed noLineNumbers
-# Add Medusa Payments to Your Storefront
-
-## Role
-
-You are a senior Medusa storefront developer adding Medusa Payments support to the checkout of an existing Medusa storefront.
-
-## Task
-
-Update this storefront's checkout so customers can pay with Medusa Payments, without breaking its other payment providers.
-
-## Context
-
-- Medusa Payments is the managed payments service of Cloud, powered by Stripe. The storefront takes card details with Stripe.js and the Stripe Payment Element, and confirms the payment with Stripe.js, the same as a Stripe card payment.
-- Medusa Payments requires the Medusa application to use Medusa v2.23.0 or later. If you can read the Medusa application's `@medusajs/medusa` version and it's older, tell the user to update it before testing, and refer them to https://docs.medusajs.com/learn/update.
-- Medusa starters support Medusa Payments since Medusa v2.23.0. Storefronts created from older starters, and custom storefronts, don't.
-- Cloud sets the environment's Medusa Payments publishable key in the `NEXT_PUBLIC_MEDUSA_PAYMENTS_PUBLISHABLE_KEY` and `VITE_MEDUSA_PAYMENTS_PUBLISHABLE_KEY` environment variables of storefronts it deploys. This key is separate from a Stripe integration's publishable key, such as `NEXT_PUBLIC_STRIPE_KEY`.
-- Medusa Payments registers the `pp_medusa-payments_default` payment provider in every environment. It takes payments with the environment's test account in test mode, and with its main live account in live mode. When the environment uses more than one live account, Medusa Payments also registers a `pp_medusa-payments_<account ID>` provider for each of the other accounts, where `<account ID>` is the Cloud payment account's ID. So, the storefront must match Medusa Payments providers by the `pp_medusa-payments_` prefix rather than by a fixed ID.
-- Medusa Payments creates each payment on a Stripe connected account. The payment session's `data.stripe_account` property holds that account's ID, and Stripe.js must be initialized with it as the `stripeAccount` option. The account changes with the provider and with the environment's test or live mode, so it can't be derived from the provider ID or set in an environment variable.
-- Older starters only recognize the `pp_medusa-payments_default` provider, and read the Stripe account from a `NEXT_PUBLIC_MEDUSA_PAYMENTS_ACCOUNT_ID` environment variable, which is outdated.
-- Cloud configures the Medusa Payments provider in the Medusa applications it deploys. To test locally, the user turns on local development on an environment's **Payments** page in the Cloud dashboard, which shows environment variables for the Medusa application and the storefront. With them, a local Medusa application registers the Medusa Payments provider with the environment's test account, without changes to `medusa-config.ts`, and only takes test payments.
-- The reference implementation for a Next.js storefront is https://github.com/medusajs/dtc-starter/commit/0f3015579b49da075d60815997db76e4b8eac8a0
-
-## Steps
-
-1. Inspect the storefront and report what it has before you change anything: the framework, the checkout's payment step, where it maps payment provider IDs to titles and icons, where it checks whether a provider is Stripe-based, where it calls `loadStripe`, and how it fetches the region's payment providers.
-2. If the storefront already matches providers by the `pp_medusa-payments_` prefix and initializes Stripe.js with the payment session's `data.stripe_account`, report that it already supports Medusa Payments and stop.
-3. Read the Medusa Payments publishable key from `NEXT_PUBLIC_MEDUSA_PAYMENTS_PUBLISHABLE_KEY`, or from `VITE_MEDUSA_PAYMENTS_PUBLISHABLE_KEY` in a Vite storefront. Don't add it to an environment template or set it in a deployed environment, since Cloud sets it automatically. Keep any Stripe key in its own variable, and remove the `NEXT_PUBLIC_MEDUSA_PAYMENTS_ACCOUNT_ID` variable if it exists.
-4. Add helpers next to the storefront's payment constants:
-   - `isMedusaPayments(providerId)`: returns whether the ID starts with `pp_medusa-payments_`.
-   - `getPaymentInfo(providerId)`: returns one title and icon for every Medusa Payments provider, and the existing map's entry otherwise. Use a "Credit card" title and the credit card icon the storefront already uses, unless the user asks for another title or icon. They only affect how the payment method shows to customers.
-   - `getMedusaPaymentsAccount(paymentSession)`: returns the session's `data.stripe_account` when it's a string and the session's provider is a Medusa Payments provider, and `undefined` otherwise.
-
-   Remove the `pp_medusa-payments_default` entry from the payment info map if it exists, since `getPaymentInfo` covers it.
-5. Update the check for Stripe-based card providers so it returns true for Medusa Payments providers through `isMedusaPayments`.
-6. Replace every lookup of the payment info map by provider ID with `getPaymentInfo`, and fall back to the provider ID when it returns nothing. In the Next.js Starter Storefront, update these files:
-   - `src/modules/checkout/components/payment-container/index.tsx`: remove the `paymentInfoMap` prop from `PaymentContainerProps`, `PaymentContainer`, and `StripePaymentContainer`. Call `getPaymentInfo` in `PaymentContainer` for the option's title and icon, and remove the `JSX` type import if nothing else uses it.
-   - `src/modules/checkout/components/payment/index.tsx`: import `getPaymentInfo` instead of `paymentInfoMap`, stop passing `paymentInfoMap` to the payment containers, and use `getPaymentInfo` for the selected payment method's title and icon in the summary.
-   - `src/modules/order/components/payment-details/index.tsx`: import `getPaymentInfo` instead of `paymentInfoMap`, and use it for the payment's title and icon.
-
-   In other storefronts, update the equivalent components.
-7. Where the storefront wraps the checkout in Stripe's `Elements`, pick the publishable key by the pending payment session's provider: the Medusa Payments key for a Medusa Payments provider, and the Stripe key otherwise. Call `loadStripe` with that key and, for Medusa Payments, the `stripeAccount` option set to `getMedusaPaymentsAccount(paymentSession)`. Cache the returned promise per key and account pair, so `loadStripe` runs once per configuration.
-8. Make the error for a missing key name both `NEXT_PUBLIC_STRIPE_KEY` and `NEXT_PUBLIC_MEDUSA_PAYMENTS_PUBLISHABLE_KEY`.
-9. Add a `getPaymentErrorMessage(error)` helper that returns Stripe's message for `card_error` and `validation_error` errors, and logs any other error and returns a generic message, such as "We couldn't process your payment. Please try again or use a different payment method." Use it for errors from confirming the payment, including a rejected promise, and from loading the Payment Element.
-10. If the storefront caches the region's payment providers indefinitely, for example with `cache: "force-cache"`, revalidate them every 60 seconds instead, so providers of newly used payment accounts show up at checkout.
-11. Run the storefront's type check and build.
-
-## Constraints
-
-- Do not remove or change the behavior of the storefront's other payment providers, including a Stripe integration that uses its own publishable key.
-- Do not read the Stripe account from an environment variable or derive it from the provider ID.
-- Do not look up a Medusa Payments provider by a fixed ID, including `pp_medusa-payments_default`, and do not hard-code a publishable key.
-- Do not add a Medusa Payments module or provider to the Medusa application. Cloud registers it.
-- Do not run a deployment or push to any branch.
-- Follow the storefront's existing file structure, naming, and code style.
-- Consult the Medusa documentation at https://docs.medusajs.com or the Medusa MCP server for any additional information you need.
-
-## Error Handling
-
-- If the project has no storefront, report that and stop.
-- If the storefront has no Stripe Payment Element integration, report that and ask the user before installing `@stripe/stripe-js` and `@stripe/react-stripe-js` and adding one.
-- If the storefront isn't built with Next.js or Vite, ask the user which environment variable name its framework exposes to the browser.
-- If the type check or build fails because of your changes, fix them before you report. If it fails for an unrelated reason, report the failure without fixing it.
-
-## Manual Follow-Ups
-
-These steps need the user's Cloud account, so hand them over to the user rather than running them:
-
-1. **Set up local development.** On the **Payments** page of an environment in the Cloud dashboard, turn on the toggle in the **Local development** section. Copy the variables in the **Medusa application** tab of the section's code block to the Medusa application's `.env` file, and the variables in the **Storefront** tab to the storefront's `.env` file. The Cloud dashboard shows them only once. Then, restart the Medusa application and enable the payment provider, named **Medusa Payments** for a Medusa Payments account or **Stripe** for a connected Stripe account, in the regions of the local Medusa Admin. Refer to https://docs.medusajs.com/cloud/payments/environments#use-medusa-payments-in-local-development.
-2. **Place a test order.** Start the Medusa application and storefront locally, go to checkout, choose the Medusa Payments option, and pay with one of Stripe's test cards (https://docs.stripe.com/testing#cards), such as `4242 4242 4242 4242`, with any future expiry date and any CVC. Nothing is charged.
-3. **Check the order.** The payment shows in the **Transactions** section of the environment's **Payments** page in the Cloud dashboard, and the order shows under **Orders** in the local Medusa Admin.
-4. **Deploy the storefront.** Push the changes to the branch of an environment, preferably a preview environment, and test the checkout there the same way.
-5. **Go live.** Set up a live payment account in the organization's payment settings, then click **Use this account** on the live account's card in the environment's **Payments** page, redeploy the environment, and make sure the payment provider, named **Medusa Payments** or **Stripe**, is enabled in the environment's regions. Only do this for environments that customers purchase through, such as the production environment or a long-lived environment, and keep other environments on their test account. Refer to https://docs.medusajs.com/cloud/payments.
-
-## Output Format
-
-Respond with these Markdown sections:
-
-- **Changes**: a table of every file you created, modified, or deleted, with one sentence on what changed in it.
-- **Manual follow-ups**: the steps in the Manual Follow-Ups section, adapted to the storefront's framework and environment variable names.
-
-## Success Criteria
-
-- The storefront type checks and builds.
-- No `NEXT_PUBLIC_MEDUSA_PAYMENTS_ACCOUNT_ID` variable is left in the storefront, and no code looks up a Medusa Payments provider by a fixed ID.
-- A provider whose ID starts with `pp_medusa-payments_`, including `pp_medusa-payments_default`, shows with the title and icon of `getPaymentInfo` at checkout and in the order's payment details, and renders the Stripe Payment Element.
-- Stripe.js is initialized with the Medusa Payments publishable key and the payment session's `data.stripe_account` for Medusa Payments sessions, and with the Stripe key and no account for Stripe sessions.
-- The storefront's other payment providers work as before.
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/cloud/payments/storefront.md and add Medusa Payments support to my storefront
 ```
 
 After the agent makes the changes, follow the [Step 7: Deploy and Test the Checkout](#step-7-deploy-and-test-the-checkout) section to test them.
 
+</Note>
 ---
 
 ## Who This Guide Is For
 
 Follow this guide if your storefront doesn't support Medusa Payments yet, which is the case if:
 
-- You created it from a Medusa starter older than v2.23.0.
+- You created it from a Medusa starter older than v2.22.3.
 - You built it yourself.
 
 The steps in this guide use the Next.js Starter Storefront as an example. If your storefront uses another frontend framework, apply the same changes to its checkout.
@@ -159,7 +68,7 @@ Medusa Payments is powered by Stripe, so your storefront takes card details with
 
 <Note title="Older starters">
 
-Starters older than v2.23.0 only recognize the `pp_medusa-payments_default` provider, and read the Stripe account from a `NEXT_PUBLIC_MEDUSA_PAYMENTS_ACCOUNT_ID` environment variable. The steps below support all Medusa Payments providers and replace the environment variable.
+Starters older than v2.22.3 only recognize the `pp_medusa-payments_default` provider, and read the Stripe account from a `NEXT_PUBLIC_MEDUSA_PAYMENTS_ACCOUNT_ID` environment variable. The steps below support all Medusa Payments providers and replace the environment variable.
 
 </Note>
 
@@ -583,7 +492,7 @@ To set up your local Medusa application to take test payments:
 1. Turn on local development for the environment, as explained in the [Local Development](../environments/page.mdx#turn-on-local-development) section of the Set up Medusa Payments in Environments guide.
 2. Add the variables from the **Medusa application** tab of the section's code block to your Medusa application's `.env` file. You already added the storefront's variable in [Step 1](#step-1-set-the-publishable-key-for-local-development).
 3. Start your Medusa application. It registers the Medusa Payments payment provider with the environment's test account, without changes to `medusa-config.ts`.
-4. In your local Medusa Admin, enable the payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) user guide. The provider's name is:
+4. In your local Medusa Admin, enable the payment provider in the regions where customers can pay with it. Learn how in the [Regions](!user-guide!/settings/regions#edit-region-details) Merchant Guide. The provider's name is:
    - **Medusa Payments** if you use a Medusa Payments account.
    - **Stripe** if you connected your own Stripe account.
 
@@ -605,7 +514,7 @@ If the card fields don't show, check the browser console for an error about the 
 After you place the order, you can find it in two places:
 
 - **Cloud dashboard**: Open the environment's **Payments** page. The payment shows in the **Transactions** section, under the environment's test account. Learn more in the [Set up Medusa Payments in Environments](../environments/page.mdx#view-environment-transactions) guide.
-- **Medusa Admin**: Open your local Medusa Admin and go to **Orders**. The order shows in the list with its payment. Learn more in the [Orders](!user-guide!/orders) user guide.
+- **Medusa Admin**: Open your local Medusa Admin and go to **Orders**. The order shows in the list with its payment. Learn more in the [Orders](!user-guide!/orders) Merchant Guide.
 
 Before you deploy, also run your storefront's type check and build to confirm the changes compile, and search your storefront for `NEXT_PUBLIC_MEDUSA_PAYMENTS_ACCOUNT_ID` to confirm you removed every use of it.
 

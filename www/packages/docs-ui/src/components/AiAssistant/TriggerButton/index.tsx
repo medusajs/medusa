@@ -8,7 +8,7 @@ import { getOsShortcut } from "../../../utils/os-browser-utils"
 import { useAiAssistant } from "../../../providers/AiAssistant"
 import { useKeyboardShortcut } from "../../../hooks"
 import { useSearch } from "../../../providers/Search"
-import { BloomIcon } from "../../Icons"
+import { DocsAssistantIcon } from "../../Icons"
 
 export const AiAssistantTriggerButton = () => {
   const { setChatOpened } = useAiAssistant()
@@ -42,9 +42,9 @@ export const AiAssistantTriggerButton = () => {
         variant="transparent-clear"
         onClick={() => setChatOpened((prev) => !prev)}
       >
-        <BloomIcon className="text-medusa-fg-subtle" />
+        <DocsAssistantIcon className="text-medusa-fg-subtle" />
         <span className="hidden md:inline-block text-medusa-fg-subtle">
-          Ask Bloom
+          Ask Docs Assistant
         </span>
       </Button>
     </Tooltip>

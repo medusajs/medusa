@@ -46,9 +46,11 @@ It also keeps a version per physical index it builds, so a definition change bui
 
 ## Configure the Search Module
 
-As of v2.21.1, the Search Module is registered by default in your Medusa application with the [PostgreSQL Search Module Provider](./providers/postgres/page.mdx), so you only declare the indexes to search. The module itself needs no extra configuration.
+As of v2.21.1, the Search Module is registered by default in your Medusa application, so you only declare the indexes to search. The module itself needs no extra configuration.
 
-On Cloud, [Medusa Search](!cloud!/search) is registered by default for all plans, unless you explicitly configure a different provider.
+On Cloud, Medusa configures [Medusa Search](!cloud!/search) as the Search Module's provider by default for all plans, unless you explicitly configure a different provider.
+
+Locally, Medusa configures the Search Module with the [PostgreSQL Search Module Provider](./providers/postgres/page.mdx).
 
 ### Change Default Search Configuration
 

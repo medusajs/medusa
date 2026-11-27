@@ -82,6 +82,7 @@ const withMDX = mdx({
 const nextConfig = {
   // Configure `pageExtensions` to include MDX files
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+  agentRules: false,
 
   transpilePackages: ["docs-ui", "next-mdx-remote"],
 
@@ -223,7 +224,12 @@ const nextConfig = {
       },
       {
         source: "/plugins",
-        destination: "/integrations",
+        destination: `${process.env.NEXT_PUBLIC_BASE_URL}/cloud/integrations`,
+        permanent: true,
+      },
+      {
+        source: "/integrations",
+        destination: `${process.env.NEXT_PUBLIC_BASE_URL}/cloud/integrations`,
         permanent: true,
       },
       {
@@ -334,6 +340,16 @@ const nextConfig = {
       {
         source: "/deployment/medusa-application/railway",
         destination: `${process.env.NEXT_PUBLIC_BASE_URL}/cloud/comparison`,
+        permanent: true,
+      },
+      {
+        source: "/deployment/storefront/vercel",
+        destination: `${process.env.NEXT_PUBLIC_BASE_URL}/cloud/storefront`,
+        permanent: true,
+      },
+      {
+        source: "/enterprise",
+        destination: `${process.env.NEXT_PUBLIC_BASE_URL}/cloud/enterprise`,
         permanent: true,
       },
     ])

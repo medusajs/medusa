@@ -10,10 +10,10 @@ Also load `reference/tutorial-conventions.md` and `reference/concept-definitions
 
 Map out all tutorial steps in the logical order a developer would execute them. Write this to a temp file `_step-diagram.md` in the project root.
 
-**Always start with Step 1 (Medusa installation) — it is always the first step.**
+**Always start with Step 1 (create a Cloud project and set it up locally) and end with the Publish to Cloud step.**
 
 Typical step order:
-1. Install Medusa Application (always first — use pre-written template)
+1. Create a Cloud Project and Set It Up Locally (always first — use pre-written template)
 2. Create custom module + data models (if any)
 3. Run database migrations (immediately after module creation)
 4. Create workflow steps
@@ -22,6 +22,7 @@ Typical step order:
 7. Create subscribers or scheduled jobs (if any)
 8. Admin UI customizations (widgets, pages — if applicable)
 9. Storefront customizations (if applicable)
+10. Publish to Cloud (always last — use pre-written template)
 
 > **Rule:** A step that creates something used by another step must come first. You can't write "Create API route" before "Create workflow" because the route uses the workflow.
 
@@ -29,7 +30,7 @@ Include "Test it Out" sub-steps for each major piece (API routes, subscribers, a
 
 Example `_step-diagram.md`:
 ```
-1. Install Medusa Application
+1. Create a Cloud Project and Set It Up Locally
 2. Create Product Review Module (data models: ProductReview)
 3. Run migrations
 4. Create createProductReviewWorkflow (step: createProductReviewStep)
@@ -43,17 +44,18 @@ Example `_step-diagram.md`:
 9. Storefront: Display reviews on product page
 10. Storefront: Add review submission form
     - Test: Submit and see review in storefront
+11. Publish to Cloud
 ```
 
 ## Step 2 — Write Per-Step MD Files
 
 For each step in the diagram, write a separate temp file in the Medusa project root:
-- `_step-01-install.md`
+- `_step-01-setup.md`
 - `_step-02-module.md`
 - `_step-03-migrations.md`
 - etc.
 
-**Step 1 (Medusa installation):** Copy the pre-written template directly from `tutorial-conventions.md`. Do not rewrite it.
+**Step 1 (Cloud project setup) and the last step (Publish to Cloud):** Copy the pre-written templates from `tutorial-conventions.md`. Do not rewrite them. In the publish step, list every environment variable the tutorial added to `.env`.
 
 For each other step file:
 - Start with `## Step N: Step Title`
@@ -88,11 +90,12 @@ Create a `page.mdx` file with this structure (in order):
 7. ## Summary (bullet list)
 8. Overview image placeholder
 9. CardList (GitHub repo + OpenAPI specs if applicable)
-10. ---
-11. [All step content from per-step files, combined in order]
-12. ## Next Steps
-13. ## Troubleshooting
-14. ## Getting Help
+10. Agent Hand-off note
+11. ---
+12. [All step content from per-step files, combined in order, ending with Publish to Cloud]
+13. ## Next Steps
+14. ### Troubleshooting
+15. ### Getting Help
 ```
 
 See `tutorial-conventions.md` for exact templates for each section.
@@ -113,6 +116,6 @@ After writing the MDX file, verify the tutorial appears in the sidebar.
 
 Delete all temp files from the Medusa project root:
 - `_step-diagram.md`
-- `_step-01-install.md`, `_step-02-module.md`, etc. (all `_step-*.md` files)
+- `_step-01-setup.md`, `_step-02-module.md`, etc. (all `_step-*.md` files)
 
 Verify the final `page.mdx` looks complete and correct before finishing.

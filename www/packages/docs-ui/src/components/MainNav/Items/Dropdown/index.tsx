@@ -57,7 +57,6 @@ export const MainNavItemDropdown = ({
             "text-medusa-fg-subtle hover:text-medusa-fg-base",
             isOpen && "text-medusa-fg-subtle",
           ],
-          "hover:bg-medusa-button-transparent-hover rounded-docs_sm px-docs_0.5",
           className
         )}
         tabIndex={-1}

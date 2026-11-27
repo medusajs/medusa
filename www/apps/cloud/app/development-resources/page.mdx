@@ -1,0 +1,147 @@
+import { Table } from "docs-ui"
+
+export const metadata = {
+  title: `Development Resources`,
+}
+
+# {metadata.title}
+
+In this guide, you'll find resources for building features, customizing your store, and integrating third-party services in your Medusa application, admin dashboard, and storefront.
+
+## Find Your Starting Point
+
+Choose the right guides based on what you want to build:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        If you want to
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Start with
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+        Build your own features and data models
+      </Table.Cell>
+      <Table.Cell>
+
+      [Customization Guide](#build-custom-features-and-data-models)
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Add a common commerce feature, such as product reviews
+      </Table.Cell>
+      <Table.Cell>
+
+      [How-to and Tutorials](#add-common-commerce-features)
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Build a complex use case, such as a marketplace
+      </Table.Cell>
+      <Table.Cell>
+
+      [Recipes](#build-complex-use-cases)
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Connect a third-party service
+      </Table.Cell>
+      <Table.Cell>
+
+      [Integrations](#integrate-third-party-services)
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+        Build or customize a storefront
+      </Table.Cell>
+      <Table.Cell>
+
+      [Storefront Development](#build-a-storefront)
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Build Custom Features and Data Models
+
+If your business needs a feature that Medusa doesn't provide, such as a new data model with its own logic and API, start with the [Customization Guide](!docs!/learn/customization/custom-features).
+
+The guide builds a brands feature step by step, teaching Medusa's concepts in the order you use them. You learn how to:
+
+- [Create a module](!docs!/learn/customization/custom-features/module) with a data model that's stored in the database.
+- [Build a workflow](!docs!/learn/customization/custom-features/workflow) that performs your feature's logic, with rollback if a step fails.
+- Expose the feature in an [API route](!docs!/learn/customization/custom-features/api-route).
+- [Associate your data model](!docs!/learn/customization/extend-features/define-link) with an existing one, such as products.
+- Add a [page](!docs!/learn/customization/customize-admin/route) and a [widget](!docs!/learn/customization/customize-admin/widget) to the Medusa Admin to manage your data.
+- [Sync your data](!docs!/learn/customization/integrate-systems) with a third-party system.
+
+Start here if you're new to Medusa, since its patterns apply to any feature you build. The other guides on this page assume you know these concepts.
+
+---
+
+## Add Common Commerce Features
+
+The [How-to and Tutorials](!resources!/how-to-tutorials) section has step-by-step guides for common commerce features. Each tutorial implements one feature end to end, including its data models, workflows, API routes, admin customizations, and storefront changes. Follow a tutorial as is, or use it as a base and change what differs in your store.
+
+Tutorials cover features such as:
+
+- [Product reviews](!resources!/how-to-tutorials/tutorials/product-reviews), [wishlists](!resources!/plugins/guides/wishlist), and [pre-orders](!resources!/how-to-tutorials/tutorials/preorder).
+- [Quote management](!resources!/examples/guides/quote-management) and [re-ordering](!resources!/how-to-tutorials/tutorials/re-order).
+- [Loyalty points](!resources!/how-to-tutorials/tutorials/loyalty-points), [customer tiers](!resources!/how-to-tutorials/tutorials/customer-tiers), and [first-purchase discounts](!resources!/how-to-tutorials/tutorials/first-purchase-discounts).
+- [Abandoned cart notifications](!resources!/how-to-tutorials/tutorials/abandoned-cart) and [invoice generation](!resources!/how-to-tutorials/tutorials/invoice-generator).
+
+---
+
+## Build Complex Use Cases
+
+If your business model differs from a standard online store, such as a marketplace or a subscription-based store, refer to the [Recipes](!resources!/recipes).
+
+A recipe approaches a whole use case rather than a single feature. It shows which Medusa commerce features you can use as is, which parts you need to build, and how they fit together. Some recipes include a full example.
+
+Recipes cover use cases such as:
+
+- [Marketplaces](!resources!/recipes/marketplace) with multiple vendors.
+- [Subscriptions](!resources!/recipes/subscriptions) and [digital products](!resources!/recipes/digital-products).
+- [B2B stores](!resources!/recipes/b2b).
+- [Bundled](!resources!/recipes/bundled-products) and [personalized](!resources!/recipes/personalized-products) products.
+- [Point of Sale (POS)](!resources!/recipes/pos) and [omnichannel](!resources!/recipes/omnichannel) stores.
+
+Recipes are most useful when you're planning your store's architecture, before you write code.
+
+---
+
+## Integrate Third-Party Services
+
+If your store relies on other services, such as a payment provider, a CMS, or an ERP, refer to the [Integrations](../integrations/page.mdx) section. It lists available third-party services, such as payment providers, fulfillment services, notification platforms, search engines, and analytics tools. Each integration is either a Medusa-provided module provider or a tutorial for building it. It also links guides for building integrations for unlisted services.
+
+---
+
+## Build a Storefront
+
+Your Cloud project's storefront is in the same repository as your Medusa application, and Cloud deploys it with your project. Learn more in the [Storefront](../storefront/page.mdx) guide.
+
+To customize that storefront or build a new one, refer to the [Storefront Development](!resources!/storefront-development) guides. They explain how to implement a storefront's features with any frontend framework by sending requests to the Medusa application, covering the flows every storefront needs:
+
+- Showing [products](!resources!/storefront-development/products/list), their [prices](!resources!/storefront-development/products/price), and their [inventory](!resources!/storefront-development/products/inventory).
+- Managing the [cart](!resources!/storefront-development/cart/create) and implementing the [checkout flow](!resources!/storefront-development/checkout).
+- [Registering](!resources!/storefront-development/customers/register) and [logging in](!resources!/storefront-development/customers/login) customers.
+- Supporting multiple [regions](!resources!/storefront-development/regions) and [languages](!resources!/storefront-development/localization).
+
+Use them to change one flow in your existing storefront or to build a storefront for another channel, such as a mobile app.

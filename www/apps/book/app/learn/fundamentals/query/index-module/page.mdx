@@ -109,9 +109,14 @@ For example, if you create a new product, the Index Module will ingest it into i
 
 ### Enable Index Module Feature Flag
 
-You must enable the Index Module's feature flag to use it. To enable the Index Module's feature flag, add the following line to your `.env` file:
+You must enable the Index Module's feature flag to use it. By enabling the feature flag, the `/store/products` and `/admin/products` API routes use the Index Module to retrieve products, and you can filter products by their linked data models in these API routes.
 
-```env
+To enable the Index Module's feature flag, set the `MEDUSA_FF_INDEX_ENGINE` environment variable to `true`:
+
+1. In Cloud, add the variable in your environment's [Environment variables settings](!cloud!/environments/environment-variables), then redeploy the environment.
+2. For local development, add the following line to your `.env` file:
+
+```env title=".env"
 MEDUSA_FF_INDEX_ENGINE=true
 ```
 

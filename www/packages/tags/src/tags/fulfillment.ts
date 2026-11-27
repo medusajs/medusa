@@ -68,6 +68,10 @@ export const fulfillment = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addToCartWorkflow"
   },
   {
+    "title": "createCartWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createCartWorkflow"
+  },
+  {
     "title": "listShippingOptionsForCartWithPricingWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/listShippingOptionsForCartWithPricingWorkflow"
   },
@@ -86,6 +90,10 @@ export const fulfillment = [
   {
     "title": "transferCartCustomerWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/transferCartCustomerWorkflow"
+  },
+  {
+    "title": "updateCartPromotionsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateCartPromotionsWorkflow"
   },
   {
     "title": "updateCartWorkflow",

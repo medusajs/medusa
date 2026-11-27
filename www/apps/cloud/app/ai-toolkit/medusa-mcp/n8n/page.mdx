@@ -1,0 +1,91 @@
+import { Note, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa MCP in n8n`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to connect an n8n workflow to the Medusa MCP server and use it to ask questions about your Medusa stores.
+
+<Note>
+
+Only n8n Cloud can connect to the Medusa MCP server. Self-hosted n8n instances can't, because each has a different OAuth callback URL, and Medusa only accepts allowed callback URLs.
+
+</Note>
+
+## What is the Medusa MCP in n8n?
+
+n8n's **MCP Client Tool** connects an **AI Agent** node to the [Medusa MCP server](../page.mdx), so the agent in your workflow can retrieve your stores' orders, products, customers, and other commerce data. In stores with [read and write access](../page.mdx#read-and-write-access), it can also create, update, and delete data.
+
+<Note>
+
+[Rebuild](../page.mdx#step-1-rebuild-environments) any environment whose latest build is from before October 8, 2026 before you connect it to n8n.
+
+</Note>
+
+---
+
+## Prerequisites
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa account",
+      link: "/first-project",
+    },
+    {
+      text: "n8n Cloud account",
+      link: "https://n8n.io",
+    },
+  ]}
+/>
+
+## Add Medusa MCP to an n8n Workflow
+
+n8n registers itself with Medusa automatically through OAuth, so you don't need a client ID or secret. To add the Medusa MCP server to an n8n workflow:
+
+1. In your n8n workflow, add an **AI Agent** node.
+2. Under the AI Agent node's tools, add an **MCP Client Tool**.
+3. In the MCP Client Tool, create a new credential of type **MCP OAuth2 API**.
+4. Fill in the credential's fields:
+   - **Use Dynamic Client Registration**: Turn it on.
+   - **Server URL**: `https://cloud.medusajs.com/mcp`
+   - **Allowed HTTP Request Domains**: Choose **Specific Domains**, then enter `cloud.medusajs.com`.
+   - **Resource URL**: `https://cloud.medusajs.com/mcp`
+5. Click **Save**, then click **Connect**.
+6. In the browser window that opens, log in to your Medusa account.
+7. On the [consent page](../page.mdx#approve-the-connection), which shows the application's name as `n8n`, select the environments that n8n can access, then click **Approve**.
+
+---
+
+## Use Medusa in n8n
+
+Run the AI Agent node with a prompt to test the connection. For example:
+
+- "List my connected Medusa environments."
+- "Show me the 5 most recent orders in my store, with each order's total and status."
+- "How many orders are waiting to be fulfilled?"
+
+Refer to the [Medusa MCP](../page.mdx#available-tools) guide for the list of tools that the agent can call.
+
+---
+
+## Remove Medusa from n8n
+
+The n8n connector appears with the n8n logo in your organization's [MCP and Connectors](../../../organizations/connections/page.mdx#view-connectors) settings. From there, you can:
+
+- [Revoke the connector](../../../organizations/connections/page.mdx#revoke-a-connector) to remove it.
+- [Change the connector's environments](../../../organizations/connections/page.mdx#change-environments-and-access) to change which stores n8n can access or their access levels.
+
+---
+
+## Troubleshooting
+
+### Domain Not Allowed Error
+
+If n8n shows a "Domain not allowed" error when you click **Connect**, add `api.prod.medusajs.cloud` to the credential's **Allowed HTTP Request Domains**, along with `cloud.medusajs.com`.
+
+### Other Errors
+
+Refer to the [Medusa MCP troubleshooting](../page.mdx#troubleshooting) section for other common errors.

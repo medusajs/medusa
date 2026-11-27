@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { config } from "../../../config"
+import { trackAgentRequest } from "../../../utils/track-agent-request"
 
 const CATALOG_PATH = "/.well-known/api-catalog"
 
@@ -20,6 +21,7 @@ const getCatalog = () => {
           { href: `${baseUrl}/api/store` },
           { href: `${baseUrl}/api/admin` },
           { href: `${baseUrl}/mcp` },
+          { href: `${baseUrl}/agents/search` },
         ],
       },
       ...(["store", "admin"] as const).map((area) => ({
@@ -41,7 +43,16 @@ const getCatalog = () => {
         anchor: `${baseUrl}/mcp`,
         "service-doc": [
           {
-            href: `${baseUrl}/learn/introduction/build-with-llms-ai/docs-mcp-server`,
+            href: `${baseUrl}/cloud/ai-toolkit/docs-mcp`,
+            type: "text/html",
+          },
+        ],
+      },
+      {
+        anchor: `${baseUrl}/agents/search`,
+        "service-doc": [
+          {
+            href: `${baseUrl}/cloud/ai-toolkit/ai-friendly-docs#docs-retrieval-endpoint`,
             type: "text/html",
           },
         ],
@@ -50,7 +61,8 @@ const getCatalog = () => {
   }
 }
 
-export function GET() {
+export function GET(req: NextRequest) {
+  trackAgentRequest(req, "well_known_requested", { resource: "api-catalog" })
   return NextResponse.json(getCatalog(), { headers })
 }
 

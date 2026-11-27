@@ -1,4 +1,4 @@
-import { Table } from "docs-ui"
+import { Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `In-Memory Cache Module`,
@@ -10,7 +10,13 @@ The In-Memory Cache Module uses a plain JavaScript Map object to store the cache
 
 This module is helpful for development or when you’re testing out Medusa, but it’s not recommended to be used in production.
 
-For production, it’s recommended to use modules like [Redis Cache Module](../redis/page.mdx).
+On Cloud, Medusa configures [Medusa Cache](!cloud!/cache), a managed caching service backed by Redis, by default, which is more suitable for production.
+
+<Note title="Development Only">
+
+Use the In-Memory Cache Module only in local development.
+
+</Note>
 
 <Note title="Deprecation Notice">
 
@@ -21,6 +27,15 @@ The In-Memory Cache Module is deprecated starting from [Medusa v2.11.0](https://
 ---
 
 ## Register the In-Memory Cache Module
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa application set up locally",
+      link: "!cloud!/setup-locally",
+    },
+  ]}
+/>
 
 <Note>
 

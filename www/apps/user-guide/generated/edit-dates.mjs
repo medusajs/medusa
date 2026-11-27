@@ -50,7 +50,7 @@ export const generatedEditDates = {
   "app/settings/product-tags/page.mdx": "2025-12-16T13:04:53.256Z",
   "app/settings/product-types/page.mdx": "2025-12-16T13:04:15.463Z",
   "app/settings/developer/publishable-api-keys/page.mdx": "2025-05-30T13:30:19.734Z",
-  "app/settings/developer/secret-api-keys/page.mdx": "2026-11-25T09:56:04.688Z",
+  "app/settings/developer/secret-api-keys/page.mdx": "2026-11-27T07:40:23.575Z",
   "app/settings/developer/workflows/page.mdx": "2025-02-25T15:52:48.349Z",
   "app/reset-password/page.mdx": "2025-11-12T15:30:48.331Z",
   "app/orders/draft-orders/create/page.mdx": "2025-08-26T09:34:53.621Z",
@@ -77,5 +77,5 @@ export const generatedEditDates = {
   "app/settings/announcements/page.mdx": "2026-11-13T07:37:39.112Z",
   "app/settings/policies/page.mdx": "2026-11-24T08:41:03.950Z",
   "app/settings/roles/common-roles/page.mdx": "2026-11-24T08:41:03.950Z",
-  "app/settings/audit-logs/page.mdx": "2026-11-25T08:36:00.487Z"
+  "app/settings/audit-logs/page.mdx": "2026-11-27T07:40:23.575Z"
 }

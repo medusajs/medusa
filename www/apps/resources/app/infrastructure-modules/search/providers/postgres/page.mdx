@@ -8,16 +8,30 @@ export const metadata = {
 
 The PostgreSQL Search Module Provider indexes and searches documents in your Medusa application's PostgreSQL database, using PostgreSQL's built-in full-text search. It can be used for development and in production.
 
-<Note title="Easier setup with Cloud">
+<Note title="Using Cloud?">
 
-Cloud provides pre-configured search infrastructure for your Medusa application. You can use it to set up without configuring and managing your own search engine. Learn more in the [Medusa Search](!cloud!/search) documentation.
+On Cloud, Medusa configures [Medusa Search](!cloud!/search), a managed search service, by default. Medusa configures the PostgreSQL Search Module Provider only in local development, unless you [use it on Cloud](#use-the-provider-on-cloud).
 
 </Note>
 
 Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres) for how this provider's support for index definitions, filters, facets, and search options differs from the other providers.
 
+<Note title="Agent Hand-off">
+
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/infrastructure-modules/search/providers/postgres.md and set up the PostgreSQL Search Module Provider in my Medusa application
+```
+
+</Note>
+
 <Prerequisites
   items={[
+    {
+      text: "Medusa application set up locally",
+      link: "!cloud!/setup-locally",
+    },
     {
       text: "Medusa v2.21.1+",
       link: "https://github.com/medusajs/medusa/releases/tag/v2.21.1"
@@ -72,6 +86,15 @@ If you're registering the provider for the first time, such as in an existing Me
 npx medusa db:migrate
 ```
 
+### Use the Provider on Cloud
+
+To use the PostgreSQL Search Module Provider in your Cloud environments instead of Medusa Search:
+
+1. Register the Search Module with the provider in `medusa-config.ts`, as shown in the [Change the Provider's Options](#change-the-providers-options) section, but without the `isDev` condition. A registration that runs during the Cloud build replaces Medusa Search. The provider uses your environment's managed [database](!cloud!/database), so it doesn't need environment variables.
+2. Commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) and [runs the migrations](!cloud!/database#running-migrations-on-cloud) that create the provider's tables, so you don't run `db:migrate` yourself.
+
+Refer to [Medusa Search vs PostgreSQL](!cloud!/search/postgres) to compare the two before you switch.
+
 ### PostgreSQL Search Module Provider Options
 
 <Table>
@@ -117,6 +140,8 @@ npx medusa db:migrate
 ## Test the PostgreSQL Search Module Provider
 
 To test the provider, make sure your application has a `product` index definition and that the index is allowed on the `/store/search` API route, as explained in the [Search Products guide](../../page.mdx#search-products).
+
+### Test Locally
 
 First, start your Medusa application:
 
@@ -165,6 +190,12 @@ You'll receive the products whose searchable fields match the query, ordered by 
   ]
 }
 ```
+
+### Test on Cloud
+
+If you [use the provider on Cloud](#use-the-provider-on-cloud), commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) with your changes.
+
+Once the deployment finishes, send the same search request to your environment's backend URL, such as `https://acme.medusajs.app/store/search`, with a publishable API key of that environment. Learn how to find the URL in the [Access Deployed Environment](!cloud!/environments/long-lived#access-deployed-environment) Cloud guide.
 
 ### Search Custom Data with the PostgreSQL Search Module Provider
 

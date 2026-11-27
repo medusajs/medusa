@@ -70,7 +70,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+apiKey",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -587,7 +587,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+auth",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -713,6 +713,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "title": "setAuthAppMetadataWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setAuthAppMetadataWorkflow",
                       "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "validateAuthCallbackWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateAuthCallbackWorkflow",
+                      "children": []
                     }
                   ]
                 },
@@ -750,6 +757,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "setAuthAppMetadataStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setAuthAppMetadataStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "validateAuthCallbackStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateAuthCallbackStep",
                       "children": []
                     }
                   ]
@@ -1732,6 +1746,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "title": "updateShippingMethodsStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateShippingMethodsStep",
                       "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "validateLineItemsInCartStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateLineItemsInCartStep",
+                      "children": []
                     }
                   ]
                 }
@@ -2374,7 +2395,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+currency",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -2679,7 +2700,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+customer",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -3512,7 +3533,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "fulfillment+userGuide",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -5132,7 +5153,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+inventory",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -6027,7 +6048,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+loyalty",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -6514,7 +6535,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+order",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -9353,7 +9374,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+payment",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -10480,7 +10501,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+pricing",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -11672,7 +11693,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+product",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -13278,7 +13299,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+promotion",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -14276,7 +14297,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+region",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -14724,7 +14745,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+salesChannel",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -15117,7 +15138,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+settings",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -15795,7 +15816,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+stockLocation",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -16152,7 +16173,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+store",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -16486,7 +16507,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+storeCredit",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -16917,7 +16938,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+tax",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -17725,7 +17746,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+translation",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",
@@ -18223,7 +18244,7 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
         {
           "loaded": true,
           "type": "category",
-          "title": "Admin User Guides",
+          "title": "Merchant Guides",
           "autogenerate_tags": "userGuide+user",
           "autogenerate_as_ref": true,
           "sort_sidebar": "alphabetize",

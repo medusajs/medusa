@@ -96,6 +96,10 @@ export const payment = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateLineItemInCartWorkflow"
   },
   {
+    "title": "updateTaxLinesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateTaxLinesWorkflow"
+  },
+  {
     "title": "confirmDraftOrderEditWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/confirmDraftOrderEditWorkflow"
   },
@@ -184,10 +188,6 @@ export const payment = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPaymentAccountHolderStep"
   },
   {
-    "title": "createPaymentSessionStep",
-    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createPaymentSessionStep"
-  },
-  {
     "title": "createRefundReasonStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/createRefundReasonStep"
   },
@@ -198,6 +198,14 @@ export const payment = [
   {
     "title": "deleteRefundReasonsStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/deleteRefundReasonsStep"
+  },
+  {
+    "title": "replacePaymentAccountHolderStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/replacePaymentAccountHolderStep"
+  },
+  {
+    "title": "tryCreatePaymentSessionStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/tryCreatePaymentSessionStep"
   },
   {
     "title": "updatePaymentCollectionStep",

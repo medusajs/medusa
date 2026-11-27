@@ -1,4 +1,4 @@
-import { Table } from "docs-ui"
+import { Table, Prerequisites } from "docs-ui"
 
 export const metadata = {
   title: `In-Memory Workflow Engine Module`,
@@ -10,11 +10,26 @@ The In-Memory Workflow Engine Module uses a plain JavaScript Map object to store
 
 This module is helpful for development or when you’re testing out Medusa, but it’s not recommended to be used in production.
 
-For production, it’s recommended to use modules like [Redis Workflow Engine Module](../redis/page.mdx).
+On Cloud, Medusa configures the [Redis Workflow Engine Module](../redis/page.mdx) with a managed [Redis](!cloud!/redis) instance by default, which is more suitable for production.
+
+<Note title="Development Only">
+
+Use the In-Memory Workflow Engine Module only in local development.
+
+</Note>
 
 ---
 
 ## Register the In-Memory Workflow Engine Module
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa application set up locally",
+      link: "!cloud!/setup-locally",
+    },
+  ]}
+/>
 
 <Note>
 

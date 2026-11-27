@@ -95,7 +95,7 @@ const redirects = async () => {
     },
     {
       source: "/learn/basics/project-directories-files",
-      destination: "/learn/installation#project-files",
+      destination: "/cloud/setup-locally#project-files",
       permanent: true,
     },
     {
@@ -116,6 +116,11 @@ const redirects = async () => {
     {
       source: "/learn/storefront-development/nextjs-starter",
       destination: "/resources/nextjs-starter",
+      permanent: true,
+    },
+    {
+      source: "/learn/storefront-development",
+      destination: "/resources/storefront-development",
       permanent: true,
     },
     {
@@ -221,7 +226,7 @@ const redirects = async () => {
     },
     {
       source: "/v1/plugins/payment",
-      destination: "/resources/integrations",
+      destination: "/cloud/integrations",
       permanent: true,
     },
     {
@@ -271,7 +276,7 @@ const redirects = async () => {
     },
     {
       source: "/v1/development/fundamentals/local-development",
-      destination: "/learn/installation",
+      destination: "/cloud/setup-locally",
       permanent: true,
     },
     {
@@ -281,7 +286,7 @@ const redirects = async () => {
     },
     {
       source: "/v1/plugins/overview",
-      destination: "/resources/integrations",
+      destination: "/cloud/integrations",
       permanent: true,
     },
     {
@@ -386,7 +391,7 @@ const redirects = async () => {
     },
     {
       source: "/usage/create-medusa-app",
-      destination: "/learn/installation",
+      destination: "/cloud/setup-locally",
       permanent: true,
     },
     {
@@ -456,7 +461,7 @@ const redirects = async () => {
     },
     {
       source: "/quickstart/quick-start",
-      destination: "/learn/installation",
+      destination: "/cloud/setup-locally",
       permanent: true,
     },
     {
@@ -487,14 +492,13 @@ const redirects = async () => {
     },
     {
       source: "/learn/introduction/build-with-llms-ai/bloom",
-      destination: "/learn/introduction/build-with-llms-ai",
+      destination: "/cloud/ai-toolkit",
       permanent: true,
     },
     {
       source:
         "/learn/introduction/build-with-llms-ai/mcp-server/migrate-from-platforms",
-      destination:
-        "/learn/introduction/build-with-llms-ai/docs-mcp-server/migrate-from-shopify",
+      destination: "/cloud/ai-toolkit/docs-mcp/migrate-from-shopify",
       permanent: true,
     },
     {
@@ -514,13 +518,57 @@ const redirects = async () => {
     },
     {
       source: "/learn/introduction/build-with-llms-ai/mcp-server",
-      destination: "/learn/introduction/build-with-llms-ai/docs-mcp-server",
+      destination: "/cloud/ai-toolkit/docs-mcp",
       permanent: true,
     },
     {
       source: "/learn/introduction/build-with-llms-ai/mcp-server/:path*",
-      destination:
-        "/learn/introduction/build-with-llms-ai/docs-mcp-server/:path*",
+      destination: "/cloud/ai-toolkit/docs-mcp/:path*",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai",
+      destination: "/cloud/ai-toolkit",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai/docs-mcp-server",
+      destination: "/cloud/ai-toolkit/docs-mcp",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai/docs-mcp-server/:path*",
+      destination: "/cloud/ai-toolkit/docs-mcp/:path*",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai/agentic-skills",
+      destination: "/cloud/ai-toolkit/agent-skills",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai/ai-friendly-docs",
+      destination: "/cloud/ai-toolkit/ai-friendly-docs",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai/manage-store-with-agents",
+      destination: "/cloud/ai-toolkit/medusa-mcp",
+      permanent: true,
+    },
+    {
+      source: "/learn/introduction/build-with-llms-ai/cloud-cli",
+      destination: "/cloud/cli/agents",
+      permanent: true,
+    },
+    {
+      source: "/learn/installation",
+      destination: "/cloud/setup-locally",
+      permanent: true,
+    },
+    {
+      source: "/learn/installation/docker",
+      destination: "/cloud/setup-locally/docker",
       permanent: true,
     },
   ]

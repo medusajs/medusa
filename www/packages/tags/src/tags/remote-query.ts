@@ -32,6 +32,10 @@ export const remoteQuery = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartItemsWorkflow"
   },
   {
+    "title": "refreshCartPromotionAdjustmentsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartPromotionAdjustmentsWorkflow"
+  },
+  {
     "title": "removeGiftCardFromCartWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/removeGiftCardFromCartWorkflow"
   },

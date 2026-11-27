@@ -19,7 +19,7 @@ export const metadata = {
 
 <Note title="Looking for a built-in integration?">
 
-Medusa has an [OIDC Auth Module Provider](../../../enterprise/sso/page.mdx) that authenticates users with Okta, and any other identity provider that implements OpenID Connect, without writing a custom provider. The Medusa Admin dashboard also renders its login button for you. It's an [enterprise feature](../../../enterprise/page.mdx), so it requires a license key.
+Medusa has an [OIDC Auth Module Provider](../../../enterprise/sso/page.mdx) that authenticates users with Okta, and any other identity provider that implements OpenID Connect, without writing a custom provider. The Medusa Admin dashboard also renders its login button for you. It's an [enterprise feature](!cloud!/enterprise), so it requires a license key.
 
 Follow this tutorial instead if you want to build and own the integration yourself.
 
@@ -75,13 +75,27 @@ So, to support the above flow, you'll create:
 2. An admin user creation flow in the Medusa Admin that creates a new admin user in Medusa after successful authentication with Okta.
 3. An admin widget that adds the "Login with Okta" button to the Medusa Admin login page and handles the authentication flow from the frontend.
 
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/okta.md and integrate Okta with my Medusa project
+```
+
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/first-project"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -94,23 +108,11 @@ So, to support the above flow, you'll create:
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-First, you'll be asked for the project's name. Then, when prompted about installing the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx), choose "Yes."
-
-Afterwards, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors?">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory. This tutorial only customizes the Medusa application.
 
 <Note>
 
@@ -724,6 +726,8 @@ Where:
 - `OKTA_CLIENT_SECRET`: The Client Secret of your Okta application.
 - `OKTA_REDIRECT_URI`: The URL where Okta will redirect users after authentication. It's the same URL you set in the application's Sign-in redirect URIs.
 
+You'll add these variables to your Cloud environment when you [publish to Cloud](#step-5-publish-to-cloud).
+
 The Okta integration is now ready. You'll test it out once you set up the authentication flow in the Medusa Admin.
 
 ---
@@ -1037,7 +1041,7 @@ To set the admin authentication type, add the following environment variable to 
 ADMIN_AUTH_TYPE=jwt
 ```
 
-This sets the admin authentication type to JWT (JSON Web Token), which supports third-party authentication providers.
+This sets the admin authentication type to JWT (JSON Web Token), which supports third-party authentication providers. You'll add this variable to your Cloud environment when you [publish to Cloud](#step-5-publish-to-cloud).
 
 ### b. Configure JS SDK
 
@@ -1345,6 +1349,44 @@ Then, open the Medusa Admin in your browser at `http://localhost:9000/app`. You'
 Click the button to initiate the Okta authentication flow. If you're already logged in to Okta, you'll be redirected back to the Medusa Admin immediately where you'll be logged in. If not, you'll be prompted to log in to Okta first, then redirected back to the Medusa Admin.
 
 Once the authentication is successful, you can access the Medusa Admin dashboard as an authenticated user.
+
+---
+
+## Step 5: Publish to Cloud
+
+After you test the Okta authentication flow locally, publish the customizations to your Cloud project.
+
+First, add the deployed Medusa Admin's login URL to your Okta application. In your Okta dashboard, go to Applications -> Applications, open your application, and add your deployed environment's backend URL followed by `/app/login` to the application's **Sign-in redirect URIs** and **Sign-out redirect URIs**. For example, `https://my-project.medusajs.app/app/login`. Okta only redirects to URIs in these lists, so add the URL of every environment you want to log in to with Okta, including preview environments.
+
+Then, create the environment variables that you added in the `.env` file in your Cloud project:
+
+- `OKTA_DOMAIN`: Add it in the environment's **Backend** variables.
+- `OKTA_CLIENT_ID`: Add it in the environment's **Backend** variables.
+- `OKTA_CLIENT_SECRET`: Add it in the environment's **Backend** variables.
+- `OKTA_REDIRECT_URI`: Add it in the environment's **Backend** variables. Set it to your deployed environment's backend URL followed by `/app/login`, which is the URL you added to the Okta application's sign-in redirect URIs.
+- `ADMIN_AUTH_TYPE`: Add it in the environment's **Backend** variables with the value `jwt`.
+
+Add the variables in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variables in the environment variables section. Preview environments created afterward inherit them. Learn more in the [Preview Environments](!cloud!/environments/preview#manage-shared-previews-settings) guide.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variables and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
+
+In both places, enable the **Build** toggle of all the variables, since `medusa-config.ts` reads the Okta variables, and the Medusa Admin's build includes `ADMIN_AUTH_TYPE`. Mark `OKTA_CLIENT_SECRET` as **Sensitive**. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+
+Then, create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/okta-integration
+git add .
+git commit -m "Add Okta integration"
+git push origin feat/okta-integration
+```
+
+Then, on GitHub, open a pull request from the `feat/okta-integration` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+After the deployment finishes, open the deployed environment's Medusa Admin and log in with Okta, as you did locally.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

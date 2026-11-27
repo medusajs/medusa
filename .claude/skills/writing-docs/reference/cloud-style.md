@@ -1,6 +1,13 @@
 # Cloud Style Guide
 
-The `cloud` project (`www/apps/cloud/`) covers how developers and technical users manage their Medusa applications on Cloud: creating projects, managing environments and deployments, configuring resources, and monitoring usage.
+The `cloud` project (`www/apps/cloud/`, served at `/cloud`) is the **Get Started** section of the docs and the entry point for every reader. It covers:
+
+- Onboarding: introduction, sign up, first project, Going Live Checklist, FAQ, comparison, and the Features page.
+- AI Toolkit: Docs MCP, Medusa MCP, agent skills, Cloud CLI, AI-friendly docs, and Cloud Assistant.
+- Building features: setting up a Cloud project locally (`setup-locally`), development resources, and integrations.
+- The Cloud platform: managing projects, environments, and deployments, configuring resources, search, enterprise features, webhooks, billing, monitoring, and networking.
+
+Pages that change onboarding, project creation, CLI commands, local setup, or the AI Toolkit must also update the agent setup prompt in `www/apps/book/app/start/`. See `www/apps/cloud/CLAUDE.md`.
 
 ## Constraints
 
@@ -11,9 +18,10 @@ The `cloud` project (`www/apps/cloud/`) covers how developers and technical user
 
 ## Audience
 
-The cloud docs are for developers and technical users who deploy and manage Medusa applications on Cloud. Assume the reader:
+The cloud docs are for developers, AI-assisted builders, and their agents, who build and manage Medusa applications on Cloud. Assume the reader:
 
-- Is comfortable with Git, GitHub, and web development concepts
+- May build mostly with AI and have little Git or GitHub experience, so don't skip Git steps
+- May work through an agent, so show how to do a task with the Cloud CLI or Medusa MCP when the dashboard isn't the only option
 - Is not necessarily a Medusa expert — define Cloud-specific terms on first use
 - Wants task-oriented guidance, not architecture explanations
 
@@ -163,7 +171,7 @@ Link to other doc projects using the cross-project prefixes:
 ```mdx
 [text](!docs!/learn/path)       → book
 [text](!resources!/path)        → resources
-[text](!user-guide!/path)       → user-guide
+[text](!user-guide!/path)       → user-guide (Merchant Guide)
 ```
 
 ## Navigation (Sidebar)

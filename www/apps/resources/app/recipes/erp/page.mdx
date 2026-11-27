@@ -53,13 +53,15 @@ You can use the code snippets in the recipe as a starting point for your ERP int
 
 ---
 
-## Prerequisite: Install Medusa
-
-If you don't have a Medusa application yet, you can install it with the following command:
+## Prerequisite: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/first-project"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -72,21 +74,11 @@ If you don't have a Medusa application yet, you can install it with the followin
   }
 ]} />
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+If you don't have a Medusa application yet, create a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-You'll first be asked for the project's name. You can also optionally choose to install the [Next.js Starter Storefront](../../nextjs-starter/page.mdx).
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this recipe locally, then publish them to Cloud.
 
-the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors">
-
-Check out the [troubleshooting guides](../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -765,6 +757,24 @@ You consume the `validate` hook of the `addToCartWorkflow` to inject a step func
 If the available quantity in the ERP is less than the quantity to be added to the cart, and the ERP doesn't allow out-of-stock orders for the variant, you throw an error that the product is out of stock.
 
 So, only products that have sufficient quantity in the ERP system can be added to the cart.
+
+---
+
+## Publish to Cloud
+
+After you test the ERP integration locally, publish it to your Cloud project.
+
+If your ERP Module receives options from environment variables, such as an API key, create these variables in your Cloud project's environments as **Backend** variables. Enable the **Build** toggle for variables that `medusa-config.ts` reads, and the **Sensitive** toggle for secrets like API keys. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+
+<Note type="warning">
+
+Your deployed Medusa application must be able to reach the ERP system. If you used a local ERP server during development, set the environment variables to the URL of an ERP server that's publicly accessible.
+
+</Note>
+
+Then, push your changes to a new branch and open a pull request to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

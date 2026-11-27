@@ -55,7 +55,7 @@ jobs:
           retention-days: 30
 
       - name: Install www/utils dependencies
-        run: yarn install
+        run: ./ci-install.sh
         working-directory: www/utils
 
       - name: Build scripts package

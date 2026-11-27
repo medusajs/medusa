@@ -1,0 +1,373 @@
+import { Note, Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Retrieve Custom Data with Medusa MCP`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to expose custom data from your store to AI tools connected to the [Medusa MCP server](../page.mdx), using abandoned carts as an example.
+
+## Why Add Custom API Routes?
+
+The Medusa MCP server retrieves data by calling your store's `GET` API routes. Medusa's Admin and Store API routes cover common requests, such as listing orders or products, but some questions need data that no existing API route returns, such as:
+
+- Carts that customers abandoned in the last day.
+- Products that haven't sold in the last month.
+- Data from your own [custom modules](!docs!/learn/fundamentals/modules), such as brands or suppliers.
+
+For these, create a custom `GET` [API route](!docs!/learn/fundamentals/api-routes) under the `/admin` or `/store` prefix. After you deploy it to Cloud, the AI tool finds and calls it when you ask a related question.
+
+<Note>
+
+The AI tool can't find or call custom API routes under other prefixes, such as `/custom`, or API routes defined in plugins. It can only call custom `POST` and `DELETE` API routes under the `/admin` prefix, and only in environments with [read and write access](../page.mdx#read-and-write-access).
+
+</Note>
+
+<Prerequisites
+  items={[
+    {
+      text: "AI tool connected to the Medusa MCP server",
+      link: "/ai-toolkit/medusa-mcp#connect-to-the-medusa-mcp-server",
+    },
+    {
+      text: "Medusa application deployed to Cloud",
+      link: "/deployments",
+    },
+  ]}
+/>
+
+## Choose the API Route Prefix
+
+The prefix determines how the AI tool calls the API route:
+
+- **`/admin`**: Called as your admin user. Use it for data that only admin users should access, such as abandoned carts or customer details.
+- **`/store`**: Called as a guest customer with a publishable API key. Use it for data that shoppers can access, such as products in a sales channel.
+
+<Note type="warning">
+
+The AI tool can't call `/store` API routes that require a logged-in customer. Expose that data in an `/admin` API route instead.
+
+</Note>
+
+---
+
+## Example: Retrieve Abandoned Carts
+
+In this section, you'll create an API route that returns abandoned carts, so you can ask your AI tool questions like "Which carts were abandoned in the last 24 hours?".
+
+### Step 1: Add the Validation Middleware
+
+Define a [Zod](https://zod.dev/) schema that validates the API route's query parameters, and apply it in `src/api/middlewares.ts`:
+
+```ts title="src/api/middlewares.ts"
+import {
+  defineMiddlewares,
+  validateAndTransformQuery,
+} from "@medusajs/framework/http"
+import { z } from "@medusajs/framework/zod"
+
+export const AdminGetAbandonedCartsParams = z.object({
+  /**
+   * Return carts not updated in this number of hours.
+   */
+  hours: z.coerce.number().min(1).default(24),
+  /**
+   * The maximum number of carts to return.
+   */
+  limit: z.coerce.number().max(100).default(20),
+  /**
+   * The number of carts to skip.
+   */
+  offset: z.coerce.number().default(0),
+})
+
+export type AdminGetAbandonedCartsParamsType = z.infer<
+  typeof AdminGetAbandonedCartsParams
+>
+
+export default defineMiddlewares({
+  routes: [
+    {
+      matcher: "/admin/abandoned-carts",
+      methods: ["GET"],
+      middlewares: [
+        validateAndTransformQuery(
+          AdminGetAbandonedCartsParams,
+          {}
+        ),
+      ],
+    },
+  ],
+})
+```
+
+The schema accepts these query parameters, with comments that help the AI tool understand them:
+
+- `hours`: Carts not updated within this number of hours are considered abandoned.
+- `limit` and `offset`: Paginate the returned carts, similar to Medusa's list API routes.
+
+The middleware validates the query parameters and sets them in `req.validatedQuery`. Learn more in the [Request Validation](!docs!/learn/fundamentals/api-routes/validation) chapter.
+
+### Step 2: Create the API Route
+
+Create the API route at `src/api/admin/abandoned-carts/route.ts`:
+
+```ts title="src/api/admin/abandoned-carts/route.ts"
+import {
+  AuthenticatedMedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
+import {
+  AdminGetAbandonedCartsParamsType,
+} from "../../middlewares"
+
+type AbandonedCart = {
+  id: string
+  email: string | null
+  currency_code: string
+  updated_at: Date
+  items: {
+    title: string
+    quantity: number
+    unit_price: number
+  }[]
+}
+
+type AdminAbandonedCartsResponse = {
+  carts: AbandonedCart[]
+  count: number
+  limit: number
+  offset: number
+}
+
+/**
+ * List abandoned carts
+ *
+ * Retrieve carts with an email that customers didn't
+ * complete or update within the specified number of hours.
+ */
+export const GET = async (
+  req: AuthenticatedMedusaRequest<
+    unknown,
+    AdminGetAbandonedCartsParamsType
+  >,
+  res: MedusaResponse<AdminAbandonedCartsResponse>
+) => {
+  const query = req.scope.resolve(
+    ContainerRegistrationKeys.QUERY
+  )
+  const { hours, limit, offset } = req.validatedQuery
+
+  const abandonedBefore = new Date(
+    Date.now() - hours * 60 * 60 * 1000
+  )
+
+  const { data: carts, metadata } = await query.graph({
+    entity: "cart",
+    fields: [
+      "id",
+      "email",
+      "currency_code",
+      "updated_at",
+      "items.title",
+      "items.quantity",
+      "items.unit_price",
+    ],
+    filters: {
+      updated_at: {
+        $lt: abandonedBefore,
+      },
+      email: {
+        $ne: null,
+      },
+      completed_at: null,
+    },
+    pagination: {
+      skip: offset,
+      take: limit,
+    },
+  })
+
+  res.json({
+    carts: carts as AbandonedCart[],
+    count: metadata?.count ?? 0,
+    limit,
+    offset,
+  })
+}
+```
+
+The API route retrieves the abandoned carts with [Query](!docs!/learn/fundamentals/query), and follows the [best practices](#best-practices-for-custom-api-routes) that help the AI tool find and call it:
+
+- The comment above the `GET` function describes the API route.
+- The second type argument of `AuthenticatedMedusaRequest` declares the query parameters.
+- The API route paginates its response.
+
+---
+
+## Deploy and Ask Your AI Tool
+
+Medusa indexes your store's API routes each time the environment builds, so the AI tool only finds your new API route after you deploy it. Push your changes to the environment's branch, as explained in the [Deployments](../../../deployments/page.mdx) guide. Once the deployment is live, ask your AI tool a question that the API route answers. For example:
+
+- "Which carts were abandoned in the last 24 hours in my store?"
+- "List the emails of customers who abandoned their carts in the last 3 days, with their cart items."
+
+The AI tool finds the `/admin/abandoned-carts` API route and calls it with an `hours` query parameter based on your question.
+
+<Note>
+
+When you update an API route's code, comments, or types, deploy again so the AI tool uses the updated API route.
+
+</Note>
+
+---
+
+## Best Practices for Custom API Routes
+
+Medusa doesn't run your API routes to index them. It reads each route's file during the build to describe it to the AI tool:
+
+- The path, from the file's location under `src/api`.
+- The summary and description, from the comment above the exported `GET` function.
+- The parameters, from the request's TypeScript types and the comments on their properties.
+
+The AI tool searches the summaries, descriptions, paths, and parameter names to find an API route, then reads the description and parameters to decide how to call it. The better your comments and types describe the route, the better the AI tool's answers.
+
+### Describe the API Route in a Comment
+
+Add a comment above the exported `GET` function. Medusa uses its first line as the summary, and the rest as the description:
+
+```ts title="src/api/admin/abandoned-carts/route.ts"
+/**
+ * List abandoned carts
+ *
+ * Retrieve carts with an email that customers didn't
+ * complete or update within the specified number of hours.
+ */
+export const GET = async () => {}
+```
+
+When you write the comment:
+
+- Use the words you'd use when asking about the data, such as "abandoned carts". The AI tool matches your question against them.
+- Describe the returned data and any path parameters, such as `{id}`. The AI tool doesn't receive the response's shape or a description of path parameters otherwise.
+- Write the comment above the exported `GET` function, not above a function it calls. Medusa only reads the exported function's comment.
+
+Without a comment, Medusa generates a generic summary from the method and path, such as "List abandoned carts", giving the AI tool less to go on.
+
+### Pass the Query Parameters as a Type Argument
+
+Pass the query parameters' type as the second type argument of `MedusaRequest` or `AuthenticatedMedusaRequest`:
+
+```ts title="src/api/admin/abandoned-carts/route.ts"
+export const GET = async (
+  req: AuthenticatedMedusaRequest<
+    unknown,
+    AdminGetAbandonedCartsParamsType
+  >,
+  res: MedusaResponse<AdminAbandonedCartsResponse>
+) => {
+  // ...
+}
+```
+
+Medusa reads the query parameters from this type argument, not from the validation middleware. So, you need both: the middleware validates the parameters, and the type argument tells the AI tool about them.
+
+To define the parameters once, infer the type from the Zod schema with `z.infer`, as in the [example](#step-1-add-the-validation-middleware).
+
+### Pass the Request Body as a Type Argument
+
+For `POST` API routes, pass the request body's type as the first type argument of `MedusaRequest` or `AuthenticatedMedusaRequest`:
+
+```ts title="src/api/admin/brands/route.ts"
+type AdminCreateBrandBody = {
+  /**
+   * The brand's name.
+   */
+  name: string
+}
+
+/**
+ * Create a brand
+ */
+export const POST = async (
+  req: MedusaRequest<AdminCreateBrandBody>,
+  res: MedusaResponse
+) => {
+  // ...
+}
+```
+
+Medusa indexes the request body's type with the API route, similar to query parameters.
+
+<Note>
+
+The AI tool only calls `POST` API routes under the `/admin` prefix, not `/store`, and only in environments with [read and write access](../page.mdx#read-and-write-access).
+
+</Note>
+
+### Document Each Parameter
+
+Add a comment above each property of the query parameters' type or Zod schema. Medusa uses it as the parameter's description, telling the AI tool which values to pass:
+
+```ts title="src/api/middlewares.ts"
+export const AdminGetAbandonedCartsParams = z.object({
+  /**
+   * Return carts not updated in this number of hours.
+   */
+  hours: z.coerce.number().min(1).default(24),
+})
+```
+
+Medusa doesn't read descriptions that you set with Zod's `describe` method. Use comments instead.
+
+### Use Explicit Types
+
+Medusa can only describe parameters it can resolve from your types:
+
+- Don't use `any` or `unknown` for the query parameters or request body. Medusa can't describe their properties, so the AI tool doesn't know what to pass.
+- Avoid index signatures and `Record` types, such as `Record<string, string>`, for parameters. Medusa describes them as a generic object without properties.
+- Keep types shallow. Medusa truncates deeply nested or very large types.
+
+If Medusa can't resolve your project's types during the build, it still indexes your API routes, but without their parameters.
+
+### Paginate List Responses
+
+Accept `limit` and `offset` query parameters, and return `count`, `limit`, and `offset` in the response, like Medusa's list API routes. The AI tool uses them to page through results.
+
+### Return Only the Data the AI Tool Needs
+
+Smaller responses are faster for the AI tool to process and leave room in its context for your question. Return only the fields the API route's questions need, such as with the `fields` option of [Query](!docs!/learn/fundamentals/query).
+
+---
+
+## Troubleshooting
+
+### AI Tool Doesn't Find the Custom API Route
+
+Make sure that:
+
+- The API route's path starts with `/admin` or `/store`, and its folder names don't start with an underscore (`_`).
+- The API route's file exports a `GET` function.
+- The environment built and deployed after you added the API route. Redeploying an existing deployment reuses its previous build, so Medusa doesn't index the new route.
+- The API route is defined in your Medusa application, not in a plugin.
+- The comment above the `GET` function describes the data with the words you use in your question. You can also mention the API route's path in your question, such as "Use the `/admin/abandoned-carts` API route".
+
+### AI Tool Doesn't Pass the Right Query Parameters
+
+Make sure that:
+
+- You pass the query parameters' type as the second type argument of `MedusaRequest` or `AuthenticatedMedusaRequest`, as explained in the [best practices](#pass-the-query-parameters-as-a-type-argument).
+- Each property in the type or Zod schema has a comment that describes it.
+- The environment built and deployed after you changed the types.
+
+### Store API Route Returns an Authentication Error
+
+The AI tool calls `/store` API routes as a guest customer, so it can't call routes that require a logged-in customer. Expose the data in an `/admin` API route instead.
+
+### Admin API Route Returns a Permission Error
+
+The AI tool calls `/admin` API routes as your admin user. If your API route applies custom permission checks, make sure your admin user is allowed to access it.

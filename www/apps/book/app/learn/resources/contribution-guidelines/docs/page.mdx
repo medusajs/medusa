@@ -39,10 +39,10 @@ The workspace has the following two directories:
 
 - `apps`: this directory holds the different documentation websites and projects. All projects are built with [Next.js 15](https://nextjs.org/).
   - `book`: includes the codebase and content for the [main Medusa documentation](../../../page.mdx).
-  - `resources`: includes the codebase and content for the resources documentation, which powers different sections of the docs such as the [Integrations](!resources!/integrations) or [How-to & Tutorials](!resources!/how-to-tutorials) sections.
+  - `resources`: includes the codebase and content for the resources documentation, which powers different sections of the docs such as the [Recipes](!resources!/recipes) or [How-to & Tutorials](!resources!/how-to-tutorials) sections.
   - `api-reference`: includes the codebase and content for the [API reference](!api!/store).
   - `ui`: includes the codebase and content for the [Medusa UI documentation](!ui!).
-  - `user-guide`: includes the codebase and content for the [user guide documentation](!user-guide!).
+  - `user-guide`: includes the codebase and content for the [Merchant Guide documentation](!user-guide!).
   - `cloud`: includes the codebase and content for the [Medusa Cloud documentation](!cloud!).
 - `packages`: this directory holds the shared packages and components necessary for the development of the projects in the `apps` directory.
   - `docs-ui` includes the shared React components between the different apps.
@@ -112,7 +112,7 @@ The UI documentation also shows code examples, which are under the `www/apps/ui/
 
 The UI component props are generated from the source code and placed into the `www/apps/ui/specs/components` directory. To contribute to these props and their comments, check the comments in the source code under the `packages/design-system/ui` directory.
 
-### Medusa User Guide
+### Merchant Guide
 
 The content of all pages under the `/user-guide` path are under the `www/apps/user-guide/app` directory.
 
@@ -271,7 +271,7 @@ cd www/vale
 ./run-vale.sh api-reference/markdown error
 # to lint content for the Medusa UI documentation
 ./run-vale.sh ui/app error
-# to lint content for the user guide
+# to lint content for the Merchant Guide
 ./run-vale.sh user-guide/app error
 ```
 

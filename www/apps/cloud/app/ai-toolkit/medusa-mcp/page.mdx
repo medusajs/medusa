@@ -1,0 +1,811 @@
+import { Note, Prerequisites, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Medusa MCP`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to connect AI tools like Claude, ChatGPT, and Cursor to your Medusa stores with the Medusa MCP server, and what they can do.
+
+## What is the Medusa MCP Server?
+
+The Medusa MCP server is a remote [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that gives AI tools access to your deployed Medusa applications. MCP is an open standard for connecting AI tools to external data and services. The AI tool can access:
+
+- **Commerce data**: Orders, products, customers, and other data from your store's Admin and Store API routes.
+- **Custom data**: Data from your own [custom API routes](#custom-api-routes), such as data from your custom modules.
+- **Cloud data**: Your organizations, projects, deployments, logs, and environment variables.
+
+In environments with [read and write access](#read-and-write-access), the AI tool can also create, update, and delete commerce data, such as products, orders, and promotions.
+
+Once connected, ask the AI tool about your stores or ask it to make changes in natural language, such as:
+
+- "Show me the 5 most recent orders in my store, with each order's total and status."
+- "How many orders are waiting to be fulfilled?"
+- "Which carts were abandoned in the last 24 hours?", answered by a custom API route.
+- "Create a 10% off promotion with the code `WINTER10` in my staging store."
+- "Set the price of the `SHIRT-S-BLACK` variant to $25."
+- "Why did my latest deployment fail? Check its build logs."
+- "Show me the errors in my backend's logs from the last hour."
+
+The Medusa MCP is available for all Cloud plans.
+
+---
+
+## Connect to the Medusa MCP Server
+
+### Prerequisites
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa account",
+      link: "/first-project",
+    },
+    {
+      text: "Environment with a live deployment",
+      link: "/deployments/access",
+    },
+    {
+      text: "Medusa v2.12.4+ in the environment's Medusa application",
+      link: "https://github.com/medusajs/medusa/releases/tag/v2.12.4",
+    },
+    {
+      text: "Log in with Medusa Cloud enabled in the environment's Medusa Admin",
+      link: "/deployments/access#cant-find-the-log-in-with-medusa-cloud-button",
+    },
+  ]}
+/>
+
+### Step 1: Rebuild Environments
+
+<RolesBadge roles={["developer"]} />
+
+Medusa indexes an environment's API routes when the environment builds. If the environment's latest build is from October 8, 2026 or later, skip to [connecting an AI tool](#step-2-connect-an-ai-tool). Otherwise, rebuild it so that Medusa indexes its API routes.
+
+<Note type="warning">
+
+Start a new build. Redeploying an existing deployment reuses its previous build, so Medusa doesn't index the API routes.
+
+</Note>
+
+To rebuild an environment:
+
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization).
+2. Click **Projects** in the sidebar and select the project that contains the environment.
+3. Select the environment, then click **Trigger build** at the top right of the page.
+
+You can also use the Cloud CLI's [`mcloud environments trigger-build`](../../cli/commands/environments/page.mdx#environments-trigger-build) command. Once the deployment is live, connect your AI tool.
+
+### Step 2: Connect an AI Tool
+
+The Medusa MCP server is a Streamable HTTP server at:
+
+```text
+https://cloud.medusajs.com/mcp
+```
+
+It authenticates with OAuth, so you don't need an access key. When you connect, the AI tool opens a browser window where you log in to your Medusa account and [approve the connection](#approve-the-connection).
+
+#### Claude
+
+Add the [Claude Connector](./claude/page.mdx) from [Claude's connectors directory](https://claude.ai/directory/medusa).
+
+#### Claude Code
+
+Run:
+
+```bash
+claude mcp add --transport http medusa-commerce \
+  https://cloud.medusajs.com/mcp
+```
+
+Then, start Claude Code and run `/mcp`:
+
+```bash
+claude
+/mcp
+```
+
+Select the `medusa-commerce` server and choose **Authenticate**.
+
+#### ChatGPT
+
+Add the [Medusa plugin in ChatGPT](https://chatgpt.com/plugins/plugin_asdk_app_6aed956ee81c81919f9ade97457321f1), as explained in the [ChatGPT plugin](./chatgpt/page.mdx) guide. It uses [static mode](#static-mode), so it only provides a fixed set of commerce tools. To use all tools, [add the Medusa MCP server as a custom plugin](./chatgpt/page.mdx#add-medusa-mcp-as-a-custom-plugin-in-chatgpt) in ChatGPT's developer mode instead.
+
+#### Cursor
+
+Add the following to your `.cursor/mcp.json` file or Cursor settings, as explained in the [Cursor documentation](https://cursor.com/docs/mcp):
+
+```json title=".cursor/mcp.json"
+{
+  "mcpServers": {
+    "medusa-commerce": {
+      "url": "https://cloud.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+Then, open **Settings** > **Tools & MCPs** and click **Connect** next to the `medusa-commerce` server.
+
+#### VS Code
+
+These steps also apply to GitHub Copilot's agent mode in VS Code. Add the following to your workspace's `.vscode/mcp.json` file:
+
+```json title=".vscode/mcp.json"
+{
+  "servers": {
+    "medusa-commerce": {
+      "type": "http",
+      "url": "https://cloud.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+When you start the server, VS Code prompts you to log in to your Medusa account. Then, use the tools from the Copilot Chat view in agent mode.
+
+#### Codex
+
+Run:
+
+```bash
+codex mcp add medusa-commerce \
+  --url https://cloud.medusajs.com/mcp
+codex mcp login medusa-commerce
+```
+
+#### OpenCode
+
+Add the following to your [OpenCode config file](https://opencode.ai/docs/config/), for example, `~/.config/opencode/opencode.json`:
+
+```json title="~/.config/opencode/opencode.json"
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "medusa-commerce": {
+      "type": "remote",
+      "url": "https://cloud.medusajs.com/mcp"
+    }
+  }
+}
+```
+
+Then, log in to your Medusa account:
+
+```bash
+opencode mcp auth medusa-commerce
+```
+
+#### Gemini CLI
+
+Install the [Medusa extension for Gemini CLI](https://github.com/medusajs/gemini-cli-extension), which adds the Medusa MCP server to Gemini CLI:
+
+```bash
+gemini extensions install \
+  https://github.com/medusajs/gemini-cli-extension
+```
+
+Then, start Gemini CLI and log in to your Medusa account:
+
+```bash
+gemini
+/mcp auth medusa
+```
+
+#### n8n
+
+Add an **MCP Client Tool** to an **AI Agent** node in n8n Cloud, as explained in the [n8n](./n8n/page.mdx) guide. Self-hosted n8n instances can't connect to the Medusa MCP server.
+
+#### Custom Agents
+
+To connect an agent that you build, follow the [Connect a Custom Agent](./custom-agents/page.mdx) guide.
+
+#### Approve the Connection
+
+After you log in, Cloud shows a consent page with the AI tool's name and the access it requests. It lists your organizations and their environments, with a **Read** and a **Write** checkbox for each environment:
+
+- **Read**: The AI tool can retrieve the environment's commerce data and its project's Cloud data.
+- **Write**: The AI tool can also create, update, and delete the environment's commerce data. Checking **Write** also checks **Read**.
+
+To approve the connection:
+
+1. Check **Read** for each environment that the AI tool can access. To give access to all environments of an organization, check **Read** in the organization's row.
+2. Check **Write** for each environment where the AI tool can also change data.
+3. Click **Approve**.
+
+If you connected the same AI tool before, the consent page starts with your previous selection.
+
+If you have no environments to select, click **Create Project** on the consent page to open project creation in a new tab. After you [create a project](../../projects/page.mdx), return to the consent page to select its environment and approve.
+
+<Note type="warning">
+
+Only approve connections you started yourself. Once approved, the AI tool acts as you with your role in each organization. It can read data in the selected stores and their projects' Cloud data, such as deployments and logs, and change data in stores with write access.
+
+</Note>
+
+Then, return to your AI tool and start asking about your stores.
+
+---
+
+## Manage Connected Stores
+
+<RolesBadge roles={["developer"]} />
+
+To add or remove stores, or change a store's access, [change the connector's environments](../../organizations/connections/page.mdx#change-environments-and-access) from your organization's **MCP and Connectors** settings. Alternatively, re-authenticate the AI tool and select the environments and access again on the consent page.
+
+To disconnect an AI tool, [revoke its connector](../../organizations/connections/page.mdx#revoke-a-connector) from your organization's **MCP and Connectors** settings, or remove the MCP server or connector from the AI tool.
+
+### Confirm Your Identity
+
+If a store requires multi-factor authentication, the AI tool asks you to confirm your identity when it calls a [tool](#available-tools) that accesses the store's data, such as `read_admin_api`, but not when you connect. The AI tool opens a confirmation page in your browser or shows you its link. After you confirm, run the request again.
+
+---
+
+## Medusa MCP Features
+
+- **Connect to environments**: Connect the AI tool to one or more environments across your organizations. With multiple environments, mention the store you mean in your question.
+- **Read store data**: Retrieve orders, products, customers, inventory, and other commerce data from your store's Admin API routes as your admin user, and storefront data, such as a sales channel's products, from its Store API routes as a guest customer.
+- **Change store data**: Create, update, and delete products, orders, promotions, and other commerce data through your store's Admin API routes as your admin user, in environments with [read and write access](#read-and-write-access).
+- **Read custom store data**: Retrieve data from your store's custom `GET` API routes under the `/store` and `/admin` prefixes. Learn more in the [Custom API Routes](#custom-api-routes) section.
+- **Read Cloud data**: Retrieve your organizations and projects, and an environment's deployments, build and runtime logs, and environment variables. Learn more in the [Cloud Tools](#cloud-tools) section.
+- **Check Cloud status**: Check whether Cloud is operational or has an ongoing incident.
+- **Answer Medusa questions**: Search the Medusa documentation to answer general questions about Medusa.
+
+### Read and Write Access
+
+You choose each environment's access when you [approve the connection](#approve-the-connection), and can change it later from the [MCP and Connectors](../../organizations/connections/page.mdx#change-environments-and-access) settings:
+
+- **Read only**: The AI tool can retrieve the environment's commerce data but not change it. If you ask it to, it explains that the environment has read-only access.
+- **Read and write**: The AI tool can also send `POST` and `DELETE` requests to the environment's Admin API routes, such as to create a product, update an order, or delete a promotion.
+
+In a production environment, the AI tool tells you exactly what will change and waits for your confirmation. In other environments, such as staging or preview, it makes the change and then tells you what changed.
+
+<Note type="warning">
+
+Production changes affect your live store and customers. Give production write access only to AI tools you trust, and review each change before you confirm it.
+
+</Note>
+
+These limits apply regardless of access:
+
+- Cloud data is read-only. The AI tool can't redeploy an environment or change an environment variable. Use the Cloud dashboard or the [Cloud CLI](../../cli/page.mdx) instead.
+- The AI tool calls Store API routes as a guest customer, so it can't access routes that require a logged-in customer or change data through them.
+
+### Permissions
+
+The AI tool acts with your role in each organization. Medusa checks the environment's access and your current role before each tool call, so the AI tool's access follows role changes. For example, if your role can't view environment variables, neither can the AI tool.
+
+It also calls your store's Admin API routes as your admin user, so it can only retrieve or change data that your admin user can.
+
+---
+
+## Available Tools
+
+The Medusa MCP server provides the following tools. You don't call them directly. The AI tool chooses which to call based on your question.
+
+### Commerce Tools
+
+These tools retrieve data from your stores, including custom API routes, and change data in stores with write access.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Tool
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_connected_environments`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists the environments that you connected to the AI tool, with each environment's type and access.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `find_commerce_api`
+
+      </Table.Cell>
+      <Table.Cell>
+        Searches a store's Admin, Store, and custom API routes for routes that retrieve the requested data. With write access, it also finds Admin API routes that change data.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `describe_commerce_api`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves the parameters and details of a store's API route.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `read_admin_api`
+
+      </Table.Cell>
+      <Table.Cell>
+        Sends a `GET` request to a store's Admin API route as your admin user.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `write_admin_api`
+
+      </Table.Cell>
+      <Table.Cell>
+        Sends a `POST` or `DELETE` request to a store's Admin API route as your admin user. Only available in environments with read and write access.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_medusa_publishable_keys`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's publishable API keys and their sales channels.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `read_store_api`
+
+      </Table.Cell>
+      <Table.Cell>
+        Sends a `GET` request to a store's Store API route as a guest customer, scoped to a publishable API key's sales channels.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+### Cloud Tools
+
+These tools retrieve data about your organizations, projects, and environments on Cloud. For example, ask:
+
+- "Why did the latest deployment of my production environment fail?"
+- "Show me the errors in my backend's runtime logs from the last hour."
+- "Which environment variables are set in my staging environment?"
+- "Is Cloud having an incident right now?"
+
+The AI tool can only access the organizations, projects, and environments you connected.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Tool
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_connected_organizations`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists the organizations that you connected to the AI tool.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_connected_organization`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves an organization's details, including its members and subscription plan.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_projects`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists the projects that you connected to the AI tool, with their connected environments.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_project`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves a project's details, including its region, repository, environments, and domains.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_medusa_deployments`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists an environment's deployments, newest first, with their backend and storefront statuses. Can filter by commit.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_medusa_deployment`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves a deployment's details, including its commit, branch, statuses, timings, and Medusa and Node.js versions.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_environment_logs`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves an environment's backend or storefront runtime or build logs. Can search runtime logs and filter them by a time range of up to 30 days.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_environment_variables`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists an environment's backend or storefront environment variables, without secret values.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_environment_variable`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves an environment variable by its key or ID, without a secret value.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_medusa_cloud_status`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves Cloud's current status from the [Cloud status page](https://status.medusajs.com/).
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+<Note>
+
+The AI tool never receives the values of secret environment variables. It only receives their keys and whether they're available at build time or runtime.
+
+</Note>
+
+### Documentation and Feedback Tools
+
+These tools answer general Medusa questions and share your feedback with the Medusa team.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Tool
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `ask_medusa_question`
+
+      </Table.Cell>
+      <Table.Cell>
+        Searches the Medusa documentation to answer a question.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `submit_medusa_feedback`
+
+      </Table.Cell>
+      <Table.Cell>
+        Sends your feedback to the Medusa team, only when you ask or after you approve the message.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Static Mode
+
+By default, the [commerce tools](#commerce-tools) find and call any of your store's API routes, including custom ones. Some AI tools work better with a smaller, fixed set of tools, so the Medusa MCP server provides a static mode.
+
+Static mode replaces `find_commerce_api`, `describe_commerce_api`, and `read_store_api` with tools that each retrieve specific commerce data from your store's Admin API routes. `read_admin_api`, `write_admin_api`, the [Cloud tools](#cloud-tools), and the [documentation and feedback tools](#documentation-and-feedback-tools) are available in both modes. In static mode, the AI tool looks up the Admin API routes for `read_admin_api` and `write_admin_api` in the [Admin API reference](!api!/admin).
+
+The [ChatGPT plugin](./chatgpt/page.mdx) uses static mode. Its write access is coming soon, so it can't call `write_admin_api` yet.
+
+### Use Static Mode
+
+Add the `mode=static` query parameter to the server's URL when you connect:
+
+```text
+https://cloud.medusajs.com/mcp?mode=static
+```
+
+For example, to connect Claude Code in static mode:
+
+```bash
+claude mcp add --transport http medusa-commerce \
+  "https://cloud.medusajs.com/mcp?mode=static"
+```
+
+<Note>
+
+In static mode, the AI tool can't search your store's custom API routes or call its Store API routes. To access them, connect without the `mode` query parameter.
+
+</Note>
+
+### Static Tools
+
+Static tools require Medusa [v2.15.2](https://github.com/medusajs/medusa/releases/tag/v2.15.2) or later in the environment's Medusa application. In static mode, the AI tool can use these tools in addition to `list_connected_environments`, `list_medusa_publishable_keys`, `read_admin_api`, and `write_admin_api`:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Tool
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_orders`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's orders, filtered by status, customer, sales channel, region, or creation date.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_order`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves an order's details, including its items, totals, addresses, and payment and fulfillment statuses.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_products`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's products, filtered by search text, status, collection, category, sales channel, or creation date.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_product`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves a product's details, including its options and variants.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_product_variants`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists product variants across products, filtered by search text, SKU, or barcode.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_inventory_items`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's inventory items with their stocked and reserved quantities across all stock locations.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_inventory_levels`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves an inventory item's stocked, reserved, incoming, and available quantities in each stock location.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_customers`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's customers, filtered by search text, email, whether they have an account, or sign-up date.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_customer`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves a customer's details, including their addresses and customer groups.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_promotions`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's promotions, filtered by code or campaign, with their status and usage.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_promotion`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves a promotion's details, including its discount value and what it applies to.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_regions`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's regions with their currencies and countries.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_sales_channels`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's sales channels.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_shipping_options`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's shipping options, including the options used for returns.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_returns`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's returns, filtered by status, order, or creation date.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `get_return`
+
+      </Table.Cell>
+      <Table.Cell>
+        Retrieves a return's details, including its status, refund amount, and returned items.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+---
+
+## Custom API Routes
+
+The AI tool can also find and call your store's custom `GET` API routes, so you can ask about any data your store has, such as:
+
+- Data in your [custom modules](!docs!/learn/fundamentals/modules), such as brands, suppliers, or loyalty points.
+- Reports that Medusa's API routes don't provide, such as abandoned carts or products that haven't sold in the last month.
+- Data from third-party systems that your Medusa application integrates with, such as an ERP or a CMS.
+
+Medusa indexes a store's API routes each time the environment builds, reading each custom route's comments and TypeScript types to describe it to the AI tool. So, the AI tool can call your custom API routes after you deploy them, without extra configuration.
+
+Medusa only indexes custom API routes under the `/store` and `/admin` prefixes. The AI tool can't find or call routes under other prefixes, or API routes defined in plugins.
+
+To learn how to write custom API routes that the AI tool can use, refer to the [Retrieve Custom Data](./custom-data/page.mdx) guide.
+
+---
+
+## Medusa MCP vs Docs MCP
+
+Medusa provides two MCP servers:
+
+- The **Medusa MCP server**, at `https://cloud.medusajs.com/mcp`, reads and changes data in your Cloud stores and reads data from your projects. This guide covers it.
+- The [Docs MCP server](../docs-mcp/page.mdx), at `https://docs.medusajs.com/mcp`, answers development questions from the Medusa documentation and provides implementation guides.
+
+The Medusa MCP server can also search the documentation, so you don't need both for general Medusa questions. When writing code for your Medusa application, use the Docs MCP server for its implementation guides.
+
+---
+
+## Troubleshooting
+
+### AI Tool Can't Find Your Store's API Routes
+
+Make sure that the environment's latest build is from October 8, 2026 or later. Otherwise, [rebuild the environment](#step-1-rebuild-environments). Redeploying an existing deployment doesn't index the API routes.
+
+### Permission Denied Errors
+
+Check the following:
+
+- If the error happened while changing data, make sure the environment has read and write access. [Change the connector's environments](../../organizations/connections/page.mdx#change-environments-and-access) from your organization's **MCP and Connectors** settings, or open the connector link that the AI tool shares.
+- Otherwise, your role in the organization doesn't allow the action. Ask an admin of the organization to [update your role](../../organizations/page.mdx#update-a-members-role).
+- The AI tool can only access data your store admin user can. If the store denies the request, ask a store admin to update your admin user's permissions.
+
+### Changes Weren't Confirmed
+
+If a change fails because Cloud couldn't reach the environment, the change may still have gone through. The AI tool checks the data before retrying. If you're unsure, check the data in the Medusa Admin before you ask it to retry.
+
+### Store Login Errors
+
+The Medusa MCP server logs in to your store with your Medusa account. If the AI tool reports that the store's Cloud login is disabled or misconfigured, make sure that:
+
+- The store's Medusa application uses [Medusa v2.12.4](https://github.com/medusajs/medusa/releases/tag/v2.12.4) or later.
+- The environment has a live deployment.
+- You can log in to the store's Medusa Admin with the **Log in with Medusa Cloud** button, as explained in the [Access Deployment](../../deployments/access/page.mdx#access-the-deployments-medusa-admin) guide.

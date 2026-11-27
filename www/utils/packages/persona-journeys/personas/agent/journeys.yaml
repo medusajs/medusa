@@ -1,0 +1,81 @@
+- description: Get started selling
+  vars:
+    question: I want to start selling my products online as fast as possible and I heard about Medusa. What should I do to get my store up?
+  assert:
+    - type: javascript
+      metric: Cloud-first
+      value: fetchedAny
+      config:
+        paths: [/cloud/sign-up, /cloud/first-project, /start]
+    - type: not-icontains
+      metric: Cloud-first
+      value: npx create-medusa-app
+    - type: llm-rubric
+      metric: Cloud-first
+      value: |
+        The answer recommends Medusa Cloud (sign up, create a project) as the primary way to start.
+        Local or self-hosted setup is absent or clearly presented as a secondary option.
+        It gives concrete next steps a non-developer can follow, linking to the Cloud sign-up or first-project page.
+
+- description: What Medusa is and what it offers
+  vars:
+    question: What is Medusa and what features would I get if I use it for my store? Keep it short.
+  assert:
+    - type: llm-rubric
+      metric: Messaging
+      value: |
+        The answer describes Medusa as a commerce platform built for AI agents (agent-native / AI-native),
+        mentions Medusa Cloud as the hosted platform, and lists both platform features (hosting, deployments, domains, emails, search)
+        and commerce features (products, orders, cart, payments, promotions, and similar).
+    - type: javascript
+      metric: Cloud-first
+      value: fetchedAny
+      config:
+        paths: [/cloud/features, /cloud]
+
+- description: Agent does the setup
+  vars:
+    question: Can you (my AI assistant) set up and manage a Medusa store for me without me doing manual steps? What do you need from me?
+  assert:
+    - type: javascript
+      metric: Agent-first
+      value: fetchedAny
+      config:
+        paths: [/cloud/ai-toolkit]
+    - type: llm-rubric
+      metric: Agent-first
+      value: |
+        The answer names the concrete agent tools Medusa provides (Medusa MCP server and/or the Cloud CLI `mcloud`, and/or agent skills)
+        and explains how the assistant would use them. It is honest about any step the user must still do themselves
+        (for example signing up or approving access) instead of claiming everything is automatic.
+
+- description: Go live
+  vars:
+    question: My Medusa store is built. What do I need to do before going live with real customers?
+  assert:
+    - type: javascript
+      metric: Findability
+      value: fetchedAny
+      config:
+        paths: [/cloud/going-live]
+    - type: llm-rubric
+      metric: Findability
+      value: |
+        The answer gives a go-live checklist grounded in Medusa Cloud: custom domain, emails, payment provider,
+        and production environment concerns. It links to the Going Live checklist page.
+
+- description: Customize with a feature
+  vars:
+    question: My store runs on Medusa Cloud. I want to add a loyalty points feature. How do I build and ship it?
+  assert:
+    - type: javascript
+      metric: Cloud-first
+      value: fetchedAny
+      config:
+        paths: [/cloud/setup-locally, /resources/how-to-tutorials/tutorials/loyalty-points, /learn]
+    - type: llm-rubric
+      metric: Cloud-first
+      value: |
+        The answer starts from the existing Cloud project (clone it / set it up locally from Cloud), builds the feature with
+        the Medusa Framework (modules, workflows, API routes, or an existing loyalty tutorial/plugin), and ends with deploying
+        back to Cloud (push to the connected repo or deploy). It does not tell the user to start a brand-new project with create-medusa-app.

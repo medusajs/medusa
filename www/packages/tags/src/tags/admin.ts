@@ -16,6 +16,10 @@ export const admin = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/apiKey"
   },
   {
+    "title": "auditLog",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/auditLog"
+  },
+  {
     "title": "campaign",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/campaign"
   },

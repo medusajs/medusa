@@ -188,6 +188,10 @@ export const cart = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartItemsWorkflow"
   },
   {
+    "title": "refreshCartPromotionAdjustmentsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartPromotionAdjustmentsWorkflow"
+  },
+  {
     "title": "refreshCartShippingMethodsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartShippingMethodsWorkflow"
   },
@@ -222,6 +226,10 @@ export const cart = [
   {
     "title": "updateLineItemsStepWithSelector",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateLineItemsStepWithSelector"
+  },
+  {
+    "title": "validateLineItemsInCartStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateLineItemsInCartStep"
   },
   {
     "title": "deleteLineItemsWorkflow",

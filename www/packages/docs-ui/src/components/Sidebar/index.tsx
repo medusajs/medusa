@@ -71,8 +71,9 @@ export const Sidebar = ({ className = "" }: SidebarProps) => {
       )}
       <aside
         className={clsx(
-          "bg-medusa-bg-base lg:bg-transparent block",
-          "fixed -left-full top-0 h-[calc(100%-16px)] transition-[left] lg:relative lg:h-auto",
+          "bg-medusa-bg-base lg:bg-medusa-bg-subtle block",
+          "lg:border-r lg:border-medusa-border-base",
+          "fixed -left-full top-0 h-[calc(100%-16px)] transition-[left] lg:relative lg:h-full",
           "max-w-sidebar-xs sm:max-w-sidebar-sm md:max-w-sidebar-md lg:max-w-sidebar-lg",
           "xl:max-w-sidebar-xl xxl:max-w-sidebar-xxl xxxl:max-w-sidebar-xxxl",
           "w-sidebar-xs sm:w-auto",
@@ -108,7 +109,7 @@ export const Sidebar = ({ className = "" }: SidebarProps) => {
               <div
                 className={clsx(
                   "overflow-y-scroll clip",
-                  "pb-docs_0.75 flex-1 max-h-screen"
+                  "pb-docs_0.75 flex-1 max-h-full"
                 )}
                 ref={sidebarRef}
                 id="sidebar"

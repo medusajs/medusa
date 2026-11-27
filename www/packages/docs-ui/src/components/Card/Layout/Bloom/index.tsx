@@ -2,7 +2,7 @@ import React from "react"
 import clsx from "clsx"
 import { Link } from "@/components/Link"
 import { TriangleRightMini } from "@medusajs/icons"
-import { BloomIcon, CardProps } from "../../.."
+import { DocsAssistantIcon, CardProps } from "../../.."
 
 export const CardBloomLayout = ({
   title,
@@ -32,7 +32,7 @@ export const CardBloomLayout = ({
         )}
       >
         <div className="flex gap-[6px] items-center">
-          <BloomIcon className="text-medusa-tag-orange-text" />
+          <DocsAssistantIcon className="text-medusa-tag-orange-text" />
           {title && (
             <div
               className={clsx(

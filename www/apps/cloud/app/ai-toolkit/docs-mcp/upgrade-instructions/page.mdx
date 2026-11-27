@@ -1,0 +1,87 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Upgrade Medusa with the Docs MCP Server`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to use the [Docs MCP server](../page.mdx) to upgrade your Medusa project to a newer version.
+
+## What is the Upgrade Instructions Tool?
+
+The `get_medusa_upgrade_instructions` tool returns step-by-step instructions for upgrading a Medusa project to a specific target version.
+
+Name the target version, and your AI agent presents a plan for your approval. It then bumps the packages, applies breaking changes across your backend, admin, and storefront, runs migrations, and builds and typechecks the result.
+
+If the Docs MCP server has a curated guide for that version, your agent works from it. Otherwise, your agent builds the plan from the [GitHub release notes](https://github.com/medusajs/medusa/releases) of every release between your current and target versions, the official documentation, and the `ask_medusa_question` tool for anything it's unsure about.
+
+---
+
+## Who is this Useful for?
+
+This tool is useful for:
+
+- Developers upgrading a Medusa project across one or more releases.
+- Teams that have fallen several versions behind and need an ordered plan rather than a single bump.
+- Agencies maintaining multiple Medusa projects that each need the same upgrade applied.
+- Anyone who wants breaking changes surfaced and reviewed before files are modified.
+
+---
+
+## Why Use This Tool?
+
+In upgrades, an AI agent's default behavior is most misleading. Asked to upgrade Medusa, an agent bumps `@medusajs/*` versions from memory, reports success, and leaves you with a project that no longer boots, because it never applied the releases' breaking changes. Nothing in the output signals that anything is missing.
+
+Compared to reading the release notes yourself or [asking a Medusa question](../ask-medusa-question/page.mdx), this tool gives you:
+
+- **An upgrade, not a version bump.** Your agent applies the changes each release requires, not only the numbers in `package.json`.
+- **Coverage across every release in between.** Upgrading several versions means several sets of breaking changes. The tool accounts for all of them, which is easy to miss when you only read the target release's notes.
+- **A plan you approve before files change.** You see the version bumps and specific edits, with file paths, while it's still cheap to stop. Your agent flags anything it can't resolve for you to decide instead of guessing.
+- **Your whole project considered.** The tool works through the backend, admin dashboard, storefront, configuration, dependencies, and database migrations, not only the packages.
+- **Verification as part of the job.** Your agent runs and reports the install, migrations, build, and typecheck, so a broken upgrade surfaces immediately instead of on your next deploy. If any step fails, your agent reports the error and stops instead of piling on speculative fixes.
+
+<Note title="Tip">
+
+Some versions ship [codemods](!docs!/learn/codemods) that automate large mechanical changes across your codebase. When a codemod exists, it's faster and safer than having your agent rewrite every occurrence by hand.
+
+</Note>
+
+---
+
+## How to Use the Upgrade Instructions Tool
+
+<Prerequisites
+  items={[
+    {
+      text: "Docs MCP server connected to your AI tool or IDE",
+      link: "/ai-toolkit/docs-mcp"
+    },
+    {
+      text: "A clean git working tree, so you can review and revert the upgrade's changes"
+    }
+  ]}
+/>
+
+After [connecting to the Docs MCP server](../page.mdx#connect-to-the-docs-mcp-server), ask your AI agent to upgrade your project. Your agent infers the target version from your request and calls the tool with it.
+
+For example:
+
+```bash title="Example prompt"
+Update my Medusa application to v2.18.0.
+```
+
+### What to Expect
+
+1. Your AI agent resolves the target version, including resolving "latest" to a concrete version number.
+2. It calls the tool with that version.
+3. It inspects your project to determine its shape, current version, and package manager.
+4. It presents a migration plan for your approval. Review it before approving, especially the breaking changes it flags.
+5. Once you approve, it bumps the packages, applies the changes, and runs migrations.
+6. It builds and typechecks the project, including your storefront if you have one, and reports the result of each verification step.
+
+<Note type="warning">
+
+Always upgrade on a branch with a clean working tree, and review the resulting diff before merging. Upgrades touch configuration, dependencies, and database migrations.
+
+</Note>

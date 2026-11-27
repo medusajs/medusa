@@ -263,9 +263,9 @@ While tutorials show you a specific use case, they also help you understand how 
         path: "https://docs.medusajs.com/learn/deployment/general",
       },
       {
-        type: "sub-category",
-        title: "Next.js Starter",
-        autogenerate_path: "/deployment/storefront",
+        type: "link",
+        title: "Storefront",
+        path: "https://docs.medusajs.com/cloud/storefront",
       },
     ],
   },

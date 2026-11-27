@@ -40,7 +40,7 @@ Each entry is:
   title: "Medusa MCP",
   tag: "Medusa Cloud",
   earlyAccess: true,                // no date, has a link to its docs page
-  link: "https://docs.medusajs.com/cloud/medusa-mcp",
+  link: "https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp",
 }
 ```
 
@@ -70,11 +70,17 @@ Rules:
   and `Guide`. Other reasonable labels: `Medusa OS`, `Admin`, `Storefront`.
 - Keep `title` under ~48 characters so the row does not wrap on desktop.
 
+## Features page
+
+When you document a new feature anywhere in the docs, also add it to the
+Features page in `www/apps/cloud/app/features/page.mdx`, under the section it
+belongs to (Cloud, Commerce, or Framework), with a link to its docs page.
+
 ## Homepage structure
 
 `app/page.tsx` composes the homepage from the section components in
 `components/Homepage/*`, with `<HomepageSectionsSeparator />` between sections.
-Current order: Top → Start Prompt → Bloom → **What's New** → Links → Framework →
+Current order: Top → Start Prompt → Docs Assistant → Links → **What's New** → Cloud → Framework →
 Code Tabs → Recipes → Commerce Modules → Footer.
 
 Section conventions:

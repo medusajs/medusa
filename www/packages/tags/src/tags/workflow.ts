@@ -36,6 +36,10 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setAuthAppMetadataWorkflow"
   },
   {
+    "title": "validateAuthCallbackWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateAuthCallbackWorkflow"
+  },
+  {
     "title": "addGiftCardToCartWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/addGiftCardToCartWorkflow"
   },
@@ -94,6 +98,10 @@ export const workflow = [
   {
     "title": "refreshCartItemsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartItemsWorkflow"
+  },
+  {
+    "title": "refreshCartPromotionAdjustmentsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartPromotionAdjustmentsWorkflow"
   },
   {
     "title": "refreshCartShippingMethodsWorkflow",

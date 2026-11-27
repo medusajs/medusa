@@ -34,11 +34,13 @@ The Auth Module implements MFA around two concepts:
 
 ## Configure MFA Encryption Key
 
-Medusa automatically configures MFA with sensible defaults, including setting the encryption key to the `AUTH_MFA_ENCRYPTION_KEY` environment variable. If you've created your application after v2.15.5 of Medusa, this key is generated for you and stored in the `.env` file.
+Medusa automatically configures MFA with sensible defaults, including setting the encryption key to the `AUTH_MFA_ENCRYPTION_KEY` environment variable.
 
-If you created your application before v2.15.5, generate a random 64-character string and set it as the value of the `AUTH_MFA_ENCRYPTION_KEY` environment variable in your `.env` file:
+On Cloud, Medusa sets the `AUTH_MFA_ENCRYPTION_KEY` environment variable for each environment, so you don't need to add it.
 
-```bash
+For local development, if you created your application after v2.15.5 of Medusa, the key is already generated for you in the `.env` file. Otherwise, generate a random 64-character string and add it to your `.env` file:
+
+```bash title=".env"
 AUTH_MFA_ENCRYPTION_KEY=your_random_64_character_string
 ```
 
