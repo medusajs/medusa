@@ -11,7 +11,7 @@ export const addExtraToMd = (
 > ## Documentation Index
 > Fetch the complete documentation index at: ${options.baseUrl || ""}/llms.txt
 > Use this file to discover all available pages before exploring further.
-> Search the documentation at: ${options.baseUrl || ""}/agents/ask?q={query}
+> Search the documentation at: ${options.baseUrl || ""}/agents/ask?q={query}&source=docs-page
 > Learn how to navigate the docs and which agent tools you can use at: ${options.baseUrl || ""}/SKILL.md
 
 <AgentInstructions>

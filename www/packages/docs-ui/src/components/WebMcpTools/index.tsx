@@ -109,7 +109,10 @@ export const WebMcpTools = () => {
         },
         annotations: { readOnlyHint: true },
         execute: async ({ query, limit }) => {
-          const params = new URLSearchParams({ q: String(query ?? "") })
+          const params = new URLSearchParams({
+            q: String(query ?? ""),
+            source: "docs-webmcp",
+          })
           if (limit !== undefined) {
             params.set("limit", String(limit))
           }
