@@ -197,9 +197,11 @@ export interface ILockingProvider {
    *
    * If the lock aquisition isn't canceled, you should aquire the lock, setting its expiry and owner. You should account for the following scenarios:
    *
-   * - The lock doesn't have an owner and you don't pass an owner, in which case the lock can be extended or released by anyone.
-   * - The lock doesn't have an owner or has the same owner that you pass, in which case you can extend the lock's expiration time and set the owner.
-   * - The lock has an owner, but you pass a different owner, in which case the method should throw an error.
+   * - The lock isn't held or has expired, in which case you acquire it with the owner you pass, or without an owner if you don't pass one.
+   * - The lock has the same owner that you pass, in which case you extend the lock's expiration time.
+   * - The lock is held without an owner, in which case the method should throw an error, even if you don't pass an owner. So, callers
+   * that don't pass an owner block each other until the lock is released or expires.
+   * - The lock has an owner, but you pass a different owner or no owner, in which case the method should throw an error.
    *
    * @param keys - The keys to acquire the lock on.
    * @param args - Additional arguments for acquiring the lock.
@@ -282,6 +284,7 @@ export interface ILockingProvider {
    * or you pass your provider's identifier to its `release` method.
    *
    * In this method, you should release the lock on the given keys. If the lock has an owner, you should only release the lock if the owner is the same as the one passed.
+   * If the lock doesn't have an owner, you should only release it if no owner is passed.
    *
    * @param keys - The keys to release the lock from.
    * @param args - Additional arguments for releasing the lock.
@@ -325,8 +328,8 @@ export interface ILockingProvider {
     keys: string | string[],
     args?: {
       /**
-       * The ID of the lock's owner. The lock can be released either if it doesn't have an owner, or
-       * if its owner ID matches the one passed in this property.
+       * The ID of the lock's owner. The lock is released if its owner ID matches the one passed in this property,
+       * or if it doesn't have an owner and this property isn't passed.
        */
       ownerId?: string | null
     },
@@ -442,7 +445,10 @@ export interface ILockingModule {
    *
    * You can pass an owner for the lock, which limits who can extend or release the acquired lock. Then, if you use this method again
    * passing the same owner, the lock's expiration time is extended with the value passed in the `expire` argument. Otherwise, if you pass a
-   * different owner, the method throws an error.
+   * different owner or no owner, the method throws an error.
+   *
+   * If you don't pass an owner, the lock is acquired without one. While it's held, acquiring it again throws an error for every caller,
+   * including ones that don't pass an owner, until it's released or expires. Any caller that doesn't pass an owner can release it.
    *
    * @param keys - The keys to acquire the lock on.
    * @param args - Additional arguments for acquiring the lock.
@@ -526,8 +532,8 @@ export interface ILockingModule {
     keys: string | string[],
     args?: {
       /**
-       * The ID of the lock's owner. The lock can be released either if it doesn't have an owner, or
-       * if its owner ID matches the one passed in this property.
+       * The ID of the lock's owner. The lock is released if its owner ID matches the one passed in this property,
+       * or if it doesn't have an owner and this property isn't passed.
        */
       ownerId?: string | null
       /**

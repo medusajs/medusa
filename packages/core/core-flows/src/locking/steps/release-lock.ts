@@ -10,8 +10,8 @@ export interface ReleaseLockStepInput {
    */
   key: string | string[]
   /**
-   * The ID of the lock's owner. The lock can be released either if it doesn't have an owner,
-   * or if its owner ID matches the one passed in this property.
+   * The ID of the lock's owner. The lock is released if its owner ID matches the one passed in this property,
+   * or if it doesn't have an owner and this property isn't passed.
    */
   ownerId?: string
   /**
