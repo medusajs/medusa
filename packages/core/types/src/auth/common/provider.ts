@@ -30,6 +30,16 @@ export type AuthenticationResponse = {
   error?: string
 
   /**
+   * Set by `register` when an identity with the given details already exists:
+   * its entity ID, such as the email. It lets registration answer the same way
+   * for new and existing identities when `hide_existing_identities` is set in
+   * `authVerificationsPerActor`.
+   *
+   * @since 2.18.0
+   */
+  existingEntityId?: string
+
+  /**
    * The URL to redirect to for further authentication action
    * with a third-party provider. This takes precedence before
    * the `success` field.

@@ -303,6 +303,7 @@ describe("Email password auth provider", () => {
     expect(resp).toEqual({
       success: false,
       error: "Identity with email already exists",
+      existingEntityId: "test@admin.com",
     })
   })
 
@@ -334,6 +335,7 @@ describe("Email password auth provider", () => {
     expect(authServiceSpies.retrieve).toHaveBeenCalled()
 
     expect(resp.error).toEqual("Identity with email already exists")
+    expect(resp.existingEntityId).toEqual("test@admin.com")
   })
 
   it("throws if auth identity with email doesn't exist", async () => {

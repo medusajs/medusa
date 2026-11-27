@@ -281,6 +281,8 @@ export abstract class AbstractAuthModuleProvider implements IAuthProvider {
    *       return {
    *         success: false,
    *         error: "Identity with email already exists",
+   *         // lets `hide_existing_identities` answer the same way for it
+   *         existingEntityId: data.body.email,
    *       }
    *     } catch (error) {
    *       if (error.type === MedusaError.Types.NOT_FOUND) {

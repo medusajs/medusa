@@ -1122,6 +1122,18 @@ export type ProjectConfigOptions = {
      * `authVerificationsPerActor` is a map where the actor type (eg. 'user') is the key, and the value is an array of objects with the following properties:
      * - `entity_type`: The type of entity being verified. For example, `email` or `phone_number`.
      * - `auth_provider`: The provider that requires the verification. For example, `emailpass` or `phone-auth`.
+     * - `hide_existing_identities`: (optional, since v2.18.0) Whether registering and logging in with this provider hide whether an identity
+     *   already exists. When `true`:
+     *   - `POST /auth/{actor_type}/{auth_provider}/register` answers `200 { verification_required: true }` without a token, whether or not
+     *     the identity exists. A new identity gets a verification requested (the `auth.verification_requested` event, with `code_provider`
+     *     defaulting to `token`). For an existing one, the `auth.registration_with_existing_identity` event is emitted instead, so you can
+     *     tell its owner, for example with links to log in or reset the password.
+     *   - Logging in to an identity whose verification isn't confirmed fails like a wrong password. Once the verification is confirmed, the
+     *     login returns a token, without an actor when the identity doesn't have one yet, also when `requireActorAssociation` is set for the provider.
+     *     The client then creates the actor with it.
+     *   - Registering again with the same password requests a new verification, so it doubles as "resend the link".
+     *
+     *   The provider must set `existingEntityId` in its `register` response when the identity exists, as `emailpass` does.
      *
      * @example
      *
@@ -1136,6 +1148,10 @@ export type ProjectConfigOptions = {
      *         customer: [
      *           { entity_type: "email", auth_provider: "emailpass" },
      *         ],
+     *         // Or, so that registering doesn't reveal which emails have an account:
+     *         // customer: [
+     *         //   { entity_type: "email", auth_provider: "emailpass", hide_existing_identities: true },
+     *         // ],
      *       },
      *     }
      *     // ...
@@ -1145,7 +1161,12 @@ export type ProjectConfigOptions = {
      */
     authVerificationsPerActor?: Record<
       string,
-      { entity_type: string; auth_provider: string }[]
+      {
+        entity_type: string
+        auth_provider: string
+        hide_existing_identities?: boolean
+        code_provider?: string
+      }[]
     >
 
     /**
