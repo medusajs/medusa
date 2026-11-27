@@ -40,7 +40,7 @@ If your organization has more than one payment account, use the selector at the 
 
 <Note>
 
-The **Transactions**, **Payouts**, and **Disputes** items in the sidebar are disabled until your organization has a payment account.
+The **Transactions**, **Payouts**, **Disputes**, **Reports**, and **Payment methods** items in the sidebar are disabled until your organization has a payment account.
 
 </Note>
 
@@ -353,6 +353,38 @@ The **Disputes** page lists the account's disputes with the date to respond by, 
 - Open a dispute to view its details and respond to it.
 
 Respond to a dispute before its respond-by date. Otherwise, the bank usually decides in the customer's favor.
+
+---
+
+## Manage Payment Methods
+
+A payment account's payment methods decide how customers can pay at checkout, such as with cards, Apple Pay, Google Pay, or bank redirects like iDEAL and Klarna. Customers only see the methods that support their cart's currency and their location.
+
+How you manage payment methods depends on the account's type:
+
+- **Medusa Payments account**: You turn payment methods on or off from the Cloud dashboard, as explained below.
+- **Your own Stripe account**: You manage payment methods in your Stripe dashboard.
+
+To manage a Medusa Payments account's payment methods:
+
+1. If you're in a different organization, [switch to the organization](../../organizations/page.mdx#switch-organization) whose payments you want to manage.
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Payments** > **Payment methods** in the sidebar.
+4. Turn the payment methods you want to offer on, and the ones you don't want to offer off.
+
+Your changes apply to the payments your live environments take with the account. Environments in test mode use their test account, which has its own payment methods. Learn how to change them in the [Manage Test Payment Methods](../environments/page.mdx#manage-test-payment-methods) section of the Set up Medusa Payments in Environments guide.
+
+<Note>
+
+Payment methods that complete days after checkout, such as bank debits, bank transfers, and vouchers, aren't available with Medusa Payments yet.
+
+</Note>
+
+### Payment Methods in Your Storefront
+
+Your storefront shows the payment methods you turn on when it takes payments with the Stripe Payment Element, without a fixed list of payment method types. All Medusa starters do this. Learn how to set it up in a custom storefront in the [Add Medusa Payments to Your Storefront](../storefront/page.mdx#step-4-take-payments-with-the-payment-element) guide.
+
+Apple Pay and Google Pay only show on domains registered with the payment account. Medusa registers the domains of the storefronts you deploy on Cloud, which are the storefront's default domain and its verified custom domains, after each deployment and when a custom domain is verified. Storefronts hosted outside Cloud don't show Apple Pay and Google Pay yet.
 
 ---
 
