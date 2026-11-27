@@ -34,6 +34,7 @@ jest.mock("../../logger", () => ({
 jest.mock("../../deps/awilix", () => ({ asValue: (value: any) => value }))
 
 import { ModulesSdkUtils } from "@medusajs/utils"
+import { configManager } from "../../config"
 import { container } from "../../container"
 import { logger } from "../../logger"
 import { pgConnectionLoader } from "../pg-connection-loader"
@@ -110,6 +111,47 @@ describe("pgConnectionLoader", () => {
       "https://docs.medusajs.com/resources/troubleshooting/database-errors"
     )
     expect(mockContainer.register).not.toHaveBeenCalled()
+  })
+
+  it("fails fast when the database URL isn't set", async () => {
+    const projectConfig = configManager.config.projectConfig
+    const databaseUrl = projectConfig.databaseUrl
+    projectConfig.databaseUrl = undefined
+    const env = { ...process.env }
+    for (const key of Object.keys(process.env)) {
+      if (key.startsWith("PG")) {
+        delete process.env[key]
+      }
+    }
+
+    try {
+      const error = await pgConnectionLoader().catch((e) => e)
+      expect(error.message).toContain(`The database URL isn't set.`)
+      expect(mockCreatePgConnection).not.toHaveBeenCalled()
+    } finally {
+      projectConfig.databaseUrl = databaseUrl
+      process.env = env
+    }
+  })
+
+  it("connects with the PG environment variables when the database URL isn't set", async () => {
+    const projectConfig = configManager.config.projectConfig
+    const databaseUrl = projectConfig.databaseUrl
+    projectConfig.databaseUrl = undefined
+    const env = { ...process.env }
+    process.env.PGDATABASE = "medusa"
+    const connection = {
+      client: { pool: new EventEmitter() },
+      raw: jest.fn().mockResolvedValue(undefined),
+    }
+    mockCreatePgConnection.mockReturnValue(connection)
+
+    try {
+      await expect(pgConnectionLoader()).resolves.toBe(connection)
+    } finally {
+      projectConfig.databaseUrl = databaseUrl
+      process.env = env
+    }
   })
 
   it("fails fast on a fatal connection error without retrying", async () => {

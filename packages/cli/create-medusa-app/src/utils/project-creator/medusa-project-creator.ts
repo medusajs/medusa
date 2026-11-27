@@ -240,7 +240,13 @@ export class MedusaProjectCreator
         chalk.green(
           `Change to the \`${
             this.projectName
-          }\` directory to explore your Medusa project.${EOL}${EOL}Start your Medusa application again with the following command:${EOL}${EOL}${commandStr}${EOL}${EOL}${
+          }\` directory to explore your Medusa project.${EOL}${EOL}${
+            this.options.skipDb
+              ? `The database wasn't set up because you used --skip-db. Before starting the application, add DATABASE_URL to \`apps/backend/.env\`, then run the following command in \`apps/backend\`:${EOL}${EOL}${this.packageManager.getMedusaCommandStr(
+                  "db:setup"
+                )}${EOL}${EOL}`
+              : ""
+          }Start your Medusa application again with the following command:${EOL}${EOL}${commandStr}${EOL}${EOL}${
             this.inviteToken
               ? `After you start the Medusa application, you can create an admin user with the URL http://localhost:9000/app/invite?token=${this.inviteToken}&first_run=true${EOL}${EOL}`
               : ""

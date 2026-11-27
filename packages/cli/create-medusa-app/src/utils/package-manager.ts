@@ -421,14 +421,7 @@ export default class PackageManager {
       await this.setPackageManager(execOptions)
     }
 
-    const formats: Record<PackageManagerType, string> = {
-      yarn: `yarn medusa ${command}`,
-      pnpm: `pnpm medusa ${command}`,
-      npm: `npx medusa ${command}`,
-      nub: `nubx medusa ${command}`,
-    }
-
-    const commandStr = formats[this.packageManager || "npm"]
+    const commandStr = this.getMedusaCommandStr(command)
 
     return await this.processManager.runProcess({
       process: async () => {
@@ -454,6 +447,17 @@ export default class PackageManager {
     }
 
     return formats[this.packageManager]
+  }
+
+  getMedusaCommandStr(command: string): string {
+    const formats: Record<PackageManagerType, string> = {
+      yarn: `yarn medusa ${command}`,
+      pnpm: `pnpm medusa ${command}`,
+      npm: `npx medusa ${command}`,
+      nub: `nubx medusa ${command}`,
+    }
+
+    return formats[this.packageManager || "npm"]
   }
 
   getPackageManager(): PackageManagerType | undefined {
