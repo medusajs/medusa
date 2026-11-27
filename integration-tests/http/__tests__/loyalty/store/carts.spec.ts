@@ -1654,6 +1654,175 @@ medusaIntegrationTestRunner({
       })
     })
 
+    describe("POST /store/carts/:id with a region in another currency", () => {
+      let jpyRegion
+      let multiCurrencyVariant
+      let storeHeadersWithAuth
+
+      beforeEach(async () => {
+        jpyRegion = (
+          await api.post(
+            "/admin/regions",
+            {
+              payment_providers: ["pp_system_default"],
+              name: "jpy-region",
+              currency_code: "jpy",
+            },
+            adminHeaders
+          )
+        ).data.region
+
+        multiCurrencyVariant = (
+          await api.post(
+            `/admin/products`,
+            {
+              title: "multi currency product",
+              status: ProductStatus.PUBLISHED,
+              options: [{ title: "size", values: ["large"] }],
+              variants: [
+                {
+                  title: "multi currency",
+                  manage_inventory: false,
+                  options: { size: "large" },
+                  prices: [
+                    { amount: 1000, currency_code: "usd" },
+                    { amount: 1000, currency_code: "jpy" },
+                  ],
+                },
+              ],
+            },
+            adminHeaders
+          )
+        ).data.product.variants[0]
+
+        const publishableKey = await generatePublishableKey(getContainer())
+        const newStoreHeaders = generateStoreHeaders({ publishableKey })
+
+        const user = await createAuthenticatedCustomer(api, newStoreHeaders, {
+          email: "currency@customer.com",
+        })
+
+        storeHeadersWithAuth = {
+          ...newStoreHeaders,
+          headers: {
+            ...newStoreHeaders.headers,
+            Authorization: `Bearer ${user.jwt}`,
+          },
+        }
+        customer = user.customer
+
+        cart = (
+          await api.post(
+            `/store/carts`,
+            {
+              region_id: jpyRegion.id,
+              sales_channel_id: salesChannel.id,
+              items: [{ variant_id: multiCurrencyVariant.id, quantity: 1 }],
+            },
+            storeHeadersWithAuth
+          )
+        ).data.cart
+      })
+
+      it("should remove a gift card in another currency when the cart's region changes", async () => {
+        const jpyGiftCard = (
+          await api.post(
+            `/admin/gift-cards`,
+            {
+              ...giftCardPayload,
+              currency_code: "jpy",
+              value: 1000,
+              code: "JPY1",
+            },
+            adminHeaders
+          )
+        ).data.gift_card
+
+        const cartWithGiftCard = (
+          await api.post(
+            `/store/carts/${cart.id}/gift-cards?fields=+credit_line_total`,
+            { code: jpyGiftCard.code },
+            storeHeadersWithAuth
+          )
+        ).data.cart
+
+        expect(cartWithGiftCard).toEqual(
+          expect.objectContaining({
+            currency_code: "jpy",
+            total: 0,
+            credit_line_total: 1000,
+          })
+        )
+
+        const updatedCart = (
+          await api.post(
+            `/store/carts/${cart.id}?fields=+credit_line_total,+gift_cards.code`,
+            { region_id: region.id },
+            storeHeadersWithAuth
+          )
+        ).data.cart
+
+        expect(updatedCart).toEqual(
+          expect.objectContaining({
+            currency_code: "usd",
+            total: 1000,
+            credit_line_total: 0,
+            credit_lines: [],
+            gift_cards: [],
+          })
+        )
+      })
+
+      it("should remove store credits in another currency when the cart's region changes", async () => {
+        const customerAccount = (
+          await api.post(
+            `/admin/store-credit-accounts`,
+            { currency_code: "jpy", customer_id: customer.id },
+            adminHeaders
+          )
+        ).data.store_credit_account
+
+        await api.post(
+          `/admin/store-credit-accounts/${customerAccount.id}/credit`,
+          { amount: 1000, note: "Crediting customers account" },
+          adminHeaders
+        )
+
+        const cartWithStoreCredits = (
+          await api.post(
+            `/store/carts/${cart.id}/store-credits?fields=+credit_line_total`,
+            {},
+            storeHeadersWithAuth
+          )
+        ).data.cart
+
+        expect(cartWithStoreCredits).toEqual(
+          expect.objectContaining({
+            currency_code: "jpy",
+            total: 0,
+            credit_line_total: 1000,
+          })
+        )
+
+        const updatedCart = (
+          await api.post(
+            `/store/carts/${cart.id}?fields=+credit_line_total`,
+            { region_id: region.id },
+            storeHeadersWithAuth
+          )
+        ).data.cart
+
+        expect(updatedCart).toEqual(
+          expect.objectContaining({
+            currency_code: "usd",
+            total: 1000,
+            credit_line_total: 0,
+            credit_lines: [],
+          })
+        )
+      })
+    })
+
     describe("POST /store/carts/:id/taxes", () => {
       it("should not generate tax lines for gift card product items (is_giftcard=true)", async () => {
         const taxService = getContainer().resolve(Modules.TAX)
