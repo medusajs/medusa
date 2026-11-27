@@ -8,7 +8,10 @@ import {
   ContainerRegistrationKeys,
   MedusaError,
 } from "@medusajs/framework/utils"
-import { isAuthProviderAllowedForActor } from "./auth-methods-per-actor"
+import {
+  assertKnownActorType,
+  isAuthProviderAllowedForActor,
+} from "./auth-methods-per-actor"
 
 /**
  * Middleware to validate that a scope is associated with a provider.
@@ -28,6 +31,8 @@ export const validateScopeProviderAssociation = (actorType?: string) => {
     const config: ConfigModule = req.scope.resolve(
       ContainerRegistrationKeys.CONFIG_MODULE
     )
+
+    assertKnownActorType(config, actor_type)
 
     if (!isAuthProviderAllowedForActor(config, actor_type, auth_provider)) {
       throw new MedusaError(

@@ -65,6 +65,17 @@ medusaIntegrationTestRunner({
         expect(response.data.providers).toEqual([emailpassProvider])
       })
 
+      it("rejects an actor type the app doesn't know", async () => {
+        const response = await api
+          .get("/auth/banana/providers")
+          .catch((error) => error.response)
+
+        expect(response.status).toEqual(400)
+        expect(response.data.message).toEqual(
+          "The actor type banana is not supported. Add it to projectConfig.http.authMethodsPerActor to use it"
+        )
+      })
+
       it("never exposes provider options or secrets", async () => {
         const response = await api.get("/auth/user/providers")
 

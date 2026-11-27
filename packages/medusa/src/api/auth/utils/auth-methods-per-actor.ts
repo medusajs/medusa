@@ -1,4 +1,46 @@
 import { ConfigModule } from "@medusajs/framework/types"
+import { MedusaError } from "@medusajs/framework/utils"
+
+/**
+ * The actor types Medusa ships with. Any other actor type must have an entry
+ * in `projectConfig.http.authMethodsPerActor` to use the `/auth` routes.
+ */
+export const BUILT_IN_ACTOR_TYPES = ["user", "customer"]
+
+const getAuthMethodsPerActor = (
+  config: ConfigModule
+): Record<string, string[]> =>
+  config.projectConfig?.http?.authMethodsPerActor ?? {}
+
+/**
+ * Whether the app knows the given actor type: one Medusa ships with, or one
+ * with an entry in `projectConfig.http.authMethodsPerActor`.
+ */
+export const isKnownActorType = (
+  config: ConfigModule,
+  actorType: string
+): boolean => {
+  return (
+    BUILT_IN_ACTOR_TYPES.includes(actorType) ||
+    Object.keys(getAuthMethodsPerActor(config)).includes(actorType)
+  )
+}
+
+/**
+ * Throws when the app doesn't know the given actor type (see
+ * `isKnownActorType`).
+ */
+export const assertKnownActorType = (
+  config: ConfigModule,
+  actorType: string
+): void => {
+  if (!isKnownActorType(config, actorType)) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      `The actor type ${actorType} is not supported. Add it to projectConfig.http.authMethodsPerActor to use it`
+    )
+  }
+}
 
 /**
  * Returns the list of auth provider IDs allowed for the given actor type, as
@@ -11,25 +53,29 @@ export const getAllowedAuthProvidersForActor = (
   config: ConfigModule,
   actorType: string
 ): string[] | undefined => {
-  const authMethodsPerActor =
-    config.projectConfig?.http?.authMethodsPerActor ?? {}
+  const authMethodsPerActor = getAuthMethodsPerActor(config)
 
-  return authMethodsPerActor[actorType]
+  return Object.keys(authMethodsPerActor).includes(actorType)
+    ? authMethodsPerActor[actorType]
+    : undefined
 }
 
 /**
  * Whether a given auth provider is allowed for the given actor type.
  *
- * When the actor type has no allowlist configured, every provider is allowed.
+ * Unknown actor types (see `isKnownActorType`) are never allowed. A known
+ * actor type without an allowlist can use every provider.
  */
 export const isAuthProviderAllowedForActor = (
   config: ConfigModule,
   actorType: string,
   provider: string
 ): boolean => {
+  if (!isKnownActorType(config, actorType)) {
+    return false
+  }
+
   const allowedProviders = getAllowedAuthProvidersForActor(config, actorType)
 
-  // Not having the config defined would allow for all auth providers for the
-  // particular actor.
   return !allowedProviders || allowedProviders.includes(provider)
 }

@@ -1093,6 +1093,14 @@ export type ProjectConfigOptions = {
      *
      * `authMethodsPerActor` is a map where the actor type (eg. 'user') is the key, and the value is an array of supported auth provider IDs.
      *
+     * The `/auth` routes accept:
+     *
+     * - `user`, which defaults to `["emailpass"]`.
+     * - `customer`, which can use every registered auth provider unless you add an entry for it.
+     * - Any custom actor type that has an entry here. A custom actor type without an entry is refused.
+     *
+     * An empty array (eg. `customer: []`) allows no auth provider, which turns the actor type's `/auth` routes off.
+     *
      * @example
      * Some example values of common use cases:
      *
