@@ -973,6 +973,232 @@ describe("cross-module joins (stage 1 pushdown)", () => {
       })
     })
 
+    it("pushes unprefixed read-only links declared on an entity reached through internal relations", () => {
+      const { plan } = compile({
+        entity: "line_item",
+        fields: ["id"],
+        filters: {
+          cart: {
+            sales_channel: { name: "Webshop" },
+          },
+        },
+      })
+
+      expect(plan.crossModuleJoins).toEqual([
+        {
+          link: {
+            table: "cart_line_item",
+            sourceKey: "id",
+            targetKey: "cart_id",
+          },
+          target: {
+            table: "cart",
+            primaryKey: "id",
+          },
+        },
+        {
+          parent: "cart",
+          link: {
+            table: "cart",
+            sourceKey: "id",
+            targetKey: "sales_channel_id",
+          },
+          target: {
+            table: "sales_channel",
+            primaryKey: "id",
+            filters: { name: "Webshop" },
+          },
+        },
+      ])
+      expect(plan.residualCrossModuleFilters).toEqual([])
+    })
+
+    it("rejects unprefixed read-only links declared on a different entity than the traversed one", () => {
+      // `sales_channel` is declared on Cart, so it can't be read off the line
+      // item table reached through `items`.
+      const { crossModuleJoins, residualCrossModuleFilters } = extract({
+        entity: "cart",
+        fields: ["id"],
+        filters: {
+          items: {
+            sales_channel: { name: "Webshop" },
+          },
+        },
+      })
+
+      expect(crossModuleJoins).toEqual([])
+      expect(residualCrossModuleFilters).toEqual([
+        { path: "items.sales_channel", filters: { name: "Webshop" } },
+      ])
+    })
+
+    describe("unprefixed read-only links after a hasMany relation", () => {
+      const variantLinks = (
+        entity?: string,
+        prefix = ""
+      ): ModuleJoinerConfig => ({
+        isLink: true,
+        isReadOnlyLink: true,
+        extends: [
+          {
+            serviceName: "product",
+            entity,
+            relationship: {
+              serviceName: "pricing",
+              entity: "PriceSet",
+              primaryKey: "id",
+              foreignKey: `${prefix}default_price_set_id`,
+              alias: "default_price_set",
+              args: { methodSuffix: "PriceSets" },
+            },
+          },
+          {
+            serviceName: "product",
+            entity,
+            relationship: {
+              serviceName: "cart",
+              entity: "LineItem",
+              primaryKey: "variant_id",
+              foreignKey: "id",
+              alias: "line_items",
+              isList: true,
+              args: { methodSuffix: "LineItems" },
+            },
+          },
+        ],
+      })
+
+      // Registered first so the variant link has to be picked by its
+      // declaring entity, like the per-entity `translations` links.
+      const productLineItemsLink: ModuleJoinerConfig = {
+        isLink: true,
+        isReadOnlyLink: true,
+        extends: [
+          {
+            serviceName: "product",
+            entity: "Product",
+            relationship: {
+              serviceName: "cart",
+              entity: "LineItem",
+              primaryKey: "product_id",
+              foreignKey: "id",
+              alias: "line_items",
+              isList: true,
+              args: { methodSuffix: "LineItems" },
+            },
+          },
+        ],
+      }
+
+      const configs = [
+        ...crossModuleJoinerConfigs,
+        productLineItemsLink,
+        variantLinks("ProductVariant"),
+      ]
+
+      it.each([
+        { variants: { default_price_set: { currency_code: "usd" } } },
+        {
+          variants: {
+            sku: "SHIRT-S",
+            default_price_set: { currency_code: "usd" },
+          },
+        },
+      ])(
+        "pushes a forward link the same way as the dotted foreign key (%j)",
+        (filters) => {
+          const graphInput = { entity: "product", fields: ["id"], filters }
+
+          const unprefixed = compile(graphInput, configs)
+          const dotted = compile(graphInput, [
+            ...crossModuleJoinerConfigs,
+            variantLinks("ProductVariant", "variants."),
+          ])
+
+          expect(unprefixed.plan.crossModuleJoins).toContainEqual({
+            link: {
+              table: "product_variant",
+              sourceKey: "product_id",
+              targetKey: "default_price_set_id",
+            },
+            target: {
+              table: "price_set",
+              primaryKey: "id",
+              filters: { currency_code: "usd" },
+            },
+          })
+          expect(unprefixed.plan.residualCrossModuleFilters).toEqual([])
+          expect(unprefixed.plan.crossModuleJoins).toEqual(
+            dotted.plan.crossModuleJoins
+          )
+          expect(getArg(unprefixed.plan, "filters")).toEqual(
+            getArg(dotted.plan, "filters")
+          )
+        }
+      )
+
+      it("chains an inverse link off the hasMany hop", () => {
+        const { plan } = compile(
+          {
+            entity: "product",
+            fields: ["id"],
+            filters: {
+              variants: { line_items: { title: "Shirt" } },
+            },
+          },
+          configs,
+          new Map([["ProductVariant", new Map([["line_items", "LineItem"]])]])
+        )
+
+        expect(plan.crossModuleJoins).toEqual([
+          {
+            link: {
+              table: "product_variant",
+              sourceKey: "product_id",
+              targetKey: "id",
+            },
+            target: {
+              table: "product_variant",
+              primaryKey: "id",
+            },
+          },
+          {
+            parent: "product_variant",
+            link: {
+              table: "cart_line_item",
+              sourceKey: "variant_id",
+              targetKey: "id",
+            },
+            target: {
+              table: "cart_line_item",
+              primaryKey: "id",
+              filters: { title: "Shirt" },
+            },
+          },
+        ])
+        expect(plan.residualCrossModuleFilters).toEqual([])
+      })
+
+      it("leaves links without a declaring entity in place", () => {
+        const { crossModuleJoins, residualCrossModuleFilters, query } = extract(
+          {
+            entity: "product",
+            fields: ["id"],
+            filters: {
+              variants: { default_price_set: { currency_code: "usd" } },
+            },
+          },
+          [...crossModuleJoinerConfigs, variantLinks()]
+        )
+
+        expect(crossModuleJoins).toEqual([])
+        expect(residualCrossModuleFilters).toEqual([])
+        expect(getQueryArg(query, "filters")?.value).toEqual({
+          variants: { default_price_set: { currency_code: "usd" } },
+        })
+      })
+    })
+
     it("bails when the graph schema disagrees with the DML relation", () => {
       // Mirrors modules that remap relations in a custom schema (e.g.
       // order.items resolves to a different entity than the DML relation).

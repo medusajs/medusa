@@ -127,6 +127,7 @@ export function resolvePathHops(
         parentServiceConfig: currentConfig,
         property: realSegment,
         entity: hopEntity,
+        sourceEntity: entity,
       })
 
       if (!relationship) {
@@ -150,6 +151,7 @@ export function resolvePathHops(
         relationship,
         serviceConfig: nextConfig,
         entity: hopEntity,
+        parentEntity: entity,
         internalTrail: [...internalTrail],
       })
 
@@ -524,8 +526,15 @@ function resolveFkHopParts(
 
   // The dotted prefix declares the relation path the FK column lives on
   // (e.g. `items.product_id`) — it must match the internal hops traversed to
-  // reach this position.
-  if (prefix.join(".") !== hop.internalTrail.join(".")) {
+  // reach this position. An unprefixed FK declared on the entity those hops
+  // reached lives on that entity's table.
+  const isPrefixOnTrail = prefix.join(".") === hop.internalTrail.join(".")
+  const isDeclaredOnParent =
+    !prefix.length &&
+    !!relationship.sourceEntity &&
+    relationship.sourceEntity === hop.parentEntity
+
+  if (!isPrefixOnTrail && !isDeclaredOnParent) {
     return undefined
   }
 

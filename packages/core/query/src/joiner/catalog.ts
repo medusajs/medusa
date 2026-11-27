@@ -102,13 +102,28 @@ export class GraphCatalog {
     parentServiceConfig: InternalJoinerServiceConfig
     property: string
     entity?: string
+    /**
+     * Prefer relationships declared on this entity when several share the
+     * property.
+     */
+    sourceEntity?: string
   }): ComputedJoinerRelationship | undefined {
-    const { parentServiceConfig, property, entity } = params
+    const { parentServiceConfig, property, entity, sourceEntity } = params
 
     const propEntity = entity ?? parentServiceConfig?.entity
-    const rel = parentServiceConfig?.relationships?.get(property)
+    let rel = parentServiceConfig?.relationships?.get(property)
 
     if (Array.isArray(rel)) {
+      const declared = sourceEntity
+        ? rel.filter(
+            (r) =>
+              (r as ComputedJoinerRelationship).sourceEntity === sourceEntity
+          )
+        : []
+      if (declared.length) {
+        rel = declared
+      }
+
       if (!propEntity) {
         return rel[0] as ComputedJoinerRelationship
       }
@@ -254,6 +269,7 @@ export class GraphCatalog {
 
       const bucket = expandedRelationships.get(extend.serviceName)!
       const rel = extend.relationship as ComputedJoinerRelationship
+      rel.sourceEntity = extend.entity
       this.ensureKeyArrays(rel)
       this.addRelationship(bucket.relationships, rel.alias, rel)
       this.mergeFieldAlias(bucket, extend)

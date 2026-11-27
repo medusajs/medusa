@@ -1,9 +1,8 @@
+import { CrossModuleJoinSpec, JoinerServiceConfigAlias } from "@medusajs/types"
 import {
-  CrossModuleJoinSpec,
-  JoinerRelationship,
-  JoinerServiceConfigAlias,
-} from "@medusajs/types"
-import { InternalJoinerServiceConfig } from "../types"
+  ComputedJoinerRelationship,
+  InternalJoinerServiceConfig,
+} from "../types"
 
 export type InternalRelationMetadata = NonNullable<
   NonNullable<JoinerServiceConfigAlias["__internal"]>["relations"]
@@ -19,7 +18,11 @@ export type Hop = {
   property: string
   serviceConfig: InternalJoinerServiceConfig
   entity?: string
-  relationship?: JoinerRelationship
+  /**
+   * The entity this hop starts from.
+   */
+  parentEntity?: string
+  relationship?: ComputedJoinerRelationship
   internal?: InternalRelationMetadata
   /**
    * Properties of the contiguous module-internal hops immediately preceding

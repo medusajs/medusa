@@ -17,6 +17,11 @@ export type RelationMap = Map<string, Map<string, string>>
 export type ComputedJoinerRelationship = JoinerRelationship & {
   primaryKeyArr: string[]
   foreignKeyArr: string[]
+  /**
+   * The entity an `extends` entry declared the relationship on. Relationships
+   * are indexed per service, so this is the only record of it.
+   */
+  sourceEntity?: string
 }
 
 // Service config after catalog indexing (relationships as a Map).
