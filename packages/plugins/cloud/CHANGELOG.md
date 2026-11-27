@@ -1,5 +1,19 @@
 # @medusajs/cloud
 
+## 2.23.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @medusajs/dashboard@2.23.2
+  - @medusajs/framework@2.23.2
+  - @medusajs/js-sdk@2.23.2
+  - @medusajs/test-utils@2.23.2
+  - @medusajs/admin-sdk@2.23.2
+  - @medusajs/cli@2.23.2
+  - @medusajs/icons@2.23.2
+  - @medusajs/ui@4.3.2
+
 ## 2.23.1
 
 ### Patch Changes

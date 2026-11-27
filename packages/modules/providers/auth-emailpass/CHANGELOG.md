@@ -1,5 +1,14 @@
 # @medusajs/auth-emailpass
 
+## 2.23.2
+
+### Patch Changes
+
+- [#18036](https://github.com/medusajs/medusa/pull/18036) [`c0a157f`](https://github.com/medusajs/medusa/commit/c0a157f566d2a05bf9fdc69cefcd9f5aad1c6bd0) Thanks [@peterlgh7](https://github.com/peterlgh7)! - fix(auth-emailpass): take as long to refuse a login for an unknown email as for a wrong password
+
+- Updated dependencies []:
+  - @medusajs/framework@2.23.2
+
 ## 2.23.1
 
 ### Patch Changes
