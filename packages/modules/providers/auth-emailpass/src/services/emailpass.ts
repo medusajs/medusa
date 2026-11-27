@@ -13,6 +13,7 @@ import {
   MedusaError,
 } from "@medusajs/framework/utils"
 import { isPresent } from "@medusajs/utils"
+import { randomUUID } from "crypto"
 
 type ScryptKdf = typeof import("scrypt-kdf", {
   with: { "resolution-mode": "import" },
@@ -27,6 +28,11 @@ async function loadScrypt(): Promise<ScryptKdf> {
   ).default
   return scryptKdf
 }
+
+// A scrypt hash of a random string, made with the default hashConfig. Used when
+// a dummy hash can't be made with the configured one
+const FALLBACK_DUMMY_PASSWORD_HASH =
+  "c2NyeXB0AA8AAAAIAAAAAbILi6nEiqxctyznLIrjCTW8/P2D+ZVsQ4plnATdbvVNloBGa014BvNKMztXSqaJwsJ0QqpYCHOhMTPviPRt4Sc6tPSr8hbtzAJdDg8NQ7P8"
 
 type InjectedDependencies = {
   logger: Logger
@@ -51,6 +57,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
 
   protected config_: LocalServiceConfig
   protected logger_: Logger
+  private dummyPasswordHash_: Promise<string>
 
   constructor(
     { logger }: InjectedDependencies,
@@ -60,6 +67,12 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     super(...arguments)
     this.config_ = options
     this.logger_ = logger
+    this.dummyPasswordHash_ = this.hashPassword(randomUUID()).catch((error) => {
+      this.logger_.error(
+        `Emailpass couldn't generate a dummy password hash: ${error.message}. Using the fallback dummy hash instead.`
+      )
+      return FALLBACK_DUMMY_PASSWORD_HASH
+    })
   }
 
   protected async hashPassword(password: string) {
@@ -146,6 +159,8 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
       })
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {
+        await this.isPasswordMatch_(password)
+
         return {
           success: false,
           error: "Invalid email or password",
@@ -240,19 +255,28 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
     return this.sanitizeAuthIdentity_(authIdentity)
   }
 
+  // Without a stored hash, the password is checked against a dummy hash, so
+  // the answer takes as long as for an identity that has a password
   private async isPasswordMatch_(
     password: string,
-    authIdentity: AuthIdentityDTO
+    authIdentity?: AuthIdentityDTO
   ): Promise<boolean> {
-    const providerIdentity = this.getProviderIdentity_(authIdentity)
-    const passwordHash = providerIdentity?.provider_metadata?.password
-
-    if (!isString(passwordHash)) {
-      return false
-    }
+    const providerIdentity = authIdentity
+      ? this.getProviderIdentity_(authIdentity)
+      : undefined
+    const storedHash = providerIdentity?.provider_metadata?.password
+    const hasStoredHash = isString(storedHash)
+    const passwordHash = hasStoredHash
+      ? storedHash
+      : await this.dummyPasswordHash_
 
     const Scrypt = await loadScrypt()
-    return await Scrypt.verify(Buffer.from(passwordHash, "base64"), password)
+    const matches = await Scrypt.verify(
+      Buffer.from(passwordHash, "base64"),
+      password
+    )
+
+    return hasStoredHash && matches
   }
 
   private async getProviderMetadata_(
