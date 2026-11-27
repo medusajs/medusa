@@ -492,7 +492,7 @@ export const generatedEditDates = {
   "app/infrastructure-modules/search/index-definitions/page.mdx": "2026-09-22T11:09:25.270Z",
   "app/infrastructure-modules/search/page.mdx": "2026-09-22T14:46:31.407Z",
   "app/infrastructure-modules/search/providers/postgres/page.mdx": "2026-09-18T07:42:43.196Z",
-  "app/infrastructure-modules/search/reindexing/page.mdx": "2026-09-25T12:33:45.771Z",
+  "app/infrastructure-modules/search/reindexing/page.mdx": "2026-11-27T10:08:33.137Z",
   "app/infrastructure-modules/search/admin-search/page.mdx": "2026-09-14T12:59:00.139Z",
   "app/infrastructure-modules/search/index-definitions/linked-data/page.mdx": "2026-09-22T11:09:25.271Z",
   "app/infrastructure-modules/search/index-definitions/fields/page.mdx": "2026-09-22T11:09:25.271Z",
