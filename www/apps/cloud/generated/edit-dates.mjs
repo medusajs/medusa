@@ -90,5 +90,6 @@ export const generatedEditDates = {
   "app/payments/accounts/adyen/page.mdx": "2026-11-23T16:12:35.686Z",
   "app/payments/accounts/medusa-payments/page.mdx": "2026-11-27T07:40:23.427Z",
   "app/payments/accounts/stripe/page.mdx": "2026-11-27T07:40:23.428Z",
-  "app/enterprise/page.mdx": "2026-11-27T07:41:14.821Z"
+  "app/enterprise/page.mdx": "2026-11-27T07:41:14.821Z",
+  "app/ai-toolkit/medusa-mcp/page.mdx": "2026-11-27T10:58:15.840Z"
 }

@@ -6,16 +6,15 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll learn how to connect ChatGPT to the Medusa MCP server and use it to ask questions about your Medusa stores.
+In this guide, you'll learn how to connect ChatGPT to the Medusa MCP server and use it to ask questions about your Medusa stores and change their data.
 
 ## What is the Medusa ChatGPT Plugin?
 
 The ChatGPT plugin connects ChatGPT to the [Medusa MCP server](../page.mdx), so you can ask ChatGPT about your stores' orders, products, customers, and other commerce data. The plugin:
 
-- Can retrieve store data, but can't create, update, or delete it yet. Write access is coming soon.
-- Uses the Medusa MCP server's [static mode](../page.mdx#static-mode), so ChatGPT can only call a fixed set of tools that retrieve common commerce data, such as orders, products, and customers.
-
-To change store data or access all of your store's API routes, including custom ones, [add the Medusa MCP server as a custom plugin](#add-medusa-mcp-as-a-custom-plugin-in-chatgpt) instead, and give it [read and write access](../page.mdx#read-and-write-access) to your environments.
+- Can retrieve store data and, in environments with [read and write access](../page.mdx#read-and-write-access), create, update, and delete it. For example, it can create a product, fulfill an order, or refund a payment.
+- Uses the Medusa MCP server's [static mode](../page.mdx#static-mode), so ChatGPT can only call a fixed set of tools that retrieve or change common commerce data, such as orders, products, and customers.
+To access all of your store's API routes, including custom ones, [add the Medusa MCP server as a custom plugin](#add-medusa-mcp-as-a-custom-plugin-in-chatgpt) instead.
 
 <Note>
 
@@ -88,8 +87,10 @@ Select the plugin from the tools menu in the message input, or mention it in you
 - "Show me the 5 most recent orders in my store, with each order's total and status."
 - "How many orders are waiting to be fulfilled?"
 - "How much stock is left for the SKU `SHIRT-S-BLACK`?"
+- "Create a 10% off promotion with the code `WINTER10` in my staging store."
+- "Set the stock of the SKU `SHIRT-S-BLACK` to 50."
 
-The ChatGPT plugin can call the [static mode tools](../page.mdx#static-mode). As a custom plugin, ChatGPT can call all [available tools](../page.mdx#available-tools).
+The ChatGPT plugin can call the [static mode tools](../page.mdx#static-tools). As a custom plugin, ChatGPT can call all [available tools](../page.mdx#available-tools).
 
 ---
 

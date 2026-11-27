@@ -551,9 +551,9 @@ These tools answer general Medusa questions and share your feedback with the Med
 
 By default, the [commerce tools](#commerce-tools) find and call any of your store's API routes, including custom ones. Some AI tools work better with a smaller, fixed set of tools, so the Medusa MCP server provides a static mode.
 
-Static mode replaces `find_commerce_api`, `describe_commerce_api`, and `read_store_api` with tools that each retrieve specific commerce data from your store's Admin API routes. `read_admin_api`, `write_admin_api`, the [Cloud tools](#cloud-tools), and the [documentation and feedback tools](#documentation-and-feedback-tools) are available in both modes. In static mode, the AI tool looks up the Admin API routes for `read_admin_api` and `write_admin_api` in the [Admin API reference](!api!/admin).
+Static mode replaces `find_commerce_api`, `describe_commerce_api`, `read_admin_api`, `write_admin_api`, and `read_store_api` with tools that each retrieve or change specific commerce data through your store's Admin API routes. For example, `list_orders` retrieves orders and `create_product` creates a product. The [Cloud tools](#cloud-tools) and the [documentation and feedback tools](#documentation-and-feedback-tools) are available in both modes.
 
-The [ChatGPT plugin](./chatgpt/page.mdx) uses static mode. Its write access is coming soon, so it can't call `write_admin_api` yet.
+The [ChatGPT plugin](./chatgpt/page.mdx) uses static mode.
 
 ### Use Static Mode
 
@@ -572,13 +572,19 @@ claude mcp add --transport http medusa-commerce \
 
 <Note>
 
-In static mode, the AI tool can't search your store's custom API routes or call its Store API routes. To access them, connect without the `mode` query parameter.
+In static mode, the AI tool can't search your store's custom API routes, call its Store API routes, or call Admin API routes that the static tools don't cover. To access them, connect without the `mode` query parameter.
 
 </Note>
 
 ### Static Tools
 
-Static tools require Medusa [v2.15.2](https://github.com/medusajs/medusa/releases/tag/v2.15.2) or later in the environment's Medusa application. In static mode, the AI tool can use these tools in addition to `list_connected_environments`, `list_medusa_publishable_keys`, `read_admin_api`, and `write_admin_api`:
+Static tools require Medusa [v2.15.2](https://github.com/medusajs/medusa/releases/tag/v2.15.2) or later in the environment's Medusa application. In static mode, the AI tool can use the [read tools](#static-read-tools) and [write tools](#static-write-tools) in addition to `list_connected_environments` and `list_medusa_publishable_keys`.
+
+The translation tools also require the [Translation Module](!resources!/commerce-modules/translation) in the environment's Medusa application.
+
+#### Static Read Tools
+
+These tools retrieve commerce data from environments with read access:
 
 <Table>
   <Table.Header>
@@ -750,6 +756,315 @@ Static tools require Medusa [v2.15.2](https://github.com/medusajs/medusa/release
       </Table.Cell>
       <Table.Cell>
         Retrieves a return's details, including its status, refund amount, and returned items.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_refund_reasons`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists a store's refund reasons, which the AI tool can set when it refunds a payment.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_translations`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists the translations of products, variants, categories, and other resources, filtered by resource or locale.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `list_locales`
+
+      </Table.Cell>
+      <Table.Cell>
+        Lists the locales that a store can translate into.
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+#### Static Write Tools
+
+These tools change commerce data, only in environments with [read and write access](#read-and-write-access). In a production environment, the AI tool tells you what will change and waits for your confirmation.
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Tool
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      `update_order`
+
+      </Table.Cell>
+      <Table.Cell>
+        Updates an order's email, shipping address, or billing address.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `cancel_order`
+
+      </Table.Cell>
+      <Table.Cell>
+        Cancels an order that isn't fulfilled.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `create_order_fulfillment`
+
+      </Table.Cell>
+      <Table.Cell>
+        Fulfills some or all of an order's items from a stock location.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `create_order_shipment`
+
+      </Table.Cell>
+      <Table.Cell>
+        Marks an order's fulfillment as shipped, optionally with tracking labels.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `mark_order_fulfillment_delivered`
+
+      </Table.Cell>
+      <Table.Cell>
+        Marks an order's fulfillment as delivered.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `cancel_order_fulfillment`
+
+      </Table.Cell>
+      <Table.Cell>
+        Cancels an order's fulfillment that hasn't shipped yet.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `refund_payment`
+
+      </Table.Cell>
+      <Table.Cell>
+        Refunds some or all of an order's captured payment through the payment provider. You can't undo a refund.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `create_product`
+
+      </Table.Cell>
+      <Table.Cell>
+        Creates a product, optionally with its options, variants, and prices. The product is a draft unless you ask for another status.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `update_product`
+
+      </Table.Cell>
+      <Table.Cell>
+        Updates a product's details, such as its title, description, status, images, categories, or sales channels.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `delete_product`
+
+      </Table.Cell>
+      <Table.Cell>
+        Deletes a product and its variants.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `create_product_variant`
+
+      </Table.Cell>
+      <Table.Cell>
+        Adds a variant with its prices to a product.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `update_product_variant`
+
+      </Table.Cell>
+      <Table.Cell>
+        Updates a variant's title, SKU, barcode, prices, or inventory settings.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `delete_product_variant`
+
+      </Table.Cell>
+      <Table.Cell>
+        Deletes a product's variant.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `update_inventory_level`
+
+      </Table.Cell>
+      <Table.Cell>
+        Sets an inventory item's stocked or incoming quantity in a stock location. The quantity replaces the current one.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `create_customer`
+
+      </Table.Cell>
+      <Table.Cell>
+        Creates a customer without an account. The customer can register with the same email later.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `update_customer`
+
+      </Table.Cell>
+      <Table.Cell>
+        Updates a customer's name, email, company, or phone.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `create_promotion`
+
+      </Table.Cell>
+      <Table.Cell>
+        Creates a promotion with its code, discount, and rules.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `update_promotion`
+
+      </Table.Cell>
+      <Table.Cell>
+        Updates a promotion's code, discount, campaign, or whether it applies automatically.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `delete_promotion`
+
+      </Table.Cell>
+      <Table.Cell>
+        Deletes a promotion.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `create_region`
+
+      </Table.Cell>
+      <Table.Cell>
+        Creates a region with its currency and countries.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `update_region`
+
+      </Table.Cell>
+      <Table.Cell>
+        Updates a region's name, currency, countries, tax settings, or payment providers.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `create_sales_channel`
+
+      </Table.Cell>
+      <Table.Cell>
+        Creates a sales channel.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `update_sales_channel`
+
+      </Table.Cell>
+      <Table.Cell>
+        Updates a sales channel's name or description, or disables or enables it.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `update_shipping_option`
+
+      </Table.Cell>
+      <Table.Cell>
+        Updates a shipping option's name or prices.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `cancel_return`
+
+      </Table.Cell>
+      <Table.Cell>
+        Cancels a return that the store hasn't received yet.
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      `manage_translations`
+
+      </Table.Cell>
+      <Table.Cell>
+        Creates, updates, and deletes translations of products, variants, categories, and other resources.
       </Table.Cell>
     </Table.Row>
   </Table.Body>
