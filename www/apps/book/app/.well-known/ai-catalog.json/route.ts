@@ -54,7 +54,7 @@ const getCatalog = () => {
         description:
           "Search the Medusa documentation and get the most relevant content for a query. Pass the query in the `q` parameter.",
         type: "application/json",
-        url: `${baseUrl}/agents/search`,
+        url: `${baseUrl}/agents/ask`,
         representativeQueries: [
           "search the Medusa documentation",
           "find Medusa docs about workflows",

@@ -79,7 +79,7 @@ export const fetchedAny = (output: string, context: Context) => {
 }
 
 export const usedAgentEntryPoints = (output: string, context: Context) => {
-  const entryPoints = ["/SKILL", "/llms.txt", "/agents/search", "/.well-known"]
+  const entryPoints = ["/SKILL", "/llms.txt", "/agents/ask", "/.well-known"]
   const urls = fetchCalls(context).map((call) => call.input?.url || "")
   const used = urls.filter((url) =>
     entryPoints.some((entry) => url.includes(entry))

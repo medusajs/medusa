@@ -21,7 +21,7 @@ const getCatalog = () => {
           { href: `${baseUrl}/api/store` },
           { href: `${baseUrl}/api/admin` },
           { href: `${baseUrl}/mcp` },
-          { href: `${baseUrl}/agents/search` },
+          { href: `${baseUrl}/agents/ask` },
         ],
       },
       ...(["store", "admin"] as const).map((area) => ({
@@ -49,7 +49,7 @@ const getCatalog = () => {
         ],
       },
       {
-        anchor: `${baseUrl}/agents/search`,
+        anchor: `${baseUrl}/agents/ask`,
         "service-doc": [
           {
             href: `${baseUrl}/cloud/ai-toolkit/ai-friendly-docs#docs-retrieval-endpoint`,

@@ -113,7 +113,7 @@ export const WebMcpTools = () => {
           if (limit !== undefined) {
             params.set("limit", String(limit))
           }
-          return fetchText(`${origin}/agents/search?${params}`)
+          return fetchText(`${origin}/agents/ask?${params}`)
         },
       },
       {
