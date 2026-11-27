@@ -154,6 +154,8 @@ async function main() {
 
   const container = await initializeContainer(directory, {
     skipDbConnection: true,
+    // Run-time secrets (JWT, cookie) aren't set at build time, as for a plain build
+    throwOnValidationError: false,
   })
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
   const configModule = container.resolve(
