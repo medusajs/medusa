@@ -1,10 +1,13 @@
 import { CreateCartCreditLineDTO } from "@medusajs/framework/types";
 import { MathBN, MedusaError, Modules } from "@medusajs/framework/utils";
 import {
+  acquireLockStep,
   createCartCreditLinesWorkflow,
   createLinksWorkflow,
   refreshCartItemsWorkflow,
+  releaseLockStep,
   useQueryGraphStep,
+  validateCartStep,
 } from "@medusajs/medusa/core-flows";
 import {
   createHook,
@@ -233,15 +236,30 @@ export interface AddGiftCardToCartWorkflowInput {
 export const addGiftCardToCartWorkflow = createWorkflow(
   "add-gift-card-to-cart",
   function (input: AddGiftCardToCartWorkflowInput) {
+    acquireLockStep({
+      key: input.cart_id,
+      timeout: 2,
+      ttl: 10,
+    });
+
     const cartQuery = useQueryGraphStep({
       entity: "cart",
       filters: { id: input.cart_id },
-      fields: ["id", "currency_code", "total", "gift_cards.code"],
+      fields: [
+        "id",
+        "completed_at",
+        "currency_code",
+        "total",
+        "gift_cards.code",
+      ],
+      options: { throwIfKeyNotFound: true },
     }).config({ name: "get-cart-query" });
 
     const cart = transform({ cartQuery }, ({ cartQuery }) => {
       return cartQuery.data[0];
     });
+
+    validateCartStep({ cart });
 
     const giftCardQuery = useQueryGraphStep({
       entity: "gift_card",
@@ -353,6 +371,10 @@ export const addGiftCardToCartWorkflow = createWorkflow(
 
     refreshCartItemsWorkflow.runAsStep({
       input: { cart_id: input.cart_id },
+    });
+
+    releaseLockStep({
+      key: input.cart_id,
     });
 
     return new WorkflowResponse(creditLines, {

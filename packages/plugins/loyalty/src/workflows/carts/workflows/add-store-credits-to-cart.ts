@@ -1,9 +1,11 @@
 import { CreateCartCreditLineDTO } from "@medusajs/framework/types";
 import { isDefined, MathBN, MedusaError } from "@medusajs/framework/utils";
 import {
+  acquireLockStep,
   createCartCreditLinesWorkflow,
   deleteCartCreditLinesWorkflow,
   refreshCartItemsWorkflow,
+  releaseLockStep,
   useQueryGraphStep,
 } from "@medusajs/medusa/core-flows";
 import {
@@ -77,8 +79,8 @@ export interface ValidateCartStepInput {
 
 /**
  * This step validates that a cart is eligible for store credit usage. It throws an
- * error if the cart is not found, does not have a customer, or does not have a
- * currency set.
+ * error if the cart is not found, is already completed, does not have a customer,
+ * or does not have a currency set.
  *
  * @example
  * const data = validateCartStep({
@@ -96,6 +98,13 @@ export const validateCartStep = createStep(
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Cart with id ${input.cart_id} not found`
+      );
+    }
+
+    if (cart.completed_at) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Cart ${cart.id} is already completed.`
       );
     }
 
@@ -248,10 +257,23 @@ export interface AddStoreCreditsToCartWorkflowInput {
 export const addStoreCreditsToCartWorkflow = createWorkflow(
   "add-store-credits-to-cart",
   function (input: AddStoreCreditsToCartWorkflowInput) {
+    acquireLockStep({
+      key: input.cart_id,
+      timeout: 2,
+      ttl: 10,
+    });
+
     const cartQuery = useQueryGraphStep({
       entity: "cart",
       filters: { id: input.cart_id },
-      fields: ["id", "currency_code", "total", "customer_id", "credit_lines.*"],
+      fields: [
+        "id",
+        "completed_at",
+        "currency_code",
+        "total",
+        "customer_id",
+        "credit_lines.*",
+      ],
     }).config({ name: "get-cart-query" });
 
     const cart = transform({ cartQuery }, ({ cartQuery }) => {
@@ -299,6 +321,10 @@ export const addStoreCreditsToCartWorkflow = createWorkflow(
 
     refreshCartItemsWorkflow.runAsStep({
       input: { cart_id: input.cart_id },
+    });
+
+    releaseLockStep({
+      key: input.cart_id,
     });
 
     return new WorkflowResponse(createdCreditLines);
