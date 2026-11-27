@@ -24,6 +24,7 @@ import {
   dynamicImport,
   executeWithConcurrency,
   FeatureFlag,
+  getBuildManifest,
   GraphQLUtils,
   isObject,
   isSharedConnectionSymbol,
@@ -37,6 +38,7 @@ import {
   withDbTroubleshootingLink,
   DBTroubleshootingSection,
 } from "@medusajs/utils"
+import { createHash } from "crypto"
 import { Link } from "./link"
 import {
   MedusaModule,
@@ -333,7 +335,11 @@ function isMedusaModule(mod) {
   return typeof mod?.initialize === "function"
 }
 
-function cleanAndMergeSchema(loadedSchema) {
+/**
+ * Cleans and merges the modules' schemas into the query graph's type
+ * definitions. Also run at build time, to precompute them.
+ */
+export function mergeLoadedSchema(loadedSchema: string) {
   const defaultMedusaSchema = `
     scalar DateTime
     scalar JSON
@@ -342,14 +348,74 @@ function cleanAndMergeSchema(loadedSchema) {
   const { schema: cleanedSchema, notFound } = GraphQLUtils.cleanGraphQLSchema(
     defaultMedusaSchema + loadedSchema
   )
-  const mergedSchema = GraphQLUtils.mergeTypeDefs(cleanedSchema)
   return {
-    schema: GraphQLUtils.makeExecutableSchema({ typeDefs: mergedSchema }),
+    typeDefs: GraphQLUtils.mergeTypeDefs(cleanedSchema),
     notFound,
   }
 }
 
-function getLoadedSchema(): string {
+let lastMergedSchemaInput: string | undefined
+
+/**
+ * The schema input the query graph was last built from, as merged (in the
+ * order the joiner configs were registered). Lets a build step precompute
+ * exactly what the app merges at boot.
+ */
+export function getLastMergedSchemaInput() {
+  return lastMergedSchemaInput
+}
+
+/**
+ * Hash of the current joiner configs' schemas, for matching them against a
+ * build manifest's `graphqlSchema.inputHash`. Modules load concurrently, so
+ * joiner configs register in a varying order: the hash is taken over a copy
+ * sorted by service name, then schema text, so it doesn't depend on that
+ * order. The merge itself still uses the registration order.
+ */
+export function getLoadedSchemaHash(): string {
+  const sorted = MedusaModule.getAllJoinerConfigs()
+    .map((joinerConfig) => ({
+      key: joinerConfig?.serviceName ?? "",
+      schema: joinerConfig?.schema ?? "",
+    }))
+    .sort((a, b) =>
+      a.key === b.key
+        ? a.schema.localeCompare(b.schema)
+        : a.key.localeCompare(b.key)
+    )
+    .map(({ schema }) => schema)
+    .join("\n")
+
+  return createHash("sha1").update(sorted).digest("hex")
+}
+
+/**
+ * @internal exported for tests
+ */
+export function cleanAndMergeSchema(loadedSchema: string) {
+  lastMergedSchemaInput = loadedSchema
+
+  const precomputed = getBuildManifest()?.graphqlSchema
+  if (precomputed && precomputed.inputHash === getLoadedSchemaHash()) {
+    return {
+      schema: GraphQLUtils.buildASTSchema(
+        GraphQLUtils.parse(precomputed.typeDefs)
+      ),
+      notFound: precomputed.notFound,
+    }
+  }
+
+  const { typeDefs, notFound } = mergeLoadedSchema(loadedSchema)
+  return {
+    schema: GraphQLUtils.makeExecutableSchema({ typeDefs }),
+    notFound,
+  }
+}
+
+/**
+ * @internal exported for tests
+ */
+export function getLoadedSchema(): string {
   return MedusaModule.getAllJoinerConfigs()
     .map((joinerConfig) => joinerConfig?.schema ?? "")
     .join("\n")

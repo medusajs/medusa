@@ -5,6 +5,9 @@ import {
   Subscriber,
 } from "@medusajs/types"
 import {
+  deferredLoad,
+  dynamicImport,
+  getBuildManifest,
   isFileSkipped,
   kebabCase,
   Modules,
@@ -45,6 +48,31 @@ export class SubscriberLoader extends ResourceLoader {
   ) {
     super(sourceDir, container)
     this.#pluginOptions = options
+  }
+
+  /**
+   * Subscribers in the build manifest are registered from their recorded
+   * config, and their handler file is imported on the first event.
+   */
+  protected exportsFromBuildManifest(path: string) {
+    const entry = getBuildManifest()?.subscribers?.[path]
+    if (!entry) {
+      return
+    }
+
+    const handler = async (...args: unknown[]) => {
+      const fileExports = await deferredLoad(
+        { kind: "subscriber", target: path, file: path },
+        () => dynamicImport(path)
+      )
+      return (fileExports.default as Function)(...args)
+    }
+    // The handler name is a fallback for the subscriber id
+    Object.defineProperty(handler, "name", {
+      value: entry.handlerName ?? "",
+    })
+
+    return { default: handler, config: entry.config }
   }
 
   protected async onFileLoaded(
