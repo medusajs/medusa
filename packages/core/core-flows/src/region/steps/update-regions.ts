@@ -6,6 +6,7 @@ import {
 import {
   Modules,
   getSelectsAndRelationsFromObjectArray,
+  removeUndefined,
 } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
@@ -42,9 +43,13 @@ export const updateRegionsStep = createStep(
   async (data: UpdateRegionsStepInput, { container }) => {
     const service = container.resolve<IRegionModuleService>(Modules.REGION)
 
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray([
-      data.update,
-    ])
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray(
+      [data.update],
+      {
+        objectFields: ["metadata"],
+        requiredFields: ["id", "name", "currency_code", "metadata"],
+      }
+    )
 
     const prevData = await service.listRegions(data.selector, {
       select: selects,
@@ -67,13 +72,15 @@ export const updateRegionsStep = createStep(
     const service = container.resolve<IRegionModuleService>(Modules.REGION)
 
     await service.upsertRegions(
-      prevData.map((r) => ({
-        id: r.id,
-        name: r.name,
-        currency_code: r.currency_code,
-        metadata: r.metadata,
-        countries: r.countries?.map((c) => c.iso_2),
-      }))
+      prevData.map((r) =>
+        removeUndefined({
+          id: r.id,
+          name: r.name,
+          currency_code: r.currency_code,
+          metadata: r.metadata,
+          countries: r.countries?.map((c) => c.iso_2),
+        })
+      )
     )
   }
 )

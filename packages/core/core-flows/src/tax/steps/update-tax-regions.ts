@@ -35,7 +35,9 @@ export const updateTaxRegionsStep = createStep(
       return new StepResponse([], [])
     }
 
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray(data)
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray(data, {
+      objectFields: ["metadata"],
+    })
 
     const prevData = await service.listTaxRegions(
       { id: data.map((d) => d.id) },

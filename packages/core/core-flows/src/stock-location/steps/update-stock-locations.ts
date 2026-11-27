@@ -3,10 +3,12 @@ import {
   IStockLocationService,
   UpdateStockLocationInput,
 } from "@medusajs/framework/types"
-import { getSelectsAndRelationsFromObjectArray } from "@medusajs/framework/utils"
+import {
+  Modules,
+  getSelectsAndRelationsFromObjectArray,
+  removeUndefined,
+} from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
-
-import { Modules } from "@medusajs/framework/utils"
 
 /**
  * The data to update stock locations.
@@ -42,9 +44,13 @@ export const updateStockLocationsStep = createStep(
     const stockLocationService = container.resolve<IStockLocationService>(
       Modules.STOCK_LOCATION
     )
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray([
-      input.update,
-    ])
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray(
+      [input.update],
+      {
+        objectFields: ["metadata"],
+        requiredFields: ["id", "name", "metadata"],
+      }
+    )
 
     const dataBeforeUpdate = await stockLocationService.listStockLocations(
       input.selector,
@@ -72,12 +78,14 @@ export const updateStockLocationsStep = createStep(
     )
 
     await stockLocationService.upsertStockLocations(
-      revertInput.map((item) => ({
-        id: item.id,
-        name: item.name,
-        ...(item.metadata ? { metadata: item.metadata } : {}),
-        ...(item.address ? { address: item.address } : {}),
-      }))
+      revertInput.map((item) =>
+        removeUndefined({
+          id: item.id,
+          name: item.name,
+          metadata: item.metadata,
+          address: item.address,
+        })
+      )
     )
   }
 )

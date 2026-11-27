@@ -7,6 +7,7 @@ import {
   Modules,
   getSelectsAndRelationsFromObjectArray,
   isPresent,
+  removeUndefined,
 } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
@@ -49,9 +50,13 @@ export const updatePaymentCollectionStep = createStep(
       Modules.PAYMENT
     )
 
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray([
-      data.update,
-    ])
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray(
+      [data.update],
+      {
+        objectFields: ["metadata", "amount"],
+        requiredFields: ["id", "amount", "currency_code", "metadata"],
+      }
+    )
 
     const prevData = await paymentModuleService.listPaymentCollections(
       data.selector,
@@ -77,12 +82,14 @@ export const updatePaymentCollectionStep = createStep(
     )
 
     await paymentModuleService.upsertPaymentCollections(
-      prevData.map((pc) => ({
-        id: pc.id,
-        amount: pc.amount,
-        currency_code: pc.currency_code,
-        metadata: pc.metadata,
-      }))
+      prevData.map((pc) =>
+        removeUndefined({
+          id: pc.id,
+          amount: pc.amount,
+          currency_code: pc.currency_code,
+          metadata: pc.metadata,
+        })
+      )
     )
   }
 )

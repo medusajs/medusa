@@ -6,6 +6,7 @@ import {
 import {
   Modules,
   getSelectsAndRelationsFromObjectArray,
+  removeUndefined,
 } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
@@ -44,9 +45,19 @@ export const updateSalesChannelsStep = createStep(
       Modules.SALES_CHANNEL
     )
 
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray([
-      data.update,
-    ])
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray(
+      [data.update],
+      {
+        objectFields: ["metadata"],
+        requiredFields: [
+          "id",
+          "name",
+          "description",
+          "is_disabled",
+          "metadata",
+        ],
+      }
+    )
 
     const prevData = await service.listSalesChannels(data.selector, {
       select: selects,
@@ -70,13 +81,15 @@ export const updateSalesChannelsStep = createStep(
     )
 
     await service.upsertSalesChannels(
-      prevData.map((r) => ({
-        id: r.id,
-        name: r.name,
-        description: r.description,
-        is_disabled: r.is_disabled,
-        metadata: r.metadata,
-      }))
+      prevData.map((r) =>
+        removeUndefined({
+          id: r.id,
+          name: r.name,
+          description: r.description,
+          is_disabled: r.is_disabled,
+          metadata: r.metadata,
+        })
+      )
     )
   }
 )

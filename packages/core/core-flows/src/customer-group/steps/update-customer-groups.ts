@@ -7,6 +7,7 @@ import {
   Modules,
   getSelectsAndRelationsFromObjectArray,
   promiseAll,
+  removeUndefined,
 } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
@@ -43,9 +44,13 @@ export const updateCustomerGroupsStep = createStep(
   async (data: UpdateCustomerGroupStepInput, { container }) => {
     const service = container.resolve<ICustomerModuleService>(Modules.CUSTOMER)
 
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray([
-      data.update,
-    ])
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray(
+      [data.update],
+      {
+        objectFields: ["metadata"],
+        requiredFields: ["id", "name", "metadata"],
+      }
+    )
     const prevCustomerGroups = await service.listCustomerGroups(data.selector, {
       select: selects,
       relations,
@@ -59,7 +64,7 @@ export const updateCustomerGroupsStep = createStep(
     return new StepResponse(customers, prevCustomerGroups)
   },
   async (prevCustomerGroups, { container }) => {
-    if (!prevCustomerGroups) {
+    if (!prevCustomerGroups?.length) {
       return
     }
 
@@ -67,10 +72,13 @@ export const updateCustomerGroupsStep = createStep(
 
     await promiseAll(
       prevCustomerGroups.map((c) =>
-        service.updateCustomerGroups(c.id, {
-          name: c.name,
-          metadata: c.metadata,
-        })
+        service.updateCustomerGroups(
+          c.id,
+          removeUndefined({
+            name: c.name,
+            metadata: c.metadata,
+          })
+        )
       )
     )
   }

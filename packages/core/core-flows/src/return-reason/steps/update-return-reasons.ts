@@ -7,6 +7,7 @@ import {
   Modules,
   getSelectsAndRelationsFromObjectArray,
   promiseAll,
+  removeUndefined,
 } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
@@ -43,9 +44,13 @@ export const updateReturnReasonsStep = createStep(
   async (data: UpdateReturnReasonStepInput, { container }) => {
     const service = container.resolve<IOrderModuleService>(Modules.ORDER)
 
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray([
-      data.update,
-    ])
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray(
+      [data.update],
+      {
+        objectFields: ["metadata"],
+        requiredFields: ["id", "value", "label", "description", "metadata"],
+      }
+    )
     const prevReturnReasons = await service.listReturnReasons(data.selector, {
       select: selects,
       relations,
@@ -59,7 +64,7 @@ export const updateReturnReasonsStep = createStep(
     return new StepResponse(reasons, prevReturnReasons)
   },
   async (prevReturnReasons, { container }) => {
-    if (!prevReturnReasons) {
+    if (!prevReturnReasons?.length) {
       return
     }
 
@@ -67,12 +72,15 @@ export const updateReturnReasonsStep = createStep(
 
     await promiseAll(
       prevReturnReasons.map((c) =>
-        service.updateReturnReasons(c.id, {
-          value: c.value,
-          label: c.label,
-          description: c.description,
-          metadata: c.metadata,
-        })
+        service.updateReturnReasons(
+          c.id,
+          removeUndefined({
+            value: c.value,
+            label: c.label,
+            description: c.description,
+            metadata: c.metadata,
+          })
+        )
       )
     )
   }

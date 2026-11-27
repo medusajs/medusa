@@ -6,6 +6,7 @@ import {
 import {
   Modules,
   getSelectsAndRelationsFromObjectArray,
+  removeUndefined,
 } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
@@ -42,9 +43,13 @@ export const updateStoresStep = createStep(
   async (data: UpdateStoresStepInput, { container }) => {
     const service = container.resolve<IStoreModuleService>(Modules.STORE)
 
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray([
-      data.update,
-    ])
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray(
+      [data.update],
+      {
+        objectFields: ["metadata"],
+        requiredFields: ["id", "metadata"],
+      }
+    )
 
     const prevData = await service.listStores(data.selector, {
       select: selects,
@@ -61,11 +66,6 @@ export const updateStoresStep = createStep(
 
     const service = container.resolve<IStoreModuleService>(Modules.STORE)
 
-    await service.upsertStores(
-      prevData.map((r) => ({
-        ...r,
-        metadata: r.metadata || undefined,
-      }))
-    )
+    await service.upsertStores(prevData.map((r) => removeUndefined({ ...r })))
   }
 )

@@ -30,9 +30,12 @@ export const updateLineItemsStepWithSelector = createStep(
   async (input: UpdateLineItemWithSelectorDTO, { container }) => {
     const service = container.resolve<ICartModuleService>(Modules.CART)
 
-    const { selects, relations } = getSelectsAndRelationsFromObjectArray([
-      input.data,
-    ])
+    const { selects, relations } = getSelectsAndRelationsFromObjectArray(
+      [input.data],
+      {
+        objectFields: ["metadata"],
+      }
+    )
 
     const itemsBefore = await service.listLineItems(input.selector, {
       select: selects,

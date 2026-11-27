@@ -38,6 +38,7 @@ export const updateCartsStep = createStep(
     }
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray(data, {
+      objectFields: ["metadata"],
       requiredFields: [
         "id",
         "region_id",
