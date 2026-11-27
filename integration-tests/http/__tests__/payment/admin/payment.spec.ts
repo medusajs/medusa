@@ -1,6 +1,6 @@
 import { refundPaymentsWorkflow } from "@medusajs/core-flows"
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { ClaimType, Modules } from "@medusajs/utils"
+import { ClaimType, Modules, OrderStatus } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -624,6 +624,254 @@ medusaIntegrationTestRunner({
             reference_id: "test",
           }),
         ])
+      })
+
+      it("should not refund the payment when the order has an active order change", async () => {
+        const paymentModule = container.resolve(Modules.PAYMENT)
+        const payment = order.payment_collections[0].payments[0]
+
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          undefined,
+          adminHeaders
+        )
+
+        await api.post(
+          "/admin/order-edits",
+          { order_id: order.id, description: "Pending edit" },
+          adminHeaders
+        )
+
+        const providerRefundSpy = jest.spyOn(
+          (paymentModule as any).paymentProviderService_,
+          "refundPayment"
+        )
+        providerRefundSpy.mockClear()
+
+        const error = await api
+          .post(
+            `/admin/payments/${payment.id}/refund`,
+            { amount: 50 },
+            adminHeaders
+          )
+          .catch((e) => e)
+
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.message).toEqual(
+          `Order (${order.id}) already has an existing active order change`
+        )
+        expect(providerRefundSpy).not.toHaveBeenCalled()
+
+        const updatedPayment = await paymentModule.retrievePayment(payment.id, {
+          relations: ["refunds"],
+        })
+        expect(updatedPayment.refunds).toHaveLength(0)
+
+        const updatedOrder = (
+          await api.get(`/admin/orders/${order.id}`, adminHeaders)
+        ).data.order
+        expect(updatedOrder.credit_lines).toEqual([])
+      })
+
+      it("should refund the payment and create a credit line once the order change is cancelled", async () => {
+        const payment = order.payment_collections[0].payments[0]
+
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          undefined,
+          adminHeaders
+        )
+
+        await api.post(
+          "/admin/order-edits",
+          { order_id: order.id, description: "Pending edit" },
+          adminHeaders
+        )
+        await api.delete(`/admin/order-edits/${order.id}`, adminHeaders)
+
+        const response = await api.post(
+          `/admin/payments/${payment.id}/refund`,
+          { amount: 50 },
+          adminHeaders
+        )
+
+        expect(response.status).toEqual(200)
+
+        const updatedOrder = (
+          await api.get(`/admin/orders/${order.id}`, adminHeaders)
+        ).data.order
+        expect(updatedOrder.credit_line_total).toEqual(50)
+        expect(updatedOrder.credit_lines).toHaveLength(1)
+      })
+
+      it("should not refund the payment when the order is canceled", async () => {
+        const paymentModule = container.resolve(Modules.PAYMENT)
+        const orderModule = container.resolve(Modules.ORDER)
+        const payment = order.payment_collections[0].payments[0]
+
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          undefined,
+          adminHeaders
+        )
+
+        // Canceling through the API refunds the captured payment, which would
+        // leave nothing to refund, so set the status directly.
+        await orderModule.updateOrders(order.id, {
+          status: OrderStatus.CANCELED,
+        })
+
+        const providerRefundSpy = jest.spyOn(
+          (paymentModule as any).paymentProviderService_,
+          "refundPayment"
+        )
+        providerRefundSpy.mockClear()
+
+        try {
+          const error = await api
+            .post(
+              `/admin/payments/${payment.id}/refund`,
+              { amount: 50 },
+              adminHeaders
+            )
+            .catch((e) => e)
+
+          expect(error.response.status).toEqual(400)
+          expect(error.response.data.message).toEqual(
+            `Order with id ${order.id} has been canceled.`
+          )
+          expect(providerRefundSpy).not.toHaveBeenCalled()
+        } finally {
+          providerRefundSpy.mockRestore()
+        }
+
+        const updatedPayment = await paymentModule.retrievePayment(payment.id, {
+          relations: ["refunds"],
+        })
+        expect(updatedPayment.refunds).toHaveLength(0)
+      })
+
+      it("should not let an order change be created while the provider refund is in flight", async () => {
+        const paymentModule = container.resolve(Modules.PAYMENT)
+        const orderModule = container.resolve(Modules.ORDER)
+        const lockingModule = container.resolve(Modules.LOCKING)
+        const payment = order.payment_collections[0].payments[0]
+        const orderChangeLockKey = `order-change:${order.id}`
+
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          undefined,
+          adminHeaders
+        )
+
+        const waitUntil = async (
+          condition: () => Promise<boolean> | boolean,
+          message: string,
+          timeoutMs = 10000
+        ) => {
+          const deadline = Date.now() + timeoutMs
+          while (!(await condition())) {
+            if (Date.now() > deadline) {
+              throw new Error(`Timed out waiting: ${message}`)
+            }
+            await new Promise((resolve) => setTimeout(resolve, 50))
+          }
+        }
+
+        const providerService = (paymentModule as any).paymentProviderService_
+        const originalRefund =
+          providerService.refundPayment.bind(providerService)
+        let releaseProvider: () => void = () => {}
+        const providerGate = new Promise<void>((resolve) => {
+          releaseProvider = resolve
+        })
+        const providerRefundSpy = jest
+          .spyOn(providerService, "refundPayment")
+          .mockImplementation(async (...args: any[]) => {
+            await providerGate
+            return originalRefund(...args)
+          })
+        const lockAcquireSpy = jest.spyOn(lockingModule, "acquire")
+        const orderChangeLockAttempts = () =>
+          lockAcquireSpy.mock.calls.filter(([keys]) =>
+            [keys].flat().includes(orderChangeLockKey)
+          ).length
+
+        let refundRequest: Promise<any> = Promise.resolve()
+        let orderEditRequest: Promise<any> = Promise.resolve()
+
+        try {
+          refundRequest = api
+            .post(
+              `/admin/payments/${payment.id}/refund`,
+              { amount: 50 },
+              adminHeaders
+            )
+            .catch((e) => e.response)
+
+          await waitUntil(
+            () => providerRefundSpy.mock.calls.length > 0,
+            "the provider refund to start"
+          )
+
+          let orderEditSettled = false
+          orderEditRequest = api
+            .post(
+              "/admin/order-edits",
+              { order_id: order.id, description: "Concurrent edit" },
+              adminHeaders
+            )
+            .catch((e) => e.response)
+            .finally(() => {
+              orderEditSettled = true
+            })
+
+          // Wait until the order edit either created its order change (the
+          // race) or is waiting on the lock the refund holds.
+          await waitUntil(async () => {
+            const activeChanges = await orderModule.listOrderChanges({
+              order_id: order.id,
+              status: ["pending", "requested"],
+            })
+            return (
+              orderEditSettled ||
+              activeChanges.length > 0 ||
+              orderChangeLockAttempts() > 1
+            )
+          }, "the order edit to create its order change or wait on the lock")
+        } finally {
+          releaseProvider()
+        }
+
+        const refundResponse = await refundRequest
+        const orderEditResponse = await orderEditRequest
+        const providerRefundCalls = providerRefundSpy.mock.calls.length
+        const lockAttempts = orderChangeLockAttempts()
+        providerRefundSpy.mockRestore()
+        lockAcquireSpy.mockRestore()
+
+        expect(refundResponse.status).toEqual(200)
+        expect(providerRefundCalls).toEqual(1)
+        // The refund took the lock, and the order edit waited on it.
+        expect(lockAttempts).toBeGreaterThan(1)
+
+        // The order edit waited for the refund to finish, then went through.
+        expect(orderEditResponse.status).toEqual(200)
+
+        const updatedPayment = await paymentModule.retrievePayment(payment.id, {
+          relations: ["refunds"],
+        })
+        expect(updatedPayment.refunds).toHaveLength(1)
+
+        const updatedOrder = (
+          await api.get(
+            `/admin/orders/${order.id}?fields=+summary`,
+            adminHeaders
+          )
+        ).data.order
+        expect(updatedOrder.credit_line_total).toEqual(50)
+        expect(updatedOrder.credit_lines).toHaveLength(1)
+        expect(updatedOrder.summary.refunded_total).toEqual(50)
       })
 
       it("should throw if the refund amount exceeds the payment amount", async () => {

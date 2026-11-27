@@ -1,10 +1,16 @@
-import { BigNumberInput, PaymentDTO } from "@medusajs/framework/types"
+import {
+  BigNumberInput,
+  OrderChangeDTO,
+  OrderDTO,
+  PaymentDTO,
+} from "@medusajs/framework/types"
 import {
   BigNumber,
   defaultCurrencies,
   getEpsilonFromDecimalPrecision,
   MathBN,
   MedusaError,
+  OrderChangeStatus,
   PaymentEvents,
 } from "@medusajs/framework/utils"
 import {
@@ -20,9 +26,15 @@ import {
   useQueryGraphStep,
   useRemoteQueryStep,
 } from "../../common"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 import { addOrderTransactionStep } from "../../order/steps/add-order-transaction"
+import { getOrderChangeLockKey } from "../../order/steps/create-order-change"
+import { throwIfOrderIsCancelled } from "../../order/utils/order-validation"
 import { createOrderRefundCreditLinesWorkflow } from "../../order/workflows/payments/create-order-refund-credit-lines"
 import { refundPaymentStep } from "../steps/refund-payment"
+
+const ORDER_CHANGE_LOCK_TIMEOUT_SECONDS = 30
+const ORDER_CHANGE_LOCK_TTL_SECONDS = 120
 
 /**
  * The data to refund a payment.
@@ -116,6 +128,39 @@ export const validateRefundPaymentExceedsCapturedAmountStep = createStep(
   }
 )
 
+export const validateRefundPaymentOrderStepId = "validate-refund-payment-order"
+/**
+ * This step validates that a refund credit line can be added to the order before
+ * the payment is refunded. It throws if the order is canceled or already has an
+ * active (pending or requested) order change, since the credit line can't be
+ * created in those cases and the refund at the payment provider can't be undone.
+ *
+ * @example
+ * validateRefundPaymentOrderStep({
+ *   order: { id: "order_123", status: "pending" },
+ *   activeOrderChanges: [],
+ * })
+ */
+export const validateRefundPaymentOrderStep = createStep(
+  validateRefundPaymentOrderStepId,
+  async function ({
+    order,
+    activeOrderChanges,
+  }: {
+    order: Pick<OrderDTO, "id" | "status">
+    activeOrderChanges: Pick<OrderChangeDTO, "id">[]
+  }) {
+    throwIfOrderIsCancelled({ order: order as OrderDTO })
+
+    if (activeOrderChanges?.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Order (${order.id}) already has an existing active order change`
+      )
+    }
+  }
+)
+
 export const refundPaymentWorkflowId = "refund-payment-workflow"
 /**
  * This workflow refunds a payment. It's used by the
@@ -135,6 +180,18 @@ export const refundPaymentWorkflowId = "refund-payment-workflow"
  * request was lost. Without a key every run starts a new refund, so a retry whose first
  * attempt may have gone through can refund twice: only the key tells the provider that
  * the second request is the same request.
+ *
+ * When the refund needs an order credit line, the workflow validates that the order isn't
+ * canceled and has no active order change (such as an unconfirmed order edit, claim,
+ * exchange, or return) before refunding at the payment provider. Otherwise, it throws
+ * without refunding, so confirm or cancel the order change first.
+ *
+ * In that case, the workflow also holds the order's order change lock from before the
+ * validation until the credit line is created, so an order change can't be created for the
+ * order while the payment provider refunds. Order changes created with `createOrderChangeStep`
+ * in a top-level workflow, such as beginning an order edit, return, claim, or exchange, wait
+ * for the lock and fail with a conflict error if it isn't released within 30 seconds. The lock
+ * expires after two minutes if the workflow stops before releasing it.
  *
  * @example
  * const { result } = await refundPaymentWorkflow(container)
@@ -185,7 +242,14 @@ export const refundPaymentWorkflow = createWorkflow(
 
     const order = useRemoteQueryStep({
       entry_point: "order",
-      fields: ["id", "summary", "total", "currency_code", "region_id"],
+      fields: [
+        "id",
+        "status",
+        "summary",
+        "total",
+        "currency_code",
+        "region_id",
+      ],
       variables: { id: orderPaymentCollection.order.id },
       throw_if_key_not_found: true,
       list: false,
@@ -247,8 +311,6 @@ export const refundPaymentWorkflow = createWorkflow(
       ({ refundTransaction }) => !!refundTransaction?.id
     )
 
-    const refundPayment = refundPaymentStep(input)
-
     const creditLineAmount = transform(
       { order, payment, input },
       ({ order, payment, input }) => {
@@ -270,6 +332,41 @@ export const refundPaymentWorkflow = createWorkflow(
         return amountToRefund
       }
     )
+
+    const orderChangeLockKey = transform({ order }, ({ order }) =>
+      getOrderChangeLockKey(order.id)
+    )
+
+    // The provider refund can't be compensated, so reject the cases where the
+    // credit line below would fail before any funds move.
+    when(
+      "validate-refund-credit-line",
+      { creditLineAmount, isReplay },
+      ({ creditLineAmount, isReplay }) =>
+        !isReplay && MathBN.gt(creditLineAmount, 0)
+    ).then(() => {
+      // Held until the credit line is created, so no order change can be
+      // created between the validation below and the credit line.
+      acquireLockStep({
+        key: orderChangeLockKey,
+        timeout: ORDER_CHANGE_LOCK_TIMEOUT_SECONDS,
+        ttl: ORDER_CHANGE_LOCK_TTL_SECONDS,
+        executeOnSubWorkflow: true,
+      })
+
+      const { data: activeOrderChanges } = useQueryGraphStep({
+        entity: "order_change",
+        fields: ["id"],
+        filters: {
+          order_id: order.id,
+          status: [OrderChangeStatus.PENDING, OrderChangeStatus.REQUESTED],
+        },
+      }).config({ name: "active-order-changes" })
+
+      validateRefundPaymentOrderStep({ order, activeOrderChanges })
+    })
+
+    const refundPayment = refundPaymentStep(input)
 
     // Always run, replay or not: the step skips transactions it already wrote,
     // so a retry after a half-finished attempt still records the refund.
@@ -319,6 +416,11 @@ export const refundPaymentWorkflow = createWorkflow(
       )
       createOrderRefundCreditLinesWorkflow.runAsStep({
         input: createRefundCreditLinesData,
+      })
+
+      releaseLockStep({
+        key: orderChangeLockKey,
+        executeOnSubWorkflow: true,
       })
     })
 
