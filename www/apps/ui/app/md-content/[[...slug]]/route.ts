@@ -70,7 +70,7 @@ export async function GET(req: NextRequest, { params }: Params) {
         : path.join(process.cwd(), "specs", "components"),
     },
     {
-      before: [
+      after: [
         [
           localLinksRehypePlugin,
           {
@@ -78,8 +78,6 @@ export async function GET(req: NextRequest, { params }: Params) {
             basePath: appDir,
           },
         ],
-      ] as unknown as Plugin[],
-      after: [
         [
           addUrlToRelativeLink,
           { url: `${process.env.NEXT_PUBLIC_BASE_URL || ""}${basePath}` },
