@@ -73,6 +73,23 @@ moduleIntegrationTestRunner<ILockingModule>({
         expect(releasing).toBe(true)
       })
 
+      it("should not release an owned lock without its owner", async () => {
+        await service.acquire("owned_key", { ownerId: "user_id_123" })
+
+        const releasedWithoutOwner = await service.release("owned_key")
+        const anotherLock = service.acquire("owned_key")
+
+        expect(releasedWithoutOwner).toBe(false)
+        await expect(anotherLock).rejects.toThrow(
+          `Failed to acquire lock for key "owned_key"`
+        )
+
+        const released = await service.release("owned_key", {
+          ownerId: "user_id_123",
+        })
+        expect(released).toBe(true)
+      })
+
       it("should acquire lock and release it during parallel calls", async () => {
         const keyToLock = "mySpecialKey"
         const user_1 = {

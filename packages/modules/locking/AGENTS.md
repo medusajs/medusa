@@ -69,4 +69,5 @@ yarn test:integration
 - In-memory locks only protect a single process; multi-instance deployments need the Redis or Postgres provider.
 - `timeout` and `expire` are in seconds. In-memory `execute` uses `timeout` default 5 and minimum 1, waits in the key's queue, and throws on timeout; the job is never started then.
 - `acquire` without `ownerId` on an already locked, non-expired key throws `Failed to acquire lock for key "<key>"`. Re-acquiring with the same `ownerId` succeeds and refreshes `expire`.
+- `release` only deletes a lock whose owner matches the `ownerId` passed; a lock acquired without `ownerId` is released only by a call without one, matching the Redis and Postgres providers.
 - Locks taken by `acquire` without `expire` never expire in memory; release them explicitly.
