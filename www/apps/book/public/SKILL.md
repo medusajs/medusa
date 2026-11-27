@@ -54,7 +54,7 @@ Every documentation page is available as Markdown. Prefer Markdown over HTML.
 Search the documentation and get the most relevant content chunks, without an LLM-generated answer:
 
 ```bash
-curl "https://docs.medusajs.com/agents/ask?q=how+to+create+a+workflow&source=docs-skill"
+curl "https://docs.medusajs.com/agents/search?q=how+to+create+a+workflow&source=docs-skill"
 ```
 
 - `q` (required): your question, up to 500 characters.
