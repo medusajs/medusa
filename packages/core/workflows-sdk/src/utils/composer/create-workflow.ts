@@ -157,7 +157,15 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
     },
   }
 
+  // A workflow can be created while another one is being composed, so keep
+  // the outer composer's context and "when" condition and restore them
+  // afterwards instead of clearing them.
+  const parentContext =
+    global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
+  const parentCondition =
+    global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]
   global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] = context
+  delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition]
 
   const inputPlaceHolder = proxify<WorkflowData>({
     __type: OrchestrationUtils.SymbolInputReference,
@@ -170,7 +178,16 @@ export function createWorkflow<TData, TResult, THooks extends any[]>(
 
   const returnedStep = composer.apply(context, [inputPlaceHolder])
 
-  delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
+  if (parentContext) {
+    global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext] =
+      parentContext
+  } else {
+    delete global[OrchestrationUtils.SymbolMedusaWorkflowComposerContext]
+  }
+  if (parentCondition) {
+    global[OrchestrationUtils.SymbolMedusaWorkflowComposerCondition] =
+      parentCondition
+  }
 
   if (newWorkflow) {
     WorkflowManager.update(name, context.flow, handlers, options)

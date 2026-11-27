@@ -3090,4 +3090,100 @@ describe("Workflow composer", function () {
       ret4: true,
     })
   })
+
+  describe("Defining a workflow while another one is being composed", function () {
+    it("should keep composing the outer workflow after the inner one is defined", async () => {
+      const calls: string[] = []
+      const step1 = createStep("step1", () => {
+        calls.push("step1")
+        return new StepResponse("one")
+      })
+      const step2 = createStep("step2", () => {
+        calls.push("step2")
+        return new StepResponse("two")
+      })
+      const innerStep = createStep("inner-step", () => {
+        calls.push("inner-step")
+        return new StepResponse("inner")
+      })
+
+      let inner: any
+      const outer = createWorkflow("outer", function () {
+        const one = step1()
+        inner = createWorkflow("inner", function () {
+          return new WorkflowResponse(innerStep())
+        })
+        const two = step2()
+        return new WorkflowResponse({ one, two })
+      })
+
+      const { result: outerResult } = await outer().run()
+      expect(outerResult).toEqual({ one: "one", two: "two" })
+      expect(calls).toEqual(["step1", "step2"])
+
+      calls.length = 0
+      const { result: innerResult } = await inner().run()
+      expect(innerResult).toEqual("inner")
+      expect(calls).toEqual(["inner-step"])
+    })
+
+    it("should keep the conditions of the two workflows apart", async () => {
+      const calls: string[] = []
+      const step1 = createStep("step1", () => {
+        calls.push("step1")
+        return new StepResponse("one")
+      })
+      const step2 = createStep("step2", () => {
+        calls.push("step2")
+        return new StepResponse("two")
+      })
+      const innerStep1 = createStep("inner-step1", () => {
+        calls.push("inner-step1")
+        return new StepResponse("inner one")
+      })
+      const innerStep2 = createStep("inner-step2", () => {
+        calls.push("inner-step2")
+        return new StepResponse("inner two")
+      })
+
+      let inner: any
+      const outer = createWorkflow(
+        "outer",
+        function (input: { runStep2: boolean }) {
+          step1()
+          when(input, ({ runStep2 }) => runStep2).then(() => {
+            inner = createWorkflow(
+              "inner",
+              function (innerInput: { runInnerStep2: boolean }) {
+                innerStep1()
+                when(innerInput, ({ runInnerStep2 }) => runInnerStep2).then(
+                  () => innerStep2()
+                )
+              }
+            )
+            return step2()
+          })
+        }
+      )
+
+      const run = async (workflow, input) => {
+        calls.length = 0
+        await workflow().run({ input })
+        return [...calls]
+      }
+
+      // The outer condition applies to the outer step defined after the inner workflow
+      expect(await run(outer, { runStep2: false })).toEqual(["step1"])
+      expect(await run(outer, { runStep2: true })).toEqual(["step1", "step2"])
+
+      // The outer condition doesn't apply to the inner workflow's steps
+      expect(await run(inner, { runInnerStep2: false })).toEqual([
+        "inner-step1",
+      ])
+      expect(await run(inner, { runInnerStep2: true })).toEqual([
+        "inner-step1",
+        "inner-step2",
+      ])
+    })
+  })
 })
