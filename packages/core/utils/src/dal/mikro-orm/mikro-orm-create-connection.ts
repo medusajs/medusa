@@ -87,14 +87,26 @@ export async function mikroOrmCreateConnection(
   }
 
   let clientUrl = database.clientUrl
+  let dbName: string | undefined
+  let dynamicPassword: (() => string) | (() => Promise<string>) | undefined
 
   if (database.connection) {
     // Reuse already existing connection
     // It is important that the knex package version is the same as the one used by MikroORM knex package
+    const sharedConnection =
+      database.connection.context?.client?.config?.connection
     driverOptions = database.connection
-    clientUrl =
-      database.connection.context?.client?.config?.connection?.connectionString
+    // A pool created with dynamicPassword has discrete connection fields
+    // instead of a connectionString (see createPgConnection)
+    clientUrl = sharedConnection?.connectionString ?? database.clientUrl
+    dbName = sharedConnection?.database
     schema = database.connection.context?.client?.config?.searchPath
+  } else if (driverOptions.dynamicPassword) {
+    // MikroORM applies a password function to every new connection. It is not
+    // a knex/pg option, so keep it out of the driver options.
+    const { dynamicPassword: password, ...knexDriverOptions } = driverOptions
+    dynamicPassword = password
+    driverOptions = knexDriverOptions
   }
 
   const { MikroORM, defineConfig } =
@@ -105,6 +117,12 @@ export async function mikroOrmCreateConnection(
     debug: database.debug ?? process.env.NODE_ENV?.startsWith("dev") ?? false,
     baseDir: process.cwd(),
     clientUrl,
+    // MikroORM calls a password function for every new connection. The option
+    // is typed as a string, but the driver supports a function.
+    ...(dynamicPassword
+      ? { password: dynamicPassword as unknown as string }
+      : {}),
+    ...(dbName ? { dbName } : {}),
     schema,
     driverOptions,
     tsNode: process.env.APP_ENV === "development",
