@@ -353,4 +353,115 @@ describe("Email password auth provider", () => {
 
     expect(resp.error).toEqual("Invalid email or password")
   })
+
+  it("checks the password against a hash when the email doesn't exist, so the answer takes as long", async () => {
+    const verify = jest.spyOn(Scrypt, "verify")
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+    }
+
+    const resp = await emailpassService.authenticate(
+      { body: { email: "unknown@admin.com", password: "somepass" } },
+      authServiceSpies as any
+    )
+
+    expect(verify).toHaveBeenCalledTimes(1)
+    expect(resp).toEqual({
+      error: "Invalid email or password",
+      success: false,
+    })
+  })
+
+  it("takes about as long to refuse an unknown email as a wrong password", async () => {
+    const passwordHash = Buffer.from(
+      await Scrypt.kdf("somepass", { logN: 15, r: 8, p: 1 })
+    ).toString("base64")
+    const knownEmail = {
+      retrieve: jest.fn().mockResolvedValue({
+        provider_identities: [
+          {
+            entity_id: "test@admin.com",
+            provider: "emailpass",
+            provider_metadata: { password: passwordHash },
+          },
+        ],
+      }),
+    }
+    const unknownEmail = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+    }
+
+    const medianMs = async (authIdentityService: object) => {
+      const durations: number[] = []
+      for (let i = 0; i < 5; i++) {
+        const start = performance.now()
+        await emailpassService.authenticate(
+          { body: { email: "test@admin.com", password: "otherpass" } },
+          authIdentityService as any
+        )
+        durations.push(performance.now() - start)
+      }
+      return durations.sort((a, b) => a - b)[2]
+    }
+
+    const knownEmailMs = await medianMs(knownEmail)
+    const unknownEmailMs = await medianMs(unknownEmail)
+
+    expect(unknownEmailMs).toBeGreaterThan(knownEmailMs / 2)
+  })
+
+  it("falls back to a fixed dummy hash when the configured one can't be made", async () => {
+    const logger = { error: jest.fn() }
+    const service = new EmailPassAuthService({ logger: logger as any }, {
+      hashConfig: { logN: 0, r: 8, p: 1 },
+    } as any)
+    const verify = jest.spyOn(Scrypt, "verify")
+    const authServiceSpies = {
+      retrieve: jest.fn().mockImplementation(() => {
+        throw new MedusaError(MedusaError.Types.NOT_FOUND, "Not found")
+      }),
+    }
+
+    const resp = await service.authenticate(
+      { body: { email: "unknown@admin.com", password: "somepass" } },
+      authServiceSpies as any
+    )
+
+    expect(logger.error).toHaveBeenCalledTimes(1)
+    expect(verify).toHaveBeenCalledTimes(1)
+    expect(resp).toEqual({
+      error: "Invalid email or password",
+      success: false,
+    })
+  })
+
+  it("checks the password against a hash when the identity has no password, and refuses it", async () => {
+    const verify = jest.spyOn(Scrypt, "verify")
+    const authServiceSpies = {
+      retrieve: jest.fn().mockResolvedValue({
+        provider_identities: [
+          {
+            entity_id: "test@admin.com",
+            provider: "emailpass",
+            provider_metadata: {},
+          },
+        ],
+      }),
+    }
+
+    const resp = await emailpassService.authenticate(
+      { body: { email: "test@admin.com", password: "somepass" } },
+      authServiceSpies as any
+    )
+
+    expect(verify).toHaveBeenCalledTimes(1)
+    expect(resp).toEqual({
+      error: "Invalid email or password",
+      success: false,
+    })
+  })
 })
