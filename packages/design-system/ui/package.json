@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/ui",
-  "version": "4.3.1",
+  "version": "4.3.2",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "license": "MIT",
   "repository": {
@@ -49,7 +49,7 @@
     "typecheck": "yarn run -T tsc --noEmit"
   },
   "devDependencies": {
-    "@medusajs/ui-preset": "2.23.1",
+    "@medusajs/ui-preset": "2.23.2",
     "@tailwindcss/node": "^4.3.5",
     "@tailwindcss/oxide": "^4.3.5",
     "@tailwindcss/postcss": "^4.3.5",
@@ -63,7 +63,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@internationalized/date": "^3.12.4",
-    "@medusajs/icons": "2.23.1",
+    "@medusajs/icons": "2.23.2",
     "@radix-ui/react-dialog": "1.3.1",
     "@radix-ui/react-dismissable-layer": "1.2.1",
     "@tanstack/react-table": "9.3.1",

@@ -1,5 +1,21 @@
 # @medusajs/loyalty-plugin
 
+## 2.23.2
+
+### Patch Changes
+
+- [#18049](https://github.com/medusajs/medusa/pull/18049) [`109089a`](https://github.com/medusajs/medusa/commit/109089ab034b4a7db0e87f2b510ba3fb105bd67b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(loyalty-plugin): take the cart lock and reject completed carts when adding/removing gift cards and store credits
+
+- Updated dependencies []:
+  - @medusajs/dashboard@2.23.2
+  - @medusajs/framework@2.23.2
+  - @medusajs/medusa@2.23.2
+  - @medusajs/test-utils@2.23.2
+  - @medusajs/admin-sdk@2.23.2
+  - @medusajs/cli@2.23.2
+  - @medusajs/icons@2.23.2
+  - @medusajs/ui@4.3.2
+
 ## 2.23.1
 
 ### Patch Changes

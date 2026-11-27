@@ -1,5 +1,14 @@
 # @medusajs/auth
 
+## 2.23.2
+
+### Patch Changes
+
+- [#18033](https://github.com/medusajs/medusa/pull/18033) [`6e28e10`](https://github.com/medusajs/medusa/commit/6e28e10acb9676392315b3ff1a9c7147fce4b5ab) Thanks [@peterlgh7](https://github.com/peterlgh7)! - fix(auth): accept a password reset token and a verification code only once when used concurrently
+
+- Updated dependencies []:
+  - @medusajs/framework@2.23.2
+
 ## 2.23.1
 
 ### Patch Changes

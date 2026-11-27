@@ -1,5 +1,17 @@
 # @medusajs/admin-bundler
 
+## 2.23.2
+
+### Patch Changes
+
+- [#18023](https://github.com/medusajs/medusa/pull/18023) [`57fa4c3`](https://github.com/medusajs/medusa/commit/57fa4c3ab25fe10acf41943dfc6d01d8029a3022) Thanks [@peterlgh7](https://github.com/peterlgh7)! - feat(admin-bundler,types): add an `admin.htmlHeaders` option that sets headers on the admin's HTML in production, replacing the ones `http.securityHeaders` sets
+
+- Updated dependencies []:
+  - @medusajs/dashboard@2.23.2
+  - @medusajs/admin-shared@2.23.2
+  - @medusajs/admin-vite-plugin@2.23.2
+  - @medusajs/ui-preset@2.23.2
+
 ## 2.23.1
 
 ### Patch Changes
