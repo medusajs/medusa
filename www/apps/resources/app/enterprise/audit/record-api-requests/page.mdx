@@ -12,6 +12,16 @@ export const metadata = {
 
 In this guide, you'll learn how Medusa records API requests in audit logs, and how to customize which routes are recorded and what's recorded for them.
 
+<Note title="Agent Hand-off">
+
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/enterprise/audit/record-api-requests.md and customize how my Medusa application records API requests in audit logs
+```
+
+</Note>
+
 ## How Medusa Records API Requests
 
 When the [Audit Module](../page.mdx) is installed, Medusa records an audit log for every `POST`, `PUT`, `PATCH`, and `DELETE` request to routes under `/admin`, `/rbac`, and `/auth`. This applies to Medusa's routes and to your [custom API routes](!docs!/learn/fundamentals/api-routes) under those paths.

@@ -14,6 +14,16 @@ export const metadata = {
 
 In this guide, you'll learn how to record audit logs for actions that happen outside API requests, such as in scheduled jobs, subscribers, or workflows.
 
+<Note title="Agent Hand-off">
+
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/enterprise/audit/record-custom-audit-logs.md and record custom audit logs in my Medusa application
+```
+
+</Note>
+
 ## When to Record Custom Audit Logs
 
 Medusa [records API requests](../record-api-requests/page.mdx) to admin routes automatically. However, some actions in your application don't happen through an API request, such as:
