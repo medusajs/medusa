@@ -314,7 +314,7 @@ const Body = ({
                   className={clx(
                     "code-body whitespace-pre-wrap bg-transparent",
                     {
-                      "grid grid-cols-[auto,1fr] gap-x-4":
+                      "grid grid-cols-[auto_1fr] gap-x-4":
                         !active.hideLineNumbers,
                     }
                   )}
