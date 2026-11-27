@@ -72,16 +72,50 @@ export const refreshCartGiftCardsWorkflow = createWorkflow(
       }
     );
 
-    const toDismiss = transform({ existingCart }, ({ existingCart }) => {
-      const giftCardCreditLines = existingCart.credit_lines.filter(
-        (creditLine) => creditLine.reference === "gift-card"
-      );
+    const storeCreditAccountIds = transform(
+      { existingCart },
+      ({ existingCart }) => {
+        return existingCart.credit_lines
+          .filter((creditLine) => creditLine.reference === "store-credit")
+          .map((creditLine) => creditLine.reference_id);
+      }
+    );
 
-      return {
-        creditLineIds: giftCardCreditLines.map((cl) => cl.id),
-        giftCardIds: giftCardCreditLines.map((cl) => cl.reference_id),
-      };
-    });
+    const storeCreditAccountQuery = useQueryGraphStep({
+      entity: "store_credit_account",
+      filters: {
+        id: storeCreditAccountIds,
+        currency_code: existingCart.currency_code,
+      },
+      fields: ["id"],
+    }).config({ name: "get-store-credit-account-query" });
+
+    const toDismiss = transform(
+      { existingCart, storeCreditAccountQuery },
+      ({ existingCart, storeCreditAccountQuery }) => {
+        const giftCardCreditLines = existingCart.credit_lines.filter(
+          (creditLine) => creditLine.reference === "gift-card"
+        );
+
+        const cartCurrencyAccountIds = new Set(
+          storeCreditAccountQuery.data.map((account) => account.id)
+        );
+
+        const otherCurrencyStoreCreditLines = existingCart.credit_lines.filter(
+          (creditLine) =>
+            creditLine.reference === "store-credit" &&
+            !cartCurrencyAccountIds.has(creditLine.reference_id)
+        );
+
+        return {
+          creditLineIds: [
+            ...giftCardCreditLines,
+            ...otherCurrencyStoreCreditLines,
+          ].map((cl) => cl.id),
+          giftCardIds: giftCardCreditLines.map((cl) => cl.reference_id),
+        };
+      }
+    );
 
     deleteCartCreditLinesWorkflow.runAsStep({
       input: {
@@ -109,13 +143,16 @@ export const refreshCartGiftCardsWorkflow = createWorkflow(
 
     const giftCardQuery = useQueryGraphStep({
       entity: "gift_card",
-      filters: { code: giftCardCodes },
+      filters: {
+        code: giftCardCodes,
+        currency_code: existingCart.currency_code,
+      },
       fields: ["id", "code", "status", "currency_code", "expires_at"],
     }).config({ name: "get-gift-card-query" });
 
-    // expired gift cards are dropped rather than rejected, so that a cart
-    // holding a gift card that expired after it was applied can still be
-    // refreshed. Their credit lines and links were already removed above.
+    // gift cards that expired or are in another currency than the cart's are
+    // dropped rather than rejected, so that the cart can still be refreshed.
+    // Their credit lines and links were already removed above.
     const giftCards = transform({ giftCardQuery }, ({ giftCardQuery }) => {
       return giftCardQuery.data.filter(
         (giftCard) => !isGiftCardExpired(giftCard)

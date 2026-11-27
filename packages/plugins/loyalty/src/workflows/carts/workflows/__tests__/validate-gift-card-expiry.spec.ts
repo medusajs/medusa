@@ -5,7 +5,10 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk";
 import { validateCartGiftCardStep } from "../add-gift-card-to-cart";
-import { validateGiftCardsNotExpiredStep } from "../confirm-cart-credit-lines";
+import {
+  validateCreditAccountsCurrencyStep,
+  validateGiftCardsNotExpiredStep,
+} from "../confirm-cart-credit-lines";
 
 const hoursFromNow = (hours: number) =>
   new Date(Date.now() + hours * 60 * 60 * 1000).toISOString();
@@ -108,6 +111,45 @@ describe("validateGiftCardsNotExpiredStep", () => {
         { code: "GC-VALID", expires_at: hoursFromNow(1) },
         { code: "GC-NO-EXPIRY", expires_at: null },
       ],
+    });
+
+    expect(error).toBeUndefined();
+  });
+});
+
+describe("validateCreditAccountsCurrencyStep", () => {
+  it("rejects a cart whose credit lines debit an account in another currency", async () => {
+    const error = await runStep(validateCreditAccountsCurrencyStep, {
+      cart,
+      accountIds: ["sca_usd", "sca_jpy"],
+      storeCreditAccounts: [
+        { id: "sca_usd", currency_code: "usd" },
+        { id: "sca_jpy", currency_code: "jpy" },
+      ],
+    });
+
+    expect(error).toEqual(
+      "Store credit account (sca_jpy) currency does not match cart currency"
+    );
+  });
+
+  it("rejects a cart whose credit lines debit an account that doesn't exist", async () => {
+    const error = await runStep(validateCreditAccountsCurrencyStep, {
+      cart,
+      accountIds: ["sca_missing"],
+      storeCreditAccounts: [],
+    });
+
+    expect(error).toEqual(
+      "Store credit account (sca_missing) currency does not match cart currency"
+    );
+  });
+
+  it("accepts a cart whose credit lines debit accounts in its currency", async () => {
+    const error = await runStep(validateCreditAccountsCurrencyStep, {
+      cart,
+      accountIds: ["sca_usd"],
+      storeCreditAccounts: [{ id: "sca_usd", currency_code: "usd" }],
     });
 
     expect(error).toBeUndefined();

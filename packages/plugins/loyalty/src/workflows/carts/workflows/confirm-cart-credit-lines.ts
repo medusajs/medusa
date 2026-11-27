@@ -7,7 +7,10 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk";
 import { ModuleGiftCard } from "../../../types/loyalty";
-import { ModuleAccountStats } from "../../../types/store-credit";
+import {
+  ModuleAccountStats,
+  ModuleStoreCreditAccount,
+} from "../../../types/store-credit";
 import { isGiftCardExpired } from "../../../utils/gift-card";
 import { debitAccountsWorkflow } from "../../store-credit/workflows/debit-accounts";
 
@@ -100,6 +103,64 @@ export const validateGiftCardsNotExpiredStep = createStep(
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Gift card (${giftCard.code}) has expired`
+        );
+      }
+    }
+  }
+);
+
+/**
+ * Input to validate that the accounts debited for a cart are in its currency.
+ */
+export interface ValidateCreditAccountsCurrencyStepInput {
+  /**
+   * The cart whose credit lines are being confirmed.
+   */
+  cart: { currency_code: string }
+  /**
+   * The IDs of the store credit accounts that the cart's credit lines debit.
+   */
+  accountIds: string[]
+  /**
+   * The store credit accounts retrieved for those IDs.
+   */
+  storeCreditAccounts: Pick<ModuleStoreCreditAccount, "id" | "currency_code">[]
+}
+
+/**
+ * This step validates that every store credit account debited for a cart is in
+ * the cart's currency. It throws an error for any account that is in another
+ * currency or that doesn't exist, preventing a balance from being spent at face
+ * value in a different currency.
+ *
+ * @example
+ * const data = validateCreditAccountsCurrencyStep({
+ *   cart: { currency_code: "usd" },
+ *   accountIds: ["sca_123"],
+ *   storeCreditAccounts: [
+ *     {
+ *       id: "sca_123",
+ *       currency_code: "usd",
+ *     }
+ *   ],
+ * })
+ */
+export const validateCreditAccountsCurrencyStep = createStep(
+  "validate-credit-accounts-currency",
+  async function ({
+    cart,
+    accountIds,
+    storeCreditAccounts,
+  }: ValidateCreditAccountsCurrencyStepInput) {
+    const currencies = new Map(
+      storeCreditAccounts.map((account) => [account.id, account.currency_code])
+    );
+
+    for (const accountId of accountIds) {
+      if (currencies.get(accountId) !== cart.currency_code) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Store credit account (${accountId}) currency does not match cart currency`
         );
       }
     }
@@ -207,6 +268,25 @@ export const confirmCartCreditLinesWorkflow = createWorkflow(
           });
       }
     );
+
+    const accountIds = transform(
+      { debitAccountsInput },
+      ({ debitAccountsInput }) => {
+        return debitAccountsInput.map((debit) => debit.account_id);
+      }
+    );
+
+    const debitedAccountsQuery = useQueryGraphStep({
+      entity: "store_credit_account",
+      filters: { id: accountIds },
+      fields: ["id", "currency_code"],
+    }).config({ name: "get-debited-store-credit-accounts-query" });
+
+    validateCreditAccountsCurrencyStep({
+      cart,
+      accountIds,
+      storeCreditAccounts: debitedAccountsQuery.data,
+    });
 
     debitAccountsWorkflow.runAsStep({
       input: debitAccountsInput,
