@@ -42,7 +42,7 @@ Your AI agent can perform the steps in this guide. Run the following prompt in y
 Fetch https://docs.medusajs.com/cloud/payments/storefront.md and add Medusa Payments support to my storefront
 ```
 
-After the agent makes the changes, follow the [Step 7: Deploy and Test the Checkout](#step-7-deploy-and-test-the-checkout) section to test them.
+After the agent makes the changes, follow the [Step 8: Deploy and Test the Checkout](#step-8-deploy-and-test-the-checkout) section to test them.
 
 </Note>
 ---
@@ -64,6 +64,7 @@ Medusa Payments is powered by Stripe, so your storefront takes card details with
 
 - **Publishable key**: Your storefront initializes Stripe.js with the environment's Medusa Payments publishable key. Storefronts deployed on Cloud get it automatically after their next deployment in the `NEXT_PUBLIC_MEDUSA_PAYMENTS_PUBLISHABLE_KEY` and `VITE_MEDUSA_PAYMENTS_PUBLISHABLE_KEY` environment variables.
 - **Payment provider IDs**: Medusa Payments registers the `pp_medusa-payments_default` payment provider in every environment, which takes payments with the environment's test account in test mode and its main live account in live mode. If the environment uses more than one live account, Medusa Payments also registers a `pp_medusa-payments_<account ID>` provider for each of the other accounts. So, your storefront must match payment providers by the `pp_medusa-payments_` prefix rather than by a fixed ID.
+- **Payment methods**: Customers can pay with the payment methods turned on for the payment account, such as cards, Apple Pay, Google Pay, and iDEAL. Your storefront shows them with the Stripe Payment Element, without a fixed list of payment method types. Learn how to manage them in the [Manage Payment Methods](../accounts/page.mdx#manage-payment-methods) section of the Payment Accounts guide.
 - **Stripe account**: Medusa Payments creates each payment on a Stripe connected account. The payment session's `data.stripe_account` property holds that account's ID, and your storefront must pass it as the `stripeAccount` option when it initializes Stripe.js. Don't derive the account from the provider ID, since environments in test mode take payments with their test account.
 
 <Note title="Older starters">
@@ -409,7 +410,147 @@ throw new Error(
 
 ---
 
-## Step 4: Show Payment Errors to Customers
+## Step 4: Take Payments with the Payment Element
+
+The Stripe Payment Element shows the payment methods turned on for the payment account, such as cards, Apple Pay, Google Pay, iDEAL, and Klarna. Storefronts that take payments with the Card Element and `confirmCardPayment` only accept cards.
+
+If your storefront already uses the Payment Element and `confirmPayment`, check that it handles customers returning from a redirect, as explained in the [Handle Customers Returning from a Redirect](#handle-customers-returning-from-a-redirect) section, and skip the rest of this step.
+
+<Note>
+
+Don't pass a fixed list of payment method types, such as the `paymentMethodTypes` option of Stripe's `Elements` provider. A fixed list replaces the payment methods turned on for the account, so customers don't see the methods you turn on later.
+
+</Note>
+
+### Show the Payment Element
+
+In the component that shows the card form, such as `StripePaymentContainer` in `src/modules/checkout/components/payment-container/index.tsx`, replace the `CardElement` with the `PaymentElement`:
+
+```tsx title="src/modules/checkout/components/payment-container/index.tsx"
+import { PaymentElement } from "@stripe/react-stripe-js"
+
+// ...
+
+<PaymentElement
+  options={{ layout: "accordion" }}
+  onChange={(e) => {
+    setError(null)
+    setPaymentComplete(e.complete)
+  }}
+/>
+```
+
+Remove the Card Element's style options and the card brand state, since the Payment Element doesn't use them. The Payment Element reads the payment from the `clientSecret` option of the `Elements` provider, which the wrapper from [Step 3](#step-3-initialize-stripejs-with-the-payments-account) passes.
+
+### Confirm the Payment
+
+In the button that places the order, such as `StripePaymentButton` in `src/modules/checkout/components/payment-button/index.tsx`, replace `confirmCardPayment` with `confirmPayment`:
+
+```tsx title="src/modules/checkout/components/payment-button/index.tsx"
+import { useParams } from "next/navigation"
+
+// ...
+
+const { countryCode } = useParams()
+
+// ...
+
+await stripe
+  .confirmPayment({
+    elements,
+    confirmParams: {
+      return_url: `${window.location.origin}/api/payment-return?cart_id=${cart.id}&country_code=${countryCode}`,
+      payment_method_data: {
+        billing_details: {
+          name: `${cart.billing_address?.first_name} ${cart.billing_address?.last_name}`,
+          email: cart.email,
+          // ...
+        },
+      },
+    },
+    redirect: "if_required",
+  })
+  .then(({ error, paymentIntent }) => {
+    // Handle the result as before.
+  })
+```
+
+With `redirect: "if_required"`, payments with cards and wallets complete on the checkout page, so you handle the result as you did with `confirmCardPayment`. Payment methods that need the customer to approve the payment on another site, such as iDEAL or Klarna, redirect the customer there, then back to the `return_url`.
+
+### Handle Customers Returning from a Redirect
+
+After a redirect, Stripe sends the customer to the `return_url` with the `payment_intent`, `payment_intent_client_secret`, and `redirect_status` query parameters. Your storefront then places the order.
+
+Create the file `src/app/api/payment-return/route.ts` with the following content:
+
+```ts title="src/app/api/payment-return/route.ts"
+import { sdk } from "@lib/config"
+import { placeOrder } from "@lib/data/cart"
+import { getAuthHeaders, setCartId } from "@lib/data/cookies"
+import { HttpTypes } from "@medusajs/types"
+import { unstable_rethrow } from "next/navigation"
+import { NextRequest, NextResponse } from "next/server"
+
+export async function GET(req: NextRequest) {
+  const { origin, searchParams } = req.nextUrl
+
+  const cartId = searchParams.get("cart_id")
+  const countryCode = searchParams.get("country_code")
+  const paymentIntent = searchParams.get("payment_intent")
+  const clientSecret = searchParams.get(
+    "payment_intent_client_secret"
+  )
+  const prefix = countryCode ? `/${countryCode}` : ""
+
+  if (!cartId || !paymentIntent || !clientSecret) {
+    return NextResponse.redirect(`${origin}${prefix}/cart`)
+  }
+
+  const cart = await sdk.client
+    .fetch<HttpTypes.StoreCartResponse>(`/store/carts/${cartId}`, {
+      query: { fields: "payment_collection.payment_sessions.data" },
+      headers: { ...(await getAuthHeaders()) },
+      cache: "no-store",
+    })
+    .then(({ cart }) => cart)
+    .catch(() => null)
+
+  const paymentSession =
+    cart?.payment_collection?.payment_sessions?.find(
+      (session) => session.data?.id === paymentIntent
+    )
+
+  if (paymentSession?.data?.client_secret !== clientSecret) {
+    return NextResponse.redirect(`${origin}${prefix}/cart`)
+  }
+
+  await setCartId(cartId)
+
+  if (searchParams.get("redirect_status") === "failed") {
+    return NextResponse.redirect(
+      `${origin}${prefix}/checkout?step=payment`
+    )
+  }
+
+  try {
+    await placeOrder(cartId)
+  } catch (error) {
+    unstable_rethrow(error)
+  }
+
+  return NextResponse.redirect(`${origin}${prefix}/checkout?step=review`)
+}
+```
+
+The route:
+
+1. Checks that the payment belongs to the cart, by comparing the payment's client secret with the one in the cart's payment session.
+2. Sends the customer back to the payment step if they cancelled the payment or their bank declined it, so they can try again.
+3. Otherwise, places the order. `placeOrder` redirects the customer to the order confirmation page. If the order can't be placed, the customer returns to the review step.
+
+---
+
+## Step 5: Show Payment Errors to Customers
 
 Stripe returns errors that are meant for customers, such as a declined card, and errors that describe your setup. To show customers only the first kind, create the file `src/lib/util/payment-error.ts` with the following content:
 
@@ -453,7 +594,7 @@ setErrorMessage(getPaymentErrorMessage(error))
 
 ---
 
-## Step 5: Refresh the Payment Providers List
+## Step 6: Refresh the Payment Providers List
 
 Medusa Payments registers a new payment provider when an environment starts using another live account. If your storefront caches a region's payment providers indefinitely, the new provider doesn't show up at checkout.
 
@@ -481,7 +622,7 @@ Remove the `cache: "force-cache"` option from the request if it exists.
 
 ---
 
-## Step 6: Test the Checkout Locally
+## Step 7: Test the Checkout Locally
 
 You can test your changes by running your Medusa application and storefront locally, and placing an order with an environment's test account.
 
@@ -506,6 +647,7 @@ To place a test order:
 4. In the payment step, choose **Credit card**. The Stripe Payment Element shows the card fields.
 5. Enter one of [Stripe's test cards](https://docs.stripe.com/testing#cards), such as `4242 4242 4242 4242`, with any future expiry date and any CVC.
 6. Place the order. Nothing is charged.
+7. To test a payment method that redirects, such as iDEAL, place another order and choose the method in the Payment Element. On Stripe's test page, approve the payment. You return to your storefront's order confirmation page.
 
 If the card fields don't show, check the browser console for an error about the publishable key, and confirm that the Medusa application's and storefront's variables come from the same environment's **Local development** section.
 
@@ -520,7 +662,7 @@ Before you deploy, also run your storefront's type check and build to confirm th
 
 ---
 
-## Step 7: Deploy and Test the Checkout
+## Step 8: Deploy and Test the Checkout
 
 To test your changes on Cloud:
 
