@@ -571,6 +571,11 @@ const redirects = async () => {
       destination: "/cloud/setup-locally/docker",
       permanent: true,
     },
+    {
+      source: "/agents/search",
+      destination: "/agents/ask",
+      permanent: true,
+    },
   ]
 }
 
