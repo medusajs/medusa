@@ -288,7 +288,7 @@ export const generatedEditDates = {
   "app/how-to-tutorials/page.mdx": "2025-03-10T09:33:49.208Z",
   "app/tools/page.mdx": "2025-03-10T12:38:56.520Z",
   "app/references-overview/page.mdx": "2025-03-10T12:55:49.803Z",
-  "app/infrastructure-modules/locking/page.mdx": "2026-09-11T07:40:12.305Z",
+  "app/infrastructure-modules/locking/page.mdx": "2026-11-27T12:36:50.565Z",
   "app/infrastructure-modules/locking/postgres/page.mdx": "2026-01-12T12:25:40.540Z",
   "app/infrastructure-modules/locking/redis/page.mdx": "2026-09-11T07:40:12.305Z",
   "app/nextjs-starter/guides/revalidate-cache/page.mdx": "2025-05-01T15:33:42.490Z",
