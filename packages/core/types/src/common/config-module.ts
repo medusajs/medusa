@@ -813,6 +813,26 @@ export type ProjectConfigOptions = {
      */
     jwtExpiresIn?: string
     /**
+     * The longest time, in seconds, that a login can be kept alive by refreshing its token with `POST /auth/token/refresh`.
+     * After that, the token can't be refreshed and the user has to log in again.
+     *
+     * If not provided, tokens can be refreshed without a limit.
+     *
+     * @example
+     * ```js title="medusa-config.ts"
+     * module.exports = defineConfig({
+     *   projectConfig: {
+     *     http: {
+     *       jwtRefreshMaxAgeSeconds: 60 * 60 * 24 * 30
+     *     }
+     *     // ...
+     *   },
+     *   // ...
+     * })
+     * ```
+     */
+    jwtRefreshMaxAgeSeconds?: number
+    /**
      * A random string used to create cookie tokens in the http layer. Although this configuration option is not required, it’s highly recommended to set it for better security.
      *
      * In a development environment, if this option is not set, the default secret is `supersecret`. However, in production, if this configuration is not set, an error is thrown and

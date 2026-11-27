@@ -45,6 +45,26 @@ describe("generateJwtTokenForAuthIdentity", () => {
     expect(decoded.auth_provider).toEqual("emailpass")
   })
 
+  it("should set auth_time to the issue time for a new login", async () => {
+    const token = await generateJwtTokenForAuthIdentity(
+      { authIdentity: baseAuthIdentity, actorType: "user" },
+      JWT_CONFIG
+    )
+
+    const decoded = jwt.decode(token) as Record<string, unknown>
+    expect(decoded.auth_time).toEqual(decoded.iat)
+  })
+
+  it("should keep the given auth_time when refreshing a token", async () => {
+    const token = await generateJwtTokenForAuthIdentity(
+      { authIdentity: baseAuthIdentity, actorType: "user", authTime: 1000 },
+      JWT_CONFIG
+    )
+
+    const decoded = jwt.decode(token) as Record<string, unknown>
+    expect(decoded.auth_time).toEqual(1000)
+  })
+
   it("should NOT include auth_provider in JWT payload when not provided", async () => {
     const token = await generateJwtTokenForAuthIdentity(
       {

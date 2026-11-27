@@ -21,11 +21,13 @@ export async function generateJwtTokenWithChecks(
     mfaChallenge,
     actorType,
     authProvider,
+    authTime,
   }: {
     authIdentity: AuthIdentityDTO
     mfaChallenge?: AuthMfaChallengeDTO
     actorType: string
     authProvider: string
+    authTime?: number
   }
 ) {
   const config: ConfigModule = container.resolve(
@@ -41,6 +43,7 @@ export async function generateJwtTokenWithChecks(
         authProvider: authProvider,
         container: container,
         mfaEnabled: !!mfaChallenge,
+        authTime,
       },
       {
         secret: http.jwtSecret!,
@@ -85,6 +88,7 @@ export async function generateJwtTokenWithChecks(
       authProvider: authProvider,
       container,
       mfaEnabled: !!mfaChallenge,
+      authTime,
     },
     {
       secret: http.jwtSecret!,
@@ -104,6 +108,7 @@ export async function generateJwtTokenForAuthIdentity(
     container,
     mfaEnabled,
     mfaChallengeCompletedAt,
+    authTime,
   }: {
     authIdentity: AuthIdentityDTO
     actorType: string
@@ -111,6 +116,7 @@ export async function generateJwtTokenForAuthIdentity(
     container?: MedusaContainer
     mfaEnabled?: boolean
     mfaChallengeCompletedAt?: Date | string | null
+    authTime?: number
   },
   {
     secret,
@@ -158,6 +164,7 @@ export async function generateJwtTokenForAuthIdentity(
       auth_identity_id: authIdentity?.id ?? "",
       ...(authProvider ? { auth_provider: authProvider } : {}),
       mfa_enabled: mfaEnabled_,
+      auth_time: authTime ?? Math.floor(Date.now() / 1000),
       mfa_challenge_completed_at: mfaChallengeCompletedAt
         ? new Date(mfaChallengeCompletedAt).toISOString()
         : null,

@@ -134,6 +134,11 @@ export interface AuthContext {
    */
   iat?: number
   /**
+   * When the auth identity logged in, in seconds since the epoch. Refreshing a
+   * token keeps it, so it shows how old the login behind the token is.
+   */
+  auth_time?: number
+  /**
    * Whether the auth identity had an enabled MFA factor when the token was issued.
    */
   mfa_enabled?: boolean
