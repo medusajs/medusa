@@ -84,7 +84,7 @@ describe("tools", () => {
       limit: 3,
     })
     expect(fetchMock).toHaveBeenCalledWith(
-      "https://docs.medusajs.com/agents/ask?q=workflows&limit=3",
+      "https://docs.medusajs.com/agents/ask?q=workflows&source=docs-webmcp&limit=3",
       { headers: { accept: "text/markdown" } }
     )
   })
