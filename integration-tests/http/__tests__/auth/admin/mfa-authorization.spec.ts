@@ -7,6 +7,12 @@ import {
 } from "../../../../helpers/create-admin-user"
 import { generateTotpCode } from "../../../../../packages/modules/auth/src/utils/totp"
 
+// A TOTP code is accepted once, so enrollment uses the previous time step's
+// code (still inside the default window) and leaves the current one for the
+// MFA challenge that follows.
+const enrollmentCode = (secret: string) =>
+  generateTotpCode({ secret, timestamp: Date.now() - 30_000 })
+
 jest.setTimeout(100000)
 
 const EMAIL = "admin@medusa.js"
@@ -26,7 +32,7 @@ const enrollTotpFactor = async (api) => {
 
   const verified = await api.post(
     `/auth/mfa/factors/${setup.data.mfa_factor.id}/verify`,
-    { code: generateTotpCode({ secret: setup.data.secret }) },
+    { code: enrollmentCode(setup.data.secret) },
     adminHeaders
   )
 
@@ -35,6 +41,7 @@ const enrollTotpFactor = async (api) => {
   return {
     secret: setup.data.secret as string,
     factorId: setup.data.mfa_factor.id as string,
+    recoveryCodes: verified.data.recovery_codes as string[],
   }
 }
 
@@ -116,18 +123,99 @@ medusaIntegrationTestRunner({
 
         const verified = await api.post(
           `/auth/mfa/factors/${setup.data.mfa_factor.id}/verify`,
-          { code: generateTotpCode({ secret: setup.data.secret }) },
+          { code: enrollmentCode(setup.data.secret) },
           headers
         )
         expect(verified.data.mfa_factor.status).toEqual("enabled")
 
-        // The session that enabled MFA can still read its recovery codes.
+        // Enabling the factor returns the first set of recovery codes.
+        expect(verified.data.recovery_codes).toHaveLength(10)
+      })
+    })
+
+    describe("A token issued before MFA was enabled", () => {
+      const loginBeforeMfa = async () => {
+        const login = await api.post("/auth/user/emailpass", {
+          email: EMAIL,
+          password: PASSWORD,
+        })
+
+        expect(login.data.mfa_required).toBeUndefined()
+
+        return {
+          headers: { authorization: `Bearer ${login.data.token}` },
+        }
+      }
+
+      it("refreshes into a token that requires the MFA challenge", async () => {
+        const before = await loginBeforeMfa()
+        await enrollTotpFactor(api)
+
+        const refreshed = await api.post("/auth/token/refresh", {}, before)
+        const decoded = jwt.decode(refreshed.data.token) as Record<
+          string,
+          unknown
+        >
+
+        expect(decoded.mfa_enabled).toBe(true)
+        expect(decoded.mfa_challenge_completed_at).toBeNull()
+
+        const err = await api
+          .get("/admin/users/me", {
+            headers: { authorization: `Bearer ${refreshed.data.token}` },
+          })
+          .catch((e) => e)
+
+        expect(err.response.status).toEqual(401)
+      })
+
+      it("creates a session that requires the MFA challenge", async () => {
+        const before = await loginBeforeMfa()
+        await enrollTotpFactor(api)
+
+        const session = await api.post("/auth/session", {}, before)
+        expect(session.data.user.mfa_enabled).toBe(true)
+
+        const [cookie] = session.headers["set-cookie"][0].split(";")
+
+        const err = await api
+          .get("/admin/users/me", { headers: { Cookie: cookie } })
+          .catch((e) => e)
+
+        expect(err.response.status).toEqual(401)
+      })
+    })
+
+    describe("Replacing recovery codes", () => {
+      it("requires a current MFA code", async () => {
+        const { secret, recoveryCodes } = await enrollTotpFactor(api)
+        const session = await completeMfa(api, secret)
+
+        const missingCode = await api
+          .post("/auth/mfa/recovery-codes", { count: 10 }, session.headers)
+          .catch((e) => e)
+
+        expect(missingCode.response.status).toEqual(400)
+
+        const wrongCode = await api
+          .post(
+            "/auth/mfa/recovery-codes",
+            { method: "recovery_code", code: "not-a-recovery-code" },
+            session.headers
+          )
+          .catch((e) => e)
+
+        expect(wrongCode.response.status).toEqual(400)
+        expect(wrongCode.response.data.message).toEqual(
+          "Invalid MFA verification code"
+        )
+
         const codes = await api.post(
           "/auth/mfa/recovery-codes",
-          { count: 10 },
-          headers
+          { method: "recovery_code", code: recoveryCodes[0] },
+          session.headers
         )
-        expect(codes.status).toEqual(200)
+
         expect(codes.data.recovery_codes).toHaveLength(10)
       })
     })
@@ -139,14 +227,14 @@ medusaIntegrationTestRunner({
         const pending = await loginWithoutCompletingMfa(api)
 
         const err = await api
-          .post("/auth/mfa/recovery-codes", { count: 10 }, pending.headers)
+          .post(
+            "/auth/mfa/recovery-codes",
+            { method: "totp", code: "000000" },
+            pending.headers
+          )
           .catch((e) => e)
 
         expect(err.response.status).toEqual(401)
-
-        // No codes exist, so `recovery_code` is not offered on a new challenge.
-        const nextLogin = await loginWithoutCompletingMfa(api)
-        expect(nextLogin.challenge.methods).toEqual(["totp"])
       })
 
       it("does not list factors", async () => {
@@ -223,7 +311,7 @@ medusaIntegrationTestRunner({
         const err = await api
           .post(
             "/auth/mfa/recovery-codes",
-            { count: 10 },
+            { method: "totp", code: "000000" },
             { headers: { authorization: `Bearer ${refreshed.data.token}` } }
           )
           .catch((e) => e)
@@ -283,6 +371,31 @@ medusaIntegrationTestRunner({
       })
     })
 
+    describe("Reusing a TOTP code", () => {
+      it("does not complete a second challenge with a code that was already accepted", async () => {
+        const { secret } = await enrollTotpFactor(api)
+        const code = generateTotpCode({ secret })
+
+        const first = await loginWithoutCompletingMfa(api)
+        await api.post(
+          `/auth/mfa/challenges/${first.challenge.id}/verify`,
+          { method: "totp", code },
+          first.headers
+        )
+
+        const second = await loginWithoutCompletingMfa(api)
+        const err = await api
+          .post(
+            `/auth/mfa/challenges/${second.challenge.id}/verify`,
+            { method: "totp", code },
+            second.headers
+          )
+          .catch((e) => e)
+
+        expect(err.response.status).toEqual(400)
+      })
+    })
+
     describe("MFA challenge ownership", () => {
       it("does not verify a challenge belonging to another auth identity", async () => {
         const { secret } = await enrollTotpFactor(api)
@@ -309,11 +422,41 @@ medusaIntegrationTestRunner({
 
         expect(verified.status).toEqual(200)
       })
+
+      it("does not verify a challenge with the token of another login", async () => {
+        const { secret } = await enrollTotpFactor(api)
+
+        const first = await loginWithoutCompletingMfa(api)
+        const second = await loginWithoutCompletingMfa(api)
+        const code = generateTotpCode({ secret })
+
+        const err = await api
+          .post(
+            `/auth/mfa/challenges/${first.challenge.id}/verify`,
+            { method: "totp", code },
+            second.headers
+          )
+          .catch((e) => e)
+
+        expect(err.response.status).toEqual(404)
+
+        const verified = await api.post(
+          `/auth/mfa/challenges/${first.challenge.id}/verify`,
+          { method: "totp", code },
+          first.headers
+        )
+
+        expect(verified.status).toEqual(200)
+        expect(
+          (jwt.decode(verified.data.token) as Record<string, unknown>)
+            .mfa_challenge_id
+        ).toBeUndefined()
+      })
     })
 
     describe("MFA routes with a completed MFA challenge", () => {
       it("lists factors, generates recovery codes and disables a factor", async () => {
-        const { secret, factorId } = await enrollTotpFactor(api)
+        const { secret, factorId, recoveryCodes } = await enrollTotpFactor(api)
 
         const session = await completeMfa(api, secret)
 
@@ -325,7 +468,7 @@ medusaIntegrationTestRunner({
 
         const codes = await api.post(
           "/auth/mfa/recovery-codes",
-          { count: 10 },
+          { method: "recovery_code", code: recoveryCodes[0], count: 10 },
           session.headers
         )
         expect(codes.status).toEqual(200)
@@ -339,7 +482,7 @@ medusaIntegrationTestRunner({
       })
 
       it("records when the challenge was completed and preserves it on refresh", async () => {
-        const { secret } = await enrollTotpFactor(api)
+        const { secret, recoveryCodes } = await enrollTotpFactor(api)
 
         const session = await completeMfa(api, secret)
 
@@ -364,7 +507,7 @@ medusaIntegrationTestRunner({
 
         const codes = await api.post(
           "/auth/mfa/recovery-codes",
-          { count: 10 },
+          { method: "recovery_code", code: recoveryCodes[0] },
           { headers: { authorization: `Bearer ${refreshed.data.token}` } }
         )
 
@@ -397,9 +540,9 @@ medusaIntegrationTestRunner({
           registrationHeaders
         )
 
-        await api.post(
+        const verified = await api.post(
           `/auth/mfa/factors/${setup.data.mfa_factor.id}/verify`,
-          { code: generateTotpCode({ secret: setup.data.secret }) },
+          { code: enrollmentCode(setup.data.secret) },
           registrationHeaders
         )
 
@@ -424,7 +567,11 @@ medusaIntegrationTestRunner({
 
         const codes = await api.post(
           "/auth/mfa/recovery-codes",
-          { count: 10 },
+          {
+            method: "recovery_code",
+            code: verified.data.recovery_codes[0],
+            count: 10,
+          },
           { headers: { authorization: `Bearer ${completed.data.token}` } }
         )
 

@@ -3,14 +3,25 @@ import {
   MedusaResponse,
 } from "@medusajs/framework/http"
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { hasEnabledMfa } from "../utils/generate-jwt-token"
 
 export const POST = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse
 ) => {
-  req.session.auth_context = req.auth_context
+  // Read from the database, not the token, so a token issued before MFA was
+  // enabled can't be turned into a session that skips MFA.
+  const authContext = {
+    ...req.auth_context,
+    mfa_enabled: await hasEnabledMfa(
+      req.scope,
+      req.auth_context.auth_identity_id
+    ),
+  }
 
-  res.status(200).json({ user: req.auth_context })
+  req.session.auth_context = authContext
+
+  res.status(200).json({ user: authContext })
 }
 
 export const DELETE = async (

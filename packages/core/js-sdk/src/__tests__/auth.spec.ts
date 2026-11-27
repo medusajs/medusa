@@ -243,7 +243,11 @@ describe("Auth", () => {
         }
       ),
       http.post(`${baseUrl}/auth/mfa/recovery-codes`, async ({ request }) => {
-        expect(await request.json()).toEqual({ count: 8 })
+        expect(await request.json()).toEqual({
+          method: "totp",
+          code: "123456",
+          count: 8,
+        })
 
         return HttpResponse.json({
           recovery_codes: ["code-1", "code-2"],
@@ -285,11 +289,15 @@ describe("Auth", () => {
         status: "disabled",
       },
     })
-    await expect(auth.mfa.generateRecoveryCodes({ count: 8 })).resolves.toEqual(
-      {
-        recovery_codes: ["code-1", "code-2"],
-      }
-    )
+    await expect(
+      auth.mfa.generateRecoveryCodes({
+        method: "totp",
+        code: "123456",
+        count: 8,
+      })
+    ).resolves.toEqual({
+      recovery_codes: ["code-1", "code-2"],
+    })
   })
 
   it("stores the token returned from MFA challenge verification", async () => {

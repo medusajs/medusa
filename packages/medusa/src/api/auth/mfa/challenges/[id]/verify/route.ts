@@ -22,7 +22,29 @@ export const POST = async (
   const { id } = req.params
   const { method, code } = req.validatedBody
 
+  // Only the token issued by the login that created the challenge can
+  // complete it, not another login of the same identity.
+  if (req.auth_context.mfa_challenge_id !== id) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `MFA challenge with id "${id}" was not found`
+    )
+  }
+
   const authService = req.scope.resolve<IAuthModuleService>(Modules.AUTH)
+  const authIdentity = await authService.retrieveAuthIdentity(
+    req.auth_context.auth_identity_id,
+    { relations: ["provider_identities"] }
+  )
+
+  // Checked before the code, so a token from before a password update can't
+  // use up the code.
+  await validateTokenIssuedAfterCredentialsUpdate(authService, {
+    authContext: req.auth_context,
+    authIdentity,
+    authProvider: req.auth_context.auth_provider,
+  })
+
   const challenge = await authService.verifyAuthMfaChallenge({
     id,
     method,
@@ -38,11 +60,6 @@ export const POST = async (
     )
   }
 
-  const authIdentity = await authService.retrieveAuthIdentity(
-    challenge.auth_identity_id,
-    { relations: ["provider_identities"] }
-  )
-
   if (
     challenge.auth_provider &&
     !authIdentity.provider_identities?.some(
@@ -54,13 +71,6 @@ export const POST = async (
       `Auth identity does not have a provider identity for "${challenge.auth_provider}"`
     )
   }
-
-  await validateTokenIssuedAfterCredentialsUpdate(authService, {
-    authContext: req.auth_context,
-    authIdentity,
-    authProvider:
-      req.auth_context.auth_provider ?? challenge.auth_provider ?? undefined,
-  })
 
   const { http } = req.scope.resolve<ConfigModule>(
     ContainerRegistrationKeys.CONFIG_MODULE

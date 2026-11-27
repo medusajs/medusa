@@ -95,6 +95,8 @@ module.exports = defineConfig({
 | `mfa.recovery_code_count` | `number` | Number of recovery codes generated for an auth identity. | `10` |
 | `mfa.challenge_ttl_seconds` | `number` | Seconds an MFA challenge remains valid. | `300` |
 | `mfa.challenge_max_attempts` | `number` | Failed verification attempts allowed per MFA challenge. | `5` |
+| `mfa.identity_max_failed_attempts` | `number` | Failed MFA code checks allowed per auth identity, across all its challenges, before further checks are refused. | `10` |
+| `mfa.identity_failed_attempts_ttl_seconds` | `number` | Seconds an auth identity's failed MFA code checks are counted for, from its latest failure. | `900` |
 | `mfa.disable_policy` | `"challenge" \| "session"` | Policy used when disabling MFA. | `"session"` |
 | `mfa.providers` | `{ resolve?: string, id: string, options?: Record<string, unknown> }[]` | Additional MFA providers, or options for built-in ones such as `totp`. | - |
 | `verification.providers` | `{ resolve?: string, id: string, options?: Record<string, unknown> }[]` | Additional verification providers, or options for the built-in `token` provider. | - |

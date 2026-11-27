@@ -29,6 +29,10 @@ export const POST = async (
   const { codes } = await authService.generateAuthMfaRecoveryCodes({
     auth_identity_id: req.auth_context.auth_identity_id,
     count: req.validatedBody.count,
+    // Replacing recovery codes needs a current code, so a stolen token alone
+    // can't mint codes that get past MFA.
+    method: req.validatedBody.method,
+    code: req.validatedBody.code,
   })
 
   await req.scope.resolve(Modules.EVENT_BUS).emit({

@@ -143,6 +143,11 @@ export interface AuthContext {
    */
   mfa_challenge_completed_at?: string | null
   /**
+   * The ID of the MFA challenge created by the login that issued the token.
+   * Only that token can complete the challenge.
+   */
+  mfa_challenge_id?: string
+  /**
    * The ID of the person acting as the actor, such as a support agent, when
    * the token was issued for impersonation.
    */

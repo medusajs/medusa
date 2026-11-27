@@ -10,10 +10,7 @@ import {
 import type { AuthMfaSetupResponse } from "@medusajs/js-sdk"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import {
-  useGenerateAuthMfaRecoveryCodes,
-  useVerifyAuthMfa,
-} from "../../../../../hooks/api"
+import { useVerifyAuthMfa } from "../../../../../hooks/api"
 import { MfaQrCode } from "./mfa-qr-code"
 
 type MfaSetupModalProps = {
@@ -26,36 +23,13 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
   const [step, setStep] = useState<"verify" | "recovery-codes">("verify")
   const [code, setCode] = useState("")
   const [error, setError] = useState<string | null>(null)
-  const [isVerified, setIsVerified] = useState(false)
   const [recoveryCodes, setRecoveryCodes] = useState<string[]>([])
   const secret = setup.secret
   const otpauthUrl = setup.otpauth_url
   const { mutateAsync: verify, isPending: isVerifying } = useVerifyAuthMfa(
     setup.mfa_factor.id
   )
-  const { mutateAsync: generateRecoveryCodes, isPending: isGenerating } =
-    useGenerateAuthMfaRecoveryCodes()
-
-  const generateAndShowRecoveryCodes = async () => {
-    setError(null)
-
-    try {
-      const { recovery_codes } = await generateRecoveryCodes()
-      setRecoveryCodes(recovery_codes)
-      setStep("recovery-codes")
-    } catch (e) {
-      setError(
-        e instanceof Error ? e.message : t("profile.mfa.recoveryCodesError")
-      )
-    }
-  }
-
   const handleVerify = async (nextCode = code) => {
-    if (isVerified) {
-      await generateAndShowRecoveryCodes()
-      return
-    }
-
     if (nextCode.length !== 6) {
       return
     }
@@ -63,15 +37,19 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
     setError(null)
 
     try {
-      await verify({ code: nextCode })
-      setIsVerified(true)
+      const { recovery_codes } = await verify({ code: nextCode })
+
+      if (!recovery_codes?.length) {
+        setError(t("profile.mfa.recoveryCodesError"))
+        return
+      }
+
+      setRecoveryCodes(recovery_codes)
+      setStep("recovery-codes")
     } catch (e) {
       setError(e instanceof Error ? e.message : t("profile.mfa.verifyError"))
       setCode("")
-      return
     }
-
-    await generateAndShowRecoveryCodes()
   }
 
   const handleOtpChange = (value: string) => {
@@ -131,9 +109,7 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
                   value={code}
                   onChange={handleOtpChange}
                   onComplete={handleVerify}
-                  disabled={
-                    isVerifying || isGenerating || !secret || isVerified
-                  }
+                  disabled={isVerifying || !secret}
                   autoFocus
                 />
                 {error && (
@@ -170,8 +146,8 @@ export const MfaSetupModal = ({ setup, onClose }: MfaSetupModalProps) => {
                 {t("actions.cancel")}
               </Button>
               <Button
-                isLoading={isVerifying || isGenerating}
-                disabled={(!isVerified && code.length !== 6) || !secret}
+                isLoading={isVerifying}
+                disabled={code.length !== 6 || !secret}
                 onClick={() => handleVerify()}
               >
                 {t("actions.confirm")}

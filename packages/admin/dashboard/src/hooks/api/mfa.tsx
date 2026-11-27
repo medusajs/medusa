@@ -1,8 +1,8 @@
 import type {
   AuthMfaFactorResponse,
   AuthMfaListResponse,
-  AuthMfaRecoveryCodesResponse,
   AuthMfaSetupResponse,
+  AuthMfaVerifyResponse,
   FetchError,
 } from "@medusajs/js-sdk"
 import type { AuthTypes } from "@medusajs/types"
@@ -70,7 +70,7 @@ export const useStartAuthMfa = (
 export const useVerifyAuthMfa = (
   id: string,
   options?: UseMutationOptions<
-    AuthMfaFactorResponse,
+    AuthMfaVerifyResponse,
     FetchError,
     { code: string }
   >
@@ -100,19 +100,6 @@ export const useDisableAuthMfa = (
       queryClient.invalidateQueries({ queryKey: mfaQueryKeys.lists() })
       options?.onSuccess?.(data, variables, onMutateResult, context)
     },
-  })
-}
-
-export const useGenerateAuthMfaRecoveryCodes = (
-  options?: UseMutationOptions<
-    AuthMfaRecoveryCodesResponse,
-    FetchError,
-    { count?: number } | void
-  >
-) => {
-  return useMutation({
-    mutationFn: (payload) => sdk.auth.mfa.generateRecoveryCodes(payload ?? {}),
-    ...options,
   })
 }
 

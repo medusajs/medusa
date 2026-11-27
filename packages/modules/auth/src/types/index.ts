@@ -68,6 +68,16 @@ export type AuthModuleOptions = Partial<ModuleServiceInitializeOptions> & {
      */
     challenge_max_attempts?: number
     /**
+     * Number of failed MFA code checks allowed for an auth identity, across
+     * all its challenges, before further checks are refused. Defaults to 10.
+     */
+    identity_max_failed_attempts?: number
+    /**
+     * Number of seconds an auth identity's failed MFA code checks are counted
+     * for, from its latest failure. Defaults to 900.
+     */
+    identity_failed_attempts_ttl_seconds?: number
+    /**
      * Policy used when disabling MFA. Defaults to "session".
      */
     disable_policy?: AuthMfaDisablePolicy

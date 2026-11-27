@@ -121,6 +121,18 @@ export type AuthMfaFactorResponse = {
 }
 
 /**
+ * Response returned when a pending MFA factor setup is verified.
+ */
+export type AuthMfaVerifyResponse = AuthMfaFactorResponse & {
+  /**
+   * The first set of recovery codes, returned only when the verification
+   * enables the factor. They're only returned once and should be stored by
+   * the user.
+   */
+  recovery_codes?: string[]
+}
+
+/**
  * Response containing newly generated MFA recovery codes.
  */
 export type AuthMfaRecoveryCodesResponse = {
@@ -182,6 +194,14 @@ export type AuthMfaDisablePayload = {
  * Payload used to generate recovery codes.
  */
 export type AuthMfaGenerateRecoveryCodesPayload = {
+  /**
+   * The MFA method used to confirm the request, such as `totp` or `recovery_code`.
+   */
+  method: AuthTypes.AuthMfaChallengeMethod
+  /**
+   * A current verification code for the selected method.
+   */
+  code: string
   /**
    * Number of recovery codes to generate.
    */
@@ -362,21 +382,23 @@ export class Auth {
      * @param id - The ID of the MFA factor to verify.
      * @param body - The verification details.
      * @param headers - Headers to pass in the request.
-     * @returns The verified MFA factor.
+     * @returns The verified MFA factor, and the first set of recovery codes
+     * when the verification enables the factor.
      *
      * @tags auth
      *
      * @example
-     * const { mfa_factor } = await sdk.auth.mfa.verify("authmfa_123", {
-     *   code: "123456"
-     * })
+     * const { mfa_factor, recovery_codes } = await sdk.auth.mfa.verify(
+     *   "authmfa_123",
+     *   { code: "123456" }
+     * )
      */
     verify: async (
       id: string,
       body: AuthMfaVerifyPayload,
       headers?: ClientHeaders
     ) => {
-      return await this.client.fetch<AuthMfaFactorResponse>(
+      return await this.client.fetch<AuthMfaVerifyResponse>(
         `/auth/mfa/factors/${id}/verify`,
         {
           method: "POST",
@@ -418,29 +440,33 @@ export class Auth {
     },
 
     /**
-     * This method generates new recovery codes for the authenticated identity.
-     * It sends a request to the
+     * This method replaces the recovery codes of the authenticated identity. It
+     * requires a current MFA code. The first set of recovery codes is returned
+     * by {@link verify} when a factor is enabled. It sends a request to the
      * [Generate MFA Recovery Codes](https://docs.medusajs.com/api/admin/multi-factor-authentication/generate-mfa-recovery-codes)
      * API route.
      *
-     * @param body - Optional recovery code generation details.
+     * @param body - A current MFA code, and optionally how many codes to generate.
      * @param headers - Headers to pass in the request.
      * @returns The generated recovery codes.
      *
      * @tags auth
      *
      * @example
-     * const { recovery_codes } = await sdk.auth.mfa.generateRecoveryCodes()
+     * const { recovery_codes } = await sdk.auth.mfa.generateRecoveryCodes({
+     *   method: "totp",
+     *   code: "123456"
+     * })
      */
     generateRecoveryCodes: async (
-      body?: AuthMfaGenerateRecoveryCodesPayload,
+      body: AuthMfaGenerateRecoveryCodesPayload,
       headers?: ClientHeaders
     ) => {
       return await this.client.fetch<AuthMfaRecoveryCodesResponse>(
         "/auth/mfa/recovery-codes",
         {
           method: "POST",
-          body: body ?? {},
+          body,
           headers,
         }
       )

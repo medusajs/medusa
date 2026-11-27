@@ -6,6 +6,12 @@ import {
 } from "../../../../helpers/create-admin-user"
 import { generateTotpCode } from "../../../../../packages/modules/auth/src/utils/totp"
 
+// A TOTP code is accepted once, so enrollment uses the previous time step's
+// code (still inside the default window) and leaves the current one for the
+// MFA challenge that follows.
+const enrollmentCode = (secret: string) =>
+  generateTotpCode({ secret, timestamp: Date.now() - 30_000 })
+
 jest.setTimeout(100000)
 
 const enrollTotpFactor = async (api) => {
@@ -25,7 +31,7 @@ const enrollTotpFactor = async (api) => {
     otpauth_url: expect.stringContaining("otpauth://totp/"),
   })
 
-  const code = generateTotpCode({ secret: setup.data.secret })
+  const code = enrollmentCode(setup.data.secret)
   const verified = await api.post(
     `/auth/mfa/factors/${setup.data.mfa_factor.id}/verify`,
     { code },
