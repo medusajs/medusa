@@ -728,6 +728,87 @@ medusaIntegrationTestRunner({
               expect.arrayContaining(["S", "M"])
             )
           })
+
+          it("should restore variant option values after a failed option removal", async () => {
+            const workflow = setProductProductOptionsWorkflow(appContainer)
+
+            workflow.appendAction("throw", setProductProductOptionsWorkflowId, {
+              invoke: async function failStep() {
+                throw new Error(`Fail`)
+              },
+            })
+
+            const product = await service.createProducts({
+              title: "Test Product",
+              shipping_profile_id: shippingProfile.id,
+              options: [
+                {
+                  title: "Color",
+                  values: ["Red"],
+                },
+                {
+                  title: "Size",
+                  values: ["S", "M"],
+                },
+              ],
+              variants: [
+                {
+                  title: "Red / S",
+                  options: { Color: "Red", Size: "S" },
+                  manage_inventory: false,
+                },
+                {
+                  title: "Red / M",
+                  options: { Color: "Red", Size: "M" },
+                  manage_inventory: false,
+                },
+              ],
+            })
+
+            const colorOption = product.options.find(
+              (option) => option.title === "Color"
+            )!
+
+            const { errors } = await workflow.run({
+              input: {
+                product_id: product.id,
+                remove: [colorOption.id],
+              },
+              throwOnError: false,
+            })
+
+            expect(errors).toEqual([
+              {
+                action: "throw",
+                handlerType: "invoke",
+                error: expect.objectContaining({
+                  message: `Fail`,
+                }),
+              },
+            ])
+
+            const compensatedProduct = await service.retrieveProduct(
+              product.id,
+              {
+                relations: ["options", "variants", "variants.options"],
+              }
+            )
+
+            expect(
+              compensatedProduct.options.map((option) => option.title).sort()
+            ).toEqual(["Color", "Size"])
+
+            const variantOptionValues = compensatedProduct.variants
+              .map((variant) =>
+                variant.options
+                  .map((option) => option.value)
+                  .sort()
+                  .join("/")
+              )
+              .sort()
+
+            expect(variantOptionValues).toEqual(["M/Red", "Red/S"])
+          })
         })
       })
 
