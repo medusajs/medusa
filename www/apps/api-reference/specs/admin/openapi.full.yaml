@@ -75705,6 +75705,7 @@ components:
           description: The response fields that the route chose to keep.
         metadata:
           type: object
+          description: Any other data attached to the audit log.
     AdminAuditLogDateRange:
       type: object
       description: A date range filter, with dates as ISO 8601 strings.
@@ -75726,7 +75727,6 @@ components:
           type: string
           title: $lte
           description: Filter by values less than or equal to this parameter. Useful for numbers and dates only.
-          description: Any other data attached to the audit log.
     AdminAuditLogRequest:
       type: object
       description: The HTTP details of an audit log written for an API request.
