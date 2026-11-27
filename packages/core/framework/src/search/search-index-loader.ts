@@ -47,9 +47,6 @@ export class SearchIndexLoader {
       try {
         await access(sourcePath)
       } catch {
-        this.#logger.debug(
-          `No search index to load from ${sourcePath}. skipped.`
-        )
         return
       }
 
