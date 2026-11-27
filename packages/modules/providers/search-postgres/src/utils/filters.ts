@@ -1,5 +1,5 @@
 import { SearchTypes } from "@medusajs/framework/types"
-import { MedusaError } from "@medusajs/framework/utils"
+import { MedusaError, searchValueToNumber } from "@medusajs/framework/utils"
 import { IndexPlan, PlannedField } from "./plan"
 
 function fail(message: string): never {
@@ -43,12 +43,9 @@ function castScalar(
   switch (planned.kind) {
     case "number": {
       const num =
-        planned.is_date && value instanceof Date
-          ? value.getTime()
-          : typeof value === "number"
-          ? value
-          : Number(value)
-      if (Number.isNaN(num)) {
+        (planned.is_date ? searchValueToNumber(value, true) : undefined) ??
+        searchValueToNumber(value, false)
+      if (num === undefined) {
         fail(`Cannot cast filter value for "${planned.path}" to a number`)
       }
       return num
