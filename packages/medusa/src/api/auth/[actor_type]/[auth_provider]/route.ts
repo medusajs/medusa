@@ -6,10 +6,12 @@ import {
 } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
+  isPresent,
   MedusaError,
   Modules,
 } from "@medusajs/framework/utils"
 import { generateJwtTokenWithChecks } from "../../utils/generate-jwt-token"
+import { getVerificationHidingExistingIdentities } from "../../utils/hide-existing-identities"
 import { isActorAssociationRequired } from "../../utils/require-actor-association"
 
 export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
@@ -20,6 +22,11 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   )
   const requiresActorAssociation = isActorAssociationRequired(
     config,
+    auth_provider
+  )
+  const hidesExistingIdentities = !!getVerificationHidingExistingIdentities(
+    config,
+    actor_type,
     auth_provider
   )
 
@@ -43,7 +50,10 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     success &&
     authIdentity &&
     (!requiresActorAssociation ||
-      !!authIdentity.app_metadata?.[`${actor_type}_id`])
+      !!authIdentity.app_metadata?.[`${actor_type}_id`] ||
+      // Registering doesn't return a token then, so a verified identity logs
+      // in to create its actor
+      (hidesExistingIdentities && !isPresent(authIdentity.app_metadata)))
   ) {
     const result = await generateJwtTokenWithChecks(req.scope, {
       authIdentity,
@@ -52,13 +62,17 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       authProvider: auth_provider,
     })
 
-    return res.status(200).json(result)
+    // Otherwise logging in with the password someone registered with would
+    // reveal that the identity didn't exist before
+    if (!(hidesExistingIdentities && "verification_required" in result)) {
+      return res.status(200).json(result)
+    }
   }
 
   // A distinct error would reveal whether the credentials are valid.
   throw new MedusaError(
     MedusaError.Types.UNAUTHORIZED,
-    requiresActorAssociation
+    requiresActorAssociation || hidesExistingIdentities
       ? "Authentication failed"
       : error || "Authentication failed"
   )

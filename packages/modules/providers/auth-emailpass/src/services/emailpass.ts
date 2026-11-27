@@ -208,10 +208,10 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
         entity_id: email,
       })
 
-      if (
-        !isPresent(identity.app_metadata) &&
-        (await this.isPasswordMatch_(password, identity))
-      ) {
+      // Always checked, so the answer takes about as long as creating one
+      const isPasswordMatch = await this.isPasswordMatch_(password, identity)
+
+      if (!isPresent(identity.app_metadata) && isPasswordMatch) {
         return {
           success: true,
           authIdentity: this.sanitizeAuthIdentity_(identity),
@@ -221,6 +221,7 @@ export class EmailPassAuthService extends AbstractAuthModuleProvider {
       return {
         success: false,
         error: "Identity with email already exists",
+        existingEntityId: email,
       }
     } catch (error) {
       if (error.type === MedusaError.Types.NOT_FOUND) {

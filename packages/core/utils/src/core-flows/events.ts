@@ -399,6 +399,27 @@ export const AuthWorkflowEvents = {
    * ```
    */
   VERIFICATION_REQUESTED: "auth.verification_requested",
+  /**
+   * Emitted when someone registers with the details of an identity that
+   * already exists, and the actor type and provider have
+   * `hide_existing_identities` set in `authVerificationsPerActor`. The
+   * registration answers as if it worked, so you can listen to this event to
+   * tell the identity's owner, for example with links to log in or reset the
+   * password.
+   *
+   * @since 2.18.0
+   *
+   * @eventPayload
+   * ```ts
+   * {
+   *   entity_id, // The identifier of the existing identity. For example, an email address.
+   *   actor_type, // The type of actor. For example, "customer", "user", or custom.
+   *   auth_provider, // The auth provider. For example, "emailpass".
+   * }
+   * ```
+   */
+  REGISTRATION_WITH_EXISTING_IDENTITY:
+    "auth.registration_with_existing_identity",
 } as const
 
 /**
