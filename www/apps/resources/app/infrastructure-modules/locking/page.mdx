@@ -131,7 +131,9 @@ Medusa provides [multiple Locking Module Providers](#list-of-locking-module-prov
 
 ### Default Locking Module Provider
 
-By default, Medusa uses the In-Memory Locking Module Provider. This provider uses a plain JavaScript map to store the locks. While this is useful for development, it is not recommended for production environments as it is only intended for use in a single-instance environment.
+On Cloud, Medusa provisions a managed [Redis](!cloud!/redis) instance for each environment and configures the [Redis Locking Module Provider](./redis/page.mdx) to use it. So, you don't configure a Locking Module Provider for your deployed application.
+
+Locally, Medusa uses the In-Memory Locking Module Provider by default. This provider uses a plain JavaScript map to store the locks. While this is useful for development, it is not recommended for production environments as it is only intended for use in a single-instance environment.
 
 To add more providers, you can register them in the `medusa-config.ts` file. For example:
 

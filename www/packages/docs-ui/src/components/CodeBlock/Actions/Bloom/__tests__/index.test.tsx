@@ -27,8 +27,8 @@ vi.mock("@/components/Tooltip", () => ({
   ),
 }))
 
-vi.mock("@/components/Icons/Bloom", () => ({
-  BloomIcon: () => <span data-testid="bloom-icon" />,
+vi.mock("@/components/Icons/DocsAssistant", () => ({
+  DocsAssistantIcon: () => <span data-testid="bloom-icon" />,
 }))
 
 import { CodeBlockBloomAction } from "../index"

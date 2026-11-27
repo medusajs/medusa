@@ -1,0 +1,169 @@
+import { Prerequisites, Table } from "docs-ui"
+
+export const metadata = {
+  title: `Migrate from Magento (Adobe Commerce) to Medusa`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to use the [Docs MCP server](../page.mdx) to migrate your store's data from Magento / Adobe Commerce into Medusa.
+
+## What is the Migration Tool?
+
+The `get_import_data_from_shopify_or_other_platform_guide` tool returns a complete, step-by-step implementation guide for migrating existing store data into Medusa from Magento / Adobe Commerce.
+
+Tell your AI agent what you want to bring over from Magento, and it produces a working import that maps Magento's data model onto Medusa's. Depending on the approach you choose, you can re-run the import whenever you need it.
+
+The tool focuses on catalog data:
+
+- Products, variants, prices, and images
+- Inventory levels
+- Collections and categories
+
+It can also support other types, such as orders and customers.
+
+<Note>
+
+The same tool also has curated guides for [Shopify](../migrate-from-shopify/page.mdx) and [WooCommerce](../migrate-from-woocommerce/page.mdx). For any other source, such as BigCommerce or commercetools, it returns a generic migration guide. Always tell your AI agent the actual platform you're migrating from, so it maps the data model correctly.
+
+</Note>
+
+---
+
+## Who is this Useful for?
+
+This tool is useful for:
+
+- Merchants and teams migrating an existing store from Magento to Medusa.
+- Agencies and solution partners performing repeated Magento migrations for clients.
+- Teams running Medusa alongside a Magento store that needs continuous data synchronization.
+- Developers who need to seed a Medusa development environment with real catalog data.
+
+---
+
+## Why Use This Tool?
+
+In a migration, a plausible-looking result is the most dangerous. The import runs and rows appear in the database, but problems surface later: products that aren't purchasable, images that break when you switch off the Magento store, and records you can't match back to Magento to re-sync.
+
+Compared to reading the documentation yourself or [asking a Medusa question](../ask-medusa-question/page.mdx), this tool gives you:
+
+- **A migration plan, not a pile of answers.** Your agent gets the ordered approach for moving data from Magento into Medusa, instead of assembling one from separate answers about importers, workflows, and file providers.
+- **Source-platform quirks accounted for.** The curated Magento guide covers how Magento models and exports its data, knowledge that lives in Magento's ecosystem, not Medusa's documentation.
+- **Imports you can run again.** With the API-based approach, the import is idempotent and resumable, so the migration becomes ongoing synchronization instead of a one-time event.
+
+Your agent still calls `ask_medusa_question` for the exact Medusa APIs and workflows involved. The guide decides the approach; the documentation supplies the details.
+
+---
+
+## Migration Approaches
+
+The tool supports two migration approaches, and returns a different guide for each:
+
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.HeaderCell>
+        Approach
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        How it works
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        When to use it
+      </Table.HeaderCell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Body>
+    <Table.Row>
+      <Table.Cell>
+
+      **Custom** (default)
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Builds a custom module and workflows in your Medusa application that pull data from Magento's API. The import is idempotent, resumable, and re-runnable, and you can trigger it from an admin widget, a scheduled job, a CLI command, or a webhook.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      You need to migrate inventory levels or re-host images in Medusa's file provider, or you want ongoing synchronization rather than a one-time cutover.
+
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+
+      **CSV**
+
+      </Table.Cell>
+      <Table.Cell>
+
+      Builds a transform from Magento's CSV export into the CSV format that Medusa's built-in product importer accepts. You then import the resulting file from the Medusa Admin.
+
+      </Table.Cell>
+      <Table.Cell>
+
+      You can't create an API app or credentials on Magento, or you want a single minimum-effort cutover and will handle stock quantities and images yourself.
+
+      </Table.Cell>
+    </Table.Row>
+  </Table.Body>
+</Table>
+
+The CSV approach is much faster to build, but it's lossy:
+
+- It doesn't migrate inventory quantities.
+- Images stay as URLs pointing to Magento's CDN.
+- Collections usually aren't part of the export.
+- Most exports have no ID column, so you can't key records back to the source for later re-syncs.
+
+<Note type="warning">
+
+Don't mix the two approaches on the same store. The CSV approach can't key records to source IDs, so the API-based importer then treats every record as new and fails on duplicate product handles.
+
+</Note>
+
+---
+
+## How to Use the Migration Tool
+
+<Prerequisites
+  items={[
+    {
+      text: "Docs MCP server connected to your AI tool or IDE",
+      link: "/ai-toolkit/docs-mcp"
+    }
+  ]}
+/>
+
+After [connecting to the Docs MCP server](../page.mdx#connect-to-the-docs-mcp-server), ask your AI agent to migrate your data. Your agent calls the migration tool with Magento as the source platform, the data type, and the approach, then follows the returned guide.
+
+For example:
+
+```bash title="Example prompt"
+Migrate my Magento store's products to Medusa.
+```
+
+Other prompts that trigger the tool:
+
+```bash title="Example prompts"
+Import our Magento catalog into Medusa.
+```
+
+```bash title="Example prompts"
+We're switching from Magento. Move our products and customers over to Medusa.
+```
+
+### What to Expect
+
+1. Your AI agent asks which approach you want, if you haven't specified one, and explains the trade-offs.
+2. It calls the migration tool for Magento, along with the data type and approach.
+3. It scaffolds the module, workflows, and any triggers or transforms the guide specifies.
+4. It guides you through running the import and verifying the migrated data.
+
+<Note title="Tip">
+
+When migrating multiple data types, start with products. Other entities, such as orders and inventory, reference products, so migrating them first avoids unresolved references.
+
+</Note>

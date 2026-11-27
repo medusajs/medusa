@@ -71,7 +71,7 @@ This approach allows you to interact with the third-party service within custom 
 
 You can also automate sending notifications to customers when changes happen related to their orders, returns, exchanges, and more.
 
-Medusa's Notification Module allows you to send notifications when an event is triggered, such as when a customer's order is updated. You can use third-party services, like [SendGrid](../../infrastructure-modules/notification/sendgrid/page.mdx), to send emails to customers.
+Medusa's Notification Module allows you to send notifications when an event is triggered, such as when a customer's order is updated. Cloud projects send emails to customers with [Medusa Emails](!cloud!/emails), Cloud's built-in email service, without any configuration.
 
 <CardList items={[
   {
@@ -225,7 +225,7 @@ For example, to group customers with over twenty orders:
 
 In your commerce store, you may utilize marketing strategies that encourage customers to make purchases. For example, you send a newsletter when new products are added to your store.
 
-To do that, create a subscriber that listens to the `product.created`, and send an email to subscribed customers with tools like [SendGrid](../../infrastructure-modules/notification/sendgrid/page.mdx).
+To do that, create a subscriber that listens to the `product.created`, and send an email to subscribed customers with [Medusa Emails](!cloud!/emails).
 
 You can also create a scheduled job that checks whether the number of new products has exceeded a set threshold, then sends out the newsletter.
 

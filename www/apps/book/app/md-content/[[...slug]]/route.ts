@@ -1,9 +1,10 @@
-import { addExtraToMd, workerCompatibleFetch } from "docs-utils"
+import { addExtraToMd, getAgentName, workerCompatibleFetch } from "docs-utils"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
 import path from "path"
 import { PostHog } from "posthog-node"
 import { getCleanMdCached } from "../../../utils/get-clean-md-cached"
+import { trackAgentRequest } from "../../../utils/track-agent-request"
 import { fetchRawMdx } from "../../../utils/fetch-raw-mdx"
 import { fetchFromAssetsBinding } from "../../../utils/fetch-from-assets-binding"
 
@@ -41,6 +42,10 @@ export async function GET(req: NextRequest, { params }: Params) {
     if (!homepageContent) {
       return notFound()
     }
+
+    trackAgentRequest(req, "md_content_requested_agents", {
+      $current_url: `${origin}/`,
+    })
 
     return new NextResponse(
       addExtraToMd(homepageContent, {
@@ -86,6 +91,7 @@ export async function GET(req: NextRequest, { params }: Params) {
       properties: {
         $current_url: url,
         $raw_user_agent: req.headers.get("user-agent") || undefined,
+        agent: getAgentName(req.headers.get("user-agent")),
         $ip:
           req.headers.get("cf-connecting-ip") ||
           req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||

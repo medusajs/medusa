@@ -1,0 +1,110 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Integrate Providers with the Docs MCP Server`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to use the [Docs MCP server](../page.mdx) to integrate third-party payment and fulfillment providers into your Medusa application.
+
+## What are the Provider Integration Tools?
+
+Two tools return complete, step-by-step implementation guides for building module providers:
+
+- `get_payment_provider_integration_guide`: returns a guide for building a [Payment Module Provider](!resources!/commerce-modules/payment/payment-provider) that integrates a third-party payment service.
+- `get_fulfillment_provider_integration_guide`: returns a guide for building a [Fulfillment Module Provider](!resources!/commerce-modules/fulfillment/fulfillment-provider) that integrates a third-party shipping or fulfillment service.
+
+Name the provider you want to integrate, and your AI agent builds a working integration, inside your Medusa application or as a reusable [plugin](!docs!/learn/fundamentals/plugins). It implements the provider against Medusa's contract, registers it in your configuration, enables it in the Medusa Admin, and verifies it with a real checkout.
+
+<Note title="Tip">
+
+Also add the [Context7 MCP server](https://github.com/upstash/context7#installation) to your AI tool. It retrieves the latest information from the provider's own documentation, which the Medusa guide can't cover and a successful integration depends on.
+
+</Note>
+
+---
+
+## Who is this Useful for?
+
+These tools are useful for:
+
+- Developers integrating a payment or shipping service that Medusa doesn't ship a ready integration for.
+- Teams migrating to Medusa who need to keep using their existing payment gateway or 3PL.
+- Providers and vendors building an official or community Medusa plugin for their own service.
+- Agencies that repeatedly integrate regional payment gateways or carriers for clients.
+
+---
+
+## Why Use These Tools?
+
+The documentation explains how provider integrations work, and [asking a Medusa question](../ask-medusa-question/page.mdx) gets your agent an accurate answer about any individual API, but neither gives your agent a plan. In a provider integration, a wrong early choice quietly invalidates later work, and compiling code doesn't mean the integration works. These tools address that:
+
+- **A plan, not reference material.** Your agent receives the ordered steps for this kind of integration instead of assembling an approach from several pages and its own assumptions.
+- **The provider's real capabilities drive the implementation.** Your agent maps what the third-party service supports before writing code, so it implements the methods that apply instead of stubbing out an interface it can't back.
+- **Configuration and admin wiring are part of the deliverable.** A correct provider that isn't enabled in the right place is the most common way an integration silently fails, so the guides treat that wiring as a required step.
+- **The work isn't done when it compiles.** The integration is finished only after an end-to-end test against the real service: a full checkout for a payment provider, and a checkout plus order fulfillment for a fulfillment provider. You find out whether it works before your customers do.
+- **The advice reflects what actually goes wrong.** The guides include pitfalls the Medusa team has seen break real integrations, which no single documentation page states outright.
+
+Your agent still calls `ask_medusa_question` for exact API shapes and current signatures. The guides decide the approach; the documentation supplies the details.
+
+<Note>
+
+Don't use these tools for Stripe. Medusa ships an official Stripe provider, so ask your agent how to install and configure `@medusajs/payment-stripe` instead.
+
+</Note>
+
+---
+
+## How to Use the Provider Integration Tools
+
+<Prerequisites
+  items={[
+    {
+      text: "Docs MCP server connected to your AI tool or IDE",
+      link: "/ai-toolkit/docs-mcp"
+    }
+  ]}
+/>
+
+After [connecting to the Docs MCP server](../page.mdx#connect-to-the-docs-mcp-server), ask your AI agent to integrate the provider. Your agent calls the applicable tool with the provider's name and follows the returned guide.
+
+For example, to integrate a payment provider:
+
+```bash title="Example prompt"
+Integrate PayPal as a payment provider in my Medusa store.
+```
+
+To integrate a fulfillment provider:
+
+```bash title="Example prompt"
+Integrate ShipStation as a fulfillment provider in my Medusa store.
+```
+
+Other prompts that trigger these tools:
+
+```bash title="Example prompts"
+Add Razorpay checkout support to my Medusa application.
+```
+
+```bash title="Example prompts"
+Build a Medusa fulfillment provider for our 3PL's API.
+```
+
+```bash title="Example prompts"
+Create a plugin that integrates Adyen payments with Medusa.
+```
+
+### What to Expect
+
+1. Your AI agent calls the relevant guide tool with the provider's name.
+2. It presents an implementation plan based on the returned guide, including which of the provider's capabilities it will support.
+3. Once you approve, it scaffolds the provider's directory, service class, and module provider export, and registers it in `medusa-config.ts`.
+4. It tells you which options and environment variables you need to supply, such as API keys and webhook secrets.
+5. It walks you through enabling the provider in the Medusa Admin and verifying the integration with a full checkout, or a checkout and order fulfillment for fulfillment providers.
+
+<Note title="Tip">
+
+Tell your agent whether you want the provider inside your Medusa application or as a reusable plugin. The file structure and the `resolve` path in `medusa-config.ts` differ between the two.
+
+</Note>

@@ -6,12 +6,14 @@ import {
   AiAssistantChatWindow,
   MainNav,
   RootProviders,
+  WebMcpTools,
 } from "docs-ui"
 import Providers from "../providers"
 import HomepageTopSection from "../components/Homepage/TopSection"
 import HomepageSectionsSeparator from "../components/Homepage/SectionsSeparator"
-import HomepageBloom from "../components/Homepage/Bloom"
+import HomepageDocsAssistant from "../components/Homepage/DocsAssistant"
 import HomepageLinksSection from "../components/Homepage/LinksSection"
+import HomepageCloudSection from "../components/Homepage/CloudSection"
 import HomepageFrameworkSection from "../components/Homepage/FrameworkSection"
 import HomepageCodeTabs from "../components/Homepage/CodeTabs"
 import HomepageRecipesSection from "../components/Homepage/RecipesSection"
@@ -61,11 +63,13 @@ const Homepage = () => {
               <HomepageTopSection />
               <HomepageStartPrompt />
               <HomepageSectionsSeparator />
-              <HomepageBloom />
+              <HomepageDocsAssistant />
+              <HomepageSectionsSeparator />
+              <HomepageLinksSection />
               <HomepageSectionsSeparator />
               <HomepageWhatsNewSection />
               <HomepageSectionsSeparator />
-              <HomepageLinksSection />
+              <HomepageCloudSection />
               <HomepageSectionsSeparator />
               <HomepageFrameworkSection />
               <HomepageCodeTabs />
@@ -78,6 +82,7 @@ const Homepage = () => {
             </div>
           </div>
           <AiAssistantChatWindow />
+          <WebMcpTools />
         </Providers>
       </RootProviders>
     </body>

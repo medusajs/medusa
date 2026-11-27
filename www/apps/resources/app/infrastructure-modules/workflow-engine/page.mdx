@@ -14,7 +14,9 @@ A Workflow Engine Module handles tracking and recording the transactions and sta
 
 ### Default Workflow Engine Module
 
-Medusa uses the [In-Memory Workflow Engine Module](./in-memory/page.mdx) by default. For production purposes, it's recommended to use the [Redis Workflow Engine Module](./redis/page.mdx) instead.
+On Cloud, Medusa provisions a managed [Redis](!cloud!/redis) instance for each environment and configures the [Redis Workflow Engine Module](./redis/page.mdx) to use it. So, you don't configure a Workflow Engine Module for your deployed application.
+
+Locally, Medusa uses the [In-Memory Workflow Engine Module](./in-memory/page.mdx) by default. It's recommended to use the [Redis Workflow Engine Module](./redis/page.mdx) in production instead.
 
 ---
 

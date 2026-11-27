@@ -116,13 +116,14 @@ const withMDX = mdx({
 const nextConfig = {
   // Configure `pageExtensions` to include MDX files
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+  agentRules: false,
 
   transpilePackages: ["docs-ui"],
   async rewrites() {
     return {
       beforeFiles: [
         {
-          source: "/:file(llms\\.txt|llms-full\\.txt)",
+          source: "/:file(llms\\.txt|llms-full\\.txt|SKILL\\.md)",
           destination: "/llms-content/:file",
         },
         {
@@ -135,22 +136,22 @@ const nextConfig = {
         },
         {
           source:
-            "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*/index.html.md",
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content|llms-content)[^/]+)/:rest*/index.html.md",
           destination: "/md-content/:first/:rest*",
         },
         {
           source:
-            "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*/index.md",
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content|llms-content)[^/]+)/:rest*/index.md",
           destination: "/md-content/:first/:rest*",
         },
         {
           source:
-            "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*.md",
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content|llms-content)[^/]+)/:rest*.md",
           destination: "/md-content/:first/:rest*",
         },
         {
           source:
-            "/:first((?!resources|api|ui|user-guide|cloud|md-content)[^/]+)/:rest*/",
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content|llms-content)[^/]+)/:rest*/",
           has: [
             {
               type: "header",
@@ -173,7 +174,7 @@ const nextConfig = {
         },
         {
           source:
-            "/:first((?!resources|api|ui|user-guide|cloud|md-content|robots\\.txt|\\.well-known)[^/]+)/:rest*",
+            "/:first((?!resources|api|ui|user-guide|cloud|md-content|agents|llms-content|robots\\.txt|\\.well-known)[^/]+)/:rest*",
           has: [
             {
               type: "header",
@@ -306,6 +307,8 @@ const nextConfig = {
               `</api/download/admin>; rel="service-desc"; type="application/yaml"`,
               `</index.html.md>; rel="alternate"; type="text/markdown"`,
               `</llms.txt>; rel="describedby"; type="text/plain"`,
+              `</SKILL.md>; rel="describedby"; type="text/markdown"`,
+              `</.well-known/ai-catalog.json>; rel="describedby"; type="application/json"`,
             ].join(", "),
           },
         ],

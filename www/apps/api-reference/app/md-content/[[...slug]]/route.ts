@@ -1,4 +1,4 @@
-import { addExtraToMd } from "docs-utils"
+import { addExtraToMd, getAgentName } from "docs-utils"
 import { unstable_cache } from "next/cache"
 import { notFound } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
@@ -163,6 +163,7 @@ async function captureAgentRequest(req: NextRequest) {
     properties: {
       $current_url: url,
       $raw_user_agent: req.headers.get("user-agent") || undefined,
+      agent: getAgentName(req.headers.get("user-agent")),
       $ip:
         req.headers.get("cf-connecting-ip") ||
         req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||

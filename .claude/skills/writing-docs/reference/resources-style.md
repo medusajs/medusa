@@ -36,8 +36,8 @@ about the <Module Name> Module and how to use it in your application.
 
 <Note title="Looking for no-code docs?">
 
-Refer to the [Medusa Admin User Guide](!user-guide!/<path>) to learn how to
-manage <items> using the dashboard.
+Refer to the [Merchant Guide](!user-guide!/<path>) to learn how to manage
+<items> using the dashboard.
 
 </Note>
 
@@ -99,8 +99,8 @@ In this guide, you'll learn how to <task description>.
 <Prerequisites
   items={[
     {
-      text: "Medusa application set up",
-      link: "!docs!/learn/installation",
+      text: "Medusa application set up locally",
+      link: "!cloud!/setup-locally",
     },
   ]}
 />

@@ -123,6 +123,7 @@ const withMDX = mdx({
 const nextConfig = {
   // Configure `pageExtensions` to include MDX files
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+  agentRules: false,
 
   transpilePackages: ["docs-ui"],
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/cloud",
@@ -170,6 +171,31 @@ const nextConfig = {
       permanent: true,
     },
     {
+      source: "/medusa-mcp/:path*",
+      destination: "/ai-toolkit/medusa-mcp/:path*",
+      permanent: true,
+    },
+    {
+      source: "/assistant",
+      destination: "/ai-toolkit/assistant",
+      permanent: true,
+    },
+    {
+      source: "/projects/clone-locally",
+      destination: "/setup-locally",
+      permanent: true,
+    },
+    {
+      source: "/connect-storefront",
+      destination: "/storefront",
+      permanent: true,
+    },
+    {
+      source: "/sign-up",
+      destination: "/first-project",
+      permanent: true,
+    },
+    {
       source: "/cloud/draft-order-plugin",
       destination: "/resources/commerce-modules/order/draft-orders",
       basePath: false,
@@ -178,6 +204,12 @@ const nextConfig = {
     {
       source: "/cloud/loyalty-plugin",
       destination: "/resources/commerce-modules/loyalty",
+      basePath: false,
+      permanent: true,
+    },
+    {
+      source: "/cloud/update-medusa",
+      destination: "/learn/update",
       basePath: false,
       permanent: true,
     },

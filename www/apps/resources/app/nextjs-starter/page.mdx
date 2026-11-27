@@ -1,5 +1,4 @@
 import { DetailsList, Prerequisites } from "docs-ui"
-import CmaOptionTroubleshooting from "../troubleshooting/_sections/nextjs/cma-option.mdx"
 import CorsErrorTroubleshooting from "../troubleshooting/_sections/other/cors-errors.mdx"
 import ModuleXErrorTroubleshooting from "../troubleshooting/_sections/common-installation-errors/module-x-error.mdx"
 import Node25Troubleshooting from "../troubleshooting/_sections/create-medusa-app-errors/nextjs-node-25.mdx"
@@ -12,7 +11,7 @@ export const metadata = {
 
 <Note>
 
-Since Medusa v2.14.0, the Next.js Starter storefront is installed in a monorepo with the Medusa application when using `create-medusa-app`. The [standalone Next.js Starter Storefront](https://github.com/medusajs/nextjs-starter-medusa) is now deprecated.
+Since Medusa v2.14.0, the Next.js Starter storefront is part of a monorepo with the Medusa application. The [standalone Next.js Starter Storefront](https://github.com/medusajs/nextjs-starter-medusa) is now deprecated.
 
 </Note>
 
@@ -28,9 +27,13 @@ This guide helps technical users set up the Next.js Start storefront. If you're 
 
 ## Installation
 
-### Approach 1: Install with Medusa Application
+### Approach 1: Create a Cloud Project
 
 <Prerequisites items={[
+  {
+    text: "A Medusa account",
+    link: "!cloud!/first-project"
+  },
   {
     text: "Node.js v22.22.0+ LTS, less than v25",
     link: "https://nodejs.org/en/download"
@@ -45,21 +48,13 @@ This guide helps technical users set up the Next.js Start storefront. If you're 
   }
 ]} />
 
-If you don't have a Medusa application installed, run the following command to install both the Medusa application and the Next.js Starter storefront:
+The Blank DTC starter on Cloud includes the Medusa application and the Next.js Starter storefront. To create a project from it, follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest --with-nextjs-starter
-```
+Cloud clones the starter into a GitHub repository in your account or organization, then deploys both the Medusa application and the storefront. It also sets the storefront's backend URL, publishable API key, and CORS settings for every environment. Learn more in the [Storefront Deployment](!cloud!/storefront) guide.
 
-You'll be asked for the project's name, then the installation will start.
+Then, to customize the storefront, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. The Medusa backend is in the `apps/backend` directory, and the Next.js Starter storefront is in the `apps/storefront` directory. Locally, the storefront runs at `http://localhost:8000`.
 
-The command will create a `{project-name}` directory that holds a monorepository. The Medusa backend will be installed in the `apps/backend` directory, and the Next.js Starter storefront will be installed in the `apps/storefront` directory.
-
-Once the installation is done, the Medusa Admin dashboard will open in your default browser at `http://localhost:9000/app`, and the Next.js Starter storefront will be running at `http://localhost:8000`.
-
-For other information related to the Medusa application's installation, refer to the [Installation guide](!docs!/learn/installation).
-
-### Approach 2: Install separately
+### Approach 2: Add to an Existing Project
 
 <Prerequisites items={[
   {
@@ -128,16 +123,14 @@ npm run dev
 
 Your Next.js Starter storefront is now running at `http://localhost:8000`.
 
+8. To deploy the storefront to Cloud, commit and push the `apps/storefront` directory to your project's repository. Then, [add the storefront to your Cloud project](!cloud!/projects#add-storefront-to-existing-project) with `apps/storefront` as its root directory. Cloud sets the storefront's backend URL and publishable API key, so you don't add `NEXT_PUBLIC_MEDUSA_BACKEND_URL` or `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` to its environment variables.
+
 ---
 
 ## Troubleshooting
 
 <DetailsList
   sections={[
-    {
-      title: "Installing Next.js Starter with create-medusa-app not working",
-      content: <CmaOptionTroubleshooting />
-    },
     {
       title: "CORS Error",
       content: <CorsErrorTroubleshooting />
@@ -166,15 +159,17 @@ The Next.js Starter storefront is compatible with Medusa's Stripe Module Provide
   },
 ]} />
 
-In your Next.js Starter project, set the following environment variables for the Stripe integration:
+The storefront reads your Stripe publishable key from the `NEXT_PUBLIC_STRIPE_KEY` environment variable. You can retrieve the key from your [Stripe dashboard](https://dashboard.stripe.com/) by going to Developers → API Keys.
+
+On Cloud, add `NEXT_PUBLIC_STRIPE_KEY` in the environment's **Storefront** variables, and enable its **Build** toggle, since Next.js includes it in the storefront's build. Then, redeploy the environment. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+
+Locally, set the variable in `apps/storefront/.env.local`:
 
 ```bash
 NEXT_PUBLIC_STRIPE_KEY=<YOUR_PUBLISHABLE_KEY>
 ```
 
-Where `<YOUR_PUBLISHABLE_KEY>` is your Stripe publishable key. You can retrieve it from your [Stripe dashboard](https://dashboard.stripe.com/) by going to Developers → API Keys.
-
-Then, restart the Next.js Starter storefront. You can now use Stripe during checkout.
+Where `<YOUR_PUBLISHABLE_KEY>` is your Stripe publishable key. Then, restart the Next.js Starter storefront. You can now use Stripe during checkout.
 
 <Note title="Tip">
 
@@ -186,9 +181,11 @@ Refer to [this guide](./guides/customize-stripe/page.mdx) to learn how to custom
 
 ## Change Medusa Application URL
 
-By default, the Medusa application runs at `http://localhost:9000`. This value is defined in your Next.js Starter storefront under the environment variable `NEXT_PUBLIC_MEDUSA_BACKEND_URL`.
+The Next.js Starter storefront reads the URL of the Medusa application from the `NEXT_PUBLIC_MEDUSA_BACKEND_URL` environment variable.
 
-To change the URL of the Medusa application in the storefront, set the `NEXT_PUBLIC_MEDUSA_BACKEND_URL` environment variable in `apps/storefront/.env.local`:
+On Cloud, Medusa sets this variable to the URL of the environment's Medusa application, so you don't need to set it. Learn more in the [Storefront Deployment](!cloud!/storefront#injected-environment-variables) guide.
+
+Locally, the Medusa application runs at `http://localhost:9000` by default. To change the URL of the Medusa application in the storefront, set the `NEXT_PUBLIC_MEDUSA_BACKEND_URL` environment variable in `apps/storefront/.env.local`:
 
 ```bash title="apps/storefront/.env.local"
 NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://example.com
@@ -198,9 +195,11 @@ NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://example.com
 
 ## Change Medusa Publishable API Key
 
-All requests made from a storefront must pass a publishable API key in the request's header. This API key is created in the Medusa application. If you've installed the Next.js Starter storefront using `create-medusa-app`, the publishable API key is set in the environment variables automatically.
+All requests made from a storefront must pass a publishable API key in the request's header. This API key is created in the Medusa application.
 
-If you change your Medusa application or its database, or you lose the publishable API key you had before, make sure to change the `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` environment variable to the new publishable API key:
+On Cloud, Medusa sets the `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` environment variable to a publishable API key of the environment's Medusa application, so you don't need to set it.
+
+Locally, if you change your Medusa application or its database, or you lose the publishable API key you had before, change the `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY` environment variable in `apps/storefront/.env.local` to the new publishable API key:
 
 ```bash
 NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_123...

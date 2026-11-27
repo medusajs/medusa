@@ -22,7 +22,9 @@ The underlying database, third-party service, or caching logic is flexible since
 
 ### Default Cache Module
 
-By default, Medusa uses the [In-Memory Cache Module](./in-memory/page.mdx). This module uses a plain JavaScript Map object to store the cache data. While this is suitable for development, it's recommended to use other Cache Modules, such as the [Redis Cache Module](./redis/page.mdx), for production. You can also [Create a Cache Module](./create/page.mdx).
+On Cloud, Medusa provisions a managed [Redis](!cloud!/redis) instance for each environment and provides [Medusa Cache](!cloud!/cache), which uses the [Caching Module](../caching/page.mdx) instead of the deprecated Cache Module. So, remove the Cache Module from `medusa-config.ts` before you deploy to Cloud.
+
+Locally, Medusa uses the [In-Memory Cache Module](./in-memory/page.mdx) by default. This module uses a plain JavaScript Map object to store the cache data. While this is suitable for development, it's recommended to use other Cache Modules, such as the [Redis Cache Module](./redis/page.mdx), in production. You can also [Create a Cache Module](./create/page.mdx).
 
 ---
 

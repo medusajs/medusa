@@ -16,9 +16,25 @@ The Caching Module and its providers are available starting [Medusa v2.11.0](htt
 
 ---
 
+## Set Up on Cloud
+
+Cloud provides [Medusa Cache](!cloud!/cache), which configures the Redis Caching Module Provider with a managed [Redis](!cloud!/redis) instance for each environment. So, you don't configure the provider or set up Redis yourself.
+
+To deploy your application with the managed Redis Caching Module Provider:
+
+1. Remove the Redis Caching Module Provider from `medusa-config.ts` if you registered it. A registration that runs during the Cloud build conflicts with the provider that Cloud configures and fails the deployment.
+2. Enable the `caching` feature flag in `medusa-config.ts`, as explained in the [Medusa Cache](!cloud!/cache#enable-medusa-cache) Cloud guide.
+3. Commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) that uses Medusa Cache.
+
+---
+
 ## Register the Redis Caching Module
 
 <Prerequisites items={[
+  {
+    text: "Medusa application set up locally",
+    link: "!cloud!/setup-locally",
+  },
   {
     text: "Redis installed and Redis server running",
     link: "https://redis.io/docs/getting-started/installation/"
@@ -59,9 +75,11 @@ Notice that you pass an `id` property to the provider. The provider will be regi
 
 ### Environment Variables
 
-Make sure to add the following environment variable:
+On Cloud, you don't need to set any environment variables, since Cloud manages the Redis instance for you.
 
-```bash
+For local development, add the `CACHE_REDIS_URL` environment variable to your `.env` file with your Redis server's URL:
+
+```bash title=".env"
 CACHE_REDIS_URL=redis://localhost:6379
 ```
 
@@ -218,7 +236,9 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 }
 ```
 
-Finally, start your Medusa server with the following command:
+### Test Locally
+
+Start your Medusa server with the following command:
 
 ```bash npm2yarn
 npm run dev
@@ -231,3 +251,15 @@ curl http://localhost:9000/cache-product
 ```
 
 You should receive a response with the list of products. The first time you make this request, the products will be fetched from the database and cached in Redis. Subsequent requests will retrieve the products from the cache, resulting in improved performance.
+
+### Test on Cloud
+
+To test the provider in a deployed environment, commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) with your changes.
+
+Once the deployment finishes, send the same request to your environment's URL. For example:
+
+```bash
+curl https://acme.medusajs.app/cache-product
+```
+
+Where `acme.medusajs.app` is your environment's backend URL. Learn how to find it in the [Access Deployed Environment](!cloud!/environments/long-lived#access-deployed-environment) Cloud guide.

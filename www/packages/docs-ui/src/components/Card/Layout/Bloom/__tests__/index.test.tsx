@@ -9,7 +9,7 @@ vi.mock("@/components/Link", () => ({
   ),
 }))
 vi.mock("@/components/Icons", () => ({
-  BloomIcon: () => <span data-testid="bloom-icon">BloomIcon</span>,
+  DocsAssistantIcon: () => <span data-testid="bloom-icon">DocsAssistantIcon</span>,
 }))
 vi.mock("@medusajs/icons", () => ({
   TriangleRightMini: (props: React.ComponentProps<"svg">) => (

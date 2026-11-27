@@ -14,10 +14,24 @@ Cloud offers [Medusa Emails](!cloud!/emails), a managed email service that allow
 
 </Note>
 
+<Note title="Agent Hand-off">
+
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/infrastructure-modules/notification/sendgrid.md and set up the SendGrid Notification Module Provider in my Medusa application
+```
+
+</Note>
+
 ## Register the SendGrid Notification Module
 
 <Prerequisites
   items={[
+    {
+      text: "Medusa application set up locally",
+      link: "!cloud!/setup-locally",
+    },
     {
       text: "SendGrid account",
       link: "https://signup.sendgrid.com",
@@ -68,12 +82,21 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the following environment variables:
+Set the `SENDGRID_API_KEY` and `SENDGRID_FROM` environment variables:
 
-```bash
+1. In Cloud, add the variables in your environment's [Environment variables settings](!cloud!/environments/environment-variables#add-environment-variables-on-cloud). Mark `SENDGRID_API_KEY` as **Sensitive**, and enable the **Build** toggle for both variables, since `medusa-config.ts` reads them during the build.
+2. For local development, add the variables to your `.env` file:
+
+```bash title=".env"
 SENDGRID_API_KEY=<YOUR_SENDGRID_API_KEY>
 SENDGRID_FROM=<YOUR_SENDGRID_FROM>
 ```
+
+### Deploy to Cloud
+
+On Cloud, Medusa sends `email` notifications with [Medusa Emails](!cloud!/emails) unless you configure another provider for the `email` channel. Once you register the SendGrid Notification Module Provider for that channel, Cloud uses it instead.
+
+Commit the changes to `medusa-config.ts` and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) that sends emails with SendGrid. Add the environment variables in Cloud before you push, so the deployment uses them.
 
 ### SendGrid Notification Module Options
 
@@ -252,13 +275,21 @@ Medusa stores the `data` property of every notification, and the [List Notificat
 
 </Note>
 
-Then, start the Medusa application:
+### Test Locally
+
+Start the Medusa application:
 
 ```bash npm2yarn
 npm run dev
 ```
 
 And create a product either using the [API route](!api!/admin/products/create-product) or the [Medusa Admin](!user-guide!/products/create). This runs the subscriber and sends an email using SendGrid.
+
+### Test on Cloud
+
+To test the module in a deployed environment, commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) with your changes.
+
+Once the deployment finishes, create a product from the environment's Medusa Admin dashboard, then check the recipient's inbox for the email. If the email doesn't arrive, check the environment's [runtime logs](!cloud!/logs#view-runtime-logs-on-cloud) for errors.
 
 ### Other Events to Handle
 

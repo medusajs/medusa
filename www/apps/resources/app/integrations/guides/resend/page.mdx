@@ -42,9 +42,10 @@ When you install a Medusa application, you get a fully-fledged commerce platform
 
 This guide will teach you how to:
 
-- Install and set up Medusa.
+- Create a Cloud project and set it up locally.
 - Integrate Resend into Medusa for sending emails.
 - Build a flow to send an email with Resend when a customer places an order.
+- Publish the customizations to Cloud.
 
 You can follow this guide whether you're new to Medusa or an advanced Medusa developer.
 
@@ -55,13 +56,27 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
   icon={Github}
 />
 
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/integrations/guides/resend.md and integrate Resend with my Medusa project
+```
+
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/first-project"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -74,25 +89,11 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when you're asked whether you want to install the Next.js Starter Storefront, choose `Y` for yes.
-
-Afterwards, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credential and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
-
-The Next.js Starter Storefront is also running at `http://localhost:8000`.
-
-<Note title="Ran into Errors?">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 <Note>
 
@@ -530,6 +531,8 @@ Where:
     - A new pop-up will show with your API key hidden. Copy it before closing the pop-up, since you can't access the key again afterwards. Use its value for the `RESEND_API_KEY` environment variable.
 
 ![Click the copy icon to copy the API key](https://res.cloudinary.com/dza7lstvk/image/upload/v1732535791/Medusa%20Resources/Screenshot_2024-11-25_at_10.23.43_AM_divins.png)
+
+You'll add these variables to your Cloud environment when you [publish to Cloud](#step-7-publish-to-cloud).
 
 Your Resend Module Provider is all set up. You'll test it out in a later section.
 
@@ -1344,7 +1347,7 @@ This subscriber now runs whenever an order is placed. You'll see this in action 
 
 ## Test it Out: Place an Order
 
-To test out the Resend integration, you'll place an order using the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx) that you installed as part of installing Medusa.
+To test out the Resend integration, you'll place an order using the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx) that's part of your project.
 
 Start your Medusa application first:
 
@@ -1393,6 +1396,39 @@ This indicates that the `order.placed` event was emitted and its subscriber, whi
 If you check the inbox of the email address you specified in the shipping address, you'll find a new email with the order's details.
 
 ![Example of order-confirmation email](https://res.cloudinary.com/dza7lstvk/image/upload/v1732551372/Medusa%20Resources/Screenshot_2024-11-25_at_6.15.59_PM_efyuoj.png)
+
+---
+
+## Step 7: Publish to Cloud
+
+After you test sending the order confirmation email locally, publish the customizations to your Cloud project.
+
+Create the environment variables that you added in the `.env` file in your Cloud project:
+
+- `RESEND_FROM_EMAIL`: Add it in the environment's **Backend** variables. Resend only sends emails from `onboarding@resend.dev` to your account's email, so use an email from your [verified custom domain](#step-2-prepare-resend-account) for environments that send emails to customers.
+- `RESEND_API_KEY`: Add it in the environment's **Backend** variables.
+
+Add the variables in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variables in the environment variables section. Preview environments created afterward inherit them. Learn more in the [Preview Environments](!cloud!/environments/preview#manage-shared-previews-settings) guide.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variables and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
+
+In both places, enable the **Build** toggle of both variables, since `medusa-config.ts` reads them. Mark `RESEND_API_KEY` as **Sensitive**. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+
+Then, create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/resend-integration
+git add .
+git commit -m "Add Resend integration"
+git push origin feat/resend-integration
+```
+
+Then, on GitHub, open a pull request from the `feat/resend-integration` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+After the deployment finishes, place an order in the deployed storefront to receive the order confirmation email, as you did locally.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

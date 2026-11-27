@@ -44,7 +44,7 @@ jobs:
           extension: docs-update-version
 
       - name: Install Workspace dependencies
-        run: yarn install
+        run: ./ci-install.sh
         working-directory: www/utils
 
       - name: Build Workspace packages

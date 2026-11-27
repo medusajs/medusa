@@ -53,7 +53,7 @@ export const regionSidebar = [
       },
       {
         type: "category",
-        title: "Admin User Guides",
+        title: "Merchant Guides",
         autogenerate_tags: "userGuide+region",
         autogenerate_as_ref: true,
         sort_sidebar: "alphabetize",

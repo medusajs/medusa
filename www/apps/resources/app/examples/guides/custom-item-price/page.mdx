@@ -57,9 +57,10 @@ You can follow this guide whether you're new to Medusa or an advanced Medusa dev
 
 This guide will teach you how to:
 
-- Install and set up Medusa.
+- Create a Cloud project and set it up locally.
 - Integrate the third-party service [GoldAPI.io](https://www.goldapi.io) that retrieves real-time prices for metals like Gold and Silver.
 - Add an API route to add a product variant that has metals, such as a gold ring, to the cart with the real-time price retrieved from the third-party service.
+- Publish the customizations to Cloud.
 
 ![Diagram showcasing overview of implementation for adding an item to cart from storefront.](https://res.cloudinary.com/dza7lstvk/image/upload/v1738920014/Medusa%20Resources/custom-line-item-3_zu3qh2.jpg)
 
@@ -78,13 +79,27 @@ This guide will teach you how to:
   },
 ]} />
 
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/examples/guides/custom-item-price.md and implement custom item prices in my Medusa project
+```
+
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
   {
-    text: "Node.js v20.19.0+ or v22.12.0+",
+    text: "A Medusa account",
+    link: "!cloud!/first-project"
+  },
+  {
+    text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
   },
   {
@@ -97,23 +112,11 @@ This guide will teach you how to:
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from a starter, such as the DTC starter. Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this guide locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. You can also optionally choose to install the [Next.js Starter Storefront](../../../nextjs-starter/page.mdx).
-
-Afterwards, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory. If you chose to install the Next.js Starter Storefront, it'll be in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterwards, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory.
 
 <Note>
 
@@ -341,6 +344,8 @@ Set the access token as an environment variable in `.env`:
 ```bash
 GOLD_API_TOKEN=
 ```
+
+You'll add this variable to your Cloud environment when you [publish to Cloud](#step-5-publish-to-cloud).
 
 You'll start using the module in the next steps.
 
@@ -964,6 +969,41 @@ This will return the cart's details, where you can see in its `items` array the 
 The price will be the result of the calculation you've implemented earlier, which is the fixed price of the variant plus the real-time price of the metal, multiplied by the weight of the variant and the quantity added to the cart.
 
 This price will be reflected in the cart's total price, and you can proceed to checkout with the custom-priced item.
+
+---
+
+## Step 5: Publish to Cloud
+
+After you test the custom item price API route locally, publish it to your Cloud project.
+
+### a. Add Environment Variables to Cloud
+
+Create the environment variables that you added in `.env` in your Cloud project:
+
+- `GOLD_API_TOKEN`: Your GoldAPI.io access token.
+- `GOLD_API_SANDBOX`: Set to `true` to use GoldAPI.io's sandbox mode. You can omit it otherwise.
+
+Add the variables in two places:
+
+1. **Preview environments**: In your project's dashboard, click **Preview Settings** in the sidebar, and add the variables in the environment variables section. Preview environments created afterward inherit them. Learn more in the [Preview Environments](!cloud!/environments/preview#manage-shared-previews-settings) guide.
+2. **Target environment**: In the dashboard of the environment you're publishing to, such as Production, click **Environment variables** in the sidebar, then add the variables and click **Save**. Each environment has its own variables, so repeat this for every environment you publish to.
+
+In both places, enable the **Build** toggle for the variables, since `medusa-config.ts` reads them during the build. Also enable the **Sensitive** toggle for `GOLD_API_TOKEN` to hide its value. Learn more in the [Environment Variables](!cloud!/environments/environment-variables) Cloud guide.
+
+### b. Push Changes and Open a Pull Request
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/custom-item-price
+git add .
+git commit -m "Add custom item price API route"
+git push origin feat/custom-item-price
+```
+
+Then, on GitHub, open a pull request from the `feat/custom-item-price` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

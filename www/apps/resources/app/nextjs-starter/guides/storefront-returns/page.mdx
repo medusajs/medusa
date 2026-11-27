@@ -35,11 +35,25 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
   icon={Github}
 />
 
+<Note title="Agent Hand-off">
+
+After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally. Run the following prompt in your agent from the directory where you want to set up the project, or from the project's directory if you already set it up:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/nextjs-starter/guides/storefront-returns.md and implement order returns in my Next.js Starter Storefront
+```
+
+</Note>
+
 ---
 
-## Step 1: Install a Medusa Application
+## Step 1: Create a Cloud Project and Set It Up Locally
 
 <Prerequisites items={[
+  {
+    text: "A Medusa account",
+    link: "!cloud!/first-project"
+  },
   {
     text: "Node.js v22.22.0+",
     link: "https://nodejs.org/en/download"
@@ -54,23 +68,11 @@ You can follow this tutorial whether you're new to Medusa or an advanced Medusa 
   }
 ]} />
 
-Start by installing the Medusa application on your machine with the following command:
+Start by creating a Cloud project from the DTC starter, which includes the Medusa application and the [Next.js Starter Storefront](../../page.mdx). Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest
-```
+Cloud clones the starter into a GitHub repository in your account or organization. Then, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide. You build and test the customizations in this tutorial locally, then publish them to Cloud at the end.
 
-You'll first be asked for the project's name. Then, when asked whether you want to install the [Next.js Starter Storefront](../../page.mdx), choose Yes.
-
-Afterward, the installation process will start, which will install the Medusa application as a monorepository in a directory with your project's name. The backend is installed in the `apps/backend` directory, and the Next.js Starter Storefront is installed in the `apps/storefront` directory.
-
-Once the installation finishes successfully, the Medusa Admin dashboard will open with a form to create a new user. Enter the user's credentials and submit the form. Afterward, you can log in with the new user and explore the dashboard.
-
-<Note title="Ran into Errors?">
-
-Check out the [troubleshooting guides](../../../troubleshooting/create-medusa-app-errors/page.mdx) for help.
-
-</Note>
+The project is a monorepository. The Medusa application is in the `apps/backend` directory, and the Next.js Starter Storefront is in the `apps/storefront` directory.
 
 ---
 
@@ -1262,14 +1264,14 @@ npm run dev
 
 Before you can test the return request page, you need to create return shipping options in the Medusa Admin. To do that:
 
-1. Open the Medusa Admin in your browser at `localhost:9000/app` and log in.
+1. Open the local Medusa Admin in your browser at `localhost:9000/app` and log in.
 2. Go to Settings -> Locations & Shipping.
 3. Click on "View details" of a location to add the shipping options to.
 4. In the Shipping Options section, find the "Return options" subsection and click "Create option".
 5. In the form, enter the shipping option's details and price.
 6. Click "Save" to create the return shipping option.
 
-You can learn more about creating a shipping option in the [Manage Locations](!user-guide!/settings/locations-and-shipping/locations) user guide.
+You can learn more about creating a shipping option in the [Manage Locations](!user-guide!/settings/locations-and-shipping/locations) Merchant Guide.
 
 ![Form to create a return shipping option in the Medusa Admin](https://res.cloudinary.com/dza7lstvk/image/upload/v1758012545/Medusa%20Resources/CleanShot_2025-09-16_at_11.47.47_2x_fx6tan.png)
 
@@ -1282,7 +1284,7 @@ Next, you need to create return reasons in the Medusa Admin. To do that:
 3. In the form, enter the return reason's label and value.
 4. Click "Save" to create the return reason.
 
-You can learn more about creating return reasons in the [Manage Return Reasons](!user-guide!/settings/return-reasons) user guide.
+You can learn more about creating return reasons in the [Manage Return Reasons](!user-guide!/settings/return-reasons) Merchant Guide.
 
 ![Form to create a return reason in the Medusa Admin](https://res.cloudinary.com/dza7lstvk/image/upload/v1758012657/Medusa%20Resources/CleanShot_2025-09-16_at_11.50.47_2x_qcrqj6.png)
 
@@ -1316,7 +1318,7 @@ Finally, you need to deliver the items in the order from the Medusa Admin to mak
 
 The order's fulfillment status will change to "Delivered", and the items will become returnable.
 
-Learn more about creating fulfillments and marking them as delivered in the [Manage Order Fulfillments](!user-guide!/orders/fulfillments) user guide.
+Learn more about creating fulfillments and marking them as delivered in the [Manage Order Fulfillments](!user-guide!/orders/fulfillments) Merchant Guide.
 
 ![Order details page in the Medusa Admin showing the fulfillment status as "Delivered"](https://res.cloudinary.com/dza7lstvk/image/upload/v1758013188/Medusa%20Resources/CleanShot_2025-09-16_at_11.59.29_2x_tlqaoo.png)
 
@@ -1347,6 +1349,31 @@ You should see a success message after submitting the return request.
 If you open the order's details page in the Medusa Admin, you'll see the requested return in the Activity section. You'll also see a note below the order's items that were requested for return.
 
 ![Order details page in the Medusa Admin showing the requested return in the Activity section](https://res.cloudinary.com/dza7lstvk/image/upload/v1758013557/Medusa%20Resources/CleanShot_2025-09-16_at_12.05.31_2x_wv9z8o.png)
+
+---
+
+## Step 8: Publish to Cloud
+
+After you test the return request flow locally, publish the customizations to your Cloud project.
+
+Create a new branch, commit your changes, and push them to the project's repository:
+
+```bash
+git checkout -b feat/storefront-returns
+git add .
+git commit -m "Add return requests to the storefront"
+git push origin feat/storefront-returns
+```
+
+Then, on GitHub, open a pull request from the `feat/storefront-returns` branch to your production branch. Cloud deploys the changes to a [preview environment](!cloud!/environments/preview), where you can test them before you merge the pull request. Once you merge it, Cloud deploys the changes to your production environment.
+
+<Note>
+
+The return shipping options and return reasons you created in your local Medusa Admin don't carry over to your Cloud environments. Create them in the deployed environment's Medusa Admin, as you did locally, so customers can request returns.
+
+</Note>
+
+Learn more in the [Publish Customizations to Cloud](!docs!/learn/customization/publish) chapter.
 
 ---
 

@@ -12,7 +12,7 @@ By using the Emailpass Auth Module Provider, you allow users to register and log
 
 ## Register the Emailpass Auth Module Provider
 
-The Emailpass Auth Module Provider is registered by default with the Auth Module.
+The Emailpass Auth Module Provider is registered by default with the Auth Module, both on Cloud and locally. You don't need to configure it or set any environment variables.
 
 If you want to pass options to the provider, add the provider to the `providers` option of the Auth Module in your `medusa-config.ts`:
 
@@ -46,6 +46,10 @@ module.exports = defineConfig({
   ],
 })
 ```
+
+### Deploy to Cloud
+
+If you change the provider's options, commit the changes to `medusa-config.ts` and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) that uses the new options.
 
 ### Module Options
 

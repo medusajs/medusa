@@ -5,7 +5,7 @@ import { useAiAssistant } from "../../../../providers/AiAssistant"
 import clsx from "clsx"
 import { Tooltip } from "../../../Tooltip"
 import { useChat } from "@kapaai/react-sdk"
-import { BloomIcon } from "../../../Icons"
+import { DocsAssistantIcon } from "../../../Icons"
 import { useSiteConfig } from "../../../../providers/SiteConfig"
 
 export type CodeBlockCopyActionProps = {
@@ -35,7 +35,7 @@ export const CodeBlockAskAiAction = ({
 
   return (
     <Tooltip
-      text="Ask Bloom"
+      text="Ask Docs Assistant"
       tooltipClassName="font-base"
       className={clsx("group")}
       innerClassName={clsx(
@@ -54,7 +54,7 @@ export const CodeBlockAskAiAction = ({
         )}
         onClick={handleClick}
       >
-        <BloomIcon />
+        <DocsAssistantIcon />
       </span>
     </Tooltip>
   )

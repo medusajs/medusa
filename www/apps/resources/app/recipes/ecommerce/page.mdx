@@ -28,18 +28,16 @@ Businesses can also power-up their store by integrating third-party services for
 
 ---
 
-## Install Ecommerce Store Powered by Medusa
+## Create an Ecommerce Store on Cloud
 
-You can use the following command to install an ecommerce store with Medusa:
+Create a Cloud project from the DTC starter to get an ecommerce store powered by Medusa. Follow the [Create Your First Project](!cloud!/first-project#option-1-choose-a-starter) guide to create the project.
 
-```bash npx2yarnExec
-npx create-medusa-app@latest --with-nextjs-starter
-```
+The project includes:
 
-This installs:
-
-- The Medusa application, which is composed of a Node.js server and a Medusa Admin dashboard. The dashboard opens right after the installation finishes, where you can create a user and start managing your store's data.
+- The Medusa application, which is composed of a Node.js server and a Medusa Admin dashboard. Cloud deploys it with a database, Redis, and file storage, so you can open the deployed Medusa Admin and start managing your store's data.
 - A [Next.js Starter Storefront](../../nextjs-starter/page.mdx) that connects to your Medusa application to provide customers with ecommerce features.
+
+Cloud clones the starter into a GitHub repository in your account or organization. To customize the store, set up the project on your machine by following the [Set Up Medusa Locally](!cloud!/setup-locally) guide.
 
 ---
 
@@ -47,10 +45,10 @@ This installs:
 
 You can integrate third-party services and tools, customizing the architecture and commerce features of your store.
 
-For example, you can integrate [Stripe](../../commerce-modules/payment/payment-provider/stripe/page.mdx) to accept payments, or [SendGrid](../../infrastructure-modules/notification/sendgrid/page.mdx) to send emails to customers.
+For example, you can integrate [Stripe](../../commerce-modules/payment/payment-provider/stripe/page.mdx) to accept payments, or [Sanity](../../integrations/guides/sanity/page.mdx) to manage your store's content.
 
 <Card
-  href="/integrations"
+  href="!cloud!/integrations"
   title="Integrations"
   text="Check out available integrations for your Medusa application."
   icon={PuzzleSolid}
@@ -58,30 +56,27 @@ For example, you can integrate [Stripe](../../commerce-modules/payment/payment-p
 
 ---
 
-## Deploy the Medusa Application
+## Publish Changes to Cloud
 
-The most efficient way to deploy your Medusa application is to use [Cloud](!cloud!). Cloud is our managed services offering that makes deploying and operating Medusa applications possible without having to worry about configuring, scaling, and maintaining infrastructure. Cloud hosts your server, Admin dashboard, database, and Redis instance.
+Your Cloud project is connected to its GitHub repository, so you deploy changes by pushing them:
 
-With Cloud, you maintain full customization control as you deploy your own modules and customizations directly from GitHub:
+- Push to a branch connected to an environment to deploy to it.
+- Open a pull request to test changes in a preview environment.
+- Merge the pull request to deploy the changes to production.
 
-- Push to deploy.
-- Multiple testing environments.
-- Preview environments for new PRs.
-- Test on production-like data.
-
-Our documentation also provides a step-by-step guides to deploy your Medusa application and the Next.js Starter Storefront.
+Cloud hosts your server, Medusa Admin, storefront, database, and Redis instance, so you don't need to configure, scale, or maintain infrastructure.
 
 <CardList itemsPerRow={2} items={[
   {
-    href: "!cloud!",
-    title: "Sign up for Cloud",
-    text: "Learn more about Cloud and sign up to get started.",
+    href: "!docs!/learn/customization/publish",
+    title: "Publish to Cloud",
+    text: "Learn how to publish your customizations to Cloud.",
     icon: AcademicCapSolid,
   },
   {
-    href: "/deployment",
-    title: "Deployment Guides",
-    text: "Learn how to deploy the Medusa application and Next.js Starter Storefront.",
+    href: "!cloud!/environments/preview",
+    title: "Preview Environments",
+    text: "Learn how to test changes in preview environments.",
     icon: AcademicCapSolid,
   },
 ]} />

@@ -6,11 +6,15 @@ export const metadata = {
 
 # {metadata.title}
 
-Medusa's architectural functionalities, such as emitting and subscribing to events or caching data, are all implemented in Infrastructure Modules. An Infrastructure Module is a package that can be installed and used in any Medusa application. These modules allow you to choose and integrate custom services for architectural purposes.
+Medusa's architectural functionalities, such as emitting and subscribing to events or caching data, are all implemented in Infrastructure Modules. An Infrastructure Module is a package that can be installed and used in any Medusa application. These modules allow you to choose and integrate custom services for architectural purposes, such as Redis for events or S3 for file storage. Learn more in [the Architecture documentation](!docs!/learn/introduction/architecture).
 
-For example, you can use our [Redis Event Module](./event/redis/page.mdx) to handle event functionalities, or create a custom module that implements these functionalities with Memcached. Learn more in [the Architecture documentation](!docs!/learn/introduction/architecture).
+On [Cloud](!cloud!), Medusa already configures most of these modules for you with managed infrastructure in every environment. This includes Redis for events, S3 for file storage, and Medusa Search for search functionality, among others. So, you can focus on building your features instead of setting up and maintaining that infrastructure.
+
+In local development, Medusa uses the in-memory, local, or PostgreSQL alternatives of these modules by default, so you don't need to set up Redis or S3 to run your application locally.
 
 This section of the documentation showcases Medusa's Infrastructure Modules, how they work, and how to use them in your Medusa application.
+
+---
 
 ## Analytics Module
 
@@ -65,8 +69,8 @@ The Caching Module is available starting [Medusa v2.11.0](https://github.com/med
       title: "Redis",
       href: "/infrastructure-modules/caching/providers/redis",
       badge: {
-        variant: "green",
-        children: "For Production"
+        variant: "blue",
+        children: "Cloud"
       }
     },
     {
@@ -92,19 +96,19 @@ The following Event modules are provided by Medusa. You can also create your own
 <CardList
   items={[
     {
+      title: "Redis",
+      href: "/infrastructure-modules/event/redis",
+      badge: {
+        variant: "blue",
+        children: "Cloud"
+      }
+    },
+    {
       title: "Local",
       href: "/infrastructure-modules/event/local",
       badge: {
         variant: "neutral",
         children: "For Development"
-      }
-    },
-    {
-      title: "Redis",
-      href: "/infrastructure-modules/event/redis",
-      badge: {
-        variant: "green",
-        children: "For Production"
       }
     }
   ]}
@@ -121,19 +125,19 @@ The File Module has module providers that implement the underlying logic of hand
 <CardList
   items={[
     {
+      title: "AWS S3 (and Compatible APIs)",
+      href: "/infrastructure-modules/file/s3",
+      badge: {
+        variant: "blue",
+        children: "Cloud"
+      }
+    },
+    {
       title: "Local",
       href: "/infrastructure-modules/file/local",
       badge: {
         variant: "neutral",
         children: "For Development"
-      }
-    },
-    {
-      title: "AWS S3 (and Compatible APIs)",
-      href: "/infrastructure-modules/file/s3",
-      badge: {
-        variant: "green",
-        children: "For Production"
       }
     }
   ]}
@@ -153,8 +157,8 @@ The Locking Module uses module providers that implement the underlying logic of 
       title: "Redis",
       href: "/infrastructure-modules/locking/redis",
       badge: {
-        variant: "green",
-        children: "Recommended"
+        variant: "blue",
+        children: "Cloud"
       }
     },
     {
@@ -174,6 +178,14 @@ The Notification Module has module providers that implement the underlying logic
 
 <CardList
   items={[
+    {
+      title: "Medusa Emails",
+      href: "!cloud!/emails",
+      badge: {
+        variant: "blue",
+        children: "Cloud"
+      }
+    },
     {
       title: "Local",
       href: "/infrastructure-modules/notification/local",
@@ -233,16 +245,16 @@ The Search Module has module providers that implement the underlying logic of in
 <CardList
   items={[
     {
-      title: "PostgreSQL",
-      href: "/infrastructure-modules/search/providers/postgres",
-    },
-    {
       title: "Medusa Search",
       href: "!cloud!/search",
       badge: {
         variant: "blue",
         children: "Cloud"
       }
+    },
+    {
+      title: "PostgreSQL",
+      href: "/infrastructure-modules/search/providers/postgres",
     },
   ]}
 />
@@ -277,19 +289,19 @@ The following Workflow Engine modules are provided by Medusa.
 <CardList
   items={[
     {
+      title: "Redis",
+      href: "/infrastructure-modules/workflow-engine/redis",
+      badge: {
+        variant: "blue",
+        children: "Cloud"
+      }
+    },
+    {
       title: "In-Memory",
       href: "/infrastructure-modules/workflow-engine/in-memory",
       badge: {
         variant: "neutral",
         children: "For Development"
-      }
-    },
-    {
-      title: "Redis",
-      href: "/infrastructure-modules/workflow-engine/redis",
-      badge: {
-        variant: "green",
-        children: "For Production"
       }
     }
   ]}

@@ -20,7 +20,17 @@ The Adyen Module Provider is in beta mode. It has been available since Medusa [v
 
 <Note title="Looking for no-code docs?">
 
-Your technical team must register the Adyen Module Provider in your Medusa application first. Then, refer to [this user guide](!user-guide!/settings/regions#edit-region-details) to learn how to enable the Adyen payment provider in a region using the Medusa Admin dashboard.
+Your technical team must register the Adyen Module Provider in your Medusa application first. Then, refer to [this Merchant Guide](!user-guide!/settings/regions#edit-region-details) to learn how to enable the Adyen payment provider in a region using the Medusa Admin dashboard.
+
+</Note>
+
+<Note title="Agent Hand-off">
+
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/commerce-modules/payment/payment-provider/adyen.md and set up the Adyen Module Provider in my Medusa application
+```
 
 </Note>
 
@@ -48,6 +58,10 @@ The Adyen Module Provider integrates [Adyen](https://www.adyen.com/) into your M
 ## Register the Adyen Module Provider
 
 <Prerequisites items={[
+  {
+    text: "Medusa application set up locally",
+    link: "!cloud!/setup-locally"
+  },
   {
     text: "Adyen account",
     link: "https://www.adyen.com/"
@@ -92,14 +106,25 @@ module.exports = defineConfig({
 
 ### Environment Variables
 
-Make sure to add the necessary environment variables for the above options in `.env`:
+Set the `ADYEN_API_KEY`, `ADYEN_MERCHANT_ACCOUNT`, `ADYEN_WEBHOOK_HMAC_KEY`, and `ADYEN_RETURN_URL` environment variables:
 
-```bash
+1. In Cloud, add the variables in your environment's [Environment variables settings](!cloud!/environments/environment-variables#add-environment-variables-on-cloud).
+    - Mark `ADYEN_API_KEY` and `ADYEN_WEBHOOK_HMAC_KEY` as **Sensitive**, and enable the **Build** toggle for all variables, since `medusa-config.ts` reads them during the build.
+    - Set `ADYEN_RETURN_URL` to a page of your deployed storefront.
+2. For local development, add the variables to your `.env` file:
+
+```bash title=".env"
 ADYEN_API_KEY=<YOUR_ADYEN_API_KEY>
 ADYEN_MERCHANT_ACCOUNT=<YOUR_ADYEN_MERCHANT_ACCOUNT>
 ADYEN_WEBHOOK_HMAC_KEY=<YOUR_ADYEN_WEBHOOK_HMAC_KEY>
 ADYEN_RETURN_URL=<YOUR_STOREFRONT_RETURN_URL>
 ```
+
+### Deploy to Cloud
+
+Commit the changes to `medusa-config.ts` and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) that registers the Adyen Module Provider. Add the environment variables in Cloud before you push, so the deployment uses them.
+
+Then, [enable the provider in a region](#enable-adyen-provider-in-a-region) and [set up webhooks](#setup-adyen-webhooks) for the deployed environment.
 
 ### Module Options
 
@@ -321,7 +346,7 @@ module.exports = defineConfig({
 
 Before customers can use Adyen to complete their purchases, you must enable the Adyen payment provider in the region where you want to offer this payment method.
 
-Refer to the [user guide](!user-guide!/settings/regions#edit-region-details) to learn how to edit a region and enable the Adyen payment provider.
+Refer to the [Merchant Guide](!user-guide!/settings/regions#edit-region-details) to learn how to edit a region and enable the Adyen payment provider.
 
 ---
 
@@ -446,7 +471,7 @@ Then, set the webhook's HMAC key in the `hmacKey` option of the Adyen Module Pro
 
 Medusa has a `{server_url}/hooks/payment/{provider_id}` API route that you can use to register webhooks in Adyen, where:
 
-- `{server_url}` is the URL to your deployed Medusa application in server mode.
+- `{server_url}` is the URL to your deployed Medusa application in server mode. On Cloud, it's the environment's Medusa Backend URL, which you can find below the environment's name in its dashboard.
 - `{provider_id}` is the ID of the provider as explained in the [Adyen Payment Provider ID](#adyen-payment-provider-id) section, without the `pp_` prefix.
 
 For example, if you set the ID of the Adyen Module Provider to `adyen`, the webhook URL is `{server_url}/hooks/payment/adyen_adyen`.

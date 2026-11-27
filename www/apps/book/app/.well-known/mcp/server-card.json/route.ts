@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { config } from "../../../../config"
+import { trackAgentRequest } from "../../../../utils/track-agent-request"
 
 const headers = {
   "content-type": "application/json",
@@ -21,7 +22,7 @@ const getServerCard = () => {
     title: "Medusa Docs MCP Server",
     description:
       "Search the Medusa documentation and get step-by-step implementation guides for building with Medusa.",
-    websiteUrl: `${config.baseUrl}/learn/introduction/build-with-llms-ai/docs-mcp-server`,
+    websiteUrl: `${config.baseUrl}/cloud/ai-toolkit/docs-mcp`,
     remotes: [{ type: "streamable-http", url: endpoint }],
     // Legacy SEP-1649 fields still checked by agent-readiness scanners
     serverInfo: { name: NAME, version: VERSION },
@@ -30,7 +31,10 @@ const getServerCard = () => {
   }
 }
 
-export function GET() {
+export function GET(req: NextRequest) {
+  trackAgentRequest(req, "well_known_requested", {
+    resource: "mcp-server-card",
+  })
   return NextResponse.json(getServerCard(), { headers })
 }
 

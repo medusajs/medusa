@@ -60,9 +60,15 @@ Add a megamenu to the storefront's header that displays product categories and s
 
 ## Using the JS SDK
 
-All guides under this documentation section use the [JS SDK](../js-sdk/page.mdx) to interact with the Medusa application's Store API Routes. The JS SDK is a NPM package that facilitates interacting with the backend's REST APIs. You can use it in any JavaScript framework, such as Next.js, React, Vue, or Angular.
+All guides under this documentation section use the [JS SDK](../js-sdk/page.mdx) to interact with the Medusa application's Store API Routes. You can also use it to send requests to your custom API routes. The JS SDK is a NPM package that facilitates interacting with the backend's REST APIs. You can use it in any JavaScript framework, such as Next.js, React, Vue, or Angular.
 
 Refer to the [Connect to the Medusa Application](./tips/page.mdx) guide to learn how to set up the JS SDK in your storefront application.
+
+### Publishable API Key in Store Requests
+
+Requests to API routes that start with `/store` must include a publishable API key in their header. The key scopes the request to one or more sales channels, so you only retrieve products and inventory data of those sales channels, and orders you create are associated with the right sales channel.
+
+Learn how to create and use a publishable API key in the [Publishable API Keys](./publishable-api-keys/page.mdx) guide.
 
 ### Not Using JavaScript?
 

@@ -1088,10 +1088,6 @@ export const filesMap = [
     "pathname": "/deployment"
   },
   {
-    "filePath": "/www/apps/resources/app/deployment/storefront/vercel/page.mdx",
-    "pathname": "/deployment/storefront/vercel"
-  },
-  {
     "filePath": "/www/apps/resources/app/enterprise/audit/js-sdk/page.mdx",
     "pathname": "/enterprise/audit/js-sdk"
   },
@@ -1114,10 +1110,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/enterprise/audit/record-custom-audit-logs/page.mdx",
     "pathname": "/enterprise/audit/record-custom-audit-logs"
-  },
-  {
-    "filePath": "/www/apps/resources/app/enterprise/page.mdx",
-    "pathname": "/enterprise"
   },
   {
     "filePath": "/www/apps/resources/app/enterprise/rbac/admin-customizations/page.mdx",
@@ -1518,10 +1510,6 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/app/integrations/guides/strapi/page.mdx",
     "pathname": "/integrations/guides/strapi"
-  },
-  {
-    "filePath": "/www/apps/resources/app/integrations/page.mdx",
-    "pathname": "/integrations"
   },
   {
     "filePath": "/www/apps/resources/app/js-sdk/auth/overview/page.mdx",

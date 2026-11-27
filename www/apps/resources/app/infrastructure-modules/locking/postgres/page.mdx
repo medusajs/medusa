@@ -1,3 +1,5 @@
+import { Prerequisites } from "docs-ui"
+
 export const metadata = {
   title: `PostgreSQL Locking Module Provider`,
 }
@@ -14,9 +16,37 @@ While this provider is suitable for production environments, it's recommended to
 
 </Note>
 
+<Note title="Agent Hand-off">
+
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/infrastructure-modules/locking/postgres.md and set up the PostgreSQL Locking Module Provider in my Medusa application
+```
+
+</Note>
+
+---
+
+## Set Up on Cloud
+
+Cloud configures the [Redis Locking Module Provider](../redis/page.mdx) with a managed [Redis](!cloud!/redis) instance by default. To use the PostgreSQL Locking Module Provider instead:
+
+1. Register the provider in `medusa-config.ts`, as explained in the [next section](#register-the-postgresql-locking-module-provider). The provider uses your environment's managed [database](!cloud!/database), so it doesn't need environment variables.
+2. Commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) and [runs the migrations](!cloud!/database#running-migrations-on-cloud) that create the `locking` table, so you don't run `db:migrate` yourself.
+
 ---
 
 ## Register the PostgreSQL Locking Module Provider
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa application set up locally",
+      link: "!cloud!/setup-locally",
+    },
+  ]}
+/>
 
 To register the PostgreSQL Locking Module Provider, add it to the list of providers of the Locking Module in `medusa-config.ts`:
 
@@ -44,7 +74,7 @@ module.exports = defineConfig({
 
 ### Run Migrations
 
-The PostgreSQL Locking Module Provider requires a new `locking` table in the database to store the locks. So, you must run the migrations after registering the provider:
+The PostgreSQL Locking Module Provider requires a new `locking` table in the database to store the locks. So, in local development, you must run the migrations after registering the provider:
 
 ```bash npx2yarn
 npx medusa db:migrate

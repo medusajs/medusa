@@ -9,6 +9,7 @@ Ask the user the following before doing anything else:
 1. **Tutorial topic** — What feature or integration is being built? (e.g., "product reviews", "PayPal integration")
 2. **Tutorial type** — How-to tutorial or integration guide?
 3. **Example project path** — Where is the target Medusa example project? (e.g., `~/projects/my-medusa-app`)
+   - The project should match the DTC starter's monorepo layout (`apps/backend`, `apps/storefront`), since the tutorial tells readers to start from a Cloud project created from that starter.
 4. **Third-party services** — Are any external services involved? (e.g., PayPal, Segment, Stripe)
 5. **Scope** — Should the tutorial include Admin UI customizations? Storefront customizations?
 

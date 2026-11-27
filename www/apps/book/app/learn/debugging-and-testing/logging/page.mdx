@@ -103,7 +103,7 @@ This logs `error` messages only.
 
 <Note title="Important">
 
-The environment variable must be set as a system environment variable and not in `.env`.
+The environment variable must be set as a system environment variable and not in `.env`. In Cloud, add it in your environment's [Environment variables settings](!cloud!/environments/environment-variables), then redeploy the environment. Locally, set it in your shell before starting the application.
 
 </Note>
 
@@ -122,6 +122,8 @@ Your logs are now saved in the `all.log` file at the root of your Medusa applica
 <Note title="Important">
 
 The environment variable must be set as a system environment variable and not in `.env`.
+
+In Cloud, you don't need `LOG_FILE`. Cloud stores your application's logs, and you can view them in the [Logs](!cloud!/logs) page of the Cloud dashboard.
 
 </Note>
 

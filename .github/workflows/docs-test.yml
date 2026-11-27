@@ -77,7 +77,7 @@ jobs:
         run: yarn build
 
       - name: Install www/utils Dependencies
-        run: yarn
+        run: ./ci-install.sh
         working-directory: www/utils
 
       - name: Build utils
@@ -135,7 +135,7 @@ jobs:
         run: yarn build
 
       - name: Install www/utils Dependencies
-        run: yarn
+        run: ./ci-install.sh
         working-directory: www/utils
 
       - name: Build utils
@@ -192,7 +192,7 @@ jobs:
         run: yarn build
 
       - name: Install www/utils Dependencies
-        run: yarn
+        run: ./ci-install.sh
         working-directory: www/utils
 
       - name: Build utils
@@ -249,7 +249,7 @@ jobs:
         run: yarn build
 
       - name: Install www/utils Dependencies
-        run: yarn
+        run: ./ci-install.sh
         working-directory: www/utils
 
       - name: Build utils
@@ -307,7 +307,7 @@ jobs:
         run: yarn build
 
       - name: Install www/utils Dependencies
-        run: yarn
+        run: ./ci-install.sh
         working-directory: www/utils
 
       - name: Build utils
@@ -365,7 +365,7 @@ jobs:
         run: yarn build
 
       - name: Install www/utils Dependencies
-        run: yarn
+        run: ./ci-install.sh
         working-directory: www/utils
 
       - name: Build utils

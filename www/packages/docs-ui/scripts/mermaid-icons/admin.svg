@@ -1,0 +1,26 @@
+<svg width="128" height="128" viewBox="8 0 112 112" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<rect x="16" y="8" width="96" height="96" rx="12" fill="white"/>
+<rect x="24.5" y="15.5" width="3" height="3" rx="1.5" fill="#F1F3F5"/>
+<rect x="24.5" y="15.5" width="3" height="3" rx="1.5" stroke="#D4D4D8"/>
+<rect x="30.5" y="15.5" width="3" height="3" rx="1.5" fill="#F1F3F5"/>
+<rect x="30.5" y="15.5" width="3" height="3" rx="1.5" stroke="#D4D4D8"/>
+<rect x="36.5" y="15.5" width="3" height="3" rx="1.5" fill="#F1F3F5"/>
+<rect x="36.5" y="15.5" width="3" height="3" rx="1.5" stroke="#D4D4D8"/>
+<path d="M16 24H112V92A12 12 0 0 1 100 104H28A12 12 0 0 1 16 92Z" fill="#FAFAFA"/>
+<rect x="16" y="24" width="96" height="1" fill="#D4D4D8"/>
+<rect x="24.5" y="50.5" width="79" height="15" rx="3.5" fill="white"/>
+<rect x="24.5" y="50.5" width="79" height="15" rx="3.5" stroke="#D4D4D8"/>
+<rect x="24.5" y="69.5" width="40" height="11" rx="3.5" fill="white"/>
+<rect x="24.5" y="69.5" width="40" height="11" rx="3.5" stroke="#D4D4D8"/>
+<rect x="24.5" y="84.5" width="19" height="5" rx="2.5" fill="white"/>
+<rect x="24.5" y="84.5" width="19" height="5" rx="2.5" stroke="#D4D4D8"/>
+<rect x="24.5" y="41.5" width="31" height="5" rx="2.5" fill="white"/>
+<rect x="24.5" y="41.5" width="31" height="5" rx="2.5" stroke="#D4D4D8"/>
+<rect x="24.5" y="32.5" width="19" height="5" rx="2.5" fill="white"/>
+<rect x="24.5" y="32.5" width="19" height="5" rx="2.5" stroke="#D4D4D8"/>
+<rect x="68.5" y="69.5" width="35" height="11" rx="3.5" fill="white"/>
+<rect x="68.5" y="69.5" width="35" height="11" rx="3.5" stroke="#D4D4D8"/>
+<rect x="16.5" y="8.5" width="95" height="95" rx="11.5" stroke="#D4D4D8"/>
+</g>
+</svg>

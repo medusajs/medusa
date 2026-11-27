@@ -9,6 +9,7 @@ import {
   TabsContentWrapper,
   TabsTrigger,
   DetailsList,
+  Prerequisites,
 } from "docs-ui"
 
 export const metadata = {
@@ -19,13 +20,27 @@ export const metadata = {
 
 The S3 File Module Provider integrates Amazon S3 and services following a compatible API (such as MinIO or DigitalOcean Spaces) to store files uploaded to your Medusa application.
 
-<Note title="Looking for managed storage?">
+## Set Up on Cloud
 
-Cloud offers a managed file storage solution with AWS S3 for your Medusa application. Refer to the [S3](!cloud!/s3) Cloud documentation for more details.
+Cloud provisions managed [S3 storage](!cloud!/s3) for each environment and configures the S3 File Module Provider to use it. So, you don't configure the provider or create a bucket yourself.
 
-</Note>
+To deploy your application with the managed S3 File Module Provider:
+
+1. Remove the S3 File Module Provider from `medusa-config.ts` if you registered it, to avoid conflicts with the provider that Cloud configures.
+2. Commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) that stores uploaded files in the environment's S3 storage.
+
+---
 
 ## Prerequisites
+
+<Prerequisites
+  items={[
+    {
+      text: "Medusa application set up locally",
+      link: "!cloud!/setup-locally",
+    },
+  ]}
+/>
 
 <Tabs defaultValue="aws">
   <TabsList>
@@ -190,6 +205,21 @@ module.exports = {
     },
   ],
 }
+```
+
+### Environment Variables
+
+On Cloud, you don't need to set any environment variables, since Cloud manages the S3 storage for you.
+
+For local development, add the environment variables that the provider's options use to your `.env` file:
+
+```bash title=".env"
+S3_FILE_URL=<YOUR_S3_FILE_URL>
+S3_ACCESS_KEY_ID=<YOUR_S3_ACCESS_KEY_ID>
+S3_SECRET_ACCESS_KEY=<YOUR_S3_SECRET_ACCESS_KEY>
+S3_REGION=<YOUR_S3_REGION>
+S3_BUCKET=<YOUR_S3_BUCKET>
+S3_ENDPOINT=<YOUR_S3_ENDPOINT>
 ```
 
 ### Additional Configuration for MinIO and Supabase

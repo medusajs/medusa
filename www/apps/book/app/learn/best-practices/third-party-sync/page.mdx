@@ -18,6 +18,14 @@ However, how you implement third-party syncing can significantly impact performa
 
 This chapter covers best practices to avoid these issues when syncing data between Medusa and third-party systems. These best practices are general programming patterns that aren't Medusa-specific, but they're essential for building robust third-party syncs.
 
+<Note title="Data transfer usage in Cloud">
+
+In Cloud, the data that your Medusa application sends to and receives from external services counts toward your plan's [Data Transfer](!cloud!/usage) usage. So, every request a sync sends to a third-party system, and every response it receives, adds to that usage. Usage beyond your plan's limits is billed as Flex Usage.
+
+Practices in this chapter, such as [retrieving only necessary fields](#retrieve-only-necessary-fields) and syncing only changed records, also reduce your data transfer. Track your usage in the Usage settings of your Cloud organization.
+
+</Note>
+
 ---
 
 ## How to Sync Data Between Systems

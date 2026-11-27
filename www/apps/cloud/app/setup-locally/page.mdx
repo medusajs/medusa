@@ -1,0 +1,358 @@
+import { Prerequisites, Note } from "docs-ui"
+import Feedback from "@/components/Feedback"
+
+export const metadata = {
+  title: `Set Up Medusa Locally`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to set up your Cloud project on your machine to build features locally and publish them to Cloud.
+
+<Prerequisites items={[
+  {
+    text: "A Cloud project.",
+    link: "/first-project"
+  },
+  {
+    text: "Node.js v22.22.0+ (LTS versions only).",
+    link: "https://nodejs.org/en/download"
+  },
+  {
+    text: "Git CLI tool.",
+    link: "https://git-scm.com/downloads"
+  },
+  {
+    text: "PostgreSQL installed and running.",
+    link: "https://www.postgresql.org/download/"
+  }
+]} />
+
+## How Local Development Works with Cloud
+
+A Cloud project is connected to a GitHub repository that holds your Medusa application's code. When you create a project from a [starter](../projects/page.mdx#1-create-project-from-a-starter), Cloud clones the starter's code into a repository in the GitHub account or organization you chose.
+
+To customize your store, add features, or debug issues:
+
+1. Clone the project's repository to your machine.
+2. Run the Medusa application locally against resources on your machine, such as a local PostgreSQL database.
+3. Push your changes to the repository. Cloud then deploys them.
+
+<Note title="Tip">
+
+To avoid installing PostgreSQL on your machine, follow the [Set Up with Docker](./docker/page.mdx) guide instead.
+
+</Note>
+
+<Note title="Agent Hand-off">
+
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from the directory where you want to set up the project:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/cloud/setup-locally.md and set up my Cloud project locally
+```
+
+</Note>
+
+---
+
+## 1. Clone the Repository
+
+<RolesBadge roles={["developer"]} />
+
+If you imported your own GitHub repository and already have its code on your machine, skip to the [next step](#2-install-dependencies).
+
+1. If you're in a different organization, [switch to the organization](../organizations/page.mdx#switch-organization) that the project belongs to.
+2. Click **Projects** in the sidebar, then select your project to open its dashboard.
+3. Click the **Repository** button at the top right to open the GitHub repository in a new tab.
+4. On GitHub, click the **Code** button and copy the repository's URL.
+5. In your terminal, clone the repository and change into its directory:
+
+```bash
+git clone <repository-url>
+cd <repository-name>
+```
+
+Replace `<repository-url>` with the URL you copied, and `<repository-name>` with the name of the created directory.
+
+---
+
+## 2. Install Dependencies
+
+Starters are monorepos with the Medusa application in `apps/backend` and the storefront in `apps/storefront`. Install all packages' dependencies from the repository's root directory:
+
+```bash npm2yarn
+npm install
+```
+
+Starters use [pnpm](https://pnpm.io/installation) as their package manager by default. If you imported your own repository, use its package manager instead.
+
+<Details summaryContent="Use Yarn or npm instead of pnpm">
+
+Before you install the dependencies, make the following changes in the repository's root directory:
+
+1. In both `package.json` and `apps/backend/package.json`, change the `packageManager` field to your package manager and its installed version, such as `yarn@4.9.1` or `npm@10.9.2`.
+2. In `package.json`, add a `workspaces` field with the packages listed in `pnpm-workspace.yaml`:
+
+```json title="package.json"
+{
+  "workspaces": [
+    "apps/**",
+    "!apps/backend/.medusa/**"
+  ]
+}
+```
+
+3. In the `scripts` of `package.json`, replace `pnpm -r <script>` with `turbo <script>`, and any other use of `pnpm` with your package manager. For example:
+
+```json title="package.json"
+{
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build"
+  }
+}
+```
+
+4. Delete the `pnpm-workspace.yaml` and `pnpm-lock.yaml` files.
+5. Apply the changes specific to your package manager:
+    - **Yarn v2+**: Create an empty `yarn.lock` file, and a `.yarnrc.yml` file with the following content:
+
+    ```yaml title=".yarnrc.yml"
+    nodeLinker: node-modules
+    ```
+
+    - **Yarn v1**: In `package.json`, add a `resolutions` field that sets `@types/node` to the version in `apps/backend/package.json`:
+
+    ```json title="package.json"
+    {
+      "resolutions": {
+        "@types/node": "^20.12.11"
+      }
+    }
+    ```
+
+    - **npm**: In `package.json`, add `ajv` as a dev dependency and override its version for ESLint:
+
+    ```json title="package.json"
+    {
+      "devDependencies": {
+        "ajv": "^8.13.0"
+      },
+      "overrides": {
+        "eslint": {
+          "ajv": "^6.12.4"
+        },
+        "@eslint/eslintrc": {
+          "ajv": "^6.12.4"
+        }
+      }
+    }
+    ```
+
+6. Install the dependencies with your package manager:
+
+```bash
+# Yarn
+yarn
+
+# npm
+npm install --legacy-peer-deps
+```
+
+Commit the changes with the new lock file so Cloud builds your project with the same package manager. Cloud supports the package managers listed in the [project prerequisites](../projects/prerequisites/page.mdx).
+
+</Details>
+
+![Directory structure overview showing the main project folder containing the Medusa backend application and admin dashboard, alongside the separate storefront directory for the customer-facing Next.js application](https://res.cloudinary.com/dza7lstvk/image/upload/v1776755371/Medusa%20Book/installation-dirs_h2sqhy.jpg)
+
+---
+
+## 3. Set Up Medusa Application's Environment Variables
+
+On Cloud, you manage an environment's variables from its dashboard, and Medusa sets its resources' variables, such as the database's, for you. Learn more in the [Environment Variables](../environments/environment-variables/page.mdx) guide.
+
+Those variables hold secrets, so they aren't in your repository. For local development, copy the `.env.template` file or create a `.env` file in `apps/backend` that points to resources on your machine:
+
+```bash title="apps/backend/.env"
+DATABASE_URL=postgres://localhost/medusa-local
+REDIS_URL=redis://localhost:6379
+JWT_SECRET=supersecret
+COOKIE_SECRET=supersecret
+STORE_CORS=http://localhost:8000
+ADMIN_CORS=http://localhost:9000
+AUTH_CORS=http://localhost:9000,http://localhost:8000
+```
+
+Replace the values to match your setup:
+
+- `DATABASE_URL`: The connection string of a local PostgreSQL database. Create the database first if it doesn't exist.
+- `REDIS_URL`: The connection string of a local Redis instance. If you don't run Redis locally, remove this variable and Medusa falls back to in-memory modules.
+- `JWT_SECRET` and `COOKIE_SECRET`: Any random strings, different from your Cloud environments' values.
+- `STORE_CORS`, `ADMIN_CORS`, and `AUTH_CORS`: The local URLs that can send requests to the Medusa application. Change `http://localhost:8000` if your storefront runs on another port.
+
+Local resources isolate your development work, so you can seed and change data without affecting a deployed store.
+
+<Note title="Tip" forceMultiline>
+
+To mirror a deployed environment locally, reuse its variables instead. Either [export the variables](../environments/environment-variables/page.mdx#export-environment-variables-on-cloud) from the environment's dashboard and rename the downloaded `env.txt` file to `.env`, or run the following command with the [Cloud CLI](../cli/page.mdx):
+
+```bash
+mcloud variables list --reveal --dotenv > .env
+```
+
+Learn more in the [variables command reference](../cli/commands/variables/page.mdx#export-variables-to-a-env-file).
+
+These variables point to the environment's database, Redis instance, and other resources, so local changes affect the deployed environment. Only reuse them for debugging.
+
+</Note>
+
+---
+
+## 4. Run the Medusa Application
+
+In `apps/backend`, run the migrations to prepare your local database. In starters, the migrations also seed initial store data, such as regions:
+
+```bash npx2yarn
+npx medusa db:migrate
+```
+
+Then, start the Medusa application:
+
+```bash npm2yarn
+npm run dev
+```
+
+This runs the Medusa server at `http://localhost:9000` and the Medusa Admin at `http://localhost:9000/app`.
+
+![Diagram showcasing the server and application running when you start the Medusa application](https://res.cloudinary.com/dza7lstvk/image/upload/v1776755500/Medusa%20Book/start-overview_hqjexd.jpg)
+
+The application restarts when you change code under the `src` directory. Admin customizations hot-reload without a browser refresh.
+
+---
+
+## 5. Create Medusa Admin User
+
+Your local database doesn't have your Cloud environments' users. To log in to the Medusa Admin locally, create an admin user in `apps/backend`:
+
+```bash npx2yarn
+npx medusa user -e admin@medusajs.com -p supersecret
+```
+
+Replace `admin@medusajs.com` and `supersecret` with the user's email and password, then use them to log in at `http://localhost:9000/app`.
+
+---
+
+## 6. Set Up Storefront's Environment Variables
+
+If your project doesn't have a storefront, skip to [Publish Local Changes to Cloud](#publish-local-changes-to-cloud).
+
+The storefront needs a publishable API key, which you retrieve from the Medusa Admin, to send requests to the Medusa application. To set up the storefront's environment variables:
+
+1. In the repository's root directory, copy the storefront's `.env.template` file to a `.env` file.
+2. Open the Medusa Admin at `http://localhost:9000/app` and log in with the admin user you created.
+3. Go to Settings -> Publishable API Keys, then copy the key of a publishable API key. Learn more in the [Publishable API Keys](!user-guide!/settings/developer/publishable-api-keys) Merchant Guide.
+4. Set the key and the Medusa application's URL in `apps/storefront/.env`:
+
+```bash title="apps/storefront/.env"
+NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_123...
+NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://localhost:9000
+```
+
+Use the variable names in the `.env.template` file, since the above are examples. Set the file's other variables based on your setup, such as your payment provider's keys.
+
+<Note title="Tip">
+
+To reuse a deployed environment's storefront variables, run `mcloud variables list --reveal --dotenv --type storefront > .env` in the storefront's directory, then change the Medusa application's URL and publishable API key to your local ones.
+
+</Note>
+
+---
+
+## 7. Run the Storefront
+
+While the Medusa application runs, open a new terminal and start the storefront in `apps/storefront`:
+
+```bash npm2yarn
+npm run dev
+```
+
+Open the storefront at `http://localhost:8000` to browse products and place orders.
+
+<Feedback
+  question="Did you set up Medusa locally successfully?"
+  negativeQuestion="What errors or issues did you run into?"
+  showDottedSeparator={false}
+  positiveBtn="Yes"
+  negativeBtn="No"
+/>
+
+---
+
+## Publish Local Changes to Cloud
+
+Cloud deploys your changes when you push them to the GitHub repository linked to your project:
+
+- Push to the branch of a [long-lived environment](../environments/long-lived/page.mdx), such as the production environment, to deploy to that environment.
+- Open a pull request to create a [preview environment](../environments/preview/page.mdx), where you can test your changes before merging them.
+
+If your changes use new environment variables, [add them to the Cloud environment](../environments/environment-variables/page.mdx#add-environment-variables-on-cloud) before you push. Otherwise, the deployment runs without them.
+
+Learn more in the [Deployments](../deployments/page.mdx) guide.
+
+---
+
+## Project Files
+
+Your Medusa application's project (`apps/backend`) has the following files and directories:
+
+![Diagram of the files and directories in a Medusa application project](https://res.cloudinary.com/dza7lstvk/image/upload/v1732803813/Medusa%20Book/medusa-dir-overview_v7ks0j.jpg)
+
+### src
+
+This directory holds your customizations in the following subdirectories:
+
+- `admin`: Holds your admin dashboard's custom [widgets](!docs!/learn/fundamentals/admin/widgets) and [UI routes](!docs!/learn/fundamentals/admin/ui-routes).
+- `api`: Holds your custom [API routes](!docs!/learn/fundamentals/api-routes).
+- `jobs`: Holds your [scheduled jobs](!docs!/learn/fundamentals/scheduled-jobs) that run at a specified interval.
+- `links`: Holds your [module links](!docs!/learn/fundamentals/module-links) that build associations between data models of different modules.
+- `modules`: Holds your custom [modules](!docs!/learn/fundamentals/modules) that implement custom business logic.
+- `scripts`: Holds your custom [scripts](!docs!/learn/fundamentals/custom-cli-scripts) that you run with Medusa's CLI tool.
+- `subscribers`: Holds your [event listeners](!docs!/learn/fundamentals/events-and-subscribers) that run asynchronously when an event is emitted.
+- `workflows`: Holds your custom [workflows](!docs!/learn/fundamentals/workflows) that you can run from anywhere in your application.
+
+### medusa-config.ts
+
+This file holds your [Medusa configurations](!docs!/learn/configurations/medusa-config), such as your PostgreSQL database configurations.
+
+### .medusa
+
+The `.medusa` directory holds types and other files that Medusa generates when you run the `build` command. Don't modify or commit its files. Learn more in the [Automatically Generated Types](!docs!/learn/fundamentals/generated-types) guide.
+
+---
+
+## Configure Medusa Application
+
+Your Medusa application comes with a basic configuration for development. To fix configuration issues, such as CORS, or change the defaults, refer to the [Medusa Configuration](!docs!/learn/configurations/medusa-config) guide.
+
+---
+
+## Troubleshooting
+
+If you run into an error while setting up or running the Medusa application, refer to these guides:
+
+1. [CORS errors](!resources!/troubleshooting/cors-errors).
+2. [Errors with pnpm](!resources!/troubleshooting/pnpm).
+3. [All troubleshooting guides](!resources!/troubleshooting).
+
+If you can't find your error, open a [GitHub issue](https://github.com/medusajs/medusa/issues/new/choose).
+
+---
+
+## Next Steps
+
+After setting up your project locally, you can:
+
+- Build features with your AI agent. Learn how to set it up in the [Setting Up AI Agents](../ai-toolkit/page.mdx) guide.
+- Find guides for backend, admin, and storefront development in the [Development Resources](../development-resources/page.mdx).
+- [Update Medusa](!docs!/learn/update) to benefit from the latest features and fixes.

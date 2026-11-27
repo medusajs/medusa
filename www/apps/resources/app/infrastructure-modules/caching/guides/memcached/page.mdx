@@ -28,13 +28,23 @@ Refer to the [Caching Module](../../page.mdx) documentation to learn more about 
   icon={Github}
 />
 
+<Note title="Agent Hand-off">
+
+Your AI agent can perform the steps in this guide. Run the following prompt in your agent from your Medusa application's directory:
+
+```bash title="Prompt"
+Fetch https://docs.medusajs.com/resources/infrastructure-modules/caching/guides/memcached.md and create and register a Memcached Caching Module Provider in my Medusa application
+```
+
+</Note>
+
 ---
 
 <Prerequisites
   items={[
     {
       text: "Medusa Application",
-      href: "!docs!/learn/installation"
+      href: "!cloud!/setup-locally"
     },
     {
       text: "Memcached server",
@@ -982,11 +992,18 @@ The last step is to register the Memcached Module Provider in your Medusa applic
 
 ### Enable Caching Feature Flag
 
-First, enable the [Caching Module's feature flag](../../page.mdx#1-enable-caching-feature-flag) by setting the following environment variable:
+First, enable the [Caching Module's feature flag](../../page.mdx#1-enable-caching-feature-flag) in `medusa-config.ts`:
 
-```bash
-MEDUSA_FF_CACHING=true
+```ts title="medusa-config.ts"
+module.exports = defineConfig({
+  // ...
+  featureFlags: {
+    caching: true,
+  },
+})
 ```
+
+This enables the feature flag both locally and in your Cloud environments once you deploy the change.
 
 ### Register Memcached Module Provider
 
@@ -1028,9 +1045,14 @@ You pass the options to configure the Memcached client and the module's behavior
 
 ### Add Environment Variables
 
-Make sure you set the necessary environment variables in your `.env` file. For example:
+Set the environment variables that the provider's options use:
 
-```bash
+1. In Cloud, add the variables in your environment's [Environment variables settings](!cloud!/environments/environment-variables#add-environment-variables-on-cloud).
+    - Set `MEMCACHED_SERVERS` to the URLs of a Memcached server that your Cloud environment can reach, since Cloud doesn't host Memcached for you.
+    - Mark credentials like `MEMCACHED_PASSWORD` as **Sensitive**, and enable the **Build** toggle for all variables, since `medusa-config.ts` reads them during the build.
+2. For local development, add the variables to your `.env` file. For example:
+
+```bash title=".env"
 MEMCACHED_SERVERS=127.0.0.1:11211 # Comma-separated list of Memcached server URLs
 # Add other optional variables as needed
 ```
@@ -1119,6 +1141,18 @@ get medusa:test-cache-products
 ```
 
 Notice that you prefix the key with `medusa:`, which is the default prefix unless you set the `keyPrefix` option in the provider registration.
+
+---
+
+## Deploy to Cloud
+
+Cloud configures [Medusa Cache](!cloud!/cache), which uses the Redis Caching Module Provider, for each environment. When you register the Caching Module with the Memcached Module Provider in `medusa-config.ts`, your configuration is used instead.
+
+To deploy the Memcached Module Provider:
+
+1. Make sure you added the environment variables to your Cloud environment, as explained in the [Add Environment Variables](#add-environment-variables) section.
+2. Commit your changes and push them to the branch that your Cloud environment tracks. Cloud then [creates a deployment](!cloud!/deployments#how-are-deployments-created) that uses the Memcached Module Provider.
+3. Once the deployment finishes, check the environment's [runtime logs](!cloud!/logs#view-runtime-logs-on-cloud) for the `Successfully connected to Memcached` message.
 
 ---
 

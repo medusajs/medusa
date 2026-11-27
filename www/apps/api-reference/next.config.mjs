@@ -16,6 +16,7 @@ import { crossProjectLinksOptions } from "./utils/cross-project-links-options.mj
 const nextConfig = {
   // Configure `pageExtensions` to include MDX files
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+  agentRules: false,
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "/api",
   outputFileTracingRoot: new URL("../../", import.meta.url).pathname,
   outputFileTracingExcludes: {

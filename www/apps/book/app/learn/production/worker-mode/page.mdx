@@ -17,6 +17,14 @@ By default, the Medusa application runs in `shared` mode, which runs:
 
 While this setup is suitable for development, it is not optimal for production environments where background tasks can be long-running or resource-intensive.
 
+<Note title="Worker mode in Cloud">
+
+If you deploy your Medusa application to [Cloud](!cloud!), you don't need to configure worker mode. Cloud runs separate [server and worker instances](!cloud!/environments/long-lived) for each environment, and sets the `MEDUSA_WORKER_MODE` environment variable of each instance for you.
+
+You can monitor these instances in the [Servers](!cloud!/monitoring/servers) and [Workers](!cloud!/monitoring/workers) dashboards.
+
+</Note>
+
 ### Worker Mode in Production
 
 In a production environment, you should deploy two separate instances of your Medusa application:

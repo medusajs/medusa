@@ -1,0 +1,85 @@
+import { Prerequisites } from "docs-ui"
+
+export const metadata = {
+  title: `Extend Products with the Docs MCP Server`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn how to use the [Docs MCP server](../page.mdx) to extend Medusa's Product Module with custom data and features.
+
+## What is the Extend Products Tool?
+
+The `get_product_custom_data_guide` tool returns a complete, step-by-step implementation guide for attaching custom data to Medusa's [Product Module](!resources!/commerce-modules/product) data models: `product`, `productVariant`, and `productOption`.
+
+Describe the data you want to attach, such as brands, vendors, or custom SEO fields, and your AI agent builds the extension. The custom data:
+
+- Links to products through a [module link](!docs!/learn/fundamentals/module-links).
+- Stays in sync as you create, update, and delete products.
+- Is readable through the existing product APIs.
+- Is optionally manageable by merchants from the Medusa Admin.
+
+---
+
+## Who is this Useful for?
+
+This tool is useful for:
+
+- Developers who need to store product data that Medusa's Product Module doesn't natively support.
+- Teams whose catalog has domain-specific attributes, such as technical specs, compliance data, or per-market fields.
+- Developers building B2B, marketplace, or digital-product experiences on Medusa.
+
+---
+
+## Why Use This Tool?
+
+Extending products is where AI agents most often produce something that looks right but is wrong. Medusa's modules are isolated, so custom product data doesn't live on the product itself. An agent working from general ecommerce instincts reaches for the wrong shape: forking the Product Module, adding a column to a Medusa table, or writing non-trivial data into `product.metadata`. All three seem to work at first and become expensive later.
+
+Compared to reading the documentation yourself or [asking a Medusa question](../ask-medusa-question/page.mdx), this tool gives you:
+
+- **The supported architecture by default.** Your agent extends Medusa the way it's designed to be extended, not with an approach that happens to compile.
+- **A right-sized solution.** Your agent picks the lightest approach that fits your data, so you don't get a full module-and-link scaffold you didn't need.
+- **Data that stays consistent with your products.** The custom data follows the product lifecycle instead of drifting or leaving orphaned records when you delete products.
+- **Structural decisions made before migrations run.** Your agent settles up front whether the data belongs to products, variants, or options, and whether a product can have many of them. These are cheap to decide and expensive to change later.
+- **Ordered steps with verification along the way.** Your agent validates the link before building on it, so confusing downstream failures become early, obvious ones.
+
+Your agent still calls `ask_medusa_question` to confirm exact API shapes for your Medusa version. The guide decides the architecture; the documentation supplies the details.
+
+---
+
+## How to Use the Extend Products Tool
+
+<Prerequisites
+  items={[
+    {
+      text: "Docs MCP server connected to your AI tool or IDE",
+      link: "/ai-toolkit/docs-mcp"
+    }
+  ]}
+/>
+
+After [connecting to the Docs MCP server](../page.mdx#connect-to-the-docs-mcp-server), ask your AI agent for the product extension you want. Your agent infers the data's name from your request, calls the tool, and follows the returned guide.
+
+For example:
+
+```bash title="Example prompt"
+Implement a brand feature to allow merchants to associate products with brands.
+```
+
+```bash title="Example prompt"
+Attach downloadable digital assets to products.
+```
+
+### What to Expect
+
+1. Your AI agent calls the tool with a name derived from your request, such as `brand`, `supplier`, or `review`.
+2. It presents an implementation plan, including which product data model it will link to and whether the relationship is one-to-one or one-to-many.
+3. Once you approve, it scaffolds the module, the data model, the link, the workflows, and the hook handlers.
+4. It runs the migrations and verifies the link before continuing.
+5. If you asked for it, it adds an admin widget so merchants can manage the data from the Medusa Admin.
+
+<Note title="Tip">
+
+Tell your agent whether the data is per product, variant, or option, and whether a product can have many of them. These choices determine the link target and cardinality, which are much cheaper to get right up front than after migrations run.
+
+</Note>

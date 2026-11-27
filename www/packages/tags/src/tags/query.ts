@@ -44,6 +44,10 @@ export const query = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartItemsWorkflow"
   },
   {
+    "title": "refreshCartPromotionAdjustmentsWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refreshCartPromotionAdjustmentsWorkflow"
+  },
+  {
     "title": "refundPaymentAndRecreatePaymentSessionWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/refundPaymentAndRecreatePaymentSessionWorkflow"
   },
@@ -314,6 +318,22 @@ export const query = [
   {
     "title": "updateProductsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateProductsWorkflow"
+  },
+  {
+    "title": "getAssignablePoliciesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getAssignablePoliciesStep"
+  },
+  {
+    "title": "getAssignableRolesStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/getAssignableRolesStep"
+  },
+  {
+    "title": "getAssignablePoliciesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/getAssignablePoliciesWorkflow"
+  },
+  {
+    "title": "getAssignableRolesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/getAssignableRolesWorkflow"
   },
   {
     "title": "deleteShippingProfileWorkflow",

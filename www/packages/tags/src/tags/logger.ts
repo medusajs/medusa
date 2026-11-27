@@ -60,6 +60,10 @@ export const logger = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateLineItemInCartWorkflow"
   },
   {
+    "title": "updateTaxLinesWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateTaxLinesWorkflow"
+  },
+  {
     "title": "deleteLineItemsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteLineItemsWorkflow"
   },

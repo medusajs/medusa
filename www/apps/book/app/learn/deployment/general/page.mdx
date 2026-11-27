@@ -6,23 +6,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll learn the general steps to deploy your Medusa application. How you apply these steps depend on your chosen hosting provider or platform.
-
-<Note title="Deploy with Cloud" type="success">
-
-Before deciding to self-host your Medusa application, consider reading the [Cloud vs. Self-Hosting comparison guide](!cloud!/comparison). By using Cloud, you can avoid the complexities and challenges of self-hosting, while benefiting from automated deployment, scaling, and maintenance.
-
-With Cloud, you also maintain full customization control as you deploy your own modules and customizations directly from GitHub:
-
-- Push to deploy.
-- Multiple testing environments.
-- Preview environments for new PRs.
-- Test on production-like data.
-- Storefront deployment.
-- Emails setup.
-- [And more](!cloud!#cloud-features).
-
-</Note>
+In this guide, you'll learn how to deploy your Medusa application to Cloud, and, alternatively, the general steps to self-host it.
 
 <Prerequisites items={[
   {
@@ -31,9 +15,84 @@ With Cloud, you also maintain full customization control as you deploy your own 
   },
 ]} />
 
-## What You'll Deploy
+## Deploy to Cloud
 
-When you deploy the Medusa application, you need to deploy the following resources:
+[Cloud](!cloud!) is the recommended way to deploy your Medusa application. Cloud hosts your Medusa server, Medusa Admin, storefront, PostgreSQL database, and Redis instance, so you don't configure, scale, or maintain infrastructure yourself.
+
+When you deploy to Cloud, Medusa:
+
+- Creates the [server and worker instances](../../production/worker-mode/page.mdx) of your Medusa application.
+- Provisions and connects the [PostgreSQL database](!cloud!/database) and [Redis](!cloud!/redis).
+- Sets up production modules and providers, such as the Redis Caching, Event, Locking, and Workflow Engine modules, and the S3 File Module Provider.
+- Auto-scales your application's resources based on the traffic it receives.
+- Deploys every commit you push to your environment's branch, and creates [preview environments](!cloud!/environments/preview) for pull requests.
+
+<Note title="Working with an AI agent?">
+
+An AI agent can deploy your application and check its deployments with the [Cloud CLI](!cloud!/cli). To set up your agent, refer to the [Setting Up AI Agents](!cloud!/ai-toolkit) guide.
+
+</Note>
+
+### 1. Prepare Your Medusa Application
+
+Your Medusa application doesn't need deployment-specific configurations to run on Cloud. Check the [Prerequisites for Creating Projects](!cloud!/projects/prerequisites) guide to make sure your application meets them, especially if you also deploy a storefront.
+
+If your `medusa-config.ts` registers any of the modules that Cloud sets up, remove them unless you want to manage those resources yourself with custom options.
+
+<Note type="warning">
+
+Don't set `projectConfig.databaseUrl`, `projectConfig.databaseDriverOptions`, or `projectConfig.redisUrl` in your `medusa-config.ts` when deploying to Cloud. Cloud manages the database connection and Redis provisioning, and setting these options may cause deployment or database migration failures.
+
+</Note>
+
+### 2. Create a Cloud Project
+
+A project in Cloud holds your Medusa application's environments and deployments. To create a project from your application:
+
+1. [Sign up](!cloud!/first-project) for a Cloud account, if you don't have one.
+2. In your organization's dashboard, click the **Create Project** button. If your organization has no projects yet, click the **Import repository** card instead.
+3. Choose your application's GitHub repository, then set the project's name, subdomain, region, and build details.
+4. Click the **Create** button.
+
+Medusa then creates the project's Production environment and deploys your application. Learn more in the [Create your First Medusa Project](!cloud!/first-project) and [Projects](!cloud!/projects#2-create-project-from-an-existing-application) guides.
+
+### 3. Set Environment Variables
+
+Cloud manages the infrastructure environment variables, such as `DATABASE_URL`, `REDIS_URL`, `MEDUSA_WORKER_MODE`, and `PORT`, for basic Medusa configuration. You only add the variables specific to your application, such as API keys of third-party integrations.
+
+Add environment variables while creating the project, or later from the environment's settings in the Cloud dashboard. After adding or changing variables, [redeploy the environment](!cloud!/environments/long-lived#redeploy-environment) for the changes to take effect.
+
+Learn more in the [Environment Variables](!cloud!/environments/environment-variables) guide.
+
+### 4. Deploy Changes
+
+Every time you push a commit to the Production environment's branch, such as `main`, Medusa creates a new deployment from it.
+
+When you open a pull request, Medusa creates a preview environment for it, so you can test your changes before merging them.
+
+If a deployment fails, refer to the [Deployments](!cloud!/deployments#troubleshooting-failed-deployments) guide to troubleshoot it.
+
+### 5. Access Deployed Application
+
+Once the deployment is live, your Medusa application is available at the environment's URL, such as `my-project.medusajs.app`. The Medusa Admin is available at the `/app` path of that URL, where you can log in with your Cloud account.
+
+Learn more in the [Access Deployment](!cloud!/deployments/access) and [Medusa Admin on Cloud](!cloud!/admin) guides.
+
+---
+
+## Self-Host Medusa
+
+If you choose to self-host your Medusa application, this section explains the general steps to deploy it. How you apply these steps depends on your hosting provider.
+
+<Note title="Cloud vs. Self-Hosting">
+
+Before deciding to self-host your Medusa application, read the [Cloud vs. Self-Hosting comparison guide](!cloud!/comparison). Self-hosting means you configure, scale, and maintain the infrastructure that Cloud otherwise manages for you.
+
+</Note>
+
+### What You'll Deploy
+
+When you self-host the Medusa application, you need to deploy the following resources:
 
 1. PostgreSQL database: This is the database that will hold your Medusa application's details.
 2. Redis database: This is the database that will store the Medusa server's session.
@@ -43,11 +102,9 @@ When you deploy the Medusa application, you need to deploy the following resourc
 
 So, when choosing a hosting provider, make sure it supports deploying these resources. Also, for optimal experience, the hosting provider and plan must offer at least 2GB of RAM.
 
----
+### 1. Configure Medusa Application
 
-## 1. Configure Medusa Application
-
-### Worker Mode
+#### Worker Mode
 
 The `workerMode` configuration determines which mode the Medusa application runs in. When you deploy the Medusa application, you deploy two instances: one in server mode, and one in worker mode.
 
@@ -66,7 +123,7 @@ module.exports = defineConfig({
 
 Later, you’ll set different values of the `MEDUSA_WORKER_MODE` environment variable for each Medusa application deployment or instance.
 
-### Configure Medusa Admin
+#### Configure Medusa Admin
 
 The Medusa Admin is served by the Medusa server application. So, you need to disable it in the worker Medusa application only.
 
@@ -83,7 +140,7 @@ module.exports = defineConfig({
 
 Later, you’ll set different values of the `DISABLE_MEDUSA_ADMIN` environment variable for each Medusa application instance.
 
-### Configure Redis URL
+#### Configure Redis URL
 
 The `redisUrl` configuration specifies the connection URL to Redis to store the Medusa server's session.
 
@@ -104,9 +161,7 @@ module.exports = defineConfig({
 })
 ```
 
----
-
-## 2. Add predeploy Script
+### 2. Add predeploy Script
 
 Before you start the Medusa application in production, you should always run migrations and sync links.
 
@@ -119,9 +174,7 @@ So, add the following script in `package.json`:
 },
 ```
 
----
-
-## 3. Install Production Modules and Providers
+### 3. Install Production Modules and Providers
 
 By default, your Medusa application uses modules and providers useful for development, such as the Local File Module Provider.
 
@@ -202,13 +255,11 @@ module.exports = defineConfig({
 
 <Note title="Tip">
 
-Check out the [Integrations](!resources!/integrations) and [Infrastructure Modules](!resources!/infrastructure-modules) documentation for other modules and providers to use.
+Check out the [Integrations](!cloud!/integrations) and [Infrastructure Modules](!resources!/infrastructure-modules) documentation for other modules and providers to use.
 
 </Note>
 
----
-
-## 4. Create PostgreSQL and Redis Databases
+### 4. Create PostgreSQL and Redis Databases
 
 Your Medusa application must connect to PostgreSQL and Redis databases. So, before you deploy it, create production PostgreSQL and Redis databases.
 
@@ -216,15 +267,13 @@ If your hosting provider doesn't support databases, you can use [Neon for Postgr
 
 After hosting both databases, keep their connection URLs for the next steps.
 
----
-
-## 5. Deploy Medusa Application in Server Mode
+### 5. Deploy Medusa Application in Server Mode
 
 As mentioned earlier, you'll deploy two instances or create two deployments of your Medusa application: one in server mode, and the other in worker mode.
 
 The deployment steps depend on your hosting provider. This section provides the general steps to perform during the deployment.
 
-### Set Environment Variables
+#### Set Environment Variables
 
 When setting the environment variables of the Medusa application, set the following variables:
 
@@ -253,7 +302,7 @@ Where:
 
 Feel free to add any other relevant environment variables, such as for integrations and Infrastructure Modules. If you're using environment variables in your admin customizations, make sure to set them as well, as they're inlined during the build process.
 
-### Set Start Command
+#### Set Start Command
 
 The Medusa application's production build, which is created using the `build` command, outputs the Medusa application to `.medusa/server`. So, you must install the dependencies in the `.medusa/server` directory, then run the `start` command in it.
 
@@ -271,7 +320,7 @@ If your Medusa application is in a monorepo and depends on workspace packages, i
 
 </Note>
 
-### Set Backend URL in Admin Configuration
+#### Set Backend URL in Admin Configuration
 
 The Medusa Admin is built and hosted statically. To send requests to the Medusa server application, you must set the backend URL in the Medusa Admin's configuration.
 
@@ -307,15 +356,13 @@ Remember to separate URLs in `AUTH_CORS` by commas.
 
 </Note>
 
----
-
-## 6. Deploy Medusa Application in Worker Mode
+### 6. Deploy Medusa Application in Worker Mode
 
 Next, you'll deploy the Medusa application in worker mode.
 
 As explained in the previous section, the deployment steps depend on your hosting provider. This section provides the general steps to perform during the deployment.
 
-### Set Environment Variables
+#### Set Environment Variables
 
 When setting the environment variables of the Medusa application, set the following variables:
 
@@ -338,7 +385,7 @@ Where:
 
 Feel free to add any other relevant environment variables, such as for integrations and Infrastructure Modules.
 
-### Set Start Command
+#### Set Start Command
 
 The Medusa application's production build, which is created using the `build` command, outputs the Medusa application to `.medusa/server`. So, you must install the dependencies in the `.medusa/server` directory, then run the `start` command in it.
 
@@ -348,17 +395,13 @@ If your hosting provider doesn't support setting a current-working directory, se
 cd .medusa/server && npm install && npm run start
 ```
 
----
-
-## 7. Test Deployed Application
+### 7. Test Deployed Application
 
 Once the application is deployed and live, go to `<APP_URL>/health`, where `<APP_URL>` is the URL of the Medusa application in server mode. If the deployment was successful, you’ll see the `OK` response.
 
 The Medusa Admin is also available at `<APP_URL>/app`.
 
----
-
-## Create Admin User
+### 8. Create Admin User
 
 If your hosting provider supports running commands in your Medusa application's directory, run the following command to create an admin user:
 

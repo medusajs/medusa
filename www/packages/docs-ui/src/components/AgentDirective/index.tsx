@@ -9,7 +9,12 @@ export const AgentDirective = () => {
         /llms.txt
       </a>
       . Every page is also available as Markdown by appending .md to its URL or
-      by requesting it with an Accept: text/markdown header.
+      by requesting it with an Accept: text/markdown header. To learn how to
+      navigate the docs and which tools you can use, read{" "}
+      <a href="/SKILL.md" tabIndex={-1}>
+        /SKILL.md
+      </a>
+      .
     </div>
   )
 }
