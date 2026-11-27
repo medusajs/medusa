@@ -70,6 +70,7 @@
     "@medusajs/auth-github": "2.23.1",
     "@medusajs/auth-google": "2.23.1",
     "@medusajs/auth-oidc": "2.23.1",
+    "@medusajs/bundler": "2.23.1",
     "@medusajs/cache-inmemory": "2.23.1",
     "@medusajs/cache-redis": "2.23.1",
     "@medusajs/caching": "2.23.1",

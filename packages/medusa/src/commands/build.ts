@@ -4,6 +4,7 @@ import {
   LICENSE_CHECK_ERROR_CODE,
   MedusaError,
 } from "@medusajs/framework/utils"
+import path from "path"
 import { initializeContainer } from "../loaders"
 import { generateTypes } from "./utils/generate-types"
 import { runLintStep } from "./utils/lint-project"
@@ -14,12 +15,14 @@ export default async function build({
   lint,
   fix,
   quiet,
+  bundle,
 }: {
   directory: string
   adminOnly: boolean
   lint: boolean
   fix?: boolean
   quiet?: boolean
+  bundle?: boolean
 }) {
   const container = await initializeContainer(directory, {
     skipDbConnection: true,
@@ -58,6 +61,32 @@ export default async function build({
   if (!tsConfig) {
     logger.error("Unable to compile application")
     process.exit(1)
+  }
+
+  // Platforms can opt projects in without changing their build script
+  const shouldBundle = bundle || process.env.MEDUSA_BUILD_BUNDLE === "true"
+  if (shouldBundle && !adminOnly) {
+    // esbuild (a Go program) holds every bundled module in memory: collect
+    // garbage more often, trading some speed for a smaller peak. Set before
+    // anything starts esbuild, which reads it once.
+    process.env.GOGC ??= "50"
+    // The bundle is built from the compiled backend, so compile it first,
+    // then build the admin and bundle the backend as one app
+    const { bundleBackend } = await import("@medusajs/bundler")
+    const { collectBuildManifest } = await import("./utils/bundle/collect.js")
+    const backendBuilt = await compiler.buildAppBackend(tsConfig)
+    const bundler = await import("@medusajs/admin-bundler")
+    const appBuilt = await compiler.buildApp(tsConfig, bundler, (outDir) =>
+      bundleBackend({
+        directory,
+        outDir,
+        logger,
+        // @medusajs/medusa's dist folder
+        medusaDist: path.join(__dirname, ".."),
+        collect: () => collectBuildManifest(outDir),
+      })
+    )
+    process.exit(backendBuilt && appBuilt ? 0 : 1)
   }
 
   const promises: Promise<boolean>[] = []

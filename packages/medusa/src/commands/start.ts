@@ -18,6 +18,7 @@ import {
   isFileSkipped,
   isPresent,
   isProduction,
+  logBootSummary,
   promiseAll,
 } from "@medusajs/framework/utils"
 
@@ -316,6 +317,7 @@ async function start(args: {
       const server = GracefulShutdownServer.create(
         http_.listen(port, host).on("listening", () => {
           logger.success(serverActivity, `Server is ready on port: ${port}`)
+          logBootSummary()
           displayAdminUrl({ container, host, port })
           track("CLI_START_COMPLETED")
           void startLicenseRemoteCheck(container)
