@@ -25,8 +25,11 @@ medusaIntegrationTestRunner({
     let product
     let storeHeaders
     let cart
-    let cheapVariant, veryCheapVariant, expensiveVariant
-    let region, salesChannel
+    let cheapVariant
+    let veryCheapVariant
+    let expensiveVariant
+    let region
+    let salesChannel
 
     beforeAll(async () => {
       await createAdminUser(dbConnection, adminHeaders, getContainer())
@@ -678,6 +681,103 @@ medusaIntegrationTestRunner({
             }),
           })
         )
+      })
+
+      it("should reject adding or removing a gift card on a completed cart", async () => {
+        const {
+          data: { cart: cartWithPaymentCollection },
+        } = await api.get(
+          `/store/carts/${cart.id}?fields=+payment_collection.id`,
+          storeHeaders
+        )
+
+        await api.post(
+          `/store/payment-collections/${cartWithPaymentCollection.payment_collection.id}/payment-sessions`,
+          { provider_id: "pp_system_default" },
+          storeHeaders
+        )
+
+        await api.post(`/store/carts/${cart.id}/complete`, {}, storeHeaders)
+
+        const { response: removeResponse } = await api
+          .delete(`/store/carts/${cart.id}/gift-cards`, {
+            data: { code: giftCard.code },
+            ...storeHeaders,
+          })
+          .catch((err) => err)
+
+        expect(removeResponse.status).toEqual(400)
+        expect(removeResponse.data.message).toEqual(
+          `Cart ${cart.id} is already completed.`
+        )
+
+        const { response: addResponse } = await api
+          .post(
+            `/store/carts/${cart.id}/gift-cards`,
+            { code: largeGiftCard.code },
+            storeHeaders
+          )
+          .catch((err) => err)
+
+        expect(addResponse.status).toEqual(400)
+        expect(addResponse.data.message).toEqual(
+          `Cart ${cart.id} is already completed.`
+        )
+
+        const giftCardWithStoreCreditAccount = (
+          await api.get(
+            `/store/gift-cards/${giftCard.code}?fields=*store_credit_account`,
+            storeHeaders
+          )
+        ).data.gift_card
+
+        expect(giftCardWithStoreCreditAccount.store_credit_account).toEqual(
+          expect.objectContaining({ balance: 0, debits: 400 })
+        )
+      })
+
+      it("should debit the gift card when it is removed while the cart is being completed", async () => {
+        const {
+          data: { cart: cartWithPaymentCollection },
+        } = await api.get(
+          `/store/carts/${cart.id}?fields=+payment_collection.id`,
+          storeHeaders
+        )
+
+        await api.post(
+          `/store/payment-collections/${cartWithPaymentCollection.payment_collection.id}/payment-sessions`,
+          { provider_id: "pp_system_default" },
+          storeHeaders
+        )
+
+        const [completeResponse] = await Promise.all([
+          api
+            .post(`/store/carts/${cart.id}/complete`, {}, storeHeaders)
+            .catch((err) => err),
+          api
+            .delete(`/store/carts/${cart.id}/gift-cards`, {
+              data: { code: giftCard.code },
+              ...storeHeaders,
+            })
+            .catch((err) => err),
+        ])
+
+        const orderCreditLines =
+          completeResponse.data?.order?.credit_lines ?? []
+        const giftCardCreditTotal = orderCreditLines
+          .filter((creditLine) => creditLine.reference_id === giftCard.id)
+          .reduce((total, creditLine) => total + creditLine.amount, 0)
+
+        const giftCardWithStoreCreditAccount = (
+          await api.get(
+            `/store/gift-cards/${giftCard.code}?fields=*store_credit_account`,
+            storeHeaders
+          )
+        ).data.gift_card
+
+        expect(
+          giftCardWithStoreCreditAccount.store_credit_account.debits
+        ).toEqual(giftCardCreditTotal)
       })
 
       it("should use multiple gift cards on an order", async () => {
@@ -1513,7 +1613,7 @@ medusaIntegrationTestRunner({
           })
         )
 
-        let {
+        const {
           data: { cart: cartWithStoreCredits },
         } = await api.post(
           `/store/carts/${cart.id}/store-credits?fields=+credit_line_total`,

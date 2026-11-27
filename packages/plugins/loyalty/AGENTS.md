@@ -59,6 +59,7 @@ npx medusa plugin:db:generate        # migrations for every src/modules/*; never
 - `jest.config.js` ignores `\\.medusa/` (escaped, because the repo path contains `medusa/`); otherwise the built output gets picked up as duplicate suites.
 - The plugin owns the core hook handlers above. A workflow hook allows only one handler (`Cannot define multiple hook handlers`), so an app using this plugin can't register its own handlers for those hooks.
 - `debitAccounts_` locks the account rows (`SELECT ... FOR UPDATE`, sorted ids) before the balance check to prevent double spend. It throws if called outside a transaction; keep debits inside `@InjectTransactionManager` methods.
+- `addGiftCardToCartWorkflow`, `removeGiftCardFromCartWorkflow`, and `addStoreCreditsToCartWorkflow` take the cart lock (`acquireLockStep` on `cart_id`, the key `completeCartWorkflow` uses) and reject completed carts. A new workflow that changes a cart's credit lines must do the same, or it can race with cart completion.
 - `deleteTransactions` is a forwarder to the generated `deleteAccountTransactions`. `MedusaService` names methods after the model, so the interface name doesn't exist unless you implement it.
 - `updateStoreCreditAccounts` throws when a key is in its `["id", "metadata"]` whitelist (the check is inverted), so it currently rejects every update. Don't rely on it without fixing it.
 - New store routes must define `allowed` fields in `query-config.ts` using `buildAllowedFields` from `@medusajs/medusa/api/store/utils/allowed-fields` (see `store/gift-cards/query-config.ts`).
