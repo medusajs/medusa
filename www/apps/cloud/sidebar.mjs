@@ -71,7 +71,7 @@ export const sidebar = [
       },
       {
         type: "category",
-        title: "AI Toolkit",
+        title: "Using Agents",
         children: [
           {
             type: "link",
@@ -321,7 +321,7 @@ export const sidebar = [
       },
       {
         type: "category",
-        title: "Resources",
+        title: "Services",
         children: [
           {
             type: "link",
@@ -352,21 +352,6 @@ export const sidebar = [
             type: "link",
             title: "Cache",
             path: "/cache",
-          },
-          {
-            type: "link",
-            path: "/faq",
-            title: "FAQ",
-          },
-          {
-            type: "link",
-            path: "/comparison",
-            title: "Cloud vs Self-Hosted",
-          },
-          {
-            type: "link",
-            title: "Changelog",
-            path: "/changelog",
           },
         ],
       },
@@ -652,6 +637,27 @@ export const sidebar = [
                 path: "/security/data-protection",
               },
             ],
+          },
+        ],
+      },
+      {
+        type: "category",
+        title: "Resources",
+        children: [
+          {
+            type: "link",
+            path: "/faq",
+            title: "FAQ",
+          },
+          {
+            type: "link",
+            path: "/comparison",
+            title: "Cloud vs Self-Hosted",
+          },
+          {
+            type: "link",
+            title: "Changelog",
+            path: "/changelog",
           },
         ],
       },
