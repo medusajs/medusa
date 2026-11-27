@@ -25,7 +25,7 @@ Each documentation project has its own index listing all of its pages:
 ## Agent Tools
 
 - [Docs SKILL.md](https://docs.medusajs.com/SKILL.md): How to navigate the docs, where to find what, and which tools agents can use.
-- [Docs retrieval endpoint](https://docs.medusajs.com/agents/ask?q=how+to+create+a+workflow&source=docs-llms-txt): Search the docs and get the most relevant content as JSON, or as Markdown with an `Accept: text/markdown` header. Pass your name, such as `Claude Code`, in the `agent` query parameter.
+- [Docs retrieval endpoint](https://docs.medusajs.com/agents/search?q=how+to+create+a+workflow&source=docs-llms-txt): Search the docs and get the most relevant content as JSON, or as Markdown with an `Accept: text/markdown` header. Pass your name, such as `Claude Code`, in the `agent` query parameter.
 - [Docs MCP server](https://docs.medusajs.com/cloud/ai-toolkit/docs-mcp): Streamable HTTP MCP server at `https://docs.medusajs.com/mcp` that answers questions from the docs. Requires signing in with a Medusa account.
 - [Medusa MCP server](https://docs.medusajs.com/cloud/ai-toolkit/medusa-mcp): Connect agents to Medusa Cloud projects and stores.
 - [Agent Skills](https://docs.medusajs.com/cloud/ai-toolkit/agent-skills): Skills that teach agents how to build with Medusa.
