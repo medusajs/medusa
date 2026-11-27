@@ -113,7 +113,7 @@ export const generatedEditDates = {
   "app/learn/fundamentals/scheduled-jobs/interval/page.mdx": "2026-06-24T17:13:48.506Z",
   "app/learn/debugging-and-testing/feature-flags/create/page.mdx": "2025-09-02T08:36:12.714Z",
   "app/learn/debugging-and-testing/feature-flags/page.mdx": "2026-08-21T06:05:37.200Z",
-  "app/learn/fundamentals/workflows/locks/page.mdx": "2026-04-03T09:29:55.646Z",
+  "app/learn/fundamentals/workflows/locks/page.mdx": "2026-11-27T11:39:48.002Z",
   "app/learn/codemods/page.mdx": "2025-09-29T15:40:03.620Z",
   "app/learn/codemods/replace-imports/page.mdx": "2026-11-26T08:27:54.419Z",
   "app/learn/fundamentals/admin/translations/page.mdx": "2026-11-18T14:57:33.301Z",

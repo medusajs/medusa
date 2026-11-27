@@ -29,6 +29,11 @@ export interface AcquireLockStepInput {
   ttl?: number
   /**
    * The owner ID for the lock. If specified, only the owner can release the lock or extend its expiration time.
+   *
+   * If not specified, the lock is acquired without an owner. Workflows that acquire the same key without an owner
+   * block each other until the lock is released or expires, and any of them can release it. So, if the lock
+   * expires and another execution acquires it, releasing it in the first execution releases the other's lock.
+   * Pass an owner ID that's unique to the execution to avoid that.
    */
   ownerId?: string
   /**

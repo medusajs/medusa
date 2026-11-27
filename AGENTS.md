@@ -124,7 +124,7 @@ Skipping this leaves `Property <key> is not allowed` warnings on `en.json`, sinc
 
 **Changesets:**
 
-Every change to a published package needs a changeset. Generate it from the repo root with `yarn changeset`. If you can't answer the interactive prompts, write the equivalent file directly in `.changeset/<kebab-case-name>.md`:
+Every change to a published package needs a changeset, except changes that only touch TSDoc comments. Generate it from the repo root with `yarn changeset`. If you can't answer the interactive prompts, write the equivalent file directly in `.changeset/<kebab-case-name>.md`:
 
 ```md
 ---

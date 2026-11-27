@@ -75,6 +75,19 @@ If an error occurs in the workflow after a lock is acquired with `acquireLockSte
 
 </Note>
 
+### Lock Owners
+
+The `acquireLockStep` and `releaseLockStep` steps accept an optional `ownerId` input. When you pass it, only executions that pass the same `ownerId` can extend or release the lock.
+
+When you don't pass an `ownerId`, the lock has no owner. In that case:
+
+- While the lock is held, every other execution that tries to acquire it waits or fails, including executions that also don't pass an `ownerId`.
+- Any execution that doesn't pass an `ownerId` can release the lock. For example, the [Redis Locking Module Provider](!resources!/infrastructure-modules/locking/redis) stores these locks with the same owner (`*`).
+
+So, if a lock without an owner expires while its workflow is still running, another execution can acquire it. Then, when the first workflow runs `releaseLockStep`, it releases the other execution's lock.
+
+To avoid that, set a `ttl` longer than the time your workflow takes, or pass an `ownerId` that's unique to each execution to both steps.
+
 ### Locking Steps API
 
 Refer to the [acquireLockStep](!resources!/references/medusa-workflows/steps/acquireLockStep) and [releaseLockStep](!resources!/references/medusa-workflows/steps/releaseLockStep) for more information on the inputs of these steps.

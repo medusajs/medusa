@@ -28016,6 +28016,19 @@ If the lock cannot be acquired within the specified timeout period, the `acquire
 
 If an error occurs in the workflow after a lock is acquired with `acquireLockStep`, the step's compensation function will release the lock automatically.
 
+### Lock Owners
+
+The `acquireLockStep` and `releaseLockStep` steps accept an optional `ownerId` input. When you pass it, only executions that pass the same `ownerId` can extend or release the lock.
+
+When you don't pass an `ownerId`, the lock has no owner. In that case:
+
+- While the lock is held, every other execution that tries to acquire it waits or fails, including executions that also don't pass an `ownerId`.
+- Any execution that doesn't pass an `ownerId` can release the lock. For example, the [Redis Locking Module Provider](https://docs.medusajs.com/resources/infrastructure-modules/locking/redis/index.html.md) stores these locks with the same owner (`*`).
+
+So, if a lock without an owner expires while its workflow is still running, another execution can acquire it. Then, when the first workflow runs `releaseLockStep`, it releases the other execution's lock.
+
+To avoid that, set a `ttl` longer than the time your workflow takes, or pass an `ownerId` that's unique to each execution to both steps.
+
 ### Locking Steps API
 
 Refer to the [acquireLockStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/acquireLockStep/index.html.md) and [releaseLockStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/releaseLockStep/index.html.md) for more information on the inputs of these steps.
@@ -31929,7 +31942,7 @@ MEDUSA_FF_ANALYTICS=false
 
 In this chapter, you'll learn about updating your Medusa application and packages.
 
-Medusa's current version is v2.23. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.23.0).
+Medusa's current version is v2.23.1. Read the [Release Notes](https://github.com/medusajs/medusa/releases/tag/v2.23.1).
 
 ## Medusa Versioning
 
@@ -63309,12 +63322,49 @@ export const reindexProductsStep = createStep(
 
 ### Returns
 
-`reindex` returns to an object with the following properties:
+`reindex` returns an object with the following properties:
 
 - job\_id: (\`string\`) The ID of the job that performed the reindex.
 - indexes: (\`string\[]\`) The names of the indexes that the method rebuilt.
 
-The method rebuilds every index before it returns this object, so you don't poll the `job_id` to know when it finished.
+When you call the service's `reindex` method directly, as in the step above, it rebuilds every index before it returns this object. So, you don't poll the `job_id` to know when it finished, and the step that calls it waits until the rebuild completes.
+
+### Reindex in the Background
+
+To start a rebuild without waiting for it, run the `reindexSearchIndexesWorkflow` from `@medusajs/medusa/core-flows` instead. It accepts the same input as the `reindex` method.
+
+The workflow runs its reindex step in the background, so `run` returns before the indexes are rebuilt:
+
+```ts title="src/api/admin/custom/reindex/route.ts"
+import type {
+  MedusaRequest,
+  MedusaResponse,
+} from "@medusajs/framework/http"
+import {
+  reindexSearchIndexesWorkflow,
+} from "@medusajs/medusa/core-flows"
+
+export async function POST(
+  req: MedusaRequest,
+  res: MedusaResponse
+) {
+  const { transaction } = await reindexSearchIndexesWorkflow(
+    req.scope
+  ).run({
+    input: {
+      index: "product",
+    },
+  })
+
+  res.status(202).json({
+    job_id: transaction.transactionId,
+  })
+}
+```
+
+The workflow doesn't return the `reindex` method's result. Instead, use the workflow execution's transaction ID to track the background run. The workflow's `searchIndexesReindexed` hook receives the `job_id` and `indexes` once the rebuild finishes.
+
+The Medusa Admin dashboard uses this workflow through the `POST /admin/search-indexes/:id/reindex` API route, which responds with a `202` status code before the rebuild finishes.
 
 ### Reindex Strategies
 
