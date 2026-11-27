@@ -90,6 +90,7 @@ export const metadata = {
 [text](!resources!/path)         → resources
 [text](!user-guide!/path)        → user-guide (Merchant Guide)
 [text](!cloud!/path)             → cloud (Get Started)
+[text](!api!/admin/tag/operation) → API reference (paths, never `#` hashes)
 ```
 
 ## Common Mistakes
@@ -114,6 +115,7 @@ export const metadata = {
 - [ ] Removing `${pageNumber}` from book page titles
 - [ ] Using `<img>` or bare HTML instead of MDX components
 - [ ] Documenting internal implementation details (only public APIs)
+- [ ] Calling a module's service directly from an API route, job, subscriber, or script in a code example. Use a workflow from `@medusajs/core-flows` when one exists; otherwise, create a custom step that uses the service, use it in a workflow, and execute the workflow
 
 ## Reference Files
 

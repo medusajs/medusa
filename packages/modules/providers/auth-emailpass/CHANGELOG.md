@@ -1,5 +1,14 @@
 # @medusajs/auth-emailpass
 
+## 2.23.1
+
+### Patch Changes
+
+- [#17779](https://github.com/medusajs/medusa/pull/17779) [`d0cf9a1`](https://github.com/medusajs/medusa/commit/d0cf9a1c0b443422bde97039755ee5d68e269d5d) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa,auth,auth-emailpass,utils,types): store when password was updated for refresh and MFA validation
+
+- Updated dependencies [[`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450)]:
+  - @medusajs/framework@2.23.1
+
 ## 2.23.0
 
 ### Patch Changes

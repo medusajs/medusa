@@ -48,6 +48,7 @@ module.exports = defineConfig({
 ### Custom service methods (`src/services/auth-module.ts`)
 
 - Provider flow: `register`, `authenticate`, `validateCallback`, `updateProvider`, `validateAuthIdentity`, `listAuthProviders`. These catch errors and return `{ success: false, error }` instead of throwing.
+- `getCredentialsUpdatedAt(provider, providerIdentity)`: calls the provider's optional `getCredentialsUpdatedAt` and returns `null` when it isn't implemented or the provider isn't registered. The refresh and MFA challenge verify routes use it to reject tokens issued before a credentials update.
 - MFA: `startAuthMfa`, `verifyAuthMfa`, `createAuthMfaChallenge`, `verifyAuthMfaChallenge`, `disableAuthMfa`, `retrieveAuthMfa`, `listAuthMfa`, `generateAuthMfaRecoveryCodes`, `useAuthMfaRecoveryCode`.
 - Verification: `requestAuthVerification` (requires `code_provider`), `confirmAuthVerification` (defaults to `"token"`).
 - Password reset: `createPasswordResetToken`, `consumePasswordResetToken`.
@@ -90,6 +91,7 @@ yarn migration:create      # after any change to src/models; never hand-write mi
 
 - MFA challenges and OAuth state live in the Cache Module (`Modules.CACHE`), not the DB: challenge key `auth:mfa:challenge:<id>`; state defaults to a 1200s TTL and is deleted on first read (single-use). Without a cache dependency these paths throw `INVALID_ARGUMENT`.
 - `verifyAuthMfaChallenge` runs under a Locking Module lock (`Modules.LOCKING`) keyed on `auth:mfa:challenge:<id>`, so concurrent requests can't share an attempt. Without a locking dependency it throws `INVALID_ARGUMENT`.
+- Password reset tokens and verification codes are single-use under concurrency: `consumePasswordResetToken` only succeeds for the request whose delete removed the token row, and the `token` verification provider locks the `auth_verification` row (`SELECT ... FOR UPDATE`) before checking `verified_at`, so its `confirm` must run inside a transaction (`confirmAuthVerification` opens one).
 - TOTP secrets are encrypted with `mfa.encryption_key`; missing it throws "MFA encryption key is required to use MFA methods" on enroll/verify.
 - Recovery codes are hashed with the ESM-only `scrypt-kdf`, loaded with `import()` in `src/utils/mfa.ts`. Jest suites that generate or use recovery codes need `NODE_OPTIONS=--experimental-vm-modules` and the `@medusajs/test-utils` preset.
 - Custom MFA/verification providers without `resolve` are rejected unless their `id` is a built-in (`totp` / `token`), which only overrides options.

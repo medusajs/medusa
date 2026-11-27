@@ -206,6 +206,11 @@ export const sidebar = [
             children: [
               {
                 type: "link",
+                title: "Audit Logs",
+                path: "/organizations/audit-logs",
+              },
+              {
+                type: "link",
                 title: "MCP and Connectors",
                 path: "/organizations/connections",
               },
@@ -492,6 +497,11 @@ export const sidebar = [
             type: "link",
             path: "/enterprise",
             title: "Overview",
+          },
+          {
+            type: "external",
+            path: "https://docs.medusajs.com/resources/enterprise/audit",
+            title: "Audit Logs",
           },
           {
             type: "external",

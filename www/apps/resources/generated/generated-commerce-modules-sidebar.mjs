@@ -713,6 +713,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "title": "setAuthAppMetadataWorkflow",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setAuthAppMetadataWorkflow",
                       "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "validateAuthCallbackWorkflow",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateAuthCallbackWorkflow",
+                      "children": []
                     }
                   ]
                 },
@@ -750,6 +757,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "setAuthAppMetadataStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setAuthAppMetadataStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "validateAuthCallbackStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateAuthCallbackStep",
                       "children": []
                     }
                   ]
@@ -953,6 +967,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "link",
                       "path": "/references/auth/generateAuthMfaRecoveryCodes",
                       "title": "generateAuthMfaRecoveryCodes",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
+                      "path": "/references/auth/getCredentialsUpdatedAt",
+                      "title": "getCredentialsUpdatedAt",
                       "description": "",
                       "children": []
                     },
@@ -1723,6 +1745,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
                       "type": "ref",
                       "title": "updateShippingMethodsStep",
                       "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateShippingMethodsStep",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "validateLineItemsInCartStep",
+                      "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateLineItemsInCartStep",
                       "children": []
                     }
                   ]
@@ -18221,6 +18250,13 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
           "sort_sidebar": "alphabetize",
           "description": "Learn how to utilize and manage User features in the Medusa Admin dashboard.",
           "children": [
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Audit Logs",
+              "path": "https://docs.medusajs.com/user-guide/settings/audit-logs",
+              "children": []
+            },
             {
               "loaded": true,
               "type": "ref",

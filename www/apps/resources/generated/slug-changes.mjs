@@ -65,6 +65,46 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/api_key_models/variables/api_key_models.ApiKey/page.json"
   },
   {
+    "origSlug": "/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.createAuditLogs",
+    "newSlug": "/references/audit/createAuditLogs",
+    "filePath": "/www/apps/resources/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.createAuditLogs/page.json"
+  },
+  {
+    "origSlug": "/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.flush",
+    "newSlug": "/references/audit/flush",
+    "filePath": "/www/apps/resources/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.flush/page.json"
+  },
+  {
+    "origSlug": "/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.listAndCountAuditLogs",
+    "newSlug": "/references/audit/listAndCountAuditLogs",
+    "filePath": "/www/apps/resources/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.listAndCountAuditLogs/page.json"
+  },
+  {
+    "origSlug": "/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.listAuditLogs",
+    "newSlug": "/references/audit/listAuditLogs",
+    "filePath": "/www/apps/resources/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.listAuditLogs/page.json"
+  },
+  {
+    "origSlug": "/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.retrieveAuditLog",
+    "newSlug": "/references/audit/retrieveAuditLog",
+    "filePath": "/www/apps/resources/references/audit/IAuditModuleService/methods/audit.IAuditModuleService.retrieveAuditLog/page.json"
+  },
+  {
+    "origSlug": "/references/audit/interfaces/audit.IAuditModuleService",
+    "newSlug": "/references/audit",
+    "filePath": "/www/apps/resources/references/audit/interfaces/audit.IAuditModuleService/page.json"
+  },
+  {
+    "origSlug": "/references/audit_models/variables/audit_models.AuditLog",
+    "newSlug": "/references/audit/models/AuditLog",
+    "filePath": "/www/apps/resources/references/audit_models/variables/audit_models.AuditLog/page.json"
+  },
+  {
+    "origSlug": "/references/audit_provider/classes/audit_provider.AbstractAuditProviderService",
+    "newSlug": "/references/audit/provider",
+    "filePath": "/www/apps/resources/references/audit_provider/classes/audit_provider.AbstractAuditProviderService/page.json"
+  },
+  {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.authenticate",
     "newSlug": "/references/auth/authenticate",
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.authenticate/page.json"
@@ -118,6 +158,11 @@ export const slugChanges = [
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.generateAuthMfaRecoveryCodes",
     "newSlug": "/references/auth/generateAuthMfaRecoveryCodes",
     "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.generateAuthMfaRecoveryCodes/page.json"
+  },
+  {
+    "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.getCredentialsUpdatedAt",
+    "newSlug": "/references/auth/getCredentialsUpdatedAt",
+    "filePath": "/www/apps/resources/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.getCredentialsUpdatedAt/page.json"
   },
   {
     "origSlug": "/references/auth/IAuthModuleService/methods/auth.IAuthModuleService.listAndCountAuthIdentities",
@@ -685,6 +730,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.setAuthAppMetadataStep/page.json"
   },
   {
+    "origSlug": "/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.validateAuthCallbackStep",
+    "newSlug": "/references/medusa-workflows/steps/validateAuthCallbackStep",
+    "filePath": "/www/apps/resources/references/core_flows/Auth/Steps_Auth/functions/core_flows.Auth.Steps_Auth.validateAuthCallbackStep/page.json"
+  },
+  {
     "origSlug": "/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.generateResetPasswordTokenWorkflow",
     "newSlug": "/references/medusa-workflows/generateResetPasswordTokenWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.generateResetPasswordTokenWorkflow/page.json"
@@ -698,6 +748,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.setAuthAppMetadataWorkflow",
     "newSlug": "/references/medusa-workflows/setAuthAppMetadataWorkflow",
     "filePath": "/www/apps/resources/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.setAuthAppMetadataWorkflow/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.validateAuthCallbackWorkflow",
+    "newSlug": "/references/medusa-workflows/validateAuthCallbackWorkflow",
+    "filePath": "/www/apps/resources/references/core_flows/Auth/Workflows_Auth/functions/core_flows.Auth.Workflows_Auth.validateAuthCallbackWorkflow/page.json"
   },
   {
     "origSlug": "/references/core_flows/Cart/Steps_Cart/functions/core_flows.Cart.Steps_Cart.addShippingMethodToCartStep",
@@ -1918,6 +1973,11 @@ export const slugChanges = [
     "origSlug": "/references/core_flows/Line_Item/Steps_Line_Item/functions/core_flows.Line_Item.Steps_Line_Item.updateLineItemsStepWithSelector",
     "newSlug": "/references/medusa-workflows/steps/updateLineItemsStepWithSelector",
     "filePath": "/www/apps/resources/references/core_flows/Line_Item/Steps_Line_Item/functions/core_flows.Line_Item.Steps_Line_Item.updateLineItemsStepWithSelector/page.json"
+  },
+  {
+    "origSlug": "/references/core_flows/Line_Item/Steps_Line_Item/functions/core_flows.Line_Item.Steps_Line_Item.validateLineItemsInCartStep",
+    "newSlug": "/references/medusa-workflows/steps/validateLineItemsInCartStep",
+    "filePath": "/www/apps/resources/references/core_flows/Line_Item/Steps_Line_Item/functions/core_flows.Line_Item.Steps_Line_Item.validateLineItemsInCartStep/page.json"
   },
   {
     "origSlug": "/references/core_flows/Line_Item/Workflows_Line_Item/functions/core_flows.Line_Item.Workflows_Line_Item.deleteLineItemsWorkflow",
@@ -6183,6 +6243,11 @@ export const slugChanges = [
     "origSlug": "/references/modules/api_key_models",
     "newSlug": "/references/api-key/models",
     "filePath": "/www/apps/resources/references/modules/api_key_models/page.json"
+  },
+  {
+    "origSlug": "/references/modules/audit_models",
+    "newSlug": "/references/audit/models",
+    "filePath": "/www/apps/resources/references/modules/audit_models/page.json"
   },
   {
     "origSlug": "/references/modules/auth_models",

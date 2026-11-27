@@ -15,6 +15,225 @@ const generatedgeneratedEnterpriseSidebarSidebar = {
     {
       "loaded": true,
       "type": "sidebar",
+      "sidebar_id": "audit",
+      "title": "Audit Module",
+      "children": [
+        {
+          "loaded": true,
+          "type": "link",
+          "path": "/enterprise/audit",
+          "title": "Overview",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "type": "link",
+          "path": "/enterprise/audit/module-options",
+          "title": "Module Options",
+          "children": []
+        },
+        {
+          "type": "separator"
+        },
+        {
+          "loaded": true,
+          "type": "category",
+          "title": "Server Guides",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/enterprise/audit/record-api-requests",
+              "title": "Record API Requests",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/enterprise/audit/record-custom-audit-logs",
+              "title": "Record Custom Audit Logs",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/enterprise/audit/read-audit-logs",
+              "title": "Read Audit Logs",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/references/audit/provider",
+              "title": "Create Audit Provider",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "category",
+          "title": "Admin User Guides",
+          "autogenerate_tags": "userGuide+audit",
+          "autogenerate_as_ref": true,
+          "sort_sidebar": "alphabetize",
+          "description": "Learn how to view audit logs in the Medusa Admin dashboard.",
+          "children": [
+            {
+              "loaded": true,
+              "type": "ref",
+              "title": "Audit Logs",
+              "path": "https://docs.medusajs.com/user-guide/settings/audit-logs",
+              "children": []
+            }
+          ]
+        },
+        {
+          "loaded": true,
+          "type": "category",
+          "title": "References",
+          "description": "Find references for tools and resources related to the Audit Module, such as data models, methods, and more. These are useful for your customizations.",
+          "children": [
+            {
+              "loaded": true,
+              "type": "link",
+              "path": "/enterprise/audit/js-sdk",
+              "title": "JS SDK",
+              "hideChildren": true,
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "sub-category",
+                  "title": "Admin",
+                  "autogenerate_tags": "jsSdk+admin+audit",
+                  "description": "The following methods or properties are used to send requests to Admin API Routes related to the Audit Module.",
+                  "autogenerate_as_ref": true,
+                  "sort_sidebar": "alphabetize",
+                  "children": [
+                    {
+                      "loaded": true,
+                      "type": "ref",
+                      "title": "auditLog",
+                      "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/auditLog",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "loaded": true,
+              "type": "sidebar",
+              "sidebar_id": "audit-service-reference",
+              "title": "Main Service Reference",
+              "childSidebarTitle": "Audit Module's Main Service Reference",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/audit",
+                  "title": "Reference Overview",
+                  "children": []
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "loaded": true,
+                  "type": "category",
+                  "title": "Methods",
+                  "autogenerate_path": "/references/audit/IAuditModuleService/methods",
+                  "children": [
+                    {
+                      "loaded": true,
+                      "type": "link",
+                      "path": "/references/audit/createAuditLogs",
+                      "title": "createAuditLogs",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
+                      "path": "/references/audit/flush",
+                      "title": "flush",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
+                      "path": "/references/audit/listAndCountAuditLogs",
+                      "title": "listAndCountAuditLogs",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
+                      "path": "/references/audit/listAuditLogs",
+                      "title": "listAuditLogs",
+                      "description": "",
+                      "children": []
+                    },
+                    {
+                      "loaded": true,
+                      "type": "link",
+                      "path": "/references/audit/retrieveAuditLog",
+                      "title": "retrieveAuditLog",
+                      "description": "",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "loaded": true,
+              "type": "sidebar",
+              "sidebar_id": "audit-models-reference",
+              "title": "Data Models Reference",
+              "childSidebarTitle": "Audit Module Data Models Reference",
+              "children": [
+                {
+                  "loaded": true,
+                  "type": "link",
+                  "path": "/references/audit/models",
+                  "title": "Reference Overview",
+                  "children": []
+                },
+                {
+                  "type": "separator"
+                },
+                {
+                  "loaded": true,
+                  "type": "category",
+                  "title": "Data Models",
+                  "hasTitleStyling": true,
+                  "autogenerate_path": "/references/audit_models/variables",
+                  "children": [
+                    {
+                      "loaded": true,
+                      "type": "link",
+                      "path": "/references/audit/models/AuditLog",
+                      "title": "AuditLog",
+                      "description": "",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "separator"
+    },
+    {
+      "loaded": true,
+      "type": "sidebar",
       "sidebar_id": "rbac",
       "title": "RBAC Module",
       "children": [

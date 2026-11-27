@@ -384,3 +384,9 @@ For example, consider you have the following promotion with a rule that restrict
 ```
 
 When you try to apply this promotion on a cart, the cart's `customer_id` is compared to the promotion rule's value based on the specified operator. So, the promotion will only be applied if the cart's `customer_id` is equal to `cus_123`.
+
+#### Rules on Missing Attributes
+
+If the cart doesn't have a value for a rule's attribute, Medusa considers the rule unsatisfied, and it doesn't apply the promotion. The only exception is a rule with the `ne` (not equal) operator: a missing value isn't equal to any of the rule's values, so the rule passes.
+
+For example, if a promotion has a rule with the attribute `customer.groups.id`, the operator `ne`, and the value `cusgrp_123`, Medusa applies the promotion to a guest cart that has no customer. This behavior is the same for automatic promotions and promotions applied with a code.

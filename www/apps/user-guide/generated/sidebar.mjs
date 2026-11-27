@@ -498,6 +498,13 @@ export const generatedSidebars = [
           {
             "loaded": true,
             "type": "link",
+            "title": "Audit Logs",
+            "path": "/settings/audit-logs",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
             "title": "Regions",
             "path": "/settings/regions",
             "children": []

@@ -66,7 +66,7 @@ export const generatedEditDates = {
   "app/learn/customization/extend-features/extend-create-product/page.mdx": "2025-12-22T13:05:12.452Z",
   "app/learn/customization/custom-features/page.mdx": "2026-11-16T14:30:47.005Z",
   "app/learn/customization/customize-admin/page.mdx": "2025-07-21T08:19:07.699Z",
-  "app/learn/customization/customize-admin/route/page.mdx": "2026-08-21T06:05:37.198Z",
+  "app/learn/customization/customize-admin/route/page.mdx": "2026-11-27T07:40:23.402Z",
   "app/learn/customization/customize-admin/widget/page.mdx": "2026-07-28T05:43:32.465Z",
   "app/learn/customization/extend-features/define-link/page.mdx": "2025-12-22T13:50:02.230Z",
   "app/learn/customization/extend-features/page.mdx": "2024-12-09T11:02:39.244Z",

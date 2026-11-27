@@ -1,5 +1,19 @@
 # @medusajs/cloud
 
+## 2.23.1
+
+### Patch Changes
+
+- Updated dependencies [[`275ea48`](https://github.com/medusajs/medusa/commit/275ea482975fa042d5ff707ea9d166c6d8af4d63), [`9ae9e32`](https://github.com/medusajs/medusa/commit/9ae9e32ca558d3a7985f2ec8f655ac182276a450)]:
+  - @medusajs/js-sdk@2.23.1
+  - @medusajs/framework@2.23.1
+  - @medusajs/dashboard@2.23.1
+  - @medusajs/test-utils@2.23.1
+  - @medusajs/cli@2.23.1
+  - @medusajs/admin-sdk@2.23.1
+  - @medusajs/icons@2.23.1
+  - @medusajs/ui@4.3.1
+
 ## 2.23.0
 
 ### Minor Changes

@@ -84,6 +84,10 @@ export const auth = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setAuthAppMetadataStep"
   },
   {
+    "title": "validateAuthCallbackStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateAuthCallbackStep"
+  },
+  {
     "title": "generateResetPasswordTokenWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/generateResetPasswordTokenWorkflow"
   },
@@ -94,6 +98,10 @@ export const auth = [
   {
     "title": "setAuthAppMetadataWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/setAuthAppMetadataWorkflow"
+  },
+  {
+    "title": "validateAuthCallbackWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/validateAuthCallbackWorkflow"
   },
   {
     "title": "createCustomerAccountWorkflow",

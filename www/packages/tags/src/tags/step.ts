@@ -40,6 +40,10 @@ export const step = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/setAuthAppMetadataStep"
   },
   {
+    "title": "validateAuthCallbackStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateAuthCallbackStep"
+  },
+  {
     "title": "addShippingMethodToCartStep",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/addShippingMethodToCartStep"
   },
@@ -558,6 +562,10 @@ export const step = [
   {
     "title": "updateLineItemsStepWithSelector",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateLineItemsStepWithSelector"
+  },
+  {
+    "title": "validateLineItemsInCartStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateLineItemsInCartStep"
   },
   {
     "title": "acquireLockStep",

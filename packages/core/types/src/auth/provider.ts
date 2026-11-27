@@ -2,6 +2,7 @@ import {
   AuthenticationInput,
   AuthenticationResponse,
   AuthIdentityDTO,
+  ProviderIdentityDTO,
 } from "./common"
 
 // This interface currently won't allow for linking multiple providers to a single auth entity. That flow is more complex and not supported yet.
@@ -121,4 +122,14 @@ export interface IAuthProvider {
     data: Record<string, unknown>,
     authIdentityProviderService: AuthIdentityProviderService
   ): Promise<AuthenticationResponse>
+  /**
+   * This method retrieves when the credentials of a provider identity, such as its password, were last updated.
+   * Tokens issued before that date can't be refreshed or used to complete an MFA challenge.
+   *
+   * @param {ProviderIdentityDTO} providerIdentity - The provider identity to get the date of.
+   * @returns {Promise<Date | null> | Date | null} The date the credentials were last updated, or `null` if they were never updated.
+   */
+  getCredentialsUpdatedAt?(
+    providerIdentity: ProviderIdentityDTO
+  ): Promise<Date | null> | Date | null
 }

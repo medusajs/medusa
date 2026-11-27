@@ -15,10 +15,20 @@ As your business grows, more people and systems need access to your store. Enter
 
 An enterprise feature is a Medusa module, provider, or capability that requires an enterprise license. Medusa distributes these features in the same packages as the rest of the application, but they only load when you configure a license key that covers them.
 
+<Note>
+
+The Medusa Enterprise license only covers the packages mentioned in this documentation. All other Medusa packages, including `@medusajs/medusa`, `@medusajs/framework`, and `@medusajs/dashboard`, use the MIT License, even where they integrate with an enterprise feature.
+
+</Note>
+
 ## Enterprise Features
 
 <CardList
   items={[
+    {
+      title: "Audit Module",
+      href: "!resources!/enterprise/audit",
+    },
     {
       title: "RBAC Module",
       href: "!resources!/enterprise/rbac",
@@ -47,17 +57,22 @@ An enterprise feature is a Medusa module, provider, or capability that requires 
   ]}
 />
 
+If your organization is on the Cloud **Scale** or **Enterprise** plan, you don't need to set up enterprise features in your Cloud deployments. Cloud injects your license key, and since Medusa v2.23.0, Medusa registers the licensed modules for you:
+
+- The [RBAC Module](!resources!/enterprise/rbac) is on by default.
+- The [Audit Module](!resources!/enterprise/audit) is on once you [turn on audit logs](../organizations/audit-logs/page.mdx) in Cloud.
+
+You only need the following steps to use these features in local development or to use other enterprise features, such as [SSO](!resources!/enterprise/sso).
+
 ### 1. Obtain a License Key
 
-If your organization is on the Cloud **Scale** or **Enterprise** plan, it gets a license key that covers the `rbac` feature by default.
-
-For other features, or if you're not on one of these plans, contact the Medusa team at [support@medusajs.com](mailto:support@medusajs.com) to obtain a license key for the features you need.
+If you don't have a license key, contact the Medusa team at [support@medusajs.com](mailto:support@medusajs.com) to obtain one for the features you need.
 
 You can retrieve your license key from the [Enterprise License settings page](!cloud!/organizations/license) of the Cloud dashboard.
 
 ### 2. Configure the License Key (Optional)
 
-In your Cloud deployments, the license key is injected for you automatically. However, if you're running Medusa locally or outside of Cloud, you need to manually configure the license key in your environment.
+In your Cloud deployments, the license key is injected for you automatically. However, if you're running Medusa locally, you need to manually configure the license key in your environment.
 
 Set the license key as an environment variable in your Medusa project:
 
@@ -71,11 +86,12 @@ Medusa verifies the license key with Medusa's public key by default. You only ne
 
 ### 3. Register the Module or Provider
 
-Since Medusa v2.23.0, Medusa registers the RBAC Module by default if the license key is set and covers the `rbac` feature.
+Since Medusa v2.23.0, Medusa only registers the RBAC and Audit modules for you in Cloud deployments. When you run Medusa locally, add the feature's module or provider to `medusa-config.ts`. Refer to the documentation of the feature you're using for its configuration steps.
 
-For other modules or providers, or for previous Medusa versions, you must add the feature's module or provider to `medusa-config.ts`. Refer to the documentation of the feature you're using for its configuration steps.
+For example:
 
-For example, you register the [OIDC Auth Module Provider](!resources!/enterprise/sso#how-to-use-the-oidc-auth-module-provider) in the providers of the Auth Module.
+- Register the [RBAC Module](!resources!/enterprise/rbac#2-register-the-rbac-module) and the [Audit Module](!resources!/enterprise/audit#2-register-the-audit-module) in the `modules` array.
+- Register the [OIDC Auth Module Provider](!resources!/enterprise/sso#how-to-use-the-oidc-auth-module-provider) in the providers of the Auth Module.
 
 ### 4. Run Migrations
 

@@ -109,6 +109,11 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     tsConfigName: "utils.json",
     name: "search-provider",
   }),
+  "audit-provider": getOptions({
+    entryPointPath: "packages/core/utils/src/audit/abstract-audit-provider.ts",
+    tsConfigName: "utils.json",
+    name: "audit-provider",
+  }),
   "fulfillment-provider": getOptions({
     entryPointPath: "packages/core/utils/src/fulfillment/provider.ts",
     tsConfigName: "utils.json",

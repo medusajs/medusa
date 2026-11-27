@@ -1126,6 +1126,70 @@ medusaIntegrationTestRunner({
           }),
         ])
       })
+
+      it("should only restore the reservations deleted by a failed order edit confirmation", async () => {
+        const mediumItem = inventoryOrder.items.find(
+          (i) => i.subtitle === "M shirt"
+        )
+
+        await api.post(
+          `/admin/reservations`,
+          {
+            line_item_id: mediumItem.id,
+            inventory_item_id: inventoryItemMedium.id,
+            location_id: location.id,
+            quantity: 2,
+          },
+          adminHeaders
+        )
+
+        const editItemQuantity = async (quantity: number) => {
+          await api.post(
+            `/admin/order-edits`,
+            { order_id: inventoryOrder.id },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/order-edits/${inventoryOrder.id}/items/item/${mediumItem.id}`,
+            { quantity },
+            adminHeaders
+          )
+
+          await api.post(
+            `/admin/order-edits/${inventoryOrder.id}/request`,
+            {},
+            adminHeaders
+          )
+
+          return api.post(
+            `/admin/order-edits/${inventoryOrder.id}/confirm`,
+            {},
+            adminHeaders
+          )
+        }
+
+        await editItemQuantity(1)
+
+        const error = await editItemQuantity(50).catch((e) => e)
+
+        expect(error.response.status).toBe(400)
+        expect(error.response.data.message).toContain("Not enough stock")
+
+        const reservations = (
+          await api.get(
+            `/admin/reservations?inventory_item_id[]=${inventoryItemMedium.id}`,
+            adminHeaders
+          )
+        ).data.reservations
+
+        expect(reservations).toEqual([
+          expect.objectContaining({
+            line_item_id: mediumItem.id,
+            quantity: 1,
+          }),
+        ])
+      })
     })
 
     describe("Order Edit Shipping Methods", () => {

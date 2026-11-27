@@ -92,7 +92,7 @@ export const generatedSidebars = [
       {
         "loaded": true,
         "type": "category",
-        "title": "AI Toolkit",
+        "title": "Using Agents",
         "children": [
           {
             "loaded": true,
@@ -260,6 +260,13 @@ export const generatedSidebars = [
               {
                 "loaded": true,
                 "type": "link",
+                "title": "Audit Logs",
+                "path": "/organizations/audit-logs",
+                "children": []
+              },
+              {
+                "loaded": true,
+                "type": "link",
                 "title": "MCP and Connectors",
                 "path": "/organizations/connections",
                 "children": []
@@ -414,7 +421,7 @@ export const generatedSidebars = [
       {
         "loaded": true,
         "type": "category",
-        "title": "Resources",
+        "title": "Services",
         "children": [
           {
             "loaded": true,
@@ -456,27 +463,6 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Cache",
             "path": "/cache",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "path": "/faq",
-            "title": "FAQ",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "path": "/comparison",
-            "title": "Cloud vs Self-Hosted",
-            "children": []
-          },
-          {
-            "loaded": true,
-            "type": "link",
-            "title": "Changelog",
-            "path": "/changelog",
             "children": []
           }
         ]
@@ -661,6 +647,13 @@ export const generatedSidebars = [
             "type": "link",
             "path": "/enterprise",
             "title": "Overview",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "external",
+            "path": "https://docs.medusajs.com/resources/enterprise/audit",
+            "title": "Audit Logs",
             "children": []
           },
           {
@@ -854,6 +847,34 @@ export const generatedSidebars = [
                 "children": []
               }
             ]
+          }
+        ]
+      },
+      {
+        "loaded": true,
+        "type": "category",
+        "title": "Resources",
+        "children": [
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/faq",
+            "title": "FAQ",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "path": "/comparison",
+            "title": "Cloud vs Self-Hosted",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "type": "link",
+            "title": "Changelog",
+            "path": "/changelog",
+            "children": []
           }
         ]
       }

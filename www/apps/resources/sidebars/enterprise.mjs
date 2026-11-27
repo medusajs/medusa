@@ -1,3 +1,4 @@
+import { auditSidebar } from "./audit.mjs"
 import { rbacSidebar } from "./rbac.mjs"
 import { ssoSidebar } from "./sso.mjs"
 
@@ -8,6 +9,10 @@ export const enterpriseSidebar = [
     path: "https://docs.medusajs.com/cloud/enterprise",
     title: "Overview",
   },
+  {
+    type: "separator",
+  },
+  ...auditSidebar,
   {
     type: "separator",
   },

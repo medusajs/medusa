@@ -261,6 +261,8 @@ For providers like Google, the `query` object contains the query parameters from
 
 If the returned `success` property is `true`, the authentication with the third-party provider was successful.
 
+The returned object may also have a `providerData` property that holds the data the provider received from the third-party service, such as access tokens. This property is available since [Medusa v2.23.1](https://github.com/medusajs/medusa/releases/tag/v2.23.1). The Medusa application never sends it to the client. Instead, the `/auth/{actor_type}/{provider}/callback` route passes it to the `authCallbackValidated` hook of the `validateAuthCallbackWorkflow`. Learn more in the [Auth Flows with Routes](../authentication-route/page.mdx#access-the-providers-data-after-validation) guide.
+
 ![Diagram showcasing the second part of the third-party authentication flow](https://res.cloudinary.com/dza7lstvk/image/upload/v1711375123/Medusa%20Resources/third-party-auth-2_kmjxju.jpg)
 
 ---

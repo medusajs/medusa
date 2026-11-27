@@ -46,6 +46,7 @@ export const sitemapUrls = [
   "/promotions",
   "/reset-password",
   "/settings/announcements",
+  "/settings/audit-logs",
   "/settings/developer",
   "/settings/developer/publishable-api-keys",
   "/settings/developer/secret-api-keys",

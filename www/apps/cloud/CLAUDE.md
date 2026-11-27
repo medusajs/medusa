@@ -4,6 +4,22 @@ Next.js app for the Medusa Cloud docs, served under `/cloud`. Content is MDX
 under `app/`, and the sidebar is `sidebar.mjs`. Load the `writing-docs` skill
 before editing any MDX file.
 
+## Role requirements
+
+Every section that documents an action limited to certain organization roles
+gets a `<RolesBadge />` right below its heading, before any intro or steps. Use
+it instead of a `Note` or prose like "Only members with the Admin role can...".
+
+- It's registered globally in `components/MDXComponents`, so don't import it.
+- Admin is always included. Pass the other roles that can perform the action:
+  `<RolesBadge />` for Admin only, `<RolesBadge roles={["developer"]} />`,
+  `<RolesBadge roles={["billing"]} />`, or
+  `<RolesBadge roles={["developer", "billing"]} />`.
+- Take the roles from the permission the dashboard checks (`can("...")` or the
+  route's `permissions` handle) and the [Roles and Permissions](app/organizations/roles/page.mdx)
+  page, not from guesses.
+- Skip it for actions every member can perform.
+
 ## Changelog entries
 
 Every user-visible dashboard change gets a dated entry in the Cloud changelog.

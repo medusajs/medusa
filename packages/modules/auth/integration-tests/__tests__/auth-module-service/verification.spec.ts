@@ -13,6 +13,7 @@ import {
 } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { generateTotpCode } from "../../../src/utils/totp"
+import { runWhileRowsAreHeld } from "../../__fixtures__/race"
 
 jest.setTimeout(30000)
 
@@ -256,6 +257,29 @@ moduleIntegrationTestRunner<IAuthModuleService>({
         await expect(
           service.confirmAuthVerification({ code: "missing" })
         ).rejects.toThrow("Verification code is invalid or already used")
+      })
+
+      it("rejects a token another request confirms at the same time", async () => {
+        const { code } = await service.requestAuthVerification({
+          entity_type: "email",
+          code_provider: "token",
+          auth_identity_id: "auth-id",
+          entity_id: "verify@test.com",
+        })
+
+        const result = await runWhileRowsAreHeld(
+          MikroOrmWrapper,
+          "update auth_verification set verified_at = now() where auth_identity_id = ?",
+          ["auth-id"],
+          () => service.confirmAuthVerification({ code })
+        )
+
+        expect(result).toEqual({
+          status: "rejected",
+          reason: expect.objectContaining({
+            message: "Verification code is invalid or already used",
+          }),
+        })
       })
     })
   },

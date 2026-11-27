@@ -79,6 +79,7 @@
 - [Worker Monitoring](http://localhost:3000/cloud/monitoring/workers)
 - [Notifications](http://localhost:3000/cloud/notifications)
 - [Organizations](http://localhost:3000/cloud/organizations)
+- [Audit Logs in Cloud](http://localhost:3000/cloud/organizations/audit-logs)
 - [MCP and Connectors](http://localhost:3000/cloud/organizations/connections)
 - [Enterprise License on Cloud](http://localhost:3000/cloud/organizations/license)
 - [Roles and Permissions in Cloud](http://localhost:3000/cloud/organizations/roles)

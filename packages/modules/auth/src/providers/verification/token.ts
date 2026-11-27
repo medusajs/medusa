@@ -4,6 +4,7 @@ import {
   IAuthVerificationProvider,
   ModulesSdkTypes,
 } from "@medusajs/framework/types"
+import { SqlEntityManager } from "@medusajs/framework/mikro-orm/postgresql"
 import { MedusaError } from "@medusajs/framework/utils"
 import { AuthVerification } from "@models"
 import { TokenVerificationProviderOptions } from "@types"
@@ -105,10 +106,29 @@ export class TokenVerificationProvider implements IAuthVerificationProvider {
       )
     }
 
+    const tokenHash = hashVerificationToken(data.code)
+
+    // Lock the verification for the rest of the transaction before reading it,
+    // so concurrent confirms of one code wait here and then see it as used.
+    const knex = (
+      sharedContext.transactionManager as SqlEntityManager | undefined
+    )?.getTransactionContext()
+    if (!knex) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "Confirming a verification code must run inside a transaction."
+      )
+    }
+    await knex("auth_verification")
+      .whereRaw("provider_metadata->>'token_hash' = ?", [tokenHash])
+      .whereNull("deleted_at")
+      .forUpdate()
+      .select("id")
+
     const [verification] = await this.authVerificationService_.list(
       {
         provider_metadata: {
-          token_hash: hashVerificationToken(data.code),
+          token_hash: tokenHash,
         },
       },
       {},

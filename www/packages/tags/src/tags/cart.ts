@@ -228,6 +228,10 @@ export const cart = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/updateLineItemsStepWithSelector"
   },
   {
+    "title": "validateLineItemsInCartStep",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/steps/validateLineItemsInCartStep"
+  },
+  {
     "title": "deleteLineItemsWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/deleteLineItemsWorkflow"
   },

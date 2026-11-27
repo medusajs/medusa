@@ -242,7 +242,7 @@ Your database holds your products, orders, customers, users, API keys, and setti
 
 <Note>
 
-Cloud uses PostgreSQL v16, so the dump must come from a PostgreSQL v16 database with a matching [pg_dump](https://www.postgresql.org/docs/16/app-pgdump.html) version. If your self-hosted database uses an earlier version, upgrade it first, or restore it into a local PostgreSQL v16 database and create the dump from there.
+Cloud uses PostgreSQL v16, so the dump must come from a PostgreSQL v16 database with a matching [pg_dump](https://www.postgresql.org/docs/16/app-pgdump.html) version. If your self-hosted database uses an earlier version, upgrade it first, or restore it into a local PostgreSQL v16 database and create the dump from there. If it uses a newer version, such as v17 or v18, follow the steps in [Migrate from a Newer PostgreSQL Version](#migrate-from-a-newer-postgresql-version).
 
 </Note>
 
@@ -257,6 +257,51 @@ pg_dump -Fc \
 ```
 
 Replace the connection string with your database's connection string.
+
+### Migrate from a Newer PostgreSQL Version
+
+Some hosting providers create databases with PostgreSQL v17 or later. A dump created from these versions doesn't work with Cloud's PostgreSQL v16, and a v16 `pg_dump` refuses to dump a database that runs a newer version.
+
+Instead, you can move the data through a local PostgreSQL v16 database:
+
+1. Create a plain SQL dump of your self-hosted database. Use a `pg_dump` version that matches your database's version:
+
+```bash
+pg_dump --no-owner --no-privileges \
+  -d postgres://user:password@host:5432/medusa \
+  -f medusa.sql
+```
+
+2. Start a local PostgreSQL v16 database. For example, using Docker:
+
+```bash
+docker run -d --name medusa-pg16 \
+  -e POSTGRES_PASSWORD=postgres \
+  -p 5433:5432 postgres:16
+```
+
+3. Restore the plain SQL dump into the local database with `psql`:
+
+```bash
+psql postgres://postgres:postgres@localhost:5433/postgres \
+  -f medusa.sql
+```
+
+4. Create the custom-format dump from the local database with a v16 `pg_dump`. For example, using the `pg_dump` in the Docker container:
+
+```bash
+docker exec medusa-pg16 pg_dump -Fc -U postgres \
+  -d postgres -f /tmp/medusa.dump
+docker cp medusa-pg16:/tmp/medusa.dump ./medusa.dump
+```
+
+You can then import `medusa.dump` as explained in the next section.
+
+<Note>
+
+The plain SQL dump can contain settings that PostgreSQL v16 doesn't support, such as `SET transaction_timeout`. `psql` logs an error for these lines and continues the restore, so you can ignore them. Check the output for other errors, which can mean that your database uses features unavailable in v16.
+
+</Note>
 
 ### Import the Dump
 

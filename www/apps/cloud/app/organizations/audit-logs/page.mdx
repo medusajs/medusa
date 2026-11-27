@@ -1,0 +1,160 @@
+import { Note, InlineIcon } from "docs-ui"
+import { Funnel } from "@medusajs/icons"
+
+export const metadata = {
+  title: `Audit Logs in Cloud`,
+}
+
+# {metadata.title}
+
+In this guide, you'll learn what audit logs are, how to turn them on for your organization, and how to view them.
+
+## What are Audit Logs?
+
+Audit logs record who did what in your organization, on which resource, and how it ended. You can use them to investigate a change, review access, or meet compliance requirements.
+
+When you turn on audit logs, Medusa records two types of activity:
+
+- **Cloud activity**: Actions that members, [organization access keys](../page.mdx), and Medusa support take in your organization through the Cloud dashboard, the [Cloud CLI](../../cli/page.mdx), and the Cloud API. For example, creating an environment or updating an environment variable. You view these logs in the Cloud dashboard.
+- **Commerce activity**: Changes made in your environments' Medusa applications, such as creating a product or updating an order from the Medusa Admin. You view these logs in each environment's Medusa Admin.
+
+Each audit log shows:
+
+- **Time**: When the action happened.
+- **Actor**: Who performed the action. For members, it's the member's name or email. For access keys, it's the access key's title.
+- **Action**: The action that the actor performed.
+- **Resource**: The ID or type of the resource that the action affected.
+- **Outcome**: Whether the action **Succeeded**, was **Denied**, or **Failed**.
+
+---
+
+## Audit Logs Pricing and Retention
+
+<Note>
+
+Audit logs are available on the **Scale** and **Enterprise** plans. Learn how to change your plan in the [Manage Plans](../../billing/plans/page.mdx#change-plan) guide.
+
+</Note>
+
+Audit logs are a paid add-on that you turn on per organization. On the Scale plan, audit logs cost $50 per month, plus $0.50 per 1,000 recorded audit logs. You can track the number of recorded audit logs in the [Usage](../../usage/page.mdx) page.
+
+Medusa keeps audit logs for 14 days by default, and older audit logs are no longer visible. The **Audit log** page shows the exact pricing and retention period of your organization's plan before you turn audit logs on.
+
+---
+
+## Turn On Audit Logs
+
+<RolesBadge roles={["billing"]} />
+
+To turn on audit logs for your organization:
+
+1. If you're in a different organization, [switch to the organization](../page.mdx#switch-organization).
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Audit log** in the sidebar.
+4. Click the **Turn on audit logs** button.
+5. Review the pricing in the confirmation dialog, then click **Turn on**.
+
+Medusa starts recording Cloud activity right away, and starts charging the monthly fee from that day. You only see audit logs recorded after you turned on audit logs.
+
+<Note>
+
+If your organization's plan doesn't include audit logs, the page shows a **Change plan** link instead of the **Turn on audit logs** button.
+
+</Note>
+
+### Record Commerce Activity in Environments
+
+<Note title="Prerequisites">
+
+Environments must run Medusa v2.23.0 or later to record commerce activity.
+
+</Note>
+
+After you turn on audit logs, an environment only starts recording its commerce activity after its next deployment. To start recording commerce activity right away, [redeploy your environments](../../deployments/page.mdx).
+
+---
+
+## View Cloud Audit Logs
+
+<RolesBadge />
+
+To view your organization's Cloud audit logs:
+
+1. If you're in a different organization, [switch to the organization](../page.mdx#switch-organization).
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Audit log** in the sidebar.
+
+The page shows a table of the audit logs, with the most recent first. A **Medusa support** badge next to an actor means that Medusa support took the action while signed in as that actor.
+
+### Filter Audit Logs
+
+You can narrow down the audit logs with the controls above the table:
+
+- **Search**: Search audit logs by action, resource ID, or actor ID.
+- **Project**: Show only the audit logs of a project.
+- **Outcome**: Show only audit logs with the **Succeeded**, **Denied**, or **Failed** outcome.
+- **Time range**: Show audit logs from the last day, 7 days, 30 days, or 90 days, or from a custom range. By default, the page shows audit logs from the last 7 days.
+
+### View an Audit Log's Details
+
+To view an audit log's details, click its row in the table. This expands the row to show the following details:
+
+- **Actor ID**: The ID of the member or access key that performed the action.
+- **Resource ID**: The ID of the resource that the action affected.
+- **Project**: The project that the action affected, if any. Actions taken on the organization or user level may not have a project.
+- **Environment**: The environment that the action affected, if any. Actions taken on the organization or user level may not have an environment.
+- **Request**: The API request's method and path.
+- **Status code**: The HTTP status code of the API request's response.
+- **Duration**: How long the action took, in milliseconds.
+- **IP address**: The IP address that the actor sent the request from.
+- **User agent**: The browser or tool that the actor used to send the request.
+- **Request ID**: The ID of the API request, which is useful when contacting support.
+
+To show all actions of the same actor or on the same resource, click the <InlineIcon Icon={Funnel} alt="filter" /> icon next to the **Actor ID** or **Resource ID** in the expanded row. The applied filter appears above the table, and you can click it to remove it.
+
+---
+
+## View Commerce Audit Logs
+
+Your environment's Medusa Admin shows the commerce activity of that environment. Medusa records the requests that create, update, or delete data through the Admin API, such as creating a product, updating an order, or signing in.
+
+To view an environment's commerce audit logs:
+
+1. Open the environment's Medusa Admin and log in.
+2. Go to **Settings** > **Audit logs**.
+
+Learn more in the [View Audit Logs](!user-guide!/settings/audit-logs) user guide.
+
+<Note>
+
+Admin users in the Medusa Admin need the `audit_log:read` permission to view audit logs. Learn more about permissions in the [RBAC](!resources!/enterprise/rbac) guide.
+
+</Note>
+
+### Customize Commerce Audit Logs
+
+When you turn on audit logs, your organization's [Enterprise license](../license/page.mdx) includes the `audit` feature, and Medusa sets up the [Audit Module](!resources!/enterprise/audit) in your environments with Cloud's audit storage.
+
+Developers can customize what Medusa records in your environments, such as recording more routes or recording actions from scheduled jobs. Learn more in the [Record API Requests](!resources!/enterprise/audit/record-api-requests) and [Record Custom Audit Logs](!resources!/enterprise/audit/record-custom-audit-logs) guides.
+
+---
+
+## Turn Off Audit Logs
+
+<RolesBadge roles={["billing"]} />
+
+To turn off audit logs for your organization:
+
+1. If you're in a different organization, [switch to the organization](../page.mdx#switch-organization).
+2. Make sure you're on the projects overview page of the organization. You can do this by clicking on the organization name at the top left of the dashboard.
+3. Click **Audit log** in the sidebar.
+4. Click the **Turn off audit logs** button at the top right of the page.
+5. Click **Turn off** in the confirmation dialog.
+
+When you turn off audit logs:
+
+- Medusa stops recording Cloud activity and hides the audit log.
+- The monthly fee stops from your next billing cycle.
+- Environments stop recording commerce activity after their next deployment. To stop recording right away, [redeploy your environments](../../deployments/page.mdx).
+
+If you turn audit logs on again later, you only see audit logs recorded after you turned them on again.
