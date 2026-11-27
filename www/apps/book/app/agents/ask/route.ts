@@ -40,6 +40,7 @@ type SearchInput = {
   query?: unknown
   limit?: unknown
   agent?: unknown
+  source?: unknown
 }
 
 const search = async (
@@ -131,6 +132,8 @@ const searchAndTrack = async (req: NextRequest, input: SearchInput) => {
     response_format: res.headers.get("content-type")?.split(";")[0],
     reported_agent:
       typeof input.agent === "string" ? input.agent.slice(0, 100) : undefined,
+    source:
+      typeof input.source === "string" ? input.source.slice(0, 100) : undefined,
   })
 
   return res
@@ -142,6 +145,7 @@ export async function GET(req: NextRequest) {
     query: searchParams.get("q"),
     limit: searchParams.get("limit"),
     agent: searchParams.get("agent"),
+    source: searchParams.get("source"),
   })
 
   if (res.ok) {
