@@ -176,7 +176,7 @@ export class InMemoryLockingProvider implements ILockingProvider {
         continue
       }
 
-      if (isDefined(ownerId) && lock.ownerId !== ownerId) {
+      if (lock.ownerId !== (ownerId ?? null)) {
         success = false
         continue
       }
