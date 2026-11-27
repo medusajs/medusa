@@ -15,6 +15,7 @@ The docs are **Cloud-first** and treat agents as first-class readers. On every p
 - Never mention self-hosting or non-Cloud deployment platforms, and never install with `create-medusa-app`.
 - Call the admin user docs the **Merchant Guide**, not "User Guide".
 - Add an **Agent Hand-off** note where an agent can perform the page's steps.
+- When you update a page that has an `_md-content.mdx` file next to it, update that file too. It's the prompt agents get from the page's Markdown URL.
 
 Load `reference/cloud-first.md` for the patterns and the navbar-to-project map.
 
@@ -112,6 +113,7 @@ export const metadata = {
 - [ ] Using passive voice ("is created", "can be configured") — write active ("you can configure", "call X to create")
 - [ ] Writing code lines longer than 64 characters
 - [ ] Forgetting to add a new page to the sidebar file
+- [ ] Updating a `page.mdx` without updating the `_md-content.mdx` prompt next to it
 - [ ] Removing `${pageNumber}` from book page titles
 - [ ] Using `<img>` or bare HTML instead of MDX components
 - [ ] Documenting internal implementation details (only public APIs)

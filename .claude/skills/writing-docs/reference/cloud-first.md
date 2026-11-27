@@ -86,6 +86,18 @@ Fetch https://docs.medusajs.com/resources/commerce-modules/auth/auth-providers/g
 - Guides that start by creating a Cloud project begin the note with "After you create a Cloud project, your AI agent can perform the rest of the steps in this guide, including setting up the project locally."
 - Skip it on conceptual pages and Merchant Guide pages.
 
+### Page Prompts (`_md-content.mdx`)
+
+A page can have an `_md-content.mdx` file next to its `page.mdx`. The docs serve it in place of the page's content at the page's Markdown URL, so it's the prompt an agent follows when it fetches the URL in the Agent Hand-off note.
+
+The prompt repeats the page's steps, so it goes stale when only `page.mdx` changes. Whenever you update a page:
+
+1. Check whether an `_md-content.mdx` file exists in the page's directory.
+2. If it does, update it in the same PR to match the page: added, removed, or changed steps, file paths, variable names, constraints, and testing instructions. Also update its success criteria and manual follow-ups when they're affected.
+3. Keep the prompt's existing sections and its instruction style. Describe what the agent must do rather than pasting the page's code blocks.
+
+Some prompts repeat steps from other pages too, such as the agent setup prompt in `www/apps/book/app/start/_md-content.mdx`. See `www/apps/cloud/CLAUDE.md` for the pages it depends on.
+
 ## Admin URLs
 
 Refer to the admin of a deployed Cloud environment, not `localhost:9000/app`. Mention the local URL only as a secondary note for readers running Medusa locally. `localhost:9000` is fine in local-development steps, such as testing an API route with `curl`.
